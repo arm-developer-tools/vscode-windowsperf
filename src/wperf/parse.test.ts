@@ -2,8 +2,8 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { loadFixtureFile } from "./fixtures";
-import { SchemaValidationError, parseSampleJson } from "./parse";
+import { loadFixtureFile } from './fixtures';
+import { SchemaValidationError, parseSampleJson } from './parse';
 
 describe('parseSampleJSON', () => {
     it('parses minimal valid sample json', () => {
@@ -12,8 +12,8 @@ describe('parseSampleJSON', () => {
                 sample_display_row: 10,
                 samples_generated: 1337,
                 samples_dropped: 10,
-                pe_file: "some-pe-file",
-                pdb_file: "some-pdb-file",
+                pe_file: 'some-pe-file',
+                pdb_file: 'some-pdb-file',
                 events: [],
             },
         };

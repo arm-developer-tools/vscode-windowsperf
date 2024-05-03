@@ -2,9 +2,9 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { Sample } from "./schemas/out/sample";
-import Ajv, { DefinedError } from "ajv";
-import * as schemaSample from "./schemas/in/sample.json";
+import { Sample } from './schemas/out/sample';
+import Ajv, { DefinedError } from 'ajv';
+import * as schemaSample from './schemas/in/sample.json';
 
 const ajv = new Ajv();
 const validateSample = ajv.compile<Sample>(schemaSample);
@@ -20,7 +20,7 @@ export const parseSampleJson = (json: string): Sample => {
 // Wperf outputs literal tab characters in the "disassemble" > "instruction" fields.
 // Literal tabs are not allowed in JSON string fields.
 function fixWperfOutput(content: string): string {
-    return content.replaceAll("\t", "    ");
+    return content.replaceAll('\t', '    ');
 }
 
 export class SchemaValidationError extends Error {
