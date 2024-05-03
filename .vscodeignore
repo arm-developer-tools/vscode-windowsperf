@@ -4,7 +4,11 @@ out/**
 node_modules/**
 src/**
 .gitignore
+.gitattributes
 .yarnrc
+.npmrc
+.github/**
+coverage/**
 webpack.config.js
 vsc-extension-quickstart.md
 **/tsconfig.json
@@ -12,3 +16,5 @@ vsc-extension-quickstart.md
 **/*.map
 **/*.ts
 **/.vscode-test.*
+*.vsix
+__mocks__
