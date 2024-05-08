@@ -13,12 +13,13 @@
             "ES2022" /* Specify a set of bundled library declaration files that describe the target runtime environment. */
         ],
         /* Additional Checks */
-		"noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-		"noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-		"noUnusedParameters": true,  /* Report errors on unused parameters. */
-		"resolveJsonModule": true /* Enables importing json files. */
+        "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+        "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+        "noUnusedParameters": true,  /* Report errors on unused parameters. */
+        "resolveJsonModule": true /* Enables importing json files. */
     },
     "include": [
-        "src"
+        "src",
+        "__mocks__" /* Make eslint happy */
     ]
 }

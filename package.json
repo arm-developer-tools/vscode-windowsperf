@@ -17,7 +17,24 @@
         "command": "windowsperf.helloWorld",
         "title": "Hello World"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "windowsperf",
+          "title": "WindowsPerf",
+          "icon": "$(graph)"
+        }
+      ]
+    },
+    "views": {
+      "windowsperf": [
+        {
+          "id": "samplingResults",
+          "name": "Sampling Results Explorer"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -31,6 +48,7 @@
     "compile-schemas": "json2ts -i src/wperf/schemas/in/ -o src/wperf/schemas/out/"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@types/jest": "^29.5.12",
     "@types/node": "18.x",
     "@types/vscode": "^1.88.0",
@@ -42,6 +60,7 @@
     "ts-jest": "^29.1.2",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",
+    "vscode-uri": "^3.0.8",
     "webpack": "^5.91.0",
     "webpack-cli": "^5.1.4"
   },
