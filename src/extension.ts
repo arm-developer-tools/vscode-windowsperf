@@ -2,24 +2,43 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import { loadSampleFile } from './wperf/load';
+import { ObservableCollection } from './observable-collection';
+import { SampleFile, TreeDataProvider } from './views/sampling-results/tree-data-provider';
+import { fileDecorationProvider } from './views/sampling-results/file-decoration-provider';
+
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+    const sampleFiles = new ObservableCollection<SampleFile>();
+    const treeProvider = new TreeDataProvider(sampleFiles);
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "windowsperf" is now active!');
+    vscode.window.registerTreeDataProvider('samplingResults', treeProvider);
+    vscode.window.registerFileDecorationProvider(fileDecorationProvider);
+    context.subscriptions.push(vscode.commands.registerCommand(
+        'windowsperf.openResultFile',
+        async () => {
+            const result = await vscode.window.showOpenDialog({
+                canSelectMany: false,
+                canSelectFolders: false,
+            });
+            if (result === undefined) { return; }
+            const uri = result[0];
+            try {
+                const parsedContent = await loadSampleFile(uri.fsPath);
+                sampleFiles.add({ parsedContent, uri });
+            } catch (error: unknown) {
+                if (error instanceof Error) {
+                    vscode.window.showErrorMessage(error.message);
+                }
+            }
+        }
+    ));
+    context.subscriptions.push(vscode.commands.registerCommand(
+        'windowsperf.closeResultFile',
+        (file: vscode.TreeItem) => sampleFiles.deleteFirst(item => item.uri === file.resourceUri)
+    ));
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with registerCommand
-    // The commandId parameter must match the command field in package.json
-    const disposable = vscode.commands.registerCommand('windowsperf.helloWorld', () => {
-        // The code you place here will be executed every time your command is executed
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World from Arm WindowsPerf!');
-    });
-
-    context.subscriptions.push(disposable);
 }
 
 // This method is called when your extension is deactivated

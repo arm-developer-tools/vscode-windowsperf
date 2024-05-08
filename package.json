@@ -14,10 +14,38 @@
   "contributes": {
     "commands": [
       {
-        "command": "windowsperf.helloWorld",
-        "title": "Hello World"
+        "command": "windowsperf.openResultFile",
+        "title": "WindowsPerf: Open result file",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "windowsperf.closeResultFile",
+        "title": "WindowsPerf: Close result file",
+        "icon": "$(close)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "windowsperf.openResultFile",
+          "when": "view == samplingResults",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "windowsperf.closeResultFile",
+          "when": "view == samplingResults && viewItem == sampleFile",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "windowsperf.closeResultFile",
+          "when": "false"
+        }
+      ]
+    },
     "viewsContainers": {
       "panel": [
         {
@@ -34,7 +62,13 @@
           "name": "Sampling Results Explorer"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "samplingResults",
+        "contents": "In order to use WindowsPerf Sampling Results Explorer, open a WindowsPerf sampling result JSON file.\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",

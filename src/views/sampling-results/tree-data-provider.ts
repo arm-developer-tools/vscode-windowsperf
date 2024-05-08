@@ -6,14 +6,21 @@ import * as vscode from 'vscode';
 
 import { buildSourceCodeUri } from './resource-uri';
 import { Annotation, Event, Sample, SourceCode } from '../../wperf/projected-types';
+import { ObservableCollection } from '../../observable-collection';
+
+export type SampleFile = {
+    uri: vscode.Uri
+    parsedContent: Sample
+};
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
 export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
-    private readonly root: Node[];
+    private readonly _onDidChangeTreeData = new vscode.EventEmitter<void>();
+    readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
-    constructor(sample: Sample) {
-        this.root = [buildRootNode(sample)];
+    constructor(private readonly sampleFiles: ObservableCollection<SampleFile>) {
+        sampleFiles.onDidChange(() => this.refresh());
     }
 
     getTreeItem(node: Node): vscode.TreeItem {
@@ -22,17 +29,23 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     getChildren(node?: Node): Node[] {
         if (node === undefined) {
-            return this.root;
+            return this.sampleFiles.items.map(buildRootNode);
         }
         return node.children ?? [];
     }
+
+    private refresh(): void {
+        this._onDidChangeTreeData.fire();
+    }
 }
 
-export const buildRootNode = (sample: Sample): Node => ({
-    children: sample.sampling.events.map(buildEventNode),
+export const buildRootNode = (file: SampleFile): Node => ({
+    children: file.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: new vscode.ThemeIcon('graph'),
     label: (new Date()).toString(), // TODO: date from file name?
+    contextValue: 'sampleFile',
+    resourceUri: file.uri,
 });
 
 export const buildEventNode = (event: Event): Node => ({

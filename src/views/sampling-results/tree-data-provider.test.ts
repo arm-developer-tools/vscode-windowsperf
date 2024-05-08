@@ -5,21 +5,24 @@
 import { buildSourceCodeUri } from './resource-uri';
 import { TreeDataProvider, buildAnnotationNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
+import { sampleFileFactory } from './tree-data-provider.factories';
+import { ObservableCollection } from '../../observable-collection';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
         it('returns root nodes by default', () => {
-            const sample = sampleFactory();
-            const treeDataProvider = new TreeDataProvider(sample);
+            const sampleFile = sampleFileFactory();
+            const samples = new ObservableCollection([sampleFile]);
+            const treeDataProvider = new TreeDataProvider(samples);
 
             const got = treeDataProvider.getChildren();
 
-            const want = [buildRootNode(sample)];
+            const want = [buildRootNode(sampleFile)];
             expect(got).toEqual(want);
         });
 
         it('returns children of the given node', () => {
-            const treeDataProvider = new TreeDataProvider(sampleFactory());
+            const treeDataProvider = new TreeDataProvider(new ObservableCollection());
             const nodeWithChildren = { children: [ { label: 'some-label' } ] };
 
             const got = treeDataProvider.getChildren(nodeWithChildren);
@@ -29,7 +32,7 @@ describe('TreeDataProvider', () => {
         });
 
         it('returns empty list if node has no children', () => {
-            const treeDataProvider = new TreeDataProvider(sampleFactory());
+            const treeDataProvider = new TreeDataProvider(new ObservableCollection());
             const nodeWithoutChildren = {};
 
             const got = treeDataProvider.getChildren(nodeWithoutChildren);
@@ -40,7 +43,7 @@ describe('TreeDataProvider', () => {
 
     describe('getTreeItem', () => {
         it('returns given node as is', () => {
-            const treeDataProvider = new TreeDataProvider(sampleFactory());
+            const treeDataProvider = new TreeDataProvider(new ObservableCollection());
             const node = { label: 'foo' };
 
             const got = treeDataProvider.getTreeItem(node);
@@ -54,16 +57,18 @@ describe('buildRootNode', () => {
     it('calculates children nodes', () => {
         const first = eventFactory();
         const second = eventFactory();
-        const sample = sampleFactory({ events: [ first, second ] });
+        const sampleFile = sampleFileFactory({
+            parsedContent: sampleFactory({ events: [ first, second ] }),
+        });
 
-        const got = buildRootNode(sample);
+        const got = buildRootNode(sampleFile);
 
         const want = [ buildEventNode(first), buildEventNode(second) ];
         expect(got.children).toEqual(want);
     });
 
     it('sets non-empty node label', () => {
-        const got = buildRootNode(sampleFactory());
+        const got = buildRootNode(sampleFileFactory());
 
         expect(got.label).not.toBeUndefined();
     });
