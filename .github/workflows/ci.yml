@@ -1,0 +1,31 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-verify:
+    name: Build and verify
+    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@ad43eff1ae7bb9911a6f639f0f500647b7a34642
+    secrets:
+      EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
+      EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
+      GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+      ARM_ARTIFACTORY_PASSWORD: ${{secrets.ARM_ARTIFACTORY_PASSWORD}}
+      CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+    with:
+      package-manager: 'npm'
+      enable-code-climate: true
+      enable-ksc-next-preview: false
+      test-on-self-hosted-ubuntu-only: false
+      excluded-platforms: '["linux-x64","linux-arm64","win32-x64","darwin-x64","darwin-arm64"]'
