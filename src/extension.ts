@@ -2,10 +2,11 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import { loadSampleFile } from './wperf/load';
 import { ObservableCollection } from './observable-collection';
 import { SampleFile, TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { fileDecorationProvider } from './views/sampling-results/file-decoration-provider';
+import { OpenResultFile } from './commands/open-result-file';
+import { CloseResultFile } from './commands/close-result-file';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -15,30 +16,14 @@ export async function activate(context: vscode.ExtensionContext) {
 
     vscode.window.registerTreeDataProvider('samplingResults', treeProvider);
     vscode.window.registerFileDecorationProvider(fileDecorationProvider);
-    context.subscriptions.push(vscode.commands.registerCommand(
-        'windowsperf.openResultFile',
-        async () => {
-            const result = await vscode.window.showOpenDialog({
-                canSelectMany: false,
-                canSelectFolders: false,
-            });
-            if (result === undefined) { return; }
-            const uri = result[0];
-            try {
-                const parsedContent = await loadSampleFile(uri.fsPath);
-                sampleFiles.add({ parsedContent, uri });
-            } catch (error: unknown) {
-                if (error instanceof Error) {
-                    vscode.window.showErrorMessage(error.message);
-                }
-            }
-        }
-    ));
-    context.subscriptions.push(vscode.commands.registerCommand(
-        'windowsperf.closeResultFile',
-        (file: vscode.TreeItem) => sampleFiles.deleteFirst(item => item.uri === file.resourceUri)
-    ));
 
+    const commands: Record<string, (...args: any) => any> = {
+        'windowsperf.openResultFile': (new OpenResultFile(sampleFiles)).execute,
+        'windowsperf.closeResultFile': (new CloseResultFile(sampleFiles)).execute,
+    };
+    for (const name in commands) {
+        context.subscriptions.push(vscode.commands.registerCommand(name, commands[name]));
+    }
 }
 
 // This method is called when your extension is deactivated
