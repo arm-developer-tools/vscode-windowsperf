@@ -104,7 +104,8 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "jest",
     "test:watch": "jest --watch --collectCoverage=false",
-    "compile-schemas": "json2ts -i src/wperf/schemas/in/ -o src/wperf/schemas/out/"
+    "compile-schemas": "json2ts -i src/wperf/schemas/in/ -o src/wperf/schemas/out/",
+    "prepare-test-workspace": "ts-node ./test-workspace/wperf-output/render-templates.ts"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
@@ -119,6 +120,7 @@
     "json-schema-to-typescript": "^14.0.0",
     "ts-jest": "^29.1.2",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vscode-uri": "^3.0.8",
     "webpack": "^5.91.0",
@@ -159,8 +161,7 @@
       "!**/*.d.ts",
       "!**/*.factories.ts",
       "!src/extension.ts",
-      "!src/manifest.ts",
-      "!src/vscode-api/**"
+      "!**/test-workspace/**"
     ],
     "coverageDirectory": "./coverage",
     "coverageReporters": [
