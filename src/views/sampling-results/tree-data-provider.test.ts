@@ -189,12 +189,12 @@ describe('buildAnnotationNode', () => {
 });
 
 describe('buildSourceNode', () => {
-    it('sets node label to filename', () => {
-        const sourceCode = sourceCodeFactory({ filename: 'some-file.c' });
+    it('sets node label to filename and line number', () => {
+        const sourceCode = sourceCodeFactory({ filename: 'some-file.c', line_number: 99 });
 
         const got = buildSourceCodeNode(sourceCode);
 
-        expect(got.label).toEqual('some-file.c');
+        expect(got.label).toEqual('some-file.c:99');
     });
 
     it('sets readable node description', () => {
@@ -213,5 +213,18 @@ describe('buildSourceNode', () => {
 
         const want = buildSourceCodeUri(sourceCode);
         expect(got.resourceUri).toEqual(want);
+    });
+
+    it('sets command to open the source code', () => {
+        const sourceCode = sourceCodeFactory();
+
+        const got = buildSourceCodeNode(sourceCode).command;
+
+        const want = {
+            command: 'vscode.open',
+            title: 'Open File',
+            arguments: [vscode.Uri.parse(`file://${sourceCode.filename}#${sourceCode.line_number}`)]
+        };
+        expect(got).toEqual(want);
     });
 });

@@ -15,4 +15,4 @@ export type Event = Pick<SchemaEvent, 'type'> & {
 export type Annotation = Pick<SchemaAnnotation, 'function_name'> & {
     source_code: SourceCode[]
 };
-export type SourceCode = Pick<SchemaSourceCode, 'filename' | 'hits'>;
+export type SourceCode = Pick<SchemaSourceCode, 'filename' | 'hits' | 'line_number'>;

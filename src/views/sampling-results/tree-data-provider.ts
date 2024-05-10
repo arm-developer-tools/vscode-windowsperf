@@ -78,6 +78,15 @@ export const buildAnnotationNode = (annotation: Annotation): Node => ({
 export const buildSourceCodeNode = (sourceCode: SourceCode): Node => ({
     collapsibleState: vscode.TreeItemCollapsibleState.None,
     description: `hits: ${sourceCode.hits}`,
-    label: sourceCode.filename,
+    label: `${sourceCode.filename}:${sourceCode.line_number}`,
     resourceUri: buildSourceCodeUri(sourceCode),
+    command: {
+        command: 'vscode.open',
+        title: 'Open File',
+        arguments: [
+            vscode.Uri
+                .file(`${sourceCode.filename}`)
+                .with({ fragment: sourceCode.line_number.toString() })
+        ],
+    }
 });

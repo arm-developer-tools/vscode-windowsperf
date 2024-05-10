@@ -25,4 +25,5 @@ export const annotationFactory = (options?: Partial<Annotation>): Annotation => 
 export const sourceCodeFactory = (options?: Partial<SourceCode>): SourceCode => ({
     filename: options?.filename ?? faker.system.filePath(),
     hits: options?.hits ?? faker.number.int(),
+    line_number: options?.line_number ?? faker.number.int(),
 });

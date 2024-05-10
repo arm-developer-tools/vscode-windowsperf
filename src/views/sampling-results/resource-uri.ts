@@ -5,11 +5,16 @@
 import * as vscode from 'vscode';
 import { SourceCode } from '../../wperf/projected-types';
 
-const SCHEME = 'source-code';
-const HITS_PARAM = 'hits';
+const SCHEME = 'wperf-source-code';
+const HITS_PARAM = 'wperf-hits';
 
 export const buildSourceCodeUri = (sourceCode: SourceCode): vscode.Uri => {
-    return vscode.Uri.parse(`${SCHEME}://${sourceCode.filename}?${HITS_PARAM}=${sourceCode.hits}`);
+    return vscode.Uri
+        .file(sourceCode.filename)
+        .with({
+            scheme: SCHEME,
+            query: `${HITS_PARAM}=${sourceCode.hits}`
+        });
 };
 
 export const isSourceCodeUri = (uri: vscode.Uri): boolean => {

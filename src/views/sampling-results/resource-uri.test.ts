@@ -14,8 +14,8 @@ describe('buildSourceCodeUri', () => {
 
         const got = buildSourceCodeUri(sourceCode);
 
-        expect(got.scheme).toEqual('source-code');
-        expect(got.authority).toEqual('some-file.c');
+        expect(got.scheme).toEqual('wperf-source-code');
+        expect(got.path).toEqual('/some-file.c');
     });
 
     it('embeds hits in query parameters', () => {
@@ -24,7 +24,7 @@ describe('buildSourceCodeUri', () => {
         const got = buildSourceCodeUri(sourceCode);
 
         const params = new URLSearchParams(got.query);
-        expect(params.get('hits')).toEqual('999');
+        expect(params.get('wperf-hits')).toEqual('999');
     });
 });
 
