@@ -2,27 +2,47 @@
  * Copyright (C) 2024 Arm Limited
  */
 
+import * as vscode from 'vscode';
+
 import { buildSourceCodeUri } from './resource-uri';
 import { TreeDataProvider, buildAnnotationNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
 import { sampleFileFactory } from './tree-data-provider.factories';
 import { ObservableCollection } from '../../observable-collection';
+import { ObservableSelection } from '../../observable-selection';
+import { faker } from '@faker-js/faker';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
         it('returns root nodes by default', () => {
             const sampleFile = sampleFileFactory();
             const samples = new ObservableCollection([sampleFile]);
-            const treeDataProvider = new TreeDataProvider(samples);
+            const treeDataProvider = new TreeDataProvider(samples, new ObservableSelection());
 
             const got = treeDataProvider.getChildren();
 
-            const want = [buildRootNode(sampleFile)];
+            const wantIsSelected = false;
+            const want = [buildRootNode(sampleFile, wantIsSelected)];
+            expect(got).toEqual(want);
+        });
+
+        it('root nodes are correctly marked as selected', () => {
+            const sampleFile = sampleFileFactory();
+            const samples = new ObservableCollection([sampleFile]);
+            const selectedSample = new ObservableSelection(sampleFile);
+            const treeDataProvider = new TreeDataProvider(samples, selectedSample);
+
+            const got = treeDataProvider.getChildren();
+
+            const wantIsSelected = true;
+            const want = [buildRootNode(sampleFile, wantIsSelected)];
             expect(got).toEqual(want);
         });
 
         it('returns children of the given node', () => {
-            const treeDataProvider = new TreeDataProvider(new ObservableCollection());
+            const treeDataProvider = new TreeDataProvider(
+                new ObservableCollection(), new ObservableSelection(),
+            );
             const nodeWithChildren = { children: [ { label: 'some-label' } ] };
 
             const got = treeDataProvider.getChildren(nodeWithChildren);
@@ -32,7 +52,9 @@ describe('TreeDataProvider', () => {
         });
 
         it('returns empty list if node has no children', () => {
-            const treeDataProvider = new TreeDataProvider(new ObservableCollection());
+            const treeDataProvider = new TreeDataProvider(
+                new ObservableCollection(), new ObservableSelection(),
+            );
             const nodeWithoutChildren = {};
 
             const got = treeDataProvider.getChildren(nodeWithoutChildren);
@@ -43,7 +65,9 @@ describe('TreeDataProvider', () => {
 
     describe('getTreeItem', () => {
         it('returns given node as is', () => {
-            const treeDataProvider = new TreeDataProvider(new ObservableCollection());
+            const treeDataProvider = new TreeDataProvider(
+                new ObservableCollection(), new ObservableSelection(),
+            );
             const node = { label: 'foo' };
 
             const got = treeDataProvider.getTreeItem(node);
@@ -61,16 +85,54 @@ describe('buildRootNode', () => {
             parsedContent: sampleFactory({ events: [ first, second ] }),
         });
 
-        const got = buildRootNode(sampleFile);
+        const got = buildRootNode(sampleFile, faker.datatype.boolean());
 
         const want = [ buildEventNode(first), buildEventNode(second) ];
         expect(got.children).toEqual(want);
     });
 
     it('sets non-empty node label', () => {
-        const got = buildRootNode(sampleFileFactory());
+        const got = buildRootNode(sampleFileFactory(), faker.datatype.boolean());
 
         expect(got.label).not.toBeUndefined();
+    });
+
+    describe('selected state', () => {
+        it('displays an icon indicating node is active', () => {
+            const isSelected = true;
+
+            const got = buildRootNode(sampleFileFactory(), isSelected);
+
+            const want = new vscode.ThemeIcon('eye', new vscode.ThemeColor('list.focusOutline'));
+            expect(got.iconPath).toEqual(want);
+        });
+
+        it('sets "selected" context value when node is selected', () => {
+            const isSelected = true;
+
+            const got = buildRootNode(sampleFileFactory(), isSelected);
+
+            expect(got.contextValue).toEqual('sampleFile--selected');
+        });
+
+        it('does an icon indicating node is not selected', () => {
+            const isSelected = false;
+
+            const got = buildRootNode(sampleFileFactory(), isSelected);
+
+            const want = new vscode.ThemeIcon(
+                'eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'),
+            );
+            expect(got.iconPath).toEqual(want);
+        });
+
+        it('does not set "selected" context value when node is not active', () => {
+            const isSelected = false;
+
+            const got = buildRootNode(sampleFileFactory(), isSelected);
+
+            expect(got.contextValue).toEqual('sampleFile');
+        });
     });
 });
 

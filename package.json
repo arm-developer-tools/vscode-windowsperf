@@ -23,6 +23,16 @@
         "command": "windowsperf.closeResultFile",
         "title": "WindowsPerf: Close result file",
         "icon": "$(close)"
+      },
+      {
+        "command": "windowsperf.selectActiveResultFile",
+        "title": "WindowsPerf: Select active result file",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "windowsperf.clearActiveResultFileSelection",
+        "title": "WindowsPerf: Clear active result file selection",
+        "icon": "$(eye-closed)"
       }
     ],
     "menus": {
@@ -35,14 +45,28 @@
       ],
       "view/item/context": [
         {
-          "command": "windowsperf.closeResultFile",
+          "command": "windowsperf.selectActiveResultFile",
           "when": "view == samplingResults && viewItem == sampleFile",
-          "group": "inline"
+          "group": "inline@1"
+        },
+        {
+          "command": "windowsperf.clearActiveResultFileSelection",
+          "when": "view == samplingResults && viewItem == sampleFile--selected",
+          "group": "inline@1"
+        },
+        {
+          "command": "windowsperf.closeResultFile",
+          "when": "view == samplingResults && viewItem =~ /^sampleFile/",
+          "group": "inline@2"
         }
       ],
       "commandPalette": [
         {
           "command": "windowsperf.closeResultFile",
+          "when": "false"
+        },
+        {
+          "command": "windowsperf.selectActiveResultFile",
           "when": "false"
         }
       ]

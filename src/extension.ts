@@ -3,23 +3,32 @@
 import * as vscode from 'vscode';
 
 import { ObservableCollection } from './observable-collection';
+import { ObservableSelection } from './observable-selection';
 import { SampleFile, TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { fileDecorationProvider } from './views/sampling-results/file-decoration-provider';
 import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';
+import { SelectActiveResultFile } from './commands/select-active-result-file';
+import { ClearActiveResultFileSelection } from './commands/clear-active-result-file-selection';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export async function activate(context: vscode.ExtensionContext) {
     const sampleFiles = new ObservableCollection<SampleFile>();
-    const treeProvider = new TreeDataProvider(sampleFiles);
+    const selectedFile = new ObservableSelection<SampleFile>();
 
-    vscode.window.registerTreeDataProvider('samplingResults', treeProvider);
+    vscode.window.registerTreeDataProvider(
+        'samplingResults', new TreeDataProvider(sampleFiles, selectedFile),
+    );
     vscode.window.registerFileDecorationProvider(fileDecorationProvider);
 
     const commands: Record<string, (...args: any) => any> = {
         'windowsperf.openResultFile': (new OpenResultFile(sampleFiles)).execute,
         'windowsperf.closeResultFile': (new CloseResultFile(sampleFiles)).execute,
+        'windowsperf.selectActiveResultFile': (
+            new SelectActiveResultFile(sampleFiles, selectedFile)
+        ).execute,
+        'windowsperf.clearActiveResultFileSelection': (
+            new ClearActiveResultFileSelection(selectedFile)
+        ).execute,
     };
     for (const name in commands) {
         context.subscriptions.push(vscode.commands.registerCommand(name, commands[name]));

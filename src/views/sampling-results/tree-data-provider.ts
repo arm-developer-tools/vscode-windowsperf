@@ -7,6 +7,7 @@ import * as vscode from 'vscode';
 import { buildSourceCodeUri } from './resource-uri';
 import { Annotation, Event, Sample, SourceCode } from '../../wperf/projected-types';
 import { ObservableCollection } from '../../observable-collection';
+import { ObservableSelection } from '../../observable-selection';
 
 export type SampleFile = {
     uri: vscode.Uri
@@ -19,8 +20,12 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
     private readonly _onDidChangeTreeData = new vscode.EventEmitter<void>();
     readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
-    constructor(private readonly sampleFiles: ObservableCollection<SampleFile>) {
+    constructor(
+        private readonly sampleFiles: ObservableCollection<SampleFile>,
+        private readonly selectedFile: ObservableSelection<SampleFile>,
+    ) {
         sampleFiles.onDidChange(() => this.refresh());
+        selectedFile.onDidChange(() => this.refresh());
     }
 
     getTreeItem(node: Node): vscode.TreeItem {
@@ -29,7 +34,10 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     getChildren(node?: Node): Node[] {
         if (node === undefined) {
-            return this.sampleFiles.items.map(buildRootNode);
+            return this.sampleFiles.items.map(file => {
+                const isSelected = this.selectedFile.selected === file;
+                return buildRootNode(file, isSelected);
+            });
         }
         return node.children ?? [];
     }
@@ -39,33 +47,40 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
     }
 }
 
-export const buildRootNode = (file: SampleFile): Node => ({
+export const buildRootNode = (file: SampleFile, isSelected: boolean): Node => ({
     children: file.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    iconPath: new vscode.ThemeIcon('graph'),
+    iconPath: rootNodeIcon(isSelected),
     label: (new Date()).toString(), // TODO: date from file name?
-    contextValue: 'sampleFile',
+    contextValue: rootNodeContextValue(isSelected),
     resourceUri: file.uri,
 });
+
+const rootNodeContextValue = (selected: boolean): string => {
+    return selected ? 'sampleFile--selected' : 'sampleFile';
+};
+
+const rootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
+    return selected
+        ? new vscode.ThemeIcon('eye', new vscode.ThemeColor('list.focusOutline'))
+        : new vscode.ThemeIcon('eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'));
+};
 
 export const buildEventNode = (event: Event): Node => ({
     children: event.annotate.map(buildAnnotationNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    iconPath: new vscode.ThemeIcon('symbol-event'),
     label: event.type,
 });
 
 export const buildAnnotationNode = (annotation: Annotation): Node => ({
     children: annotation.source_code.map(buildSourceCodeNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    iconPath: new vscode.ThemeIcon('symbol-method'),
     label: annotation.function_name,
 });
 
 export const buildSourceCodeNode = (sourceCode: SourceCode): Node => ({
     collapsibleState: vscode.TreeItemCollapsibleState.None,
     description: `hits: ${sourceCode.hits}`,
-    iconPath: new vscode.ThemeIcon('symbol-file'),
     label: sourceCode.filename,
     resourceUri: buildSourceCodeUri(sourceCode),
 });

@@ -14,7 +14,6 @@ export class ObservableCollection<T> {
     private readonly _onDidChange = new vscode.EventEmitter<MutationEvent<T>>();
     readonly onDidChange = this._onDidChange.event;
 
-
     constructor(initialItems?: T[]) {
         if (initialItems !== undefined) {
             this._items = [...initialItems];

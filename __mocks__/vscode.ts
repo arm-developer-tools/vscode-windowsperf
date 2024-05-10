@@ -4,8 +4,8 @@ export enum TreeItemCollapsibleState {
     Expanded = 2
 }
 
-export const ThemeIcon = jest.fn();
-export const ThemeColor = jest.fn().mockImplementation(id => ({ id }));
+export const ThemeIcon = jest.fn().mockImplementation((...args) => args);
+export const ThemeColor = jest.fn().mockImplementation((...args) => args);
 
 export { URI as Uri } from 'vscode-uri';
 

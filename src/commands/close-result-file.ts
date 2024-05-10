@@ -3,6 +3,7 @@
  */
 
 import * as vscode from 'vscode';
+
 import { ObservableCollection } from '../observable-collection';
 import { SampleFile } from '../views/sampling-results/tree-data-provider';
 
