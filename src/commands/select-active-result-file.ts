@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/tree-data-provider';
+import { SampleFile } from '../views/sampling-results/sample-file';
 
 export class SelectActiveResultFile {
     constructor(

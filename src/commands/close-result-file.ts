@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 
 import { ObservableCollection } from '../observable-collection';
-import { SampleFile } from '../views/sampling-results/tree-data-provider';
+import { SampleFile } from '../views/sampling-results/sample-file';
 
 export class CloseResultFile {
     constructor(private readonly files: ObservableCollection<SampleFile>) {}

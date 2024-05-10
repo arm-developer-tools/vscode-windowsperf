@@ -4,8 +4,8 @@
 
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/tree-data-provider';
-import { sampleFileFactory } from '../views/sampling-results/tree-data-provider.factories';
+import { SampleFile } from '../views/sampling-results/sample-file';
+import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
 import { SelectActiveResultFile } from './select-active-result-file';
 
 describe('SelectActiveResultsFile.execute', () => {

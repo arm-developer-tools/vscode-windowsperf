@@ -4,8 +4,8 @@
 
 import { ClearActiveResultFileSelection } from './clear-active-result-file-selection';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/tree-data-provider';
-import { sampleFileFactory } from '../views/sampling-results/tree-data-provider.factories';
+import { SampleFile } from '../views/sampling-results/sample-file';
+import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
 
 describe('ClearActiveResultFileSelection.execute', () => {
     it('clears selection', () => {

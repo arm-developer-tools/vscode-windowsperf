@@ -4,7 +4,8 @@ import * as vscode from 'vscode';
 
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
-import { SampleFile, TreeDataProvider } from './views/sampling-results/tree-data-provider';
+import { SampleFile } from './views/sampling-results/sample-file';
+import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { fileDecorationProvider } from './views/sampling-results/file-decoration-provider';
 import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';

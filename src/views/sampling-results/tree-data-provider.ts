@@ -5,14 +5,10 @@
 import * as vscode from 'vscode';
 
 import { buildSourceCodeUri } from './resource-uri';
-import { Annotation, Event, Sample, SourceCode } from '../../wperf/projected-types';
+import { Annotation, Event, SourceCode } from '../../wperf/projected-types';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
-
-export type SampleFile = {
-    uri: vscode.Uri
-    parsedContent: Sample
-};
+import { SampleFile } from './sample-file';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -48,10 +44,11 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 }
 
 export const buildRootNode = (file: SampleFile, isSelected: boolean): Node => ({
+    id: file.id,
     children: file.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: rootNodeIcon(isSelected),
-    label: (new Date()).toString(), // TODO: date from file name?
+    label: file.displayName,
     contextValue: rootNodeContextValue(isSelected),
     resourceUri: file.uri,
 });

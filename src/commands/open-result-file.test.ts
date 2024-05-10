@@ -4,73 +4,44 @@
 
 import * as vscode from 'vscode';
 
-import { ObservableCollection } from '../observable-collection';
-import { SampleFile } from '../views/sampling-results/tree-data-provider';
 import { OpenResultFile } from './open-result-file';
-import { loadSampleFile } from '../wperf/load';
-import { absoluteFixturePath } from '../wperf/fixtures';
+import { ObservableCollection } from '../observable-collection';
+import { SampleFile } from '../views/sampling-results/sample-file';
+import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
 
 
 describe('OpenResultFile.execute', () => {
     it('adds file selected by the user to the file list', async () => {
-        const selectedFileUri = vscode.Uri.file(absoluteFixturePath('wperf-3.3.3.record.json'));
-        const files = new ObservableCollection<SampleFile>();
+        const selectedFileUri = vscode.Uri.file('foo.json');
         const vscodeWindow = {
             showOpenDialog: jest.fn().mockResolvedValue([selectedFileUri]),
             showErrorMessage: jest.fn(),
         };
-        const command = new OpenResultFile(files, vscodeWindow);
+        const builtFile = sampleFileFactory();
+        const sampleFileFromUri = jest.fn().mockResolvedValue(builtFile);
+        const files = new ObservableCollection<SampleFile>();
+        const command = new OpenResultFile(files, vscodeWindow, sampleFileFromUri);
 
         await command.execute();
 
-        const wantFiles: SampleFile[] = [
-            {
-                uri: selectedFileUri,
-                parsedContent: await loadSampleFile(selectedFileUri.fsPath),
-            },
-        ];
+        const wantFiles: SampleFile[] = [builtFile];
         expect(files.items).toEqual(wantFiles);
+        expect(sampleFileFromUri).toHaveBeenCalledWith(selectedFileUri);
     });
 
-    it('does not expand file list when file is not parseable', async () => {
-        const selectedFileUri = vscode.Uri.file(absoluteFixturePath('unparseable.json'));
+    it('when file creation errors, it displays the error and retains existing file list', async () => {
+        const selectedFileUri = vscode.Uri.file('foo.json');
         const vscodeWindow = {
             showOpenDialog: jest.fn().mockResolvedValue([selectedFileUri]),
             showErrorMessage: jest.fn(),
         };
+        const sampleFileFromUri = jest.fn().mockRejectedValue(new Error('boom!'));
         const files = new ObservableCollection<SampleFile>();
-        const command = new OpenResultFile(files, vscodeWindow);
+        const command = new OpenResultFile(files, vscodeWindow, sampleFileFromUri);
 
         await command.execute();
 
         expect(files.items).toEqual([]);
-    });
-
-    it('shows error when file is not parseable', async () => {
-        const selectedFileUri = vscode.Uri.file(absoluteFixturePath('unparseable.json'));
-        const vscodeWindow = {
-            showOpenDialog: jest.fn().mockResolvedValue([selectedFileUri]),
-            showErrorMessage: jest.fn(),
-        };
-        const files = new ObservableCollection<SampleFile>();
-        const command = new OpenResultFile(files, vscodeWindow);
-
-        await command.execute();
-
-        const wantErrorMessage = await extractThrownErrorMessage(async () => {
-            await loadSampleFile(selectedFileUri.fsPath);
-        });
-        expect(vscodeWindow.showErrorMessage).toHaveBeenCalledWith(wantErrorMessage);
+        expect(vscodeWindow.showErrorMessage).toHaveBeenCalledWith('boom!');
     });
 });
-
-const extractThrownErrorMessage = async (throwingFn: () => Promise<void>): Promise<string> => {
-    try {
-        await throwingFn();
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            return error.message;
-        }
-    }
-    return '';
-};

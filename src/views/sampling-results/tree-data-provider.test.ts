@@ -3,14 +3,14 @@
  */
 
 import * as vscode from 'vscode';
+import { faker } from '@faker-js/faker';
 
-import { buildSourceCodeUri } from './resource-uri';
 import { TreeDataProvider, buildAnnotationNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
+import { buildSourceCodeUri } from './resource-uri';
+import { sampleFileFactory } from './sample-file.factories';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
-import { sampleFileFactory } from './tree-data-provider.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
-import { faker } from '@faker-js/faker';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -91,10 +91,20 @@ describe('buildRootNode', () => {
         expect(got.children).toEqual(want);
     });
 
-    it('sets non-empty node label', () => {
-        const got = buildRootNode(sampleFileFactory(), faker.datatype.boolean());
+    it('sets label to display name', () => {
+        const sampleFile = sampleFileFactory();
 
-        expect(got.label).not.toBeUndefined();
+        const got = buildRootNode(sampleFile, faker.datatype.boolean());
+
+        expect(got.label).toEqual(sampleFile.displayName);
+    });
+
+    it('sets id', () => {
+        const sampleFile = sampleFileFactory();
+
+        const got = buildRootNode(sampleFile, faker.datatype.boolean());
+
+        expect(got.id).toEqual(sampleFile.id);
     });
 
     describe('selected state', () => {

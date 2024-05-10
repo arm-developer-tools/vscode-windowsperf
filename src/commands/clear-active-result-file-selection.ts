@@ -3,7 +3,7 @@
  */
 
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/tree-data-provider';
+import { SampleFile } from '../views/sampling-results/sample-file';
 
 export class ClearActiveResultFileSelection {
     constructor(
