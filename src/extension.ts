@@ -23,7 +23,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
     const commands: Record<string, (...args: any) => any> = {
         'windowsperf.openResultFile': (new OpenResultFile(sampleFiles)).execute,
-        'windowsperf.closeResultFile': (new CloseResultFile(sampleFiles)).execute,
+        'windowsperf.closeResultFile': (
+            new CloseResultFile(sampleFiles, selectedFile)
+        ).execute,
         'windowsperf.selectActiveResultFile': (
             new SelectActiveResultFile(sampleFiles, selectedFile)
         ).execute,
