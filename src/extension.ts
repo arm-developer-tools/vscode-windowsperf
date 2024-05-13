@@ -11,10 +11,17 @@ import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';
 import { SelectActiveResultFile } from './commands/select-active-result-file';
 import { ClearActiveResultFileSelection } from './commands/clear-active-result-file-selection';
+import { TextEditorHandlerImpl } from './vscode-api/text-editor';
+import { WperfResultHighlighter } from './views/decorators/WperfResultHighlighter';
 
 export async function activate(context: vscode.ExtensionContext) {
+    // VS Code API providers
+    const vscodeTextEditor = new TextEditorHandlerImpl();
+
+    // Extension providers
     const sampleFiles = new ObservableCollection<SampleFile>();
     const selectedFile = new ObservableSelection<SampleFile>();
+    new WperfResultHighlighter(selectedFile, vscodeTextEditor);
 
     vscode.window.registerTreeDataProvider(
         'samplingResults', new TreeDataProvider(sampleFiles, selectedFile),
