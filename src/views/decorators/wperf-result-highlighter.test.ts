@@ -8,7 +8,7 @@ import { createTextEditorDecorationTypeFactory, textEditorHandlerFactory, vscode
 import { SampleFile } from '../sampling-results/sample-file';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
-import { WperfResultHighlighter } from './WperfResultHighlighter';
+import { WperfResultHighlighter } from './wperf-result-highlighter';
 
 describe('HighlightWperfResultLines', () => {
     it('does nothing on construction', () => {
