@@ -1,7 +1,7 @@
 ## Fixes
 <!-- List the JIRA issues this PR resolves -->
 
-- [IOTIDE-](https://jira.arm.com/browse/IOTIDE-)
+- [DEENV-](https://jira.arm.com/browse/DEENV-)
 
 ## Changes
 <!-- List the changes this PR introduces -->
