@@ -20,7 +20,11 @@ Some templates require additional steps to be completely demoable. Usually, this
 
 - `cpython-sample-output.json`
 
-      git clone --depth 1 https://github.com/python/cpython
+   ```
+   git clone https://github.com/python/cpython
+   cd cpython
+   git checkout tags/v3.12.0a7~179
+   ```
 
 ### Generating templates
 
