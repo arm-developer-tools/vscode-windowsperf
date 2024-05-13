@@ -29,7 +29,9 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerFileDecorationProvider(fileDecorationProvider);
 
     const commands: Record<string, (...args: any) => any> = {
-        'windowsperf.openResultFile': (new OpenResultFile(sampleFiles)).execute,
+        'windowsperf.openResultFile': (
+            new OpenResultFile(sampleFiles, selectedFile)
+        ).execute,
         'windowsperf.closeResultFile': (
             new CloseResultFile(sampleFiles, selectedFile)
         ).execute,
