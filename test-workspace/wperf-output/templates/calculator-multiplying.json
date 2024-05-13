@@ -1,0 +1,89 @@
+{
+  "sampling": {
+    "pe_file": "${WORKSPACE}\\calculator.exe",
+    "pdb_file": "${WORKSPACE}\\calculator.pdb",
+    "sample_display_row": 50,
+    "samples_generated": 774,
+    "samples_dropped": 6,
+    "events": [
+      {
+        "type": "ld_spec",
+        "samples": [
+          {
+            "overhead": 100,
+            "count": 999,
+            "symbol": "add.dll"
+          }
+        ],
+        "interval": 100000,
+        "printed_sample_num": 18,
+        "annotate": [
+          {
+            "function_name": "calculator.dll",
+            "source_code": [
+              {
+                "line_number": 8,
+                "hits": 100,
+                "filename": "${WORKSPACE}\\calculator.c",
+                "instruction_address": "3e8ccc",
+                "disassembled_line": {
+                  "disassemble": [
+                    {
+                      "address": "3e8cc4",
+                      "instruction": "mov	r0, #5"
+                    },
+                    {
+                      "address": "3e8cc8",
+                      "instruction": "mov	r1, #3"
+                    },
+                    {
+                      "address": "3e8ccc",
+                      "instruction": "muls	r0, r1"
+                    }
+                  ]
+                }
+              },
+              {
+                "line_number": 12,
+                "hits": 5,
+                "filename": "${WORKSPACE}\\calculator.c",
+                "instruction_address": "3e8cc4",
+                "disassembled_line": {
+                  "disassemble": [
+                    {
+                      "address": "3e8cc4",
+                      "instruction": "mov	r0, #5"
+                    },
+                    {
+                      "address": "3e8cc8",
+                      "instruction": "mov	r1, #3"
+                    }
+                  ]
+                }
+              },
+              {
+                "line_number": 13,
+                "hits": 5,
+                "filename": "${WORKSPACE}\\calculator.c",
+                "instruction_address": "3e8cc8",
+                "disassembled_line": {
+                  "disassemble": [
+                    {
+                      "address": "3e8cc4",
+                      "instruction": "mov	r0, #5"
+                    },
+                    {
+                      "address": "3e8cc8",
+                      "instruction": "mov	r1, #3"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
+
