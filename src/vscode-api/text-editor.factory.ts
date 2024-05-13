@@ -34,9 +34,10 @@ export const vscodeTextEditorFactory = (options?: { document: vscode.TextDocumen
 };
 
 export const vscodeTextDocumentFactory = (options?: { uri: vscode.Uri}): vscode.TextDocument => {
+    const uri = options?.uri || vscode.Uri.parse(faker.system.filePath());
     return {
-        uri: options?.uri || vscode.Uri.parse(faker.system.filePath()),
-        fileName: faker.word.noun(),
+        uri: uri,
+        fileName: uri.fsPath,
         isUntitled: true,
         languageId: faker.word.noun(),
         version: faker.number.int(),

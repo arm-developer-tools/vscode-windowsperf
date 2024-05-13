@@ -25,3 +25,5 @@ export class EventEmitter<T> {
 
     dispose() {}
 }
+
+export const MarkdownString = jest.fn().mockImplementation((...args) => args);

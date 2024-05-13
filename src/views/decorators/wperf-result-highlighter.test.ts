@@ -8,7 +8,7 @@ import { createTextEditorDecorationTypeFactory, textEditorHandlerFactory, vscode
 import { SampleFile } from '../sampling-results/sample-file';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
-import { WperfResultHighlighter } from './wperf-result-highlighter';
+import { WperfResultHighlighter, buildDecoration, calculateDecorations } from './wperf-result-highlighter';
 
 describe('HighlightWperfResultLines', () => {
     it('does nothing on construction', () => {
@@ -75,5 +75,52 @@ describe('HighlightWperfResultLines', () => {
         selection.selected = null;
 
         expect(decoration.dispose).toHaveBeenCalledTimes(1);
+    });
+});
+
+describe('calculateDecorations', () => {
+    it('returns decorations for all source code with matching filename', () => {
+        const sourceCode = sourceCodeFactory();
+        const annotation = annotationFactory({ source_code: [sourceCode, sourceCodeFactory()] });
+        const event = eventFactory({ annotate: [annotation, annotationFactory()] });
+        const sampleFile = sampleFileFactory({
+            parsedContent: sampleFactory({ events: [event, eventFactory()] })
+        });
+
+        const got = calculateDecorations(sampleFile, sourceCode.filename);
+
+        const want = [buildDecoration(event, annotation, sourceCode)];
+        expect(got).toEqual(want);
+    });
+});
+
+describe('buildDecoration', () => {
+    describe('hover message', () => {
+        it('describes the decorated event', () => {
+            const event = eventFactory();
+            const annotation = annotationFactory();
+            const sourceCode = sourceCodeFactory();
+
+            const got = buildDecoration(event, annotation, sourceCode).hoverMessage;
+
+            expect(got).toContain(event.type);
+            expect(got).toContain(annotation.function_name);
+            expect(got).toContain(sourceCode.hits.toString());
+        });
+
+        it('contains the disassembly', () => {
+            const sourceCode = sourceCodeFactory();
+
+            const got = buildDecoration(
+                eventFactory(),
+                annotationFactory(),
+                sourceCode,
+            ).hoverMessage;
+
+            for (const line of sourceCode.disassembled_line.disassemble) {
+                expect(got).toContain(line.address);
+                expect(got).toContain(line.instruction);
+            }
+        });
     });
 });
