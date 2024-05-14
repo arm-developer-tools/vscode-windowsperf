@@ -4,7 +4,7 @@
 
 import { faker } from '@faker-js/faker';
 
-import { Sample, Event, Annotation, SourceCode } from './projected-types';
+import { Sample, Event, Annotation, SourceCode } from './parse';
 
 export const sampleFactory = (options?: Partial<{ events: Event[] }>): Sample => ({
     sampling: {
@@ -33,6 +33,7 @@ export const sourceCodeFactory = (options?: Partial<SourceCode>): SourceCode => 
         line_number: options?.line_number ?? faker.number.int(),
         disassembled_line,
         instruction_address,
+        overhead: options?.overhead ?? faker.number.int({ max: 100 }),
     };
 };
 

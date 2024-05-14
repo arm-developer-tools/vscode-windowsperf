@@ -4,7 +4,7 @@
 
 import * as vscode from 'vscode';
 import { ObservableSelection } from '../../observable-selection';
-import { Event, Annotation, SourceCode } from '../../wperf/projected-types';
+import { Event, Annotation, SourceCode } from '../../wperf/parse';
 import { SampleFile } from '../sampling-results/sample-file';
 import { isSamePath } from '../../path';
 
@@ -130,7 +130,8 @@ const renderHoverMessage = (
 ### WindowsPerf
 * Event: ${event.type}
 * Function: ${annotation.function_name}
-* Hits: ${sourceCode.hits.toString()}
+* Hits: ${sourceCode.hits}
+* Overhead: ${sourceCode.overhead}%
 
 #### Disassembly
 ${'```'}

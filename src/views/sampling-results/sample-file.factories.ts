@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import { faker } from '@faker-js/faker';
 
-import { sampleFactory } from '../../wperf/projected-types.factories';
+import { sampleFactory } from '../../wperf/parse.factories';
 import { SampleFile } from './sample-file';
 
 export const sampleFileFactory = (options?: Partial<SampleFile>): SampleFile => {

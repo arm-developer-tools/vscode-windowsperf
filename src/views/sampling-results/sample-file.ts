@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 import path from 'path';
 import { randomUUID } from 'crypto';
 
-import { Sample } from '../../wperf/projected-types';
+import { Sample } from '../../wperf/parse';
 import { loadSampleFile } from '../../wperf/load';
 
 export class SampleFile {

@@ -8,7 +8,7 @@ import { faker } from '@faker-js/faker';
 import { TreeDataProvider, buildAnnotationNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
 import { buildSourceCodeUri } from './resource-uri';
 import { sampleFileFactory } from './sample-file.factories';
-import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
+import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 
@@ -198,12 +198,12 @@ describe('buildSourceNode', () => {
     });
 
     it('sets readable node description', () => {
-        const sourceCode = sourceCodeFactory({ hits: 5 });
+        const sourceCode = sourceCodeFactory({ hits: 5, overhead: 22.22 });
 
         const got = buildSourceCodeNode(sourceCode);
 
-        const want = 'hits: 5';
-        expect(got.description).toEqual(want);
+        expect(got.description).toContain('hits: 5');
+        expect(got.description).toContain('22.22%');
     });
 
     it('sets resource uri', () => {

@@ -4,7 +4,7 @@
 
 import { ObservableSelection } from '../../observable-selection';
 import { SampleFile } from '../sampling-results/sample-file';
-import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/projected-types.factories';
+import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
 import { EditorHighlighter, buildDecoration, calculateDecorations } from './editor-highlighter';
 
@@ -98,6 +98,7 @@ describe('buildDecoration', () => {
             expect(got).toContain(event.type);
             expect(got).toContain(annotation.function_name);
             expect(got).toContain(sourceCode.hits.toString());
+            expect(got).toContain(sourceCode.overhead.toString());
         });
 
         it('contains the disassembly', () => {

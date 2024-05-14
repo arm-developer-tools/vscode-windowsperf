@@ -3,7 +3,7 @@
  */
 
 import * as vscode from 'vscode';
-import { SourceCode } from '../../wperf/projected-types';
+import { SourceCode } from '../../wperf/parse';
 
 const SCHEME = 'wperf-source-code';
 const HITS_PARAM = 'wperf-hits';

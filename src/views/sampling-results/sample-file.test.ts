@@ -4,7 +4,7 @@
 
 import * as vscode from 'vscode';
 import { SampleFile } from './sample-file';
-import { sampleFactory } from '../../wperf/projected-types.factories';
+import { sampleFactory } from '../../wperf/parse.factories';
 import path from 'path';
 
 describe('SampleFile', () => {

@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 import { it } from '@jest/globals';
 
 import { buildSourceCodeUri, isSourceCodeUri, sourceCodeColor } from './resource-uri';
-import { sourceCodeFactory } from '../../wperf/projected-types.factories';
+import { sourceCodeFactory } from '../../wperf/parse.factories';
 
 describe('buildSourceCodeUri', () => {
     it('returns source-code://<file name> uri', () => {

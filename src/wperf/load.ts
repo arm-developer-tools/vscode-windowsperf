@@ -4,8 +4,7 @@
 
 import { promises as fs } from 'fs';
 
-import { parseSampleJson } from './parse';
-import { Sample } from './schemas/out/sample';
+import { Sample, parseSampleJson } from './parse';
 
 export const loadSampleFile = async (fullPath: string): Promise<Sample> => {
     const fileContents = await fs.readFile(fullPath, { encoding: 'ascii' });

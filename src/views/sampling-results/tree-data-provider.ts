@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 
 import { buildSourceCodeUri } from './resource-uri';
-import { Annotation, Event, SourceCode } from '../../wperf/projected-types';
+import { Annotation, Event, SourceCode } from '../../wperf/parse';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { SampleFile } from './sample-file';
@@ -77,7 +77,7 @@ export const buildAnnotationNode = (annotation: Annotation): Node => ({
 
 export const buildSourceCodeNode = (sourceCode: SourceCode): Node => ({
     collapsibleState: vscode.TreeItemCollapsibleState.None,
-    description: `hits: ${sourceCode.hits}`,
+    description: `hits: ${sourceCode.hits} (${sourceCode.overhead}%)`,
     label: `${sourceCode.filename}:${sourceCode.line_number}`,
     resourceUri: buildSourceCodeUri(sourceCode),
     command: {
