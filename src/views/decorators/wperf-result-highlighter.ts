@@ -7,6 +7,7 @@ import { ObservableSelection } from '../../observable-selection';
 import { Event, Annotation, SourceCode } from '../../wperf/projected-types';
 import { SampleFile } from '../sampling-results/sample-file';
 import { TextEditorHandler, TextEditorHandlerImpl } from '../../vscode-api/text-editor';
+import { isSamePath } from '../../path';
 
 export class WperfResultHighlighter {
     private readonly decorations: vscode.TextEditorDecorationType[] = [];
@@ -70,7 +71,7 @@ export const calculateDecorations = (sample: SampleFile, fileName: string): Deco
     for (const event of sample.parsedContent.sampling.events) {
         for (const annotation of event.annotate) {
             for (const sourceCode of annotation.source_code) {
-                if (sourceCode.filename === fileName) {
+                if (isSamePath(sourceCode.filename, fileName)) {
                     highlights.push(buildDecoration(event, annotation, sourceCode));
                 }
             }
