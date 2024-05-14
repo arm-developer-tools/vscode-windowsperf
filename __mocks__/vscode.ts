@@ -15,8 +15,12 @@ export class EventEmitter<T> {
     private readonly listeners: listenerFn<T>[] = [];
 
     event = (listener: listenerFn<T>) => {
-        this.listeners.push(listener);
-        return { dispose: jest.fn() };
+        const index = (this.listeners.push(listener) - 1);
+        return {
+            dispose: () => {
+                this.listeners.splice(index, 1);
+            }
+        };
     };
 
     fire = (event: T) => {

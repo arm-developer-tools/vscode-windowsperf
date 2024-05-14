@@ -11,13 +11,13 @@ import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';
 import { SelectActiveResultFile } from './commands/select-active-result-file';
 import { ClearActiveResultFileSelection } from './commands/clear-active-result-file-selection';
-import { WperfResultHighlighter } from './views/decorators/wperf-result-highlighter';
+import { EditorHighlighter } from './views/sampling-results/editor-highlighter';
 
 export async function activate(context: vscode.ExtensionContext) {
     const sampleFiles = new ObservableCollection<SampleFile>();
     const selectedFile = new ObservableSelection<SampleFile>();
 
-    new WperfResultHighlighter(selectedFile);
+    new EditorHighlighter(selectedFile);
 
     vscode.window.registerTreeDataProvider(
         'samplingResults', new TreeDataProvider(sampleFiles, selectedFile),
