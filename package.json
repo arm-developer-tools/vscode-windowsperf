@@ -16,23 +16,27 @@
     "commands": [
       {
         "command": "windowsperf.openResultFile",
-        "title": "WindowsPerf: Open result file",
-        "icon": "$(new-file)"
+        "title": "Open result file",
+        "icon": "$(new-file)",
+        "category": "WindowsPerf"
       },
       {
         "command": "windowsperf.closeResultFile",
-        "title": "WindowsPerf: Close result file",
-        "icon": "$(close)"
+        "title": "Close result file",
+        "icon": "$(close)",
+        "category": "WindowsPerf"
       },
       {
         "command": "windowsperf.selectActiveResultFile",
-        "title": "WindowsPerf: Select active result file",
-        "icon": "$(eye)"
+        "title": "Select active result file",
+        "icon": "$(eye)",
+        "category": "WindowsPerf"
       },
       {
         "command": "windowsperf.clearActiveResultFileSelection",
-        "title": "WindowsPerf: Clear active result file selection",
-        "icon": "$(eye-closed)"
+        "title": "Clear active result file selection",
+        "icon": "$(eye-closed)",
+        "category": "WindowsPerf"
       }
     ],
     "menus": {
