@@ -5,11 +5,12 @@
 import * as vscode from 'vscode';
 
 import { buildSourceCodeUri } from './resource-uri';
-import { Annotation, Event, SourceCode } from '../../wperf/parse';
+import { Annotation, Event, EventSample, SourceCode } from '../../wperf/parse';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
+import { formatFraction } from '../../math';
 import { SampleFile } from './sample-file';
-import { buildDecoration } from './source-code-decorations';
+import { buildDecoration } from './source-code-decoration';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -64,21 +65,47 @@ const rootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
         : new vscode.ThemeIcon('eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'));
 };
 
-export const buildEventNode = (event: Event): Node => ({
-    children: event.annotate.map(annotation => buildAnnotationNode(event, annotation)),
-    collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    label: event.type,
-});
+export const buildEventNode = (event: Event): Node => {
+    const lookup = buildAnnotationLookup(event.annotate);
+    return {
+        children: event.samples.map(
+            sample => buildEventSampleNode(event, sample, lookup[sample.symbol])
+        ),
+        collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+        label: event.type,
+    };
+};
 
-export const buildAnnotationNode = (event: Event, annotation: Annotation): Node => ({
-    children: annotation.source_code.map(sourceCode => buildSourceCodeNode(event, annotation, sourceCode)),
-    collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    label: annotation.function_name,
-});
+type AnnotationByFunctionName = Record<string, Annotation>;
+
+const buildAnnotationLookup = (annotations: Annotation[]): AnnotationByFunctionName => {
+    return annotations.reduce((lookup: AnnotationByFunctionName, annotation) => {
+        lookup[annotation.function_name] = annotation;
+        return lookup;
+    }, {});
+};
+
+export const buildEventSampleNode = (
+    event: Event,
+    eventSample: EventSample,
+    annotation: Annotation | undefined
+): Node => {
+    const children = annotation?.source_code.map(
+        sourceCode => buildSourceCodeNode(event, annotation, sourceCode)
+    ) || [];
+    return {
+        children,
+        collapsibleState: children.length > 0
+            ? vscode.TreeItemCollapsibleState.Collapsed
+            : vscode.TreeItemCollapsibleState.None,
+        label: eventSample.symbol,
+        description: `${formatFraction(eventSample.overhead)}% (hits: ${eventSample.count})`,
+    };
+};
 
 export const buildSourceCodeNode = (event: Event, annotation: Annotation, sourceCode: SourceCode): Node => ({
     collapsibleState: vscode.TreeItemCollapsibleState.None,
-    description: `hits: ${sourceCode.hits} (${sourceCode.overhead}%)`,
+    description: `${formatFraction(sourceCode.overhead)}% (hits: ${sourceCode.hits})`,
     label: `${sourceCode.filename}:${sourceCode.line_number}`,
     resourceUri: buildSourceCodeUri(sourceCode),
     tooltip: new vscode.MarkdownString(buildDecoration(event, annotation, sourceCode).hoverMessage),

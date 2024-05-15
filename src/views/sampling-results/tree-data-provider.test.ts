@@ -5,14 +5,14 @@
 import * as vscode from 'vscode';
 import { faker } from '@faker-js/faker';
 
-import { TreeDataProvider, buildAnnotationNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
+import { TreeDataProvider, buildEventSampleNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
 import { buildSourceCodeUri } from './resource-uri';
 import { sampleFileFactory } from './sample-file.factories';
-import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
+import { annotationFactory, eventFactory, eventSampleFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { MarkdownString } from 'vscode';
-import { buildDecoration } from './source-code-decorations';
+import { buildDecoration } from './source-code-decoration';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -149,14 +149,21 @@ describe('buildRootNode', () => {
 });
 
 describe('buildEventNode', () => {
-    it('calculates children nodes', () => {
-        const first = annotationFactory();
-        const second = annotationFactory();
-        const event = eventFactory({ annotate: [ first, second ] });
+    it('calculates child nodes for all samples with matching annotations', () => {
+        const sampleWithMatchingAnnotation = eventSampleFactory({ symbol: 'a-function' });
+        const otherSample = eventSampleFactory();
+        const matchingAnnotation = annotationFactory({ function_name: 'a-function' });
+        const event = eventFactory({
+            samples: [ sampleWithMatchingAnnotation, otherSample ],
+            annotate: [ matchingAnnotation, annotationFactory() ],
+        });
 
         const got = buildEventNode(event);
 
-        const want = [ buildAnnotationNode(event, first), buildAnnotationNode(event, second) ];
+        const want = [
+            buildEventSampleNode(event, sampleWithMatchingAnnotation, matchingAnnotation),
+            buildEventSampleNode(event, otherSample, undefined)
+        ];
         expect(got.children).toEqual(want);
     });
 
@@ -169,28 +176,45 @@ describe('buildEventNode', () => {
     });
 });
 
-describe('buildAnnotationNode', () => {
-    it('calculates children nodes', () => {
+describe('buildEventSampleNode', () => {
+    it('calculates child nodes for each source code', () => {
         const first = sourceCodeFactory();
         const second = sourceCodeFactory();
         const event = eventFactory();
         const annotation = annotationFactory({ source_code: [first, second], });
 
-        const got = buildAnnotationNode(event, annotation);
+        const got = buildEventSampleNode(event, eventSampleFactory(), annotation);
 
         const want = [
             buildSourceCodeNode(event, annotation, first),
             buildSourceCodeNode(event, annotation, second)
         ];
         expect(got.children).toEqual(want);
+        expect(got.collapsibleState).toEqual(vscode.TreeItemCollapsibleState.Collapsed);
     });
 
-    it('sets node label to function name', () => {
-        const annotation = annotationFactory({ function_name: 'a-function' });
+    it('makes node not expandable given no source code', () => {
+        const got = buildEventSampleNode(eventFactory(), eventSampleFactory(), undefined);
 
-        const got = buildAnnotationNode(eventFactory(), annotation);
+        expect(got.children).toEqual([]);
+        expect(got.collapsibleState).toEqual(vscode.TreeItemCollapsibleState.None);
+    });
 
-        expect(got.label).toEqual('a-function');
+    it('sets node label to symbol name', () => {
+        const eventSample = eventSampleFactory({ symbol: 'a-nice-symbol' });
+
+        const got = buildEventSampleNode(eventFactory(), eventSample, annotationFactory());
+
+        expect(got.label).toEqual('a-nice-symbol');
+    });
+
+    it('decorates node with count and overhead', () => {
+        const eventSample = eventSampleFactory({ count: 5, overhead: 12.10310 });
+
+        const got = buildEventSampleNode(eventFactory(), eventSample, annotationFactory());
+
+        expect(got.description).toContain('hits: 5');
+        expect(got.description).toContain('12.1%');
     });
 });
 
@@ -203,13 +227,13 @@ describe('buildSourceNode', () => {
         expect(got.label).toEqual('some-file.c:99');
     });
 
-    it('sets readable node description', () => {
-        const sourceCode = sourceCodeFactory({ hits: 5, overhead: 22.22 });
+    it('decorates node with hits and overhead', () => {
+        const sourceCode = sourceCodeFactory({ hits: 5, overhead: 22.22576 });
 
         const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
 
         expect(got.description).toContain('hits: 5');
-        expect(got.description).toContain('22.22%');
+        expect(got.description).toContain('22.23%');
     });
 
     it('sets resource uri', () => {

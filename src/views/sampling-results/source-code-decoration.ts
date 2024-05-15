@@ -2,6 +2,7 @@
  * Copyright (c) 2024 Arm Limited
  */
 
+import { formatFraction } from '../../math';
 import { Annotation, Event, SourceCode } from '../../wperf/parse';
 
 export type Decoration = SourceCode & {
@@ -29,7 +30,7 @@ const renderHoverMessage = (
 * Event: ${event.type}
 * Function: ${annotation.function_name}
 * Hits: ${sourceCode.hits}
-* Overhead: ${sourceCode.overhead}%
+* Overhead: ${formatFraction(sourceCode.overhead)}%
 
 #### Disassembly
 ${'```'}

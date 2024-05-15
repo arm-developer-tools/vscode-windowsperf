@@ -6,7 +6,7 @@ import * as vscode from 'vscode';
 import { ObservableSelection } from '../../observable-selection';
 import { SampleFile } from '../sampling-results/sample-file';
 import { isSamePath } from '../../path';
-import { Decoration, buildDecoration } from './source-code-decorations';
+import { Decoration, buildDecoration } from './source-code-decoration';
 
 export type TextEditorDecorator = {
     decorate: (decorations: Decoration[]) => void

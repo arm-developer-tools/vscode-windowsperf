@@ -7,7 +7,7 @@ import { SampleFile } from '../sampling-results/sample-file';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
 import { EditorHighlighter, calculateDecorations } from './editor-highlighter';
-import { buildDecoration } from './source-code-decorations';
+import { buildDecoration } from './source-code-decoration';
 
 describe('EditorHighlighter', () => {
     it('applies decorations to currently selected sample', () => {

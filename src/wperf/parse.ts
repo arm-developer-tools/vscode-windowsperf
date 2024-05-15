@@ -2,19 +2,29 @@
  * Copyright (C) 2024 Arm Limited
  */
 
+import Ajv, { DefinedError } from 'ajv';
+
+import * as schemaSample from './schemas/in/sample.json';
 import { Sample as SchemaSample } from './schemas/out/sample';
+import { percentage } from '../math';
+
 type SchemaEvent = SchemaSample['sampling']['events'][number];
 type SchemaAnnotation = SchemaEvent['annotate'][number];
 type SchemaSourceCode = SchemaAnnotation['source_code'][number];
 
 export type Sample = { sampling: Sampling };
 type Sampling = { events: Event[] };
-export type Event = Pick<SchemaEvent, 'type'> & {
+export type Event = Pick<
+    SchemaEvent,
+    | 'type'
+> & {
     annotate: Annotation[]
+    samples: EventSample[]
 };
 export type Annotation = Pick<SchemaAnnotation, 'function_name'> & {
     source_code: SourceCode[]
 };
+export type EventSample = SchemaEvent['samples'][number];
 export type SourceCode = Pick<
     SchemaSourceCode,
     | 'filename'
@@ -25,10 +35,6 @@ export type SourceCode = Pick<
 > & {
     overhead: number
 };
-
-import Ajv, { DefinedError } from 'ajv';
-import * as schemaSample from './schemas/in/sample.json';
-import { formatFraction, percentage } from '../math';
 
 const ajv = new Ajv();
 const validateSample = ajv.compile<SchemaSample>(schemaSample);
@@ -63,7 +69,7 @@ const embedSourceCodeOverhead = (annotation: SchemaAnnotation): Annotation => {
         ...annotation,
         source_code: annotation.source_code.map(source => ({
             ...source,
-            overhead: formatFraction(percentage(source.hits, totalHits)),
+            overhead: percentage(source.hits, totalHits),
         }))
     };
 };

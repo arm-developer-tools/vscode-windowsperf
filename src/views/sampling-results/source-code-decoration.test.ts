@@ -3,8 +3,9 @@
  */
 
 import 'jest';
-import { buildDecoration } from './source-code-decorations';
+import { buildDecoration } from './source-code-decoration';
 import { eventFactory, annotationFactory, sourceCodeFactory } from '../../wperf/parse.factories';
+import { formatFraction } from '../../math';
 
 describe('buildDecoration', () => {
     describe('hover message', () => {
@@ -18,7 +19,8 @@ describe('buildDecoration', () => {
             expect(got).toContain(event.type);
             expect(got).toContain(annotation.function_name);
             expect(got).toContain(sourceCode.hits.toString());
-            expect(got).toContain(sourceCode.overhead.toString());
+            const wantOverhead = `${formatFraction(sourceCode.overhead)}%`;
+            expect(got).toContain(wantOverhead);
         });
 
         it('contains the disassembly', () => {
