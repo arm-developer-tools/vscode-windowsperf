@@ -4,9 +4,9 @@
 
 import * as vscode from 'vscode';
 import { ObservableSelection } from '../../observable-selection';
-import { Event, Annotation, SourceCode } from '../../wperf/parse';
 import { SampleFile } from '../sampling-results/sample-file';
 import { isSamePath } from '../../path';
+import { Decoration, buildDecoration } from './source-code-decorations';
 
 export type TextEditorDecorator = {
     decorate: (decorations: Decoration[]) => void
@@ -93,12 +93,6 @@ class VscodeTextEditorDecorator implements TextEditorDecorator  {
     }
 }
 
-
-type Decoration = SourceCode & {
-    backgroundColor: string
-    hoverMessage: string
-};
-
 export const calculateDecorations = (sample: SampleFile): Decoration[] => {
     const decorations: Decoration[] = [];
     for (const event of sample.parsedContent.sampling.events) {
@@ -109,52 +103,4 @@ export const calculateDecorations = (sample: SampleFile): Decoration[] => {
         }
     }
     return decorations;
-};
-
-export const buildDecoration = (
-    event: Event,
-    annotation: Annotation,
-    sourceCode: SourceCode
-): Decoration => ({
-    ...sourceCode,
-    backgroundColor: backgroundColor(sourceCode.hits),
-    hoverMessage: renderHoverMessage(event, annotation, sourceCode),
-});
-
-const renderHoverMessage = (
-    event: Event,
-    annotation: Annotation,
-    sourceCode: SourceCode
-): string => {
-    return `
-### WindowsPerf
-* Event: ${event.type}
-* Function: ${annotation.function_name}
-* Hits: ${sourceCode.hits}
-* Overhead: ${sourceCode.overhead}%
-
-#### Disassembly
-${'```'}
-${renderDisassembly(sourceCode)}
-${'```'}
-`;
-};
-
-const renderDisassembly = (sourceCode: SourceCode): string => {
-    return sourceCode.disassembled_line.disassemble.map(line => {
-        const marker = line.address === sourceCode.instruction_address
-            ? '<-'
-            : '  ';
-        return `${line.address} ${marker} | ${line.instruction}`;
-    }).join('\n');
-};
-
-const backgroundColor = (hits: number): string => {
-    if (hits > 50) {
-        return 'rgba(255, 0, 0, 0.2)';
-    }
-    if (hits > 10) {
-        return 'rgba(255, 255, 0, 0.2)';
-    }
-    return 'rgba(100, 100, 100, 0.2)';
 };

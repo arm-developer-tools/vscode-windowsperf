@@ -9,6 +9,7 @@ import { Annotation, Event, SourceCode } from '../../wperf/parse';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { SampleFile } from './sample-file';
+import { buildDecoration } from './source-code-decorations';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -64,22 +65,23 @@ const rootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
 };
 
 export const buildEventNode = (event: Event): Node => ({
-    children: event.annotate.map(buildAnnotationNode),
+    children: event.annotate.map(annotation => buildAnnotationNode(event, annotation)),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     label: event.type,
 });
 
-export const buildAnnotationNode = (annotation: Annotation): Node => ({
-    children: annotation.source_code.map(buildSourceCodeNode),
+export const buildAnnotationNode = (event: Event, annotation: Annotation): Node => ({
+    children: annotation.source_code.map(sourceCode => buildSourceCodeNode(event, annotation, sourceCode)),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     label: annotation.function_name,
 });
 
-export const buildSourceCodeNode = (sourceCode: SourceCode): Node => ({
+export const buildSourceCodeNode = (event: Event, annotation: Annotation, sourceCode: SourceCode): Node => ({
     collapsibleState: vscode.TreeItemCollapsibleState.None,
     description: `hits: ${sourceCode.hits} (${sourceCode.overhead}%)`,
     label: `${sourceCode.filename}:${sourceCode.line_number}`,
     resourceUri: buildSourceCodeUri(sourceCode),
+    tooltip: new vscode.MarkdownString(buildDecoration(event, annotation, sourceCode).hoverMessage),
     command: {
         command: 'vscode.open',
         title: 'Open File',

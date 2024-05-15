@@ -11,6 +11,8 @@ import { sampleFileFactory } from './sample-file.factories';
 import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
+import { MarkdownString } from 'vscode';
+import { buildDecoration } from './source-code-decorations';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -154,7 +156,7 @@ describe('buildEventNode', () => {
 
         const got = buildEventNode(event);
 
-        const want = [ buildAnnotationNode(first), buildAnnotationNode(second) ];
+        const want = [ buildAnnotationNode(event, first), buildAnnotationNode(event, second) ];
         expect(got.children).toEqual(want);
     });
 
@@ -171,18 +173,22 @@ describe('buildAnnotationNode', () => {
     it('calculates children nodes', () => {
         const first = sourceCodeFactory();
         const second = sourceCodeFactory();
+        const event = eventFactory();
         const annotation = annotationFactory({ source_code: [first, second], });
 
-        const got = buildAnnotationNode(annotation);
+        const got = buildAnnotationNode(event, annotation);
 
-        const want = [ buildSourceCodeNode(first), buildSourceCodeNode(second) ];
+        const want = [
+            buildSourceCodeNode(event, annotation, first),
+            buildSourceCodeNode(event, annotation, second)
+        ];
         expect(got.children).toEqual(want);
     });
 
     it('sets node label to function name', () => {
         const annotation = annotationFactory({ function_name: 'a-function' });
 
-        const got = buildAnnotationNode(annotation);
+        const got = buildAnnotationNode(eventFactory(), annotation);
 
         expect(got.label).toEqual('a-function');
     });
@@ -192,7 +198,7 @@ describe('buildSourceNode', () => {
     it('sets node label to filename and line number', () => {
         const sourceCode = sourceCodeFactory({ filename: 'some-file.c', line_number: 99 });
 
-        const got = buildSourceCodeNode(sourceCode);
+        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
 
         expect(got.label).toEqual('some-file.c:99');
     });
@@ -200,7 +206,7 @@ describe('buildSourceNode', () => {
     it('sets readable node description', () => {
         const sourceCode = sourceCodeFactory({ hits: 5, overhead: 22.22 });
 
-        const got = buildSourceCodeNode(sourceCode);
+        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
 
         expect(got.description).toContain('hits: 5');
         expect(got.description).toContain('22.22%');
@@ -209,7 +215,7 @@ describe('buildSourceNode', () => {
     it('sets resource uri', () => {
         const sourceCode = sourceCodeFactory();
 
-        const got = buildSourceCodeNode(sourceCode);
+        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
 
         const want = buildSourceCodeUri(sourceCode);
         expect(got.resourceUri).toEqual(want);
@@ -218,13 +224,24 @@ describe('buildSourceNode', () => {
     it('sets command to open the source code', () => {
         const sourceCode = sourceCodeFactory();
 
-        const got = buildSourceCodeNode(sourceCode).command;
+        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode).command;
 
         const want = {
             command: 'vscode.open',
             title: 'Open File',
             arguments: [vscode.Uri.parse(`file://${sourceCode.filename}#${sourceCode.line_number}`)]
         };
+        expect(got).toEqual(want);
+    });
+
+    it('sets tooltip to hover message', () => {
+        const sourceCode = sourceCodeFactory();
+        const event = eventFactory();
+        const annotation = annotationFactory();
+
+        const got = buildSourceCodeNode(event, annotation, sourceCode).tooltip;
+
+        const want = new MarkdownString(buildDecoration(event, annotation, sourceCode).hoverMessage);
         expect(got).toEqual(want);
     });
 });
