@@ -30,15 +30,16 @@ export class ObservableCollection<T> {
     }
 
     deleteFirst(predicate: (item: T) => boolean) {
-        for (let i = 0; i < this._items.length; i++) {
-            if (predicate(this._items[i])) {
-                return this.deleteAtIndex(i);
-            }
+        const index = this._items.findIndex(predicate);
+        if (index !== -1) {
+            return this.deleteAtIndex(index);
         }
     }
 
     deleteAtIndex(index: number) {
-        const deleted = this._items.splice(index, 1);
-        this._onDidChange.fire({ item: deleted[0], type: 'delete' });
+        const deleted = this._items.splice(index, 1)[0];
+        if (deleted) {
+            this._onDidChange.fire({ item: deleted, type: 'delete' });
+        }
     }
 }

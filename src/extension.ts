@@ -38,9 +38,9 @@ export async function activate(context: vscode.ExtensionContext) {
             new ClearActiveResultFileSelection(selectedFile)
         ).execute,
     };
-    for (const name in commands) {
-        context.subscriptions.push(vscode.commands.registerCommand(name, commands[name]));
-    }
+    Object.entries(commands).forEach(([name, command]) => {
+        context.subscriptions.push(vscode.commands.registerCommand(name, command));
+    });
 }
 
 // This method is called when your extension is deactivated

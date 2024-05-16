@@ -39,7 +39,7 @@ describe('parseSampleJSON', () => {
 
         const got = parseSampleJson(json);
 
-        expect(got.sampling.events[0].annotate[0].source_code[0].overhead).not.toBeUndefined();
+        expect(got.sampling.events[0]!.annotate[0]!.source_code[0]!.overhead).not.toBeUndefined();
     });
 
     it('returns an error when json does not follow schema', () => {
@@ -83,7 +83,7 @@ describe('parseSample', () => {
             }
         } as unknown as SchemaSample;
 
-        const got = parseSample(toParse).sampling.events[0].annotate;
+        const got = parseSample(toParse).sampling.events[0]!.annotate;
 
         const wantAnnote = [
             {

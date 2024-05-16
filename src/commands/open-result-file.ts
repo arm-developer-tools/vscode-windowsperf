@@ -36,7 +36,7 @@ export const openResultFile = async (
         canSelectMany: false,
         canSelectFolders: false,
     });
-    if (result === undefined) {
+    if (result === undefined || result[0] === undefined) {
         return;
     }
     const uri = result[0];
