@@ -4,6 +4,7 @@
 
 import { formatFraction } from '../../math';
 import { Annotation, Event, SourceCode } from '../../wperf/parse';
+import { textEditorColour } from './colours';
 
 export type Decoration = SourceCode & {
     backgroundColor: string
@@ -16,7 +17,7 @@ export const buildDecoration = (
     sourceCode: SourceCode
 ): Decoration => ({
     ...sourceCode,
-    backgroundColor: backgroundColor(sourceCode.hits),
+    backgroundColor: textEditorColour(sourceCode.hits),
     hoverMessage: renderHoverMessage(event, annotation, sourceCode),
 });
 
@@ -46,14 +47,4 @@ const renderDisassembly = (sourceCode: SourceCode): string => {
             : '  ';
         return `${line.address} ${marker} | ${line.instruction}`;
     }).join('\n');
-};
-
-const backgroundColor = (hits: number): string => {
-    if (hits > 50) {
-        return 'rgba(255, 0, 0, 0.2)';
-    }
-    if (hits > 10) {
-        return 'rgba(255, 255, 0, 0.2)';
-    }
-    return 'rgba(100, 100, 100, 0.2)';
 };

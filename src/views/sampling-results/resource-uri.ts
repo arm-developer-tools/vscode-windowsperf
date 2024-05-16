@@ -3,6 +3,7 @@
  */
 
 import * as vscode from 'vscode';
+import { treeViewColour } from './colours';
 import { SourceCode } from '../../wperf/parse';
 
 const SCHEME = 'wperf-source-code';
@@ -26,14 +27,7 @@ export const sourceCodeColor = (uri: vscode.Uri): vscode.ThemeColor | undefined 
     if (numHits === undefined) {
         return undefined;
     }
-    // TODO: this number is meaningless, hits should be percentage, not absolute values
-    if (numHits > 50) {
-        return new vscode.ThemeColor('list.errorForeground');
-    }
-    if (numHits > 10) {
-        return new vscode.ThemeColor('list.warningForeground');
-    }
-    return undefined;
+    return treeViewColour(numHits);
 };
 
 const howManyHits = (uri: vscode.Uri): number | undefined => {
