@@ -24,15 +24,15 @@ export class EditorHighlighter {
             const currentlySelected = selectedFile.selected;
             if (currentlySelected !== null) {
                 const decorations = calculateDecorations(currentlySelected);
-                decorator.decorate(decorations);
+                this.decorator.decorate(decorations);
             } else {
-                decorator.decorate([]);
+                this.decorator.decorate([]);
             }
         });
     }
 
     dispose() {
-        this.eventHandler.dispose();
+        this.eventHandler.dispose(),
         this.decorator.dispose();
     }
 }

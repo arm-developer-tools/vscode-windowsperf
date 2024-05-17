@@ -16,8 +16,7 @@ import { EditorHighlighter } from './views/sampling-results/editor-highlighter';
 export async function activate(context: vscode.ExtensionContext) {
     const sampleFiles = new ObservableCollection<SampleFile>();
     const selectedFile = new ObservableSelection<SampleFile>();
-
-    new EditorHighlighter(selectedFile);
+    const editorHighligter = new EditorHighlighter(selectedFile);
 
     vscode.window.registerTreeDataProvider(
         'samplingResults', new TreeDataProvider(sampleFiles, selectedFile),
@@ -38,9 +37,15 @@ export async function activate(context: vscode.ExtensionContext) {
             new ClearActiveResultFileSelection(selectedFile)
         ).execute,
     };
+
     Object.entries(commands).forEach(([name, command]) => {
         context.subscriptions.push(vscode.commands.registerCommand(name, command));
     });
+
+    const disposables: vscode.Disposable[] = [editorHighligter];
+    for (const toDispose of disposables) {
+        context.subscriptions.push(toDispose);
+    }
 }
 
 // This method is called when your extension is deactivated
