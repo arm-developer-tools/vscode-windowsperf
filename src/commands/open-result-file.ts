@@ -7,19 +7,18 @@ import * as vscode from 'vscode';
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
 import { SampleFile } from '../views/sampling-results/sample-file';
-
-type VscodeWindow = Pick<typeof vscode.window, 'showOpenDialog' | 'showErrorMessage'>;
+import { Uri } from 'vscode';
 
 export class OpenResultFile {
     constructor(
         private readonly files: ObservableCollection<SampleFile>,
         private readonly selectedFile: ObservableSelection<SampleFile>,
-        private readonly open: typeof openResultFile = openResultFile,
+        private readonly openFileOrPrompt: typeof openFileAtUriOrPrompt = openFileAtUriOrPrompt,
     ) {}
 
-    execute = async () => {
-        const file = await this.open();
-        if (file !== undefined) {
+    readonly execute = async (inputUri: Uri | undefined) => {
+        const file = await this.openFileOrPrompt(inputUri);
+        if (file) {
             if (this.files.items.length === 0) {
                 this.selectedFile.selected = file;
             }
@@ -28,24 +27,35 @@ export class OpenResultFile {
     };
 }
 
-export const openResultFile = async (
-    vscodeWindow: VscodeWindow = vscode.window,
-    sampleFileFromUri: typeof SampleFile.fromUri = SampleFile.fromUri,
-): Promise<SampleFile | undefined> => {
-    const result = await vscodeWindow.showOpenDialog({
-        canSelectMany: false,
-        canSelectFolders: false,
-    });
-    if (result === undefined || result[0] === undefined) {
-        return;
-    }
-    const uri = result[0];
+export const openFileAtUriOrPrompt = async (
+    inputUri: Uri | undefined,
+    promptUserToSelectFile: typeof promptUserToSelectResultFile = promptUserToSelectResultFile,
+    loadFile: typeof loadResultFile = loadResultFile,
+): Promise<SampleFile | undefined > => {
+    const uri = inputUri || await promptUserToSelectFile();
+    return uri && await loadFile(uri);
+};
+
+export const loadResultFile = async (uri: Uri): Promise<SampleFile | undefined> => {
     try {
-        return await sampleFileFromUri(uri);
+        return await SampleFile.fromUri(uri);
     } catch (error: unknown) {
         if (error instanceof Error) {
-            vscodeWindow.showErrorMessage(error.message);
+            vscode.window.showErrorMessage(error.message);
         }
-        return undefined;
     }
+    return undefined;
+};
+
+export const promptUserToSelectResultFile = async (): Promise<vscode.Uri | undefined> => {
+    const result = await vscode.window.showOpenDialog({
+        canSelectMany: false,
+        canSelectFolders: false,
+        title: 'Select a WindowsPerf sampling JSON file',
+        filters: {
+            JSON: ['json'],
+            All: ['*'],
+        },
+    });
+    return result?.[0];
 };

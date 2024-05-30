@@ -73,6 +73,13 @@
           "command": "windowsperf.selectActiveResultFile",
           "when": "false"
         }
+      ],
+      "explorer/context": [
+        {
+          "command": "windowsperf.openResultFile",
+          "when": "resourceFilename =~ /.+\\.json$/",
+          "group": "WindowsPerf"
+        }
       ]
     },
     "viewsContainers": {
