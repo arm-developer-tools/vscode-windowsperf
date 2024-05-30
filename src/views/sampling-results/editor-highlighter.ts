@@ -37,7 +37,7 @@ export class EditorHighlighter {
     }
 }
 
-class VscodeTextEditorDecorator implements TextEditorDecorator  {
+class VscodeTextEditorDecorator implements TextEditorDecorator {
     private onDidChangeVisibleTextEditors: vscode.Disposable | undefined;
     private readonly activeDecorations: vscode.TextEditorDecorationType[] = [];
 
@@ -76,6 +76,7 @@ class VscodeTextEditorDecorator implements TextEditorDecorator  {
             const decorationType = vscode.window.createTextEditorDecorationType({
                 backgroundColor: decoration.backgroundColor,
                 overviewRulerColor: decoration.backgroundColor,
+                after: decoration.after
             });
             this.activeDecorations.push(decorationType);
             editor.setDecorations(decorationType, [
