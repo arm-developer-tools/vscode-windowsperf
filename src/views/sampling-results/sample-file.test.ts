@@ -2,15 +2,15 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import * as vscode from 'vscode';
 import { SampleFile } from './sample-file';
 import { sampleFactory } from '../../wperf/parse.factories';
 import path from 'path';
+import { Uri } from 'vscode';
 
 describe('SampleFile', () => {
     describe('fromUri', () => {
         it('returns a new instance when provided with a loadable file uri', async () => {
-            const uri = vscode.Uri.file('some-file.json');
+            const uri = Uri.file('some-file.json');
             const loadSampleFile = jest.fn().mockReturnValue(sampleFactory());
 
             const got = await SampleFile.fromUri(uri, loadSampleFile);
@@ -21,7 +21,7 @@ describe('SampleFile', () => {
         });
 
         it('errors when unable to load file', () => {
-            const uri = vscode.Uri.file('some-file.json');
+            const uri = Uri.file('some-file.json');
             const error = new Error('boom!');
             const loadSampleFile = jest.fn().mockRejectedValue(error);
 
@@ -33,7 +33,7 @@ describe('SampleFile', () => {
 
     describe('id', () => {
         it('returns a uuid', () => {
-            const uri = vscode.Uri.file('foo-bar.c');
+            const uri = Uri.file('foo-bar.c');
             const file1 = new SampleFile(uri, sampleFactory());
             const file2 = new SampleFile(uri, sampleFactory());
 
@@ -45,7 +45,7 @@ describe('SampleFile', () => {
 
     describe('displayName', () => {
         it('returns base name of the file path', () => {
-            const uri = vscode.Uri.file(path.join('foo', 'bar', 'baz.json'));
+            const uri = Uri.file(path.join('foo', 'bar', 'baz.json'));
             const sampleFile = new SampleFile(uri, sampleFactory());
 
             expect(sampleFile.displayName).toEqual('baz.json');

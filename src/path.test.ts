@@ -2,10 +2,10 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import * as vscode from 'vscode';
 import path from 'path';
 
 import { isSamePath } from './path';
+import { Uri } from 'vscode';
 
 describe('isSamePath', () => {
     it('returns true if the inputs are identical', () => {
@@ -25,7 +25,7 @@ describe('isSamePath', () => {
 
     it('returns true if one input is the URI.fsPath of the other', () => {
         // On Windows, the drive letter will be capitalised on Windows for the first but not the second input
-        const got = isSamePath(__dirname, vscode.Uri.file(__dirname).fsPath);
+        const got = isSamePath(__dirname, Uri.file(__dirname).fsPath);
 
         expect(got).toBe(true);
     });

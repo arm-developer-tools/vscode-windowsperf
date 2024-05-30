@@ -11,7 +11,7 @@ import { sampleFileFactory } from './sample-file.factories';
 import { annotationFactory, eventFactory, eventSampleFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
-import { MarkdownString } from 'vscode';
+import { MarkdownString, Uri } from 'vscode';
 import { buildDecoration } from './source-code-decoration';
 
 describe('TreeDataProvider', () => {
@@ -253,7 +253,7 @@ describe('buildSourceNode', () => {
         const want = {
             command: 'vscode.open',
             title: 'Open File',
-            arguments: [vscode.Uri.parse(`file://${sourceCode.filename}#${sourceCode.line_number}`)]
+            arguments: [Uri.parse(`file://${sourceCode.filename}#${sourceCode.line_number}`)]
         };
         expect(got).toEqual(want);
     });

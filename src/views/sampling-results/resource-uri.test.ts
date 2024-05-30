@@ -7,6 +7,7 @@ import { it } from '@jest/globals';
 
 import { buildSourceCodeUri, isSourceCodeUri, sourceCodeColor } from './resource-uri';
 import { sourceCodeFactory } from '../../wperf/parse.factories';
+import { Uri } from 'vscode';
 
 describe('buildSourceCodeUri', () => {
     it('returns source-code://<file name> uri', () => {
@@ -38,7 +39,7 @@ describe('isSourceCodeUri', () => {
     });
 
     it('returns false for non source code uris', () => {
-        const uri = vscode.Uri.parse('file://foo.txt');
+        const uri = Uri.parse('file://foo.txt');
 
         const got = isSourceCodeUri(uri);
 

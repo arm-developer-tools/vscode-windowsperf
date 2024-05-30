@@ -2,11 +2,11 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import * as vscode from 'vscode';
 
 import { fileDecorationProvider } from './file-decoration-provider';
 import { buildSourceCodeUri, sourceCodeColor } from './resource-uri';
 import { sourceCodeFactory } from '../../wperf/parse.factories';
+import { Uri } from 'vscode';
 
 describe('fileDecorationProvider', () => {
     describe('provideFileDecoration', () => {
@@ -20,7 +20,7 @@ describe('fileDecorationProvider', () => {
         });
 
         it('does not affect other files', () => {
-            const uri = vscode.Uri.parse('file://foo.txt');
+            const uri = Uri.parse('file://foo.txt');
 
             const got = fileDecorationProvider.provideFileDecoration(uri);
 

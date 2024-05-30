@@ -2,14 +2,12 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import * as vscode from 'vscode';
-
 import { OpenResultFile, openResultFile } from './open-result-file';
 import { ObservableCollection } from '../observable-collection';
 import { SampleFile } from '../views/sampling-results/sample-file';
 import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
 import { ObservableSelection } from '../observable-selection';
-
+import { Uri } from 'vscode';
 
 describe('OpenResultFile.execute', () => {
     it('adds opened file to the file list', async () => {
@@ -62,7 +60,7 @@ describe('OpenResultFile.execute', () => {
 
 describe('openResultFile', () => {
     it('returns parseable file selected by the user', async () => {
-        const selectedFileUri = vscode.Uri.file('foo.json');
+        const selectedFileUri = Uri.file('foo.json');
         const vscodeWindow = {
             showOpenDialog: jest.fn().mockResolvedValue([selectedFileUri]),
             showErrorMessage: jest.fn(),
@@ -77,7 +75,7 @@ describe('openResultFile', () => {
     });
 
     it('when file parsing errors, it displays the error and returns undefined', async () => {
-        const selectedFileUri = vscode.Uri.file('foo.json');
+        const selectedFileUri = Uri.file('foo.json');
         const vscodeWindow = {
             showOpenDialog: jest.fn().mockResolvedValue([selectedFileUri]),
             showErrorMessage: jest.fn(),

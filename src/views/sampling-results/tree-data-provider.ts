@@ -11,6 +11,7 @@ import { ObservableSelection } from '../../observable-selection';
 import { formatFraction } from '../../math';
 import { SampleFile } from './sample-file';
 import { buildDecoration } from './source-code-decoration';
+import { Uri } from 'vscode';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -113,7 +114,7 @@ export const buildSourceCodeNode = (event: Event, annotation: Annotation, source
         command: 'vscode.open',
         title: 'Open File',
         arguments: [
-            vscode.Uri
+            Uri
                 .file(`${sourceCode.filename}`)
                 .with({ fragment: sourceCode.line_number.toString() })
         ],
