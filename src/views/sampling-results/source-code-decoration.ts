@@ -19,9 +19,9 @@ export const buildDecoration = (
     sourceCode: SourceCode
 ): Decoration => ({
     ...sourceCode,
-    backgroundColor: textEditorColour(sourceCode.hits),
+    backgroundColor: textEditorColour(sourceCode.overhead),
     hoverMessage: renderHoverMessage(event, annotation, sourceCode),
-    after: textEditorInlineComments(sourceCode.hits, sourceCode.overhead)
+    after: textEditorInlineComments(sourceCode.hits, sourceCode.overhead),
 });
 
 const renderHoverMessage = (

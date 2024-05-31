@@ -6,14 +6,16 @@ import * as vscode from 'vscode';
 import { textEditorColour, treeViewColour } from './colours';
 
 describe('textEditorColour', () => {
-    it.each([
-        { numHits: 72, want: 'rgba(255, 0, 0, 0.2)' },
-        { numHits: 35.4, want: 'rgba(255, 255, 0, 0.2)' },
-        { numHits: 0.1, want: 'rgba(100, 100, 100, 0.2)' },
-    ])('$numHits returns colour $want', ({ numHits, want }) => {
-        const got = textEditorColour(numHits);
-
-        expect(got).toEqual(want);
+    it('returns different RGB colour depending on overhead value', () => {
+        const minRange = 0;
+        const maxRange = 100;
+        let previous: string = '';
+        for (let overhead = minRange; overhead < maxRange; overhead++) {
+            const got = textEditorColour(overhead);
+            expect(got).toContain('rgb');
+            expect(got).not.toBe(previous);
+            previous = got;
+        }
     });
 });
 

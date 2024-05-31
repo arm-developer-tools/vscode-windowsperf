@@ -7,6 +7,7 @@ import 'jest';
 import { buildDecoration } from './source-code-decoration';
 import { eventFactory, annotationFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { formatFraction } from '../../math';
+import { textEditorColour } from './colours';
 
 describe('buildDecoration', () => {
     describe('hover message', () => {
@@ -58,13 +59,13 @@ describe('buildDecoration', () => {
         });
 
         it.each([
-            { hits: 100, want: 'rgba(255, 0, 0, 0.2)' },
-            { hits: 20, want: 'rgba(255, 255, 0, 0.2)' },
-            { hits: 5, want: 'rgba(100, 100, 100, 0.2)' }
-        ])('returns editor background colour $want from $hits value treshold', ({ hits, want }) => {
+            { overhead: 100, want: textEditorColour(100) },
+            { overhead: 20, want: textEditorColour(20) },
+            { overhead: 5, want: textEditorColour(5) }
+        ])('returns editor background colour $want from $overhead value treshold', ({ overhead, want }) => {
             const event = eventFactory();
             const annotation = annotationFactory();
-            const sourceCode = sourceCodeFactory({ hits });
+            const sourceCode = sourceCodeFactory({ overhead });
 
             const got = buildDecoration(event, annotation, sourceCode).backgroundColor;
 

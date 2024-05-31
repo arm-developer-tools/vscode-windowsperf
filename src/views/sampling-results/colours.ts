@@ -3,18 +3,11 @@
  */
 
 import * as vscode from 'vscode';
+import * as d3 from 'd3';
 
-export const textEditorColour = (numHits: number): string => {
-    let colour: string;
-    // TODO: this number is meaningless, hits should be percentage and colours would use spectrum
-    if (numHits > 50) {
-        colour = 'rgba(255, 0, 0, 0.2)';
-    } else if (numHits > 10) {
-        colour = 'rgba(255, 255, 0, 0.2)';
-    } else {
-        colour = 'rgba(100, 100, 100, 0.2)';
-    }
-    return colour;
+export const textEditorColour = (overhead: number): string => {
+    const colorScale = d3.scaleSequential([0, 100], d3.interpolateTurbo);
+    return colorScale(overhead);
 };
 
 export const treeViewColour = (numHits: number): vscode.ThemeColor | undefined => {
