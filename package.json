@@ -148,7 +148,8 @@
       "tsx"
     ],
     "moduleNameMapper": {
-      "^d3$": "<rootDir>/node_modules/d3/dist/d3.min.js"
+      "^d3$": "<rootDir>/node_modules/d3/dist/d3.min.js",
+      "logger": "<rootDir>/src/logging/__mocks__/logger.ts"
     },
     "transform": {
       "^.+\\.(ts|tsx|js)$": [

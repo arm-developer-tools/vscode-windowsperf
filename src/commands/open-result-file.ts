@@ -8,6 +8,7 @@ import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
 import { SampleFile } from '../views/sampling-results/sample-file';
 import { Uri } from 'vscode';
+import { logger } from '../logging/logger';
 
 export class OpenResultFile {
     constructor(
@@ -17,8 +18,10 @@ export class OpenResultFile {
     ) {}
 
     readonly execute = async (inputUri: Uri | undefined) => {
+        logger.info('Executing windowsperf.openResultFile');
         const file = await this.openFileOrPrompt(inputUri);
         if (file) {
+            logger.info('Opened result file', file.uri.toString());
             if (this.files.items.length === 0) {
                 this.selectedFile.selected = file;
             }

@@ -11,6 +11,7 @@ import { formatFraction } from '../../math';
 import { SampleFile } from './sample-file';
 import { buildDecoration } from './source-code-decoration';
 import { Uri } from 'vscode';
+import { logger } from '../../logging/logger';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -22,8 +23,15 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
         private readonly sampleFiles: ObservableCollection<SampleFile>,
         private readonly selectedFile: ObservableSelection<SampleFile>,
     ) {
-        sampleFiles.onDidChange(() => this.refresh());
-        selectedFile.onDidChange(() => this.refresh());
+        sampleFiles.onDidChange(() => {
+            logger.debug('Sample files changed, refreshing tree data');
+            logger.trace('Sample files', sampleFiles.items);
+            this.refresh();
+        });
+        selectedFile.onDidChange(() => {
+            logger.debug('Selected file changed, refreshing tree data', selectedFile.selected?.uri.toString());
+            this.refresh();
+        });
     }
 
     getTreeItem(node: Node): vscode.TreeItem {

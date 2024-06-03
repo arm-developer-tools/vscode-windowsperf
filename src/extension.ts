@@ -11,6 +11,7 @@ import { CloseResultFile } from './commands/close-result-file';
 import { SelectActiveResultFile } from './commands/select-active-result-file';
 import { ClearActiveResultFileSelection } from './commands/clear-active-result-file-selection';
 import { EditorHighlighter } from './views/sampling-results/editor-highlighter';
+import { logger } from './logging/logger';
 
 export async function activate(context: vscode.ExtensionContext) {
     const sampleFiles = new ObservableCollection<SampleFile>();
@@ -47,4 +48,6 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+    logger.dispose();
+}
