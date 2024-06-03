@@ -4,7 +4,6 @@
 
 import * as vscode from 'vscode';
 
-import { buildSourceCodeUri } from './resource-uri';
 import { Annotation, Event, EventSample, SourceCode } from '../../wperf/parse';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
@@ -108,7 +107,6 @@ export const buildSourceCodeNode = (event: Event, annotation: Annotation, source
     collapsibleState: vscode.TreeItemCollapsibleState.None,
     description: `${formatFraction(sourceCode.overhead)}% (hits: ${sourceCode.hits})`,
     label: `${sourceCode.filename}:${sourceCode.line_number}`,
-    resourceUri: buildSourceCodeUri(sourceCode),
     tooltip: new vscode.MarkdownString(buildDecoration(event, annotation, sourceCode).hoverMessage),
     command: {
         command: 'vscode.open',

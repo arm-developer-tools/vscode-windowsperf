@@ -4,9 +4,7 @@
 
 import * as vscode from 'vscode';
 import { faker } from '@faker-js/faker';
-
 import { TreeDataProvider, buildEventSampleNode, buildEventNode, buildRootNode, buildSourceCodeNode } from './tree-data-provider';
-import { buildSourceCodeUri } from './resource-uri';
 import { sampleFileFactory } from './sample-file.factories';
 import { annotationFactory, eventFactory, eventSampleFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
@@ -234,15 +232,6 @@ describe('buildSourceNode', () => {
 
         expect(got.description).toContain('hits: 5');
         expect(got.description).toContain('22.23%');
-    });
-
-    it('sets resource uri', () => {
-        const sourceCode = sourceCodeFactory();
-
-        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
-
-        const want = buildSourceCodeUri(sourceCode);
-        expect(got.resourceUri).toEqual(want);
     });
 
     it('sets command to open the source code', () => {

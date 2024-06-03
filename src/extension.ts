@@ -6,7 +6,6 @@ import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
 import { SampleFile } from './views/sampling-results/sample-file';
 import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
-import { fileDecorationProvider } from './views/sampling-results/file-decoration-provider';
 import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';
 import { SelectActiveResultFile } from './commands/select-active-result-file';
@@ -21,7 +20,6 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider(
         'samplingResults', new TreeDataProvider(sampleFiles, selectedFile),
     );
-    vscode.window.registerFileDecorationProvider(fileDecorationProvider);
 
     const commands: Record<string, (...args: any) => any> = {
         'windowsperf.openResultFile': (
