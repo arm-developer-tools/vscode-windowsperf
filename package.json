@@ -104,6 +104,19 @@
         "view": "samplingResults",
         "contents": "In order to use WindowsPerf Sampling Results Explorer, open a JSON file created with \"wperf record\".\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
       }
+    ],
+    "configuration":[
+      {
+        "title": "WindowsPerf",
+        "properties": {
+          "windowsPerf.wperfPath": {
+            "type": "string",
+            "description": "Specify the path to folder containing the windows perf executable.",
+            "pattern": "^$|^[a-zA-Z]:\\\\(?:[^\\\\/:*?\"<>|\\r\\n]+\\\\)*[^\\\\/:*?\"<>|\\r\\n]*$",
+            "patternErrorMessage": "Windows perf path must be an absolute path (e.g C:\\myFolder\\WinPerf)"
+          }
+        }
+      }
     ]
   },
   "scripts": {
