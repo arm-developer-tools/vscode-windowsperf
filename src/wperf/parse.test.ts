@@ -5,8 +5,9 @@
 import { DefinedError } from 'ajv';
 import { percentage } from '../math';
 import { loadFixtureFile } from './fixtures';
-import { SchemaValidationError, parseSample, parseSampleJson } from './parse';
+import { SchemaValidationError, parseList, parseListJson, parseSample, parseSampleJson } from './parse';
 import { Sample as SchemaSample } from './schemas/out/sample';
+import { List as SchemaList } from './schemas/out/list';
 
 describe('parseSampleJSON', () => {
     it('parses minimal schema compliant json', () => {
@@ -104,6 +105,95 @@ describe('parseSample', () => {
             },
         ];
         expect(wantAnnote).toEqual(got);
+    });
+});
+
+describe('parseListJson', () => {
+    it('parses minimal schema compliant json', () => {
+        const data: SchemaList = {
+            Predefined_Events: [
+                { Alias_Name: 'alias-1', Event_Type: 'type-1', Raw_Index: 'index-1' },
+                { Alias_Name: 'alias-2', Event_Type: 'type-2', Raw_Index: 'index-2' },
+            ],
+            Predefined_Metrics: [
+                { Events: 'events-1', Metric: 'metric-1' },
+            ],
+            Predefined_Groups_of_Metrics: [],
+        };
+        const json = JSON.stringify(data);
+
+        const got = parseListJson(json);
+
+        expect(got).toEqual(data);
+    });
+
+    it('parses wperf output json', async () => {
+        const json = await loadFixtureFile('wperf-3.5.0.list.json');
+
+        const got = parseListJson(json);
+
+        expect(got.Predefined_Events).toHaveLength(463);
+        expect(got.Predefined_Metrics).toHaveLength(5);
+        expect(got.Predefined_Groups_of_Metrics).toHaveLength(0);
+
+        expect(got.Predefined_Events[1]).toEqual({
+            Alias_Name: 'l1i_cache_refill',
+            Raw_Index: '0x0001',
+            Event_Type: '[core PMU event]'
+        });
+    });
+
+    it('returns an error when json does not follow schema', () => {
+        const json = '{}';
+
+        expect(
+            () => { parseListJson(json); }
+        ).toThrow(SchemaValidationError);
+    });
+
+    it('returns an error when json is not valid', () => {
+        expect(
+            () => { parseListJson('##!@#!'); }
+        ).toThrow();
+    });
+});
+
+describe('parseList', () => {
+    it('returns events, metrics and groups without modification if present in the input', () => {
+        const toParse: SchemaList = {
+            Predefined_Events: [
+                { Alias_Name: 'alias-1', Event_Type: 'type-1', Raw_Index: 'index-1' },
+                { Alias_Name: 'alias-2', Event_Type: 'type-2', Raw_Index: 'index-2' },
+            ],
+            Predefined_Metrics: [
+                { Events: 'events-1', Metric: 'metric-1' },
+                { Events: 'events-2', Metric: 'metric-2' },
+            ],
+            Predefined_Groups_of_Metrics: [
+                { Group: 'group-1', Metrics: 'metric-1' },
+                { Group: 'group-2', Metrics: 'metric-2' },
+            ]
+        };
+
+        const output = parseList(toParse);
+
+        expect(output).toEqual(toParse);
+    });
+
+    it('returns an empty list of groups when not present', () => {
+        const toParse: SchemaList = {
+            Predefined_Events: [
+                { Alias_Name: 'alias-1', Event_Type: 'type-1', Raw_Index: 'index-1' },
+            ],
+            Predefined_Metrics: [
+                { Events: 'events-1', Metric: 'metric-1' },
+            ],
+        };
+
+        const output = parseList(toParse);
+
+        const want = { ...toParse, Predefined_Groups_of_Metrics: [] };
+        expect(output).toEqual(want);
     });
 });
 

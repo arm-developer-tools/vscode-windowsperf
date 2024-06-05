@@ -5,8 +5,10 @@
 import Ajv, { DefinedError } from 'ajv';
 
 import * as schemaSample from './schemas/in/sample.json';
+import * as schemaList from './schemas/in/list.json';
 import { Sample as SchemaSample } from './schemas/out/sample';
 import { percentage } from '../math';
+import { List as SchemaList } from './schemas/out/list';
 import { PrintableError } from '../logging/printable-error';
 
 type SchemaEvent = SchemaSample['sampling']['events'][number];
@@ -37,8 +39,11 @@ export type SourceCode = Pick<
     overhead: number
 };
 
+export type ListOutput = Required<SchemaList>;
+
 const ajv = new Ajv();
 const validateSample = ajv.compile<SchemaSample>(schemaSample);
+const validateList = ajv.compile<SchemaList>(schemaList);
 
 export const parseSampleJson = (json: string): Sample => {
     const data = JSON.parse(fixWperfOutput(json));
@@ -79,6 +84,21 @@ const embedSourceCodeOverhead = (annotation: SchemaAnnotation): Annotation => {
 // Literal tabs are not allowed in JSON string fields.
 const fixWperfOutput = (content: string): string => {
     return content.replaceAll('\t', '    ');
+};
+
+export const parseListJson = (json: string): ListOutput => {
+    const data = JSON.parse(json);
+    if (validateList(data)) {
+        return parseList(data);
+    }
+    throw new SchemaValidationError(validateList.errors as DefinedError[]);
+};
+
+export const parseList = (toParse: SchemaList): ListOutput => {
+    return {
+        ...toParse,
+        Predefined_Groups_of_Metrics: toParse.Predefined_Groups_of_Metrics ?? [],
+    };
 };
 
 export class SchemaValidationError extends Error implements PrintableError {
