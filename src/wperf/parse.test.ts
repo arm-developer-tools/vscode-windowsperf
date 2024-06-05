@@ -2,6 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
+import { DefinedError } from 'ajv';
 import { percentage } from '../math';
 import { loadFixtureFile } from './fixtures';
 import { SchemaValidationError, parseSample, parseSampleJson } from './parse';
@@ -103,5 +104,32 @@ describe('parseSample', () => {
             },
         ];
         expect(wantAnnote).toEqual(got);
+    });
+});
+
+describe('SchemaValidationError', () => {
+    it('returns a message with all errors getDisplayMessage', () => {
+        const validationError1: DefinedError = {
+            instancePath: '/sampling/events/0/samples/0',
+            schemaPath: '#/properties/sampling/properties/events/items/properties/samples/items/required',
+            keyword: 'required',
+            params: { missingProperty: 'overhead' },
+            message: 'must have required property "overhead"',
+        };
+
+        const validationError2: DefinedError = {
+            instancePath: '/sampling/events/0/samples/1',
+            schemaPath: '#/properties/sampling/properties/events/items/properties/samples/items/required',
+            keyword: 'required',
+            params: { missingProperty: 'overhead' },
+            message: 'must have required property "length"',
+        };
+
+        const error = new SchemaValidationError([validationError1, validationError2]);
+
+        const wantedValidationMessage1 = `${validationError1.instancePath}: ${validationError1.message}`;
+        const wantedValidationMessage2 = `${validationError2.instancePath}: ${validationError2.message}`;
+        const wantedMessage = `Parsed json does not match the schema\n    ${wantedValidationMessage1}\n    ${wantedValidationMessage2}`;
+        expect(error.getDisplayMessage()).toEqual(wantedMessage);
     });
 });

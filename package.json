@@ -155,6 +155,7 @@
     "webpack-cli": "^5.1.4"
   },
   "jest": {
+    "clearMocks": true,
     "moduleFileExtensions": [
       "js",
       "ts",
@@ -162,6 +163,7 @@
     ],
     "moduleNameMapper": {
       "^d3$": "<rootDir>/node_modules/d3/dist/d3.min.js",
+      "error-logging": "<rootDir>/src/logging/__mocks__/error-logging.ts",
       "logger": "<rootDir>/src/logging/__mocks__/logger.ts"
     },
     "transform": {

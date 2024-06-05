@@ -9,6 +9,7 @@ import { ObservableSelection } from '../observable-selection';
 import { SampleFile } from '../views/sampling-results/sample-file';
 import { Uri } from 'vscode';
 import { logger } from '../logging/logger';
+import { logErrorAndNotify } from '../logging/error-logging';
 
 export class OpenResultFile {
     constructor(
@@ -33,18 +34,14 @@ export class OpenResultFile {
 export const openFileAtUriOrPrompt = async (
     inputUri: Uri | undefined,
     promptUserToSelectFile: typeof promptUserToSelectResultFile = promptUserToSelectResultFile,
-    loadFile: typeof loadResultFile = loadResultFile,
+    loadFile: typeof SampleFile.fromUri = SampleFile.fromUri,
 ): Promise<SampleFile | undefined > => {
     const uri = inputUri || await promptUserToSelectFile();
-    return uri && await loadFile(uri);
-};
-
-export const loadResultFile = async (uri: Uri): Promise<SampleFile | undefined> => {
-    try {
-        return await SampleFile.fromUri(uri);
-    } catch (error: unknown) {
-        if (error instanceof Error) {
-            vscode.window.showErrorMessage(error.message);
+    if (uri) {
+        try {
+            return await loadFile(uri);
+        } catch (error) {
+            logErrorAndNotify(error, 'Failed to load result file.');
         }
     }
     return undefined;

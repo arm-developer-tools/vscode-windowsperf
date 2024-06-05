@@ -7,6 +7,7 @@ import Ajv, { DefinedError } from 'ajv';
 import * as schemaSample from './schemas/in/sample.json';
 import { Sample as SchemaSample } from './schemas/out/sample';
 import { percentage } from '../math';
+import { PrintableError } from '../logging/printable-error';
 
 type SchemaEvent = SchemaSample['sampling']['events'][number];
 type SchemaAnnotation = SchemaEvent['annotate'][number];
@@ -80,10 +81,21 @@ const fixWperfOutput = (content: string): string => {
     return content.replaceAll('\t', '    ');
 };
 
-export class SchemaValidationError extends Error {
+export class SchemaValidationError extends Error implements PrintableError {
     constructor(readonly validationErrors: DefinedError[]) {
         super('Parsed json does not match the schema');
         this.name = 'SchemaValidationError';
         Object.setPrototypeOf(this, SchemaValidationError.prototype);
     }
+
+    readonly getDisplayMessage = () => {
+        const validationErrorStrings = this.validationErrors.map(
+            error => `${error.instancePath}: ${error.message || error.keyword}`
+        );
+
+        return [
+            this.message,
+            ...validationErrorStrings,
+        ].join('\n    ');
+    };
 }
