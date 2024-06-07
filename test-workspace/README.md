@@ -2,7 +2,7 @@
 
 WindowsPerf is a Windows only tool. This workspace allows to demo and test the extension's functionality on other platforms.
 
-## How to use this?
+## Pre-recorded templates
 
 ### Rendering templates
 
@@ -48,3 +48,14 @@ This generally comprises of the following steps:
 
 1. Put the JSON file in `wperf-output/templates`.
 1. Add pre-requisites if any to [section above](#template-pre-requisites).
+
+## Mock wperf script
+
+The [mock-wperf.js](./mock-wperf.js) script can be used as a substitute for a real wperf install on non-WoA systems. It returns mock data for record and list. Some of this requires the templates to have been generated (see above).
+
+To use, set the script as the wperf path in the test-workspace [settings.json](./.vscode/settings.json):
+```json
+{
+    "windowsPerf.wperfPath": "/path/to/root/test-workspace/mock-wperf.js"
+}
+```

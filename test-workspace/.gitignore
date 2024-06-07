@@ -1,2 +1,3 @@
 cpython/
 wperf-output/rendered/
+.vscode/settings.json
