@@ -12,6 +12,7 @@ import { SampleFile } from './sample-file';
 import { buildDecoration } from './source-code-decoration';
 import { Uri } from 'vscode';
 import { logger } from '../../logging/logger';
+import { RecordRun } from './record-run';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -21,11 +22,17 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     constructor(
         private readonly sampleFiles: ObservableCollection<SampleFile>,
-        private readonly selectedFile: ObservableSelection<SampleFile>,
+        private readonly recordRuns: ObservableCollection<RecordRun>,
+        private readonly selectedFile: ObservableSelection<SampleFile>, // To-Do: selected has to be either SampleFile or RecordRun Type
     ) {
         sampleFiles.onDidChange(() => {
             logger.debug('Sample files changed, refreshing tree data');
             logger.trace('Sample files', sampleFiles.items);
+            this.refresh();
+        });
+        recordRuns.onDidChange(() => {
+            logger.debug('Command runs list changed, refreshing tree data');
+            logger.trace('Command runs', recordRuns.items);
             this.refresh();
         });
         selectedFile.onDidChange(() => {
@@ -40,10 +47,14 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     getChildren(node?: Node): Node[] {
         if (node === undefined) {
-            return this.sampleFiles.items.map(file => {
+            const sampleFileTree = this.sampleFiles.items.map(file => {
                 const isSelected = this.selectedFile.selected === file;
-                return buildRootNode(file, isSelected);
+                return buildSampleFileRootNode(file, isSelected);
             });
+            const recordRunTree = this.recordRuns.items.map(recordRun => {
+                return buildRecordRunRootNode(recordRun, false); // hard coded to be false. To-Do update the selectedFile to accept two Types
+            });
+            return recordRunTree.concat(sampleFileTree);
         }
         return node.children ?? [];
     }
@@ -53,24 +64,35 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
     }
 }
 
-export const buildRootNode = (file: SampleFile, isSelected: boolean): Node => ({
+export const buildSampleFileRootNode = (file: SampleFile, isSelected: boolean): Node => ({
     id: file.id,
     children: file.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    iconPath: rootNodeIcon(isSelected),
+    iconPath: buildRootNodeIcon(isSelected),
     label: file.displayName,
-    contextValue: rootNodeContextValue(isSelected),
+    contextValue: selectionContextValue(isSelected),
     resourceUri: file.uri,
 });
 
-const rootNodeContextValue = (selected: boolean): string => {
-    return selected ? 'sampleFile--selected' : 'sampleFile';
-};
+export const buildRecordRunRootNode = (run: RecordRun, isSelected: boolean): Node => ({
+    id: run.id,
+    children: run.parsedContent.sampling.events.map(buildEventNode),
+    collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+    iconPath: buildRootNodeIcon(isSelected),
+    label: run.displayName,
+    description: run.timestamp,
+    contextValue: selectionContextValue(isSelected),
+    resourceUri: undefined,
+});
 
-const rootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
+const buildRootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
     return selected
         ? new vscode.ThemeIcon('eye', new vscode.ThemeColor('list.focusOutline'))
         : new vscode.ThemeIcon('eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'));
+};
+
+const selectionContextValue = (selected: boolean): string => {
+    return selected ? 'rootNode--selected' : 'rootNode';
 };
 
 export const buildEventNode = (event: Event): Node => {

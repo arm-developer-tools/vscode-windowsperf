@@ -5,21 +5,23 @@ import * as vscode from 'vscode';
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
 import { SampleFile } from './views/sampling-results/sample-file';
-import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';
 import { SelectActiveResultFile } from './commands/select-active-result-file';
 import { ClearActiveResultFileSelection } from './commands/clear-active-result-file-selection';
 import { EditorHighlighter } from './views/sampling-results/editor-highlighter';
 import { logger } from './logging/logger';
+import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
+import { RecordRun } from './views/sampling-results/record-run';
 
 export async function activate(context: vscode.ExtensionContext) {
-    const sampleFiles = new ObservableCollection<SampleFile>();
-    const selectedFile = new ObservableSelection<SampleFile>();
+    const sampleFiles = new ObservableCollection<SampleFile>(); // To-Do: combine the two observable collections into a common type for ordering of the tree.
+    const recordRuns = new ObservableCollection<RecordRun>();
+    const selectedFile = new ObservableSelection<SampleFile>(); // To-Do: selected has to be new type CollectionType { type: 'file' | 'command', result: SampleFile | RecordRun }.
     const editorHighligter = new EditorHighlighter(selectedFile);
 
     vscode.window.registerTreeDataProvider(
-        'samplingResults', new TreeDataProvider(sampleFiles, selectedFile),
+        'samplingResults', new TreeDataProvider(sampleFiles, recordRuns, selectedFile),
     );
 
     const commands: Record<string, (...args: any) => any> = {
