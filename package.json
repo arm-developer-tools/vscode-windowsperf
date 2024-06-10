@@ -21,6 +21,12 @@
         "category": "WindowsPerf"
       },
       {
+        "command": "windowsperf.runWperfRecord",
+        "title": "Run Record",
+        "icon": "$(play)",
+        "category": "WindowsPerf"
+      },
+      {
         "command": "windowsperf.closeResultFile",
         "title": "Close Sampling JSON File",
         "icon": "$(close)",
@@ -43,6 +49,11 @@
       "view/title": [
         {
           "command": "windowsperf.openResultFile",
+          "when": "view == samplingResults",
+          "group": "navigation"
+        },
+        {
+          "command": "windowsperf.runWperfRecord",
           "when": "view == samplingResults",
           "group": "navigation"
         }

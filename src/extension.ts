@@ -11,6 +11,7 @@ import { SelectActiveResultFile } from './commands/select-active-result-file';
 import { ClearActiveResultFileSelection } from './commands/clear-active-result-file-selection';
 import { EditorHighlighter } from './views/sampling-results/editor-highlighter';
 import { logger } from './logging/logger';
+import { RunWperfRecord } from './commands/run-wperf-record';
 import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { RecordRun } from './views/sampling-results/record-run';
 
@@ -36,6 +37,9 @@ export async function activate(context: vscode.ExtensionContext) {
         ).execute,
         'windowsperf.clearActiveResultFileSelection': (
             new ClearActiveResultFileSelection(selectedFile)
+        ).execute,
+        'windowsperf.runWperfRecord': (
+            new RunWperfRecord()
         ).execute,
     };
 
