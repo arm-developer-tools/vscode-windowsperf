@@ -122,9 +122,7 @@
         "properties": {
           "windowsPerf.wperfPath": {
             "type": "string",
-            "description": "Specify the path to folder containing the windows perf executable.",
-            "pattern": "^$|^[a-zA-Z]:\\\\(?:[^\\\\/:*?\"<>|\\r\\n]+\\\\)*[^\\\\/:*?\"<>|\\r\\n]*$",
-            "patternErrorMessage": "Windows perf path must be an absolute path (e.g C:\\myFolder\\WinPerf)"
+            "description": "Specify the absolute path to the WindowsPerf executable."
           }
         }
       }
