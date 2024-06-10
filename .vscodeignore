@@ -18,3 +18,4 @@ vsc-extension-quickstart.md
 **/.vscode-test.*
 *.vsix
 __mocks__
+test-workspace/**
