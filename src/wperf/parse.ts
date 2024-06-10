@@ -41,6 +41,9 @@ export type SourceCode = Pick<
 
 export type ListOutput = Required<SchemaList>;
 
+export const getEventNames = (listOutput: ListOutput): string[] => listOutput.Predefined_Events
+    .map(event => event.Alias_Name);
+
 const ajv = new Ajv();
 const validateSample = ajv.compile<SchemaSample>(schemaSample);
 const validateList = ajv.compile<SchemaList>(schemaList);

@@ -31,3 +31,20 @@ export class EventEmitter<T> {
 }
 
 export const MarkdownString = jest.fn().mockImplementation((...args) => args);
+
+export class CancellationTokenSource {
+    private readonly emitter = new EventEmitter<void>();
+
+    token = {
+        isCancellationRequested: false,
+        onCancellationRequested: this.emitter.event,
+    };
+
+    cancel = () => {
+        this.token.isCancellationRequested = true;
+        this.emitter.fire();
+    };
+
+    dispose() {
+    }
+}

@@ -5,7 +5,7 @@
 import { DefinedError } from 'ajv';
 import { percentage } from '../math';
 import { loadFixtureFile } from './fixtures';
-import { SchemaValidationError, parseList, parseListJson, parseSample, parseSampleJson } from './parse';
+import { ListOutput, SchemaValidationError, getEventNames, parseList, parseListJson, parseSample, parseSampleJson } from './parse';
 import { Sample as SchemaSample } from './schemas/out/sample';
 import { List as SchemaList } from './schemas/out/list';
 
@@ -221,5 +221,22 @@ describe('SchemaValidationError', () => {
         const wantedValidationMessage2 = `${validationError2.instancePath}: ${validationError2.message}`;
         const wantedMessage = `Parsed json does not match the schema\n    ${wantedValidationMessage1}\n    ${wantedValidationMessage2}`;
         expect(error.getDisplayMessage()).toEqual(wantedMessage);
+    });
+});
+
+describe('getEventNames', () => {
+    it('returns the event names from a list of events', () => {
+        const listOutput: ListOutput = {
+            Predefined_Events: [
+                { Alias_Name: 'alias-1', Event_Type: 'type-1', Raw_Index: 'index-1' },
+                { Alias_Name: 'alias-2', Event_Type: 'type-2', Raw_Index: 'index-2' },
+            ],
+            Predefined_Metrics: [],
+            Predefined_Groups_of_Metrics: [],
+        };
+
+        const got = getEventNames(listOutput);
+
+        expect(got).toEqual(['alias-1', 'alias-2']);
     });
 });
