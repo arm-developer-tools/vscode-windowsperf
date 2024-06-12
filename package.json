@@ -213,7 +213,7 @@
     ]
   },
   "dependencies": {
-    "ajv": "^8.14.0",
+    "ajv": "^8.16.0",
     "ctrlc-windows": "2.1.0"
   }
 }
