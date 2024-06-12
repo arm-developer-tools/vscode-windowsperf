@@ -21,9 +21,9 @@
         "category": "WindowsPerf"
       },
       {
-        "command": "windowsperf.runWperfRecord",
-        "title": "Run Record",
-        "icon": "$(play)",
+        "command": "windowsperf.record",
+        "title": "Record",
+        "icon": "$(record)",
         "category": "WindowsPerf"
       },
       {
@@ -48,14 +48,14 @@
     "menus": {
       "view/title": [
         {
-          "command": "windowsperf.openResultFile",
+          "command": "windowsperf.record",
           "when": "view == samplingResults",
-          "group": "navigation"
+          "group": "navigation@1"
         },
         {
-          "command": "windowsperf.runWperfRecord",
+          "command": "windowsperf.openResultFile",
           "when": "view == samplingResults",
-          "group": "navigation"
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [
@@ -113,7 +113,7 @@
     "viewsWelcome": [
       {
         "view": "samplingResults",
-        "contents": "In order to use WindowsPerf Sampling Results Explorer, open a JSON file created with \"wperf record\".\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
+        "contents": "Record events from WindowsPerf to use the Sampling Results Explorer.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
       }
     ],
     "configuration":[

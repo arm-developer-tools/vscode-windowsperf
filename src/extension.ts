@@ -38,7 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
         'windowsperf.clearActiveResultFileSelection': (
             new ClearActiveResultFileSelection(selectedFile)
         ).execute,
-        'windowsperf.runWperfRecord': (
+        'windowsperf.record': (
             new RunWperfRecord(recordRuns)
         ).execute,
     };
