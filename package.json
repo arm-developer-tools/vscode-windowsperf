@@ -134,7 +134,7 @@
         "watch": "webpack --watch",
         "package": "vsce package",
         "lint": "concurrently npm:eslint npm:format",
-        "lint:fix": "concurrently npm:eslint:fix npm:format:fix",
+        "lint:fix": "concurrently -m 1 npm:eslint:fix npm:format:fix",
         "eslint": "eslint . --ext .ts",
         "eslint:fix": "eslint . --ext .ts --fix",
         "compile": "tsc --noEmit",

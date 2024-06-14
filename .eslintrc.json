@@ -10,7 +10,7 @@
     "extends": ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "prettier"],
     "rules": {
         "@typescript-eslint/naming-convention": [
-            "warn",
+            "error",
             {
                 "selector": "import",
                 "format": ["camelCase", "PascalCase"]
@@ -51,20 +51,7 @@
                 "checkLoops": false
             }
         ],
-        "indent": [
-            "error",
-            4,
-            {
-                "SwitchCase": 1
-            }
-        ],
-        "linebreak-style": ["error", "unix"],
         "no-redeclare": "off",
-        "object-curly-spacing": ["error", "always"],
-        "quotes": ["error", "single", { "avoidEscape": true }],
-        "keyword-spacing": "error",
-        "space-infix-ops": "error",
-        "curly": "warn",
         "eqeqeq": "warn",
         "no-throw-literal": "warn"
     },
