@@ -3,7 +3,7 @@
  */
 
 import * as vscode from 'vscode';
-import { Sample, parseListJson, parseSampleJson } from './parse';
+import { PredefinedEvent, Sample, parseListJson, parseSampleJson } from './parse';
 import { CancellationToken } from 'vscode';
 import { exec } from '../node/process';
 
@@ -44,7 +44,7 @@ export const buildRecordCommand = (executablePath: string, options: RecordOption
 };
 
 export const buildListCommand = (executablePath: string) =>
-    `${shellEscape(executablePath)} list --json`;
+    `${shellEscape(executablePath)} list -v --json`;
 
 const getExecutable = (): string =>
     vscode.workspace.getConfiguration('windowsPerf').get('wperfPath') || 'wperf';
@@ -66,7 +66,9 @@ export const runRecord = async (
     return parseSampleJson(resultJson);
 };
 
-export const runList = async (cancellationToken?: CancellationToken): Promise<string[]> => {
+export const runList = async (
+    cancellationToken?: CancellationToken,
+): Promise<PredefinedEvent[]> => {
     const resultJson = await run(buildListCommand(getExecutable()), cancellationToken);
-    return parseListJson(resultJson).Predefined_Events.map((event) => event.Alias_Name);
+    return parseListJson(resultJson).Predefined_Events;
 };

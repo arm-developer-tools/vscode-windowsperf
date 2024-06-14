@@ -10,13 +10,18 @@ export interface List {
         Alias_Name: string;
         Event_Type: string;
         Raw_Index: string;
+        Description?: string;
     }[];
     Predefined_Metrics: {
         Events: string;
         Metric: string;
+        Formula?: string;
+        Unit?: string;
+        Description?: string;
     }[];
     Predefined_Groups_of_Metrics?: {
         Group: string;
         Metrics: string;
+        Description?: string;
     }[];
 }

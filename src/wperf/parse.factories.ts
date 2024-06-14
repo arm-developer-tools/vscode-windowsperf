@@ -4,7 +4,17 @@
 
 import { faker } from '@faker-js/faker';
 
-import { Sample, Event, Annotation, SourceCode, EventSample } from './parse';
+import {
+    Sample,
+    Event,
+    Annotation,
+    SourceCode,
+    EventSample,
+    ListOutput,
+    PredefinedEvent,
+    PredefinedMetricGroup,
+    PredefinedMetric,
+} from './parse';
 
 export const sampleFactory = (options?: Partial<{ events: Event[] }>): Sample => ({
     sampling: {
@@ -58,3 +68,35 @@ const disassembledLineFactory = (): SourceCode['disassembled_line'] => ({
 const overheadFactory = (): number => {
     return faker.number.float({ max: 100, fractionDigits: 5 });
 };
+
+export const predefinedEventFactory = (options?: Partial<PredefinedEvent>): PredefinedEvent => ({
+    Alias_Name: options?.Alias_Name ?? faker.word.noun(),
+    Description: options?.Description ?? faker.lorem.sentence(),
+    Raw_Index: options?.Raw_Index ?? faker.number.int().toString(),
+    Event_Type: options?.Event_Type ?? faker.word.noun(),
+});
+
+export const predefinedMetricFactory = (options?: Partial<PredefinedMetric>): PredefinedMetric => ({
+    Description: options?.Description ?? faker.lorem.sentence(),
+    Events: options?.Events ?? faker.word.noun(),
+    Formula: options?.Formula ?? faker.lorem.sentence(),
+    Metric: options?.Metric ?? faker.word.noun(),
+    Unit: options?.Unit ?? faker.word.noun(),
+});
+
+export const predefinedMetricGroupFactory = (
+    options?: Partial<PredefinedMetricGroup>,
+): PredefinedMetricGroup => ({
+    Description: options?.Description ?? faker.lorem.sentence(),
+    Group: options?.Group ?? faker.word.noun(),
+    Metrics: options?.Metrics ?? faker.word.noun(),
+});
+
+export const listOutputFactory = (options?: Partial<ListOutput>): ListOutput => ({
+    Predefined_Events: options?.Predefined_Events ?? faker.helpers.multiple(predefinedEventFactory),
+    Predefined_Metrics:
+        options?.Predefined_Metrics ?? faker.helpers.multiple(predefinedMetricFactory),
+    Predefined_Groups_of_Metrics:
+        options?.Predefined_Groups_of_Metrics ??
+        faker.helpers.multiple(predefinedMetricGroupFactory),
+});

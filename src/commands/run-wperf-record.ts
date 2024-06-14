@@ -4,9 +4,9 @@
 
 import * as vscode from 'vscode';
 import { ObservableCollection } from '../observable-collection';
-import { ProgressLocation } from 'vscode';
+import { ProgressLocation, QuickPickItem } from 'vscode';
 import { RecordOptions, runList, runRecord } from '../wperf/run';
-import { Sample } from '../wperf/parse';
+import { PredefinedEvent, Sample } from '../wperf/parse';
 import { logger } from '../logging/logger';
 import { RecordRun } from '../views/sampling-results/record-run';
 import { logErrorAndNotify } from '../logging/error-logging';
@@ -85,12 +85,22 @@ const executeFocusSamplingResults = () => {
     vscode.commands.executeCommand('samplingResults.focus');
 };
 
-const getPmuEventsFromWperf = async (): Promise<string[]> => {
-    return (await runList()).sort();
+export const getQuickPickItemsFromPredefinedEvents = (events: PredefinedEvent[]): QuickPickItem[] =>
+    events
+        .map(
+            (event): QuickPickItem => ({
+                label: event.Alias_Name,
+                description: event.Description,
+            }),
+        )
+        .sort((a, b) => a.label.localeCompare(b.label));
+
+const getPmuEventsFromWperf = async (): Promise<QuickPickItem[]> => {
+    return getQuickPickItemsFromPredefinedEvents(await runList());
 };
 
 const promptForEventsWithQuickPick = async (): Promise<string[]> => {
-    let events: string[] | undefined;
+    let events: QuickPickItem[] | undefined;
 
     try {
         events = await vscode.window.showQuickPick(getPmuEventsFromWperf(), {
@@ -101,7 +111,7 @@ const promptForEventsWithQuickPick = async (): Promise<string[]> => {
         logErrorAndNotify(error, 'Failed to get PMU events from wperf list.');
     }
 
-    return events || [];
+    return events?.map(({ label }) => label) || [];
 };
 
 const promptForCommandWithQuickPick = async (): Promise<string | undefined> => {

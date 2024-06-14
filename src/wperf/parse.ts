@@ -33,9 +33,9 @@ export type SourceCode = Pick<
 };
 
 export type ListOutput = Required<SchemaList>;
-
-export const getEventNames = (listOutput: ListOutput): string[] =>
-    listOutput.Predefined_Events.map((event) => event.Alias_Name);
+export type PredefinedEvent = ListOutput['Predefined_Events'][number];
+export type PredefinedMetric = ListOutput['Predefined_Metrics'][number];
+export type PredefinedMetricGroup = ListOutput['Predefined_Groups_of_Metrics'][number];
 
 const ajv = new Ajv();
 const validateSample = ajv.compile<SchemaSample>(schemaSample);

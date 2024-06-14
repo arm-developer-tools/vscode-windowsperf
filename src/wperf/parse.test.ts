@@ -6,9 +6,7 @@ import { DefinedError } from 'ajv';
 import { percentage } from '../math';
 import { loadFixtureFile } from './fixtures';
 import {
-    ListOutput,
     SchemaValidationError,
-    getEventNames,
     parseList,
     parseListJson,
     parseSample,
@@ -16,6 +14,11 @@ import {
 } from './parse';
 import { Sample as SchemaSample } from './schemas/out/sample';
 import { List as SchemaList } from './schemas/out/list';
+import {
+    listOutputFactory,
+    predefinedEventFactory,
+    predefinedMetricFactory,
+} from './parse.factories';
 
 describe('parseSampleJSON', () => {
     it('parses minimal schema compliant json', () => {
@@ -101,36 +104,16 @@ describe('parseSample', () => {
             {
                 function_name: 'add',
                 source_code: [
-                    {
-                        filename: 'file-1.c',
-                        hits: 53,
-                        overhead: percentage(53, 53 + 31),
-                    },
-                    {
-                        filename: 'file-2.c',
-                        hits: 31,
-                        overhead: percentage(31, 53 + 31),
-                    },
+                    { filename: 'file-1.c', hits: 53, overhead: percentage(53, 53 + 31) },
+                    { filename: 'file-2.c', hits: 31, overhead: percentage(31, 53 + 31) },
                 ],
             },
             {
                 function_name: 'multiply',
                 source_code: [
-                    {
-                        filename: 'file-a.c',
-                        hits: 3,
-                        overhead: percentage(3, 3 + 5 + 2),
-                    },
-                    {
-                        filename: 'file-b.c',
-                        hits: 5,
-                        overhead: percentage(5, 3 + 5 + 2),
-                    },
-                    {
-                        filename: 'file-c.c',
-                        hits: 2,
-                        overhead: percentage(2, 3 + 5 + 2),
-                    },
+                    { filename: 'file-a.c', hits: 3, overhead: percentage(3, 3 + 5 + 2) },
+                    { filename: 'file-b.c', hits: 5, overhead: percentage(5, 3 + 5 + 2) },
+                    { filename: 'file-c.c', hits: 2, overhead: percentage(2, 3 + 5 + 2) },
                 ],
             },
         ];
@@ -142,16 +125,8 @@ describe('parseListJson', () => {
     it('parses minimal schema compliant json', () => {
         const data: SchemaList = {
             Predefined_Events: [
-                {
-                    Alias_Name: 'alias-1',
-                    Event_Type: 'type-1',
-                    Raw_Index: 'index-1',
-                },
-                {
-                    Alias_Name: 'alias-2',
-                    Event_Type: 'type-2',
-                    Raw_Index: 'index-2',
-                },
+                { Alias_Name: 'alias-1', Event_Type: 'type-1', Raw_Index: 'index-1' },
+                { Alias_Name: 'alias-2', Event_Type: 'type-2', Raw_Index: 'index-2' },
             ],
             Predefined_Metrics: [{ Events: 'events-1', Metric: 'metric-1' }],
             Predefined_Groups_of_Metrics: [],
@@ -176,6 +151,7 @@ describe('parseListJson', () => {
             Alias_Name: 'l1i_cache_refill',
             Raw_Index: '0x0001',
             Event_Type: '[core PMU event]',
+            Description: 'level 1 instruction cache refill',
         });
     });
 
@@ -196,28 +172,7 @@ describe('parseListJson', () => {
 
 describe('parseList', () => {
     it('returns events, metrics and groups without modification if present in the input', () => {
-        const toParse: SchemaList = {
-            Predefined_Events: [
-                {
-                    Alias_Name: 'alias-1',
-                    Event_Type: 'type-1',
-                    Raw_Index: 'index-1',
-                },
-                {
-                    Alias_Name: 'alias-2',
-                    Event_Type: 'type-2',
-                    Raw_Index: 'index-2',
-                },
-            ],
-            Predefined_Metrics: [
-                { Events: 'events-1', Metric: 'metric-1' },
-                { Events: 'events-2', Metric: 'metric-2' },
-            ],
-            Predefined_Groups_of_Metrics: [
-                { Group: 'group-1', Metrics: 'metric-1' },
-                { Group: 'group-2', Metrics: 'metric-2' },
-            ],
-        };
+        const toParse: SchemaList = listOutputFactory();
 
         const output = parseList(toParse);
 
@@ -226,14 +181,8 @@ describe('parseList', () => {
 
     it('returns an empty list of groups when not present', () => {
         const toParse: SchemaList = {
-            Predefined_Events: [
-                {
-                    Alias_Name: 'alias-1',
-                    Event_Type: 'type-1',
-                    Raw_Index: 'index-1',
-                },
-            ],
-            Predefined_Metrics: [{ Events: 'events-1', Metric: 'metric-1' }],
+            Predefined_Events: [predefinedEventFactory()],
+            Predefined_Metrics: [predefinedMetricFactory()],
         };
 
         const output = parseList(toParse);
@@ -269,30 +218,5 @@ describe('SchemaValidationError', () => {
         const wantedValidationMessage2 = `${validationError2.instancePath}: ${validationError2.message}`;
         const wantedMessage = `Parsed json does not match the schema\n    ${wantedValidationMessage1}\n    ${wantedValidationMessage2}`;
         expect(error.getDisplayMessage()).toEqual(wantedMessage);
-    });
-});
-
-describe('getEventNames', () => {
-    it('returns the event names from a list of events', () => {
-        const listOutput: ListOutput = {
-            Predefined_Events: [
-                {
-                    Alias_Name: 'alias-1',
-                    Event_Type: 'type-1',
-                    Raw_Index: 'index-1',
-                },
-                {
-                    Alias_Name: 'alias-2',
-                    Event_Type: 'type-2',
-                    Raw_Index: 'index-2',
-                },
-            ],
-            Predefined_Metrics: [],
-            Predefined_Groups_of_Metrics: [],
-        };
-
-        const got = getEventNames(listOutput);
-
-        expect(got).toEqual(['alias-1', 'alias-2']);
     });
 });

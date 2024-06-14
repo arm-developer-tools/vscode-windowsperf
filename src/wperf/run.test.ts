@@ -78,6 +78,6 @@ describe('buildListCommand', () => {
 
         const got = buildListCommand(executablePath);
 
-        expect(got).toEqual(`"${executablePath}" list --json`);
+        expect(got).toEqual(`"${executablePath}" list -v --json`);
     });
 });

@@ -3,2339 +3,2817 @@
         {
             "Alias_Name": "sw_incr",
             "Raw_Index": "0x0000",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, software increment"
         },
         {
             "Alias_Name": "l1i_cache_refill",
             "Raw_Index": "0x0001",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache refill"
         },
         {
             "Alias_Name": "l1i_tlb_refill",
             "Raw_Index": "0x0002",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction tlb refill"
         },
         {
             "Alias_Name": "l1d_cache_refill",
             "Raw_Index": "0x0003",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache refill"
         },
         {
             "Alias_Name": "l1d_cache",
             "Raw_Index": "0x0004",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache access"
         },
         {
             "Alias_Name": "l1d_tlb_refill",
             "Raw_Index": "0x0005",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data tlb refill"
         },
         {
             "Alias_Name": "ld_retired",
             "Raw_Index": "0x0006",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, load"
         },
         {
             "Alias_Name": "st_retired",
             "Raw_Index": "0x0007",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, store"
         },
         {
             "Alias_Name": "inst_retired",
             "Raw_Index": "0x0008",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed"
         },
         {
             "Alias_Name": "exc_taken",
             "Raw_Index": "0x0009",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken"
         },
         {
             "Alias_Name": "exc_return",
             "Raw_Index": "0x000a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, exception return"
         },
         {
             "Alias_Name": "cid_write_retired",
             "Raw_Index": "0x000b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, write to contextidr"
         },
         {
             "Alias_Name": "pc_write_retired",
             "Raw_Index": "0x000c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, software change of the pc"
         },
         {
             "Alias_Name": "br_immed_retired",
             "Raw_Index": "0x000d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, immediate branch"
         },
         {
             "Alias_Name": "br_return_retired",
             "Raw_Index": "0x000e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, procedure return"
         },
         {
             "Alias_Name": "unaligned_ldst_retired",
             "Raw_Index": "0x000f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, unaligned"
         },
         {
             "Alias_Name": "br_mis_pred",
             "Raw_Index": "0x0010",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "mispredicted or not predicted branch speculatively executed"
         },
         {
             "Alias_Name": "cpu_cycles",
             "Raw_Index": "0x0011",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "cycle"
         },
         {
             "Alias_Name": "br_pred",
             "Raw_Index": "0x0012",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "predictable branch speculatively executed"
         },
         {
             "Alias_Name": "mem_access",
             "Raw_Index": "0x0013",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data memory access"
         },
         {
             "Alias_Name": "l1i_cache",
             "Raw_Index": "0x0014",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache access"
         },
         {
             "Alias_Name": "l1d_cache_wb",
             "Raw_Index": "0x0015",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache write-back"
         },
         {
             "Alias_Name": "l2d_cache",
             "Raw_Index": "0x0016",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache access"
         },
         {
             "Alias_Name": "l2d_cache_refill",
             "Raw_Index": "0x0017",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache refill"
         },
         {
             "Alias_Name": "l2d_cache_wb",
             "Raw_Index": "0x0018",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache write-back"
         },
         {
             "Alias_Name": "bus_access",
             "Raw_Index": "0x0019",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access"
         },
         {
             "Alias_Name": "memory_error",
             "Raw_Index": "0x001a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "local memory error"
         },
         {
             "Alias_Name": "inst_spec",
             "Raw_Index": "0x001b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed"
         },
         {
             "Alias_Name": "ttbr_write_retired",
             "Raw_Index": "0x001c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, condition code check pass, write to ttbr"
         },
         {
             "Alias_Name": "bus_cycles",
             "Raw_Index": "0x001d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus cycle"
         },
         {
             "Alias_Name": "chain",
             "Raw_Index": "0x001e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "for odd-numbered counters, increments the count by one for each overflow of the preceding even-numbered counter. for even-numbered counters there is no increment"
         },
         {
             "Alias_Name": "l1d_cache_allocate",
             "Raw_Index": "0x001f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache allocation without refill"
         },
         {
             "Alias_Name": "l2d_cache_allocate",
             "Raw_Index": "0x0020",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache allocation without refill"
         },
         {
             "Alias_Name": "br_retired",
             "Raw_Index": "0x0021",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, branch"
         },
         {
             "Alias_Name": "br_mis_pred_retired",
             "Raw_Index": "0x0022",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted branch"
         },
         {
             "Alias_Name": "stall_frontend",
             "Raw_Index": "0x0023",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "no operation issued due to the front end"
         },
         {
             "Alias_Name": "stall_backend",
             "Raw_Index": "0x0024",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "no operation issued due to the back end"
         },
         {
             "Alias_Name": "l1d_tlb",
             "Raw_Index": "0x0025",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified tlb access"
         },
         {
             "Alias_Name": "l1i_tlb",
             "Raw_Index": "0x0026",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction tlb access"
         },
         {
             "Alias_Name": "l2i_cache",
             "Raw_Index": "0x0027",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 instruction cache access"
         },
         {
             "Alias_Name": "l2i_cache_refill",
             "Raw_Index": "0x0028",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 instruction cache refill"
         },
         {
             "Alias_Name": "l3d_cache_allocate",
             "Raw_Index": "0x0029",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache allocation without refill"
         },
         {
             "Alias_Name": "l3d_cache_refill",
             "Raw_Index": "0x002a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache refill"
         },
         {
             "Alias_Name": "l3d_cache",
             "Raw_Index": "0x002b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache access"
         },
         {
             "Alias_Name": "l3d_cache_wb",
             "Raw_Index": "0x002c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache write-back"
         },
         {
             "Alias_Name": "l2d_tlb_refill",
             "Raw_Index": "0x002d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 data or unified tlb refill"
         },
         {
             "Alias_Name": "l2i_tlb_refill",
             "Raw_Index": "0x002e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 instruction tlb refill"
         },
         {
             "Alias_Name": "l2d_tlb",
             "Raw_Index": "0x002f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 data or unified tlb access"
         },
         {
             "Alias_Name": "l2i_tlb",
             "Raw_Index": "0x0030",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 instruction tlb access"
         },
         {
             "Alias_Name": "remote_access",
             "Raw_Index": "0x0031",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable access to another socket in a multi-socket system"
         },
         {
             "Alias_Name": "ll_cache",
             "Raw_Index": "0x0032",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable last level data cache access"
         },
         {
             "Alias_Name": "ll_cache_miss",
             "Raw_Index": "0x0033",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable last level data or unified cache miss"
         },
         {
             "Alias_Name": "dtlb_walk",
             "Raw_Index": "0x0034",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable data or unified tlb access with at least one translation table walk"
         },
         {
             "Alias_Name": "itlb_walk",
             "Raw_Index": "0x0035",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable instruction tlb access with at least one translation table walk"
         },
         {
             "Alias_Name": "ll_cache_rd",
             "Raw_Index": "0x0036",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable last level cache memory read"
         },
         {
             "Alias_Name": "ll_cache_miss_rd",
             "Raw_Index": "0x0037",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable last level cache memory read miss"
         },
         {
             "Alias_Name": "remote_access_rd",
             "Raw_Index": "0x0038",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable memory read access to another socket in a multi-socket system"
         },
         {
             "Alias_Name": "l1d_cache_lmiss_rd",
             "Raw_Index": "0x0039",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache long-latency read miss"
         },
         {
             "Alias_Name": "op_retired",
             "Raw_Index": "0x003a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "micro-operation architecturally executed"
         },
         {
             "Alias_Name": "op_spec",
             "Raw_Index": "0x003b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "micro-operation speculatively executed"
         },
         {
             "Alias_Name": "stall",
             "Raw_Index": "0x003c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "no operation sent for execution"
         },
         {
             "Alias_Name": "stall_slot_backend",
             "Raw_Index": "0x003d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "no operation sent for execution on a slot due to the backend"
         },
         {
             "Alias_Name": "stall_slot_frontend",
             "Raw_Index": "0x003e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "no operation send for execution on a slot due to the frontend"
         },
         {
             "Alias_Name": "stall_slot",
             "Raw_Index": "0x003f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "no operation sent for execution on a slot"
         },
         {
             "Alias_Name": "l1d_cache_rd",
             "Raw_Index": "0x0040",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache access, read"
         },
         {
             "Alias_Name": "l1d_cache_wr",
             "Raw_Index": "0x0041",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache access, write"
         },
         {
             "Alias_Name": "l1d_cache_refill_rd",
             "Raw_Index": "0x0042",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache refill, read"
         },
         {
             "Alias_Name": "l1d_cache_refill_wr",
             "Raw_Index": "0x0043",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache refill, write"
         },
         {
             "Alias_Name": "l1d_cache_refill_inner",
             "Raw_Index": "0x0044",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache refill, inner"
         },
         {
             "Alias_Name": "l1d_cache_refill_outer",
             "Raw_Index": "0x0045",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache refill, outer"
         },
         {
             "Alias_Name": "l1d_cache_wb_victim",
             "Raw_Index": "0x0046",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache write-back, victim"
         },
         {
             "Alias_Name": "l1d_cache_wb_clean",
             "Raw_Index": "0x0047",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache write-back, cleaning and coherency"
         },
         {
             "Alias_Name": "l1d_cache_inval",
             "Raw_Index": "0x0048",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache invalidate"
         },
         {
             "Alias_Name": "l1d_tlb_refill_rd",
             "Raw_Index": "0x004c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data tlb refill, read"
         },
         {
             "Alias_Name": "l1d_tlb_refill_wr",
             "Raw_Index": "0x004d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data tlb refill, write"
         },
         {
             "Alias_Name": "l1d_tlb_rd",
             "Raw_Index": "0x004e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified tlb access, read"
         },
         {
             "Alias_Name": "l1d_tlb_wr",
             "Raw_Index": "0x004f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified tlb access, write"
         },
         {
             "Alias_Name": "l2d_cache_rd",
             "Raw_Index": "0x0050",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache access, read"
         },
         {
             "Alias_Name": "l2d_cache_wr",
             "Raw_Index": "0x0051",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache access, write"
         },
         {
             "Alias_Name": "l2d_cache_refill_rd",
             "Raw_Index": "0x0052",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache refill, read"
         },
         {
             "Alias_Name": "l2d_cache_refill_wr",
             "Raw_Index": "0x0053",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache refill, write"
         },
         {
             "Alias_Name": "l2d_cache_wb_victim",
             "Raw_Index": "0x0056",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache write-back, victim"
         },
         {
             "Alias_Name": "l2d_cache_wb_clean",
             "Raw_Index": "0x0057",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache write-back, cleaning and coherency"
         },
         {
             "Alias_Name": "l2d_cache_inval",
             "Raw_Index": "0x0058",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache invalidate"
         },
         {
             "Alias_Name": "l2d_tlb_refill_rd",
             "Raw_Index": "0x005c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 data or unified tlb refill, read"
         },
         {
             "Alias_Name": "l2d_tlb_refill_wr",
             "Raw_Index": "0x005d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 data or unified tlb refill, write"
         },
         {
             "Alias_Name": "l2d_tlb_rd",
             "Raw_Index": "0x005e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 data or unified tlb access, read"
         },
         {
             "Alias_Name": "l2d_tlb_wr",
             "Raw_Index": "0x005f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 2 data or unified tlb access, write"
         },
         {
             "Alias_Name": "bus_access_rd",
             "Raw_Index": "0x0060",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access, read"
         },
         {
             "Alias_Name": "bus_access_wr",
             "Raw_Index": "0x0061",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access, write"
         },
         {
             "Alias_Name": "bus_access_shared",
             "Raw_Index": "0x0062",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access, normal, cacheable, shareable"
         },
         {
             "Alias_Name": "bus_access_not_shared",
             "Raw_Index": "0x0063",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access, not normal, cacheable, shareable"
         },
         {
             "Alias_Name": "bus_access_normal",
             "Raw_Index": "0x0064",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access, normal"
         },
         {
             "Alias_Name": "bus_access_periph",
             "Raw_Index": "0x0065",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "bus access, peripheral"
         },
         {
             "Alias_Name": "mem_access_rd",
             "Raw_Index": "0x0066",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data memory access, read"
         },
         {
             "Alias_Name": "mem_access_wr",
             "Raw_Index": "0x0067",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data memory access, write"
         },
         {
             "Alias_Name": "unaligned_ld_spec",
             "Raw_Index": "0x0068",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "unaligned access, read"
         },
         {
             "Alias_Name": "unaligned_st_spec",
             "Raw_Index": "0x0069",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "unaligned access, write"
         },
         {
             "Alias_Name": "unaligned_ldst_spec",
             "Raw_Index": "0x006a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "unaligned access"
         },
         {
             "Alias_Name": "ldrex_spec",
             "Raw_Index": "0x006c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exclusive operation speculatively executed, ldrex or ldx"
         },
         {
             "Alias_Name": "strex_pass_spec",
             "Raw_Index": "0x006d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exclusive operation speculatively executed, strex or stx pass"
         },
         {
             "Alias_Name": "strex_fail_spec",
             "Raw_Index": "0x006e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exclusive operation speculatively executed, strex or stx pass"
         },
         {
             "Alias_Name": "strex_spec",
             "Raw_Index": "0x006f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exclusive operation speculatively executed, strex or stx"
         },
         {
             "Alias_Name": "ld_spec",
             "Raw_Index": "0x0070",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, load"
         },
         {
             "Alias_Name": "st_spec",
             "Raw_Index": "0x0071",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, store"
         },
         {
             "Alias_Name": "ldst_spec",
             "Raw_Index": "0x0072",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, load or store"
         },
         {
             "Alias_Name": "dp_spec",
             "Raw_Index": "0x0073",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, integer data-processing"
         },
         {
             "Alias_Name": "ase_spec",
             "Raw_Index": "0x0074",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, advanced simd instruction"
         },
         {
             "Alias_Name": "vfp_spec",
             "Raw_Index": "0x0075",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, floating-point instruction"
         },
         {
             "Alias_Name": "pc_write_spec",
             "Raw_Index": "0x0076",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, software change of the pc"
         },
         {
             "Alias_Name": "crypto_spec",
             "Raw_Index": "0x0077",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "operation speculatively executed, cryptographic instruction"
         },
         {
             "Alias_Name": "br_immed_spec",
             "Raw_Index": "0x0078",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "branch speculatively executed, immediate branch"
         },
         {
             "Alias_Name": "br_return_spec",
             "Raw_Index": "0x0079",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "branch speculatively executed, procedure return"
         },
         {
             "Alias_Name": "br_indirect_spec",
             "Raw_Index": "0x007a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "branch speculatively executed, indirect branch"
         },
         {
             "Alias_Name": "isb_spec",
             "Raw_Index": "0x007c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "barrier speculatively executed, isb"
         },
         {
             "Alias_Name": "dsb_spec",
             "Raw_Index": "0x007d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "barrier speculatively executed, dsb"
         },
         {
             "Alias_Name": "dmb_spec",
             "Raw_Index": "0x007e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "barrier speculatively executed, dmb"
         },
         {
             "Alias_Name": "exc_undef",
             "Raw_Index": "0x0081",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, other synchronous"
         },
         {
             "Alias_Name": "exc_svc",
             "Raw_Index": "0x0082",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, supervisor call"
         },
         {
             "Alias_Name": "exc_pabort",
             "Raw_Index": "0x0083",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, instruction abort"
         },
         {
             "Alias_Name": "exc_dabort",
             "Raw_Index": "0x0084",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, data abort and serror"
         },
         {
             "Alias_Name": "exc_irq",
             "Raw_Index": "0x0086",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, irq"
         },
         {
             "Alias_Name": "exc_fiq",
             "Raw_Index": "0x0087",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, fiq"
         },
         {
             "Alias_Name": "exc_smc",
             "Raw_Index": "0x0088",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, secure monitor call"
         },
         {
             "Alias_Name": "exc_hvc",
             "Raw_Index": "0x008a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, hypervisor call"
         },
         {
             "Alias_Name": "exc_trap_pabort",
             "Raw_Index": "0x008b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, instruction abort not taken locally"
         },
         {
             "Alias_Name": "exc_trap_dabort",
             "Raw_Index": "0x008c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, data abort or serror not taken locally"
         },
         {
             "Alias_Name": "exc_trap_other",
             "Raw_Index": "0x008d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, other traps not taken locally"
         },
         {
             "Alias_Name": "exc_trap_irq",
             "Raw_Index": "0x008e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, irq not taken locally"
         },
         {
             "Alias_Name": "exc_trap_fiq",
             "Raw_Index": "0x008f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "exception taken, fiq not taken locally"
         },
         {
             "Alias_Name": "rc_ld_spec",
             "Raw_Index": "0x0090",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "release consistency operation speculatively executed, load-acquire"
         },
         {
             "Alias_Name": "rc_st_spec",
             "Raw_Index": "0x0091",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "release consistency operation speculatively executed, store-release"
         },
         {
             "Alias_Name": "l3d_cache_rd",
             "Raw_Index": "0x00a0",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache access, read"
         },
         {
             "Alias_Name": "l3d_cache_wr",
             "Raw_Index": "0x00a1",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache access, write"
         },
         {
             "Alias_Name": "l3d_cache_refill_rd",
             "Raw_Index": "0x00a2",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache refill, read"
         },
         {
             "Alias_Name": "l3d_cache_refill_wr",
             "Raw_Index": "0x00a3",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache refill, write"
         },
         {
             "Alias_Name": "l3d_cache_wb_victim",
             "Raw_Index": "0x00a6",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache write-back, victim"
         },
         {
             "Alias_Name": "l3d_cache_wb_clean",
             "Raw_Index": "0x00a7",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache write-back, cache clean"
         },
         {
             "Alias_Name": "l3d_cache_inval",
             "Raw_Index": "0x00a8",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "attributable level 3 data or unified cache access, invalidate"
         },
         {
             "Alias_Name": "sample_pop",
             "Raw_Index": "0x4000",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sample population"
         },
         {
             "Alias_Name": "sample_feed",
             "Raw_Index": "0x4001",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sample taken"
         },
         {
             "Alias_Name": "sample_filtrate",
             "Raw_Index": "0x4002",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sample taken and not removed by filtering"
         },
         {
             "Alias_Name": "sample_collision",
             "Raw_Index": "0x4003",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sample collided with previous sample"
         },
         {
             "Alias_Name": "cnt_cycles",
             "Raw_Index": "0x4004",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "constant frequency cycles"
         },
         {
             "Alias_Name": "stall_backend_mem",
             "Raw_Index": "0x4005",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "memory stall cycles"
         },
         {
             "Alias_Name": "l1i_cache_lmiss",
             "Raw_Index": "0x4006",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache long-latency read miss"
         },
         {
             "Alias_Name": "l2d_cache_lmiss_rd",
             "Raw_Index": "0x4009",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache long-latency read miss"
         },
         {
             "Alias_Name": "l2i_cache_lmiss",
             "Raw_Index": "0x400a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 instruction cache long-latency read miss"
         },
         {
             "Alias_Name": "l3d_cache_lmiss_rd",
             "Raw_Index": "0x400b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 3 data cache long-latency read miss"
         },
         {
             "Alias_Name": "ldst_align_lat",
             "Raw_Index": "0x4020",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "access with additional latency from alignment"
         },
         {
             "Alias_Name": "ld_align_lat",
             "Raw_Index": "0x4021",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "load with additional latency from alignment"
         },
         {
             "Alias_Name": "st_align_lat",
             "Raw_Index": "0x4022",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "store with additional latency from alignment"
         },
         {
             "Alias_Name": "mem_access_checked",
             "Raw_Index": "0x4024",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "checked data memory access"
         },
         {
             "Alias_Name": "mem_access_checked_rd",
             "Raw_Index": "0x4025",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "checked data memory access, read"
         },
         {
             "Alias_Name": "mem_access_checked_wr",
             "Raw_Index": "0x4026",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "checked data memory access, write"
         },
         {
             "Alias_Name": "simd_inst_retired",
             "Raw_Index": "0x8000",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "simd instructions architecturally executed"
         },
         {
             "Alias_Name": "ase_inst_retired",
             "Raw_Index": "0x8001",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase instructions architecturally executed"
         },
         {
             "Alias_Name": "sve_inst_retired",
             "Raw_Index": "0x8002",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve instructions architecturally executed"
         },
         {
             "Alias_Name": "ase_sve_inst_retired",
             "Raw_Index": "0x8003",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve instructions architecturally executed"
         },
         {
             "Alias_Name": "simd_inst_spec",
             "Raw_Index": "0x8004",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "simd operations speculatively executed"
         },
         {
             "Alias_Name": "ase_inst_spec",
             "Raw_Index": "0x8005",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase operations speculatively executed"
         },
         {
             "Alias_Name": "sve_inst_spec",
             "Raw_Index": "0x8006",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_inst_spec",
             "Raw_Index": "0x8007",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve operations speculatively executed"
         },
         {
             "Alias_Name": "uop_spec",
             "Raw_Index": "0x8008",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "any +alu--ops speculatively executed"
         },
         {
             "Alias_Name": "ase_uop_spec",
             "Raw_Index": "0x8009",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase +alu--ops speculatively executed"
         },
         {
             "Alias_Name": "sve_uop_spec",
             "Raw_Index": "0x800a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve +alu--ops speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_uop_spec",
             "Raw_Index": "0x800b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve +alu--ops speculatively executed"
         },
         {
             "Alias_Name": "simd_uop_spec",
             "Raw_Index": "0x800c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "simd +alu--ops speculatively executed"
         },
         {
             "Alias_Name": "sve_math_spec",
             "Raw_Index": "0x800e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve math operations speculatively executed"
         },
         {
             "Alias_Name": "fp_spec",
             "Raw_Index": "0x8010",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_spec",
             "Raw_Index": "0x8011",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_spec",
             "Raw_Index": "0x8012",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_spec",
             "Raw_Index": "0x8013",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "fp_hp_spec",
             "Raw_Index": "0x8014",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point half-precision operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_hp_spec",
             "Raw_Index": "0x8015",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point half-precision operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_hp_spec",
             "Raw_Index": "0x8016",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point half-precision operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_hp_spec",
             "Raw_Index": "0x8017",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point half-precision operations speculatively executed"
         },
         {
             "Alias_Name": "fp_sp_spec",
             "Raw_Index": "0x8018",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point single-precision operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_sp_spec",
             "Raw_Index": "0x8019",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point single-precision operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_sp_spec",
             "Raw_Index": "0x801a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point single-precision operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_sp_spec",
             "Raw_Index": "0x801b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point single-precision operations speculatively executed"
         },
         {
             "Alias_Name": "fp_dp_spec",
             "Raw_Index": "0x801c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point double-precision operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_dp_spec",
             "Raw_Index": "0x801d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point double-precision operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_dp_spec",
             "Raw_Index": "0x801e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point double-precision operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_dp_spec",
             "Raw_Index": "0x801f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point double-precision operations speculatively executed"
         },
         {
             "Alias_Name": "fp_div_spec",
             "Raw_Index": "0x8020",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point divide operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_div_spec",
             "Raw_Index": "0x8021",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point divide operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_div_spec",
             "Raw_Index": "0x8022",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point divide operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_div_spec",
             "Raw_Index": "0x8023",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point divide operations speculatively executed"
         },
         {
             "Alias_Name": "fp_sqrt_spec",
             "Raw_Index": "0x8024",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point square-root operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_sqrt_spec",
             "Raw_Index": "0x8025",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point square-root operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_sqrt_spec",
             "Raw_Index": "0x8026",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point square-root operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_sqrt_spec",
             "Raw_Index": "0x8027",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point square-root operations speculatively executed"
         },
         {
             "Alias_Name": "fp_fma_spec",
             "Raw_Index": "0x8028",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point fma operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_fma_spec",
             "Raw_Index": "0x8029",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point fma operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_fma_spec",
             "Raw_Index": "0x802a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point fma operation s speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_fma_spec",
             "Raw_Index": "0x802b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point fma operations speculatively executed"
         },
         {
             "Alias_Name": "fp_mul_spec",
             "Raw_Index": "0x802c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_mul_spec",
             "Raw_Index": "0x802d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point multiply operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_mul_spec",
             "Raw_Index": "0x802e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_mul_spec",
             "Raw_Index": "0x802f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point multiply operations speculatively executed"
         },
         {
             "Alias_Name": "fp_addsub_spec",
             "Raw_Index": "0x8030",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point add & subtract operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_addsub_spec",
             "Raw_Index": "0x8031",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point add & subtract operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_addsub_spec",
             "Raw_Index": "0x8032",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point add & subtract operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_addsub_spec",
             "Raw_Index": "0x8033",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point add & subtract operations speculatively executed"
         },
         {
             "Alias_Name": "fp_recpe_spec",
             "Raw_Index": "0x8034",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point reciprocal estimate operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_recpe_spec",
             "Raw_Index": "0x8035",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point reciprocal estimate operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_recpe_spec",
             "Raw_Index": "0x8036",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point reciprocal estimate operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_recpe_spec",
             "Raw_Index": "0x8037",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point reciprocal estimate operations speculatively executed"
         },
         {
             "Alias_Name": "fp_cvt_spec",
             "Raw_Index": "0x8038",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "floating-point convert operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_cvt_spec",
             "Raw_Index": "0x8039",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point convert operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_cvt_spec",
             "Raw_Index": "0x803a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point convert operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_cvt_spec",
             "Raw_Index": "0x803b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point convert operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_areduce_spec",
             "Raw_Index": "0x803c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point accumulating reduction operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_preduce_spec",
             "Raw_Index": "0x803d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase floating-point pairwise add step operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_vreduce_spec",
             "Raw_Index": "0x803e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point vector reduction operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_vreduce_spec",
             "Raw_Index": "0x803f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve floating-point vector reduction operations speculatively executed"
         },
         {
             "Alias_Name": "int_spec",
             "Raw_Index": "0x8040",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int_spec",
             "Raw_Index": "0x8041",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase integer operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_spec",
             "Raw_Index": "0x8042",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int_spec",
             "Raw_Index": "0x8043",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve integer operations speculatively executed"
         },
         {
             "Alias_Name": "int_div_spec",
             "Raw_Index": "0x8044",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "integer divide operations speculatively executed"
         },
         {
             "Alias_Name": "int_div64_spec",
             "Raw_Index": "0x8045",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "integer 64-bit divide operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_div_spec",
             "Raw_Index": "0x8046",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve  integer divide operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_div64_spec",
             "Raw_Index": "0x8047",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer 64-bit divide operations speculatively executed"
         },
         {
             "Alias_Name": "int_mul_spec",
             "Raw_Index": "0x8048",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "integer multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int_mul_spec",
             "Raw_Index": "0x8049",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase integer multiply operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_mul_spec",
             "Raw_Index": "0x804a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int_mul_spec",
             "Raw_Index": "0x804b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve integer multiply operations speculatively executed"
         },
         {
             "Alias_Name": "int_mul64_spec",
             "Raw_Index": "0x804c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "integer 64-bit multiply operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_mul64_spec",
             "Raw_Index": "0x804d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer 64-bit multiply operations speculatively executed"
         },
         {
             "Alias_Name": "int_mulh64_spec",
             "Raw_Index": "0x804e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "integer 64-bit multiply high part operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_mulh64_spec",
             "Raw_Index": "0x804f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer 64-bit multiply high part operations speculatively executed"
         },
         {
             "Alias_Name": "nonfp_spec",
             "Raw_Index": "0x8058",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "ase_nonfp_spec",
             "Raw_Index": "0x8059",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase non-floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "sve_nonfp_spec",
             "Raw_Index": "0x805a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve non-floating operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_nonfp_spec",
             "Raw_Index": "0x805b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve non-floating-point operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int_vreduce_spec",
             "Raw_Index": "0x805d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase integer vector reduction operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_vreduce_spec",
             "Raw_Index": "0x805e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer reduction operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int_vreduce_spec",
             "Raw_Index": "0x805f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve integer reduction operations speculatively executed"
         },
         {
             "Alias_Name": "sve_perm_spec",
             "Raw_Index": "0x8060",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve permute operations speculatively executed"
         },
         {
             "Alias_Name": "sve_perm_igranule_spec",
             "Raw_Index": "0x8061",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve intra-granule permute operations speculatively"
         },
         {
             "Alias_Name": "sve_perm_xgranule_spec",
             "Raw_Index": "0x8062",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve cross-granule permute operations speculatively executed"
         },
         {
             "Alias_Name": "sve_perm_variable_spec",
             "Raw_Index": "0x8063",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve variable permute operations speculatively executed"
         },
         {
             "Alias_Name": "sve_xpipe_spec",
             "Raw_Index": "0x8064",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve cross-pipe operations speculatively executed"
         },
         {
             "Alias_Name": "sve_xpipe_z2r_spec",
             "Raw_Index": "0x8065",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve vector to scalar cross-pipe operations speculatively executed"
         },
         {
             "Alias_Name": "sve_xpipe_r2z_spec",
             "Raw_Index": "0x8066",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve scalar to vector cross-pipe operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pgen_nvec_spec",
             "Raw_Index": "0x8067",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate-only operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pgen_spec",
             "Raw_Index": "0x8068",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate generating operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pgen_flg_spec",
             "Raw_Index": "0x8069",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate flag setting operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pgen_cmp_spec",
             "Raw_Index": "0x806a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve vector compare operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pgen_fcm_spec",
             "Raw_Index": "0x806b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point vector compare operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pgen_logic_spec",
             "Raw_Index": "0x806c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate logical operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pperm_spec",
             "Raw_Index": "0x806d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate permute operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pscan_spec",
             "Raw_Index": "0x806e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate scan operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pcnt_spec",
             "Raw_Index": "0x806f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate count operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ploop_while_spec",
             "Raw_Index": "0x8070",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate loop while operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ploop_test_spec",
             "Raw_Index": "0x8071",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate loop test operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ploop_elts_spec",
             "Raw_Index": "0x8072",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate loop elements speculatively executed"
         },
         {
             "Alias_Name": "sve_ploop_term_spec",
             "Raw_Index": "0x8073",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicate loop termination speculatively executed"
         },
         {
             "Alias_Name": "sve_pred_spec",
             "Raw_Index": "0x8074",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicated operations speculatively executed"
         },
         {
             "Alias_Name": "sve_pred_empty_spec",
             "Raw_Index": "0x8075",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicated operations with no active predicates speculatively executed"
         },
         {
             "Alias_Name": "sve_pred_full_spec",
             "Raw_Index": "0x8076",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicated operations speculatively executed with all active predicates"
         },
         {
             "Alias_Name": "sve_pred_partial_spec",
             "Raw_Index": "0x8077",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicated operations speculatively executed with partially active predicates"
         },
         {
             "Alias_Name": "sve_unpred_spec",
             "Raw_Index": "0x8078",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve unpredicated vector operations speculatively executed counts speculatively executed simd data-processing and load/store operations due to sve instructions without a governing predicate"
         },
         {
             "Alias_Name": "sve_pred_not_full_spec",
             "Raw_Index": "0x8079",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve predicated operations with empty or partially active predicates"
         },
         {
             "Alias_Name": "sve_movprfx_spec",
             "Raw_Index": "0x807c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve movprfx operations speculatively executed"
         },
         {
             "Alias_Name": "sve_movprfx_z_spec",
             "Raw_Index": "0x807d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve movprfx zeroing predication speculatively executed"
         },
         {
             "Alias_Name": "sve_movprfx_m_spec",
             "Raw_Index": "0x807e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve movprfx merging predication speculatively executed"
         },
         {
             "Alias_Name": "sve_movprfx_u_spec",
             "Raw_Index": "0x807f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve  movprfx unfused operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_spec",
             "Raw_Index": "0x8080",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve load/store operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ld_spec",
             "Raw_Index": "0x8081",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve load operations speculatively executed"
         },
         {
             "Alias_Name": "sve_st_spec",
             "Raw_Index": "0x8082",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve store operations speculatively executed"
         },
         {
             "Alias_Name": "sve_prf_spec",
             "Raw_Index": "0x8083",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_ldst_spec",
             "Raw_Index": "0x8084",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve load/store operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_ld_spec",
             "Raw_Index": "0x8085",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve load operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_st_spec",
             "Raw_Index": "0x8086",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve store operations speculatively executed"
         },
         {
             "Alias_Name": "prf_spec",
             "Raw_Index": "0x8087",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "base_ldst_reg_spec",
             "Raw_Index": "0x8088",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "general-purpose register load/store/prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "base_ld_reg_spec",
             "Raw_Index": "0x8089",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "general-purpose register load operations speculatively executed"
         },
         {
             "Alias_Name": "base_st_reg_spec",
             "Raw_Index": "0x808a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "general-purpose register store operations speculatively executed"
         },
         {
             "Alias_Name": "base_prf_spec",
             "Raw_Index": "0x808b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "general-purpose prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "fpase_ldst_reg_spec",
             "Raw_Index": "0x808c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "fp and ase register load/store operations speculatively executed"
         },
         {
             "Alias_Name": "fpase_ld_reg_spec",
             "Raw_Index": "0x808d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "fp and ase register load operations speculatively executed"
         },
         {
             "Alias_Name": "fpase_st_reg_spec",
             "Raw_Index": "0x808e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "fp and ase register store operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_reg_spec",
             "Raw_Index": "0x8090",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve unpredicated load/store register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldr_reg_spec",
             "Raw_Index": "0x8091",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve unpredicated load register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_str_reg_spec",
             "Raw_Index": "0x8092",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve unpredicated store register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_preg_spec",
             "Raw_Index": "0x8094",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve load/store predicate register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldr_preg_spec",
             "Raw_Index": "0x8095",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve load predicate register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_str_preg_spec",
             "Raw_Index": "0x8096",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve store predicate register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_zreg_spec",
             "Raw_Index": "0x8098",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve load/store vector register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldr_zreg_spec",
             "Raw_Index": "0x8099",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve load vector register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_str_zreg_spec",
             "Raw_Index": "0x809a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve store vector register operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_contig_spec",
             "Raw_Index": "0x809c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous load/store/prefetch element operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ld_contig_spec",
             "Raw_Index": "0x809d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous load element operations speculatively executed"
         },
         {
             "Alias_Name": "sve_st_contig_spec",
             "Raw_Index": "0x809e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous store element operations speculatively executed"
         },
         {
             "Alias_Name": "sve_prf_contig_spec",
             "Raw_Index": "0x809f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous prefetch element operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldstnt_contig_spec",
             "Raw_Index": "0x80a0",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve non-temporal contiguous load/store element operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldnt_contig_spec",
             "Raw_Index": "0x80a1",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve non-temporal contiguous load element operations speculatively executed"
         },
         {
             "Alias_Name": "sve_stnt_contig_spec",
             "Raw_Index": "0x80a2",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve non-temporal contiguous store element operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_ldst_multi_spec",
             "Raw_Index": "0x80a4",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve contiguous load/store multiple vector operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_ld_multi_spec",
             "Raw_Index": "0x80a5",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve contiguous load multiple vector operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_st_multi_spec",
             "Raw_Index": "0x80a6",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve contiguous store multiple vector operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_multi_spec",
             "Raw_Index": "0x80a8",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous load/store multiple vector operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ld_multi_spec",
             "Raw_Index": "0x80a9",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous load multiple vector operations speculatively executed"
         },
         {
             "Alias_Name": "sve_st_multi_spec",
             "Raw_Index": "0x80aa",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve contiguous store multiple vector operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst_noncontig_spec",
             "Raw_Index": "0x80ac",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve non-contiguous load/store/prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ld_gather_spec",
             "Raw_Index": "0x80ad",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve gather-load operations speculatively executed"
         },
         {
             "Alias_Name": "sve_st_scatter_spec",
             "Raw_Index": "0x80ae",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve scatter-store operations speculatively executed"
         },
         {
             "Alias_Name": "sve_prf_gather_spec",
             "Raw_Index": "0x80af",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve gather-prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldst64_noncontig_spec",
             "Raw_Index": "0x80b0",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 64-bit non-contiguous load/store/prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ld64_gather_spec",
             "Raw_Index": "0x80b1",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 64-bit gather-load operations speculatively executed"
         },
         {
             "Alias_Name": "sve_st64_scatter_spec",
             "Raw_Index": "0x80b2",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 64-bit scatter-store operations speculatively executed"
         },
         {
             "Alias_Name": "sve_prf64_gather_spec",
             "Raw_Index": "0x80b3",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 64-bit gather-prefetch operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_unaligned_ldst_spec",
             "Raw_Index": "0x80b4",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve unaligned accesses"
         },
         {
             "Alias_Name": "ase_sve_unaligned_ld_spec",
             "Raw_Index": "0x80b5",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve unaligned read accesses"
         },
         {
             "Alias_Name": "ase_sve_unaligned_st_spec",
             "Raw_Index": "0x80b6",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve unaligned write accesses"
         },
         {
             "Alias_Name": "ase_sve_unaligned_contig_ldst_spec",
             "Raw_Index": "0x80b8",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve unaligned contiguous accesses"
         },
         {
             "Alias_Name": "ase_sve_unaligned_contig_ld_spec",
             "Raw_Index": "0x80b9",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve unaligned contiguous read accesses"
         },
         {
             "Alias_Name": "ase_sve_unaligned_contig_st_spec",
             "Raw_Index": "0x80ba",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "ase and sve unaligned contiguous write accesses"
         },
         {
             "Alias_Name": "sve_ldff_spec",
             "Raw_Index": "0x80bc",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve first-fault load operations speculatively executed"
         },
         {
             "Alias_Name": "sve_ldff_fault_spec",
             "Raw_Index": "0x80bd",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve first-fault load operations speculatively executed which set ffr bit to 0"
         },
         {
             "Alias_Name": "fp_scale_ops_spec",
             "Raw_Index": "0x80c0",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_fixed_ops_spec",
             "Raw_Index": "0x80c1",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_hp_scale_ops_spec",
             "Raw_Index": "0x80c2",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable half-precision floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_hp_fixed_ops_spec",
             "Raw_Index": "0x80c3",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable half-precision floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_sp_scale_ops_spec",
             "Raw_Index": "0x80c4",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable single-precision floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_sp_fixed_ops_spec",
             "Raw_Index": "0x80c5",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable floating-point single-precision floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_dp_scale_ops_spec",
             "Raw_Index": "0x80c6",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable floating-point double-precision floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "fp_dp_fixed_ops_spec",
             "Raw_Index": "0x80c7",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable floating-point double-precision floating-point element operations speculatively executed"
         },
         {
             "Alias_Name": "int_scale_ops_spec",
             "Raw_Index": "0x80c8",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable integer element operations speculatively executed"
         },
         {
             "Alias_Name": "int_fixed_ops_spec",
             "Raw_Index": "0x80c9",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable integer element operations speculatively executed"
         },
         {
             "Alias_Name": "ldst_scale_ops_spec",
             "Raw_Index": "0x80ca",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable load/store element operations speculatively executed"
         },
         {
             "Alias_Name": "ldst_fixed_ops_spec",
             "Raw_Index": "0x80cb",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable load/store element operations speculatively executed"
         },
         {
             "Alias_Name": "ld_scale_ops_spec",
             "Raw_Index": "0x80cc",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable load element operations speculatively executed"
         },
         {
             "Alias_Name": "ld_fixed_ops_spec",
             "Raw_Index": "0x80cd",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable load element operations speculatively executed"
         },
         {
             "Alias_Name": "st_scale_ops_spec",
             "Raw_Index": "0x80ce",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable store element operations speculatively executed"
         },
         {
             "Alias_Name": "st_fixed_ops_spec",
             "Raw_Index": "0x80cf",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable store element operations speculatively executed"
         },
         {
             "Alias_Name": "ldst_scale_bytes_spec",
             "Raw_Index": "0x80da",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable load/store bytes speculatively executed"
         },
         {
             "Alias_Name": "ldst_fixed_bytes_spec",
             "Raw_Index": "0x80db",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable load/store bytes speculatively executed"
         },
         {
             "Alias_Name": "ld_scale_bytes_spec",
             "Raw_Index": "0x80dc",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable load bytes speculatively executed"
         },
         {
             "Alias_Name": "ld_fixed_bytes_spec",
             "Raw_Index": "0x80dd",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable load bytes speculatively executed"
         },
         {
             "Alias_Name": "st_scale_bytes_spec",
             "Raw_Index": "0x80de",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "scalable store bytes speculatively executed"
         },
         {
             "Alias_Name": "st_fixed_bytes_spec",
             "Raw_Index": "0x80df",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "non-scalable store bytes speculatively executed"
         },
         {
             "Alias_Name": "ase_int8_spec",
             "Raw_Index": "0x80e1",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd 8-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int8_spec",
             "Raw_Index": "0x80e2",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 8-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int8_spec",
             "Raw_Index": "0x80e3",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve 8-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int16_spec",
             "Raw_Index": "0x80e5",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd 16-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int16_spec",
             "Raw_Index": "0x80e6",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 16-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int16_spec",
             "Raw_Index": "0x80e7",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve 16-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int32_spec",
             "Raw_Index": "0x80e9",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd 32-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int32_spec",
             "Raw_Index": "0x80ea",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 32-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int32_spec",
             "Raw_Index": "0x80eb",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve 32-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int64_spec",
             "Raw_Index": "0x80ed",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd 64-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int64_spec",
             "Raw_Index": "0x80ee",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve 64-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int64_spec",
             "Raw_Index": "0x80ef",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve 64-bit integer operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_dot_spec",
             "Raw_Index": "0x80f1",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd floating-point dot-product operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_dot_spec",
             "Raw_Index": "0x80f2",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point dot-product operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_dot_spec",
             "Raw_Index": "0x80f3",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve floating-point dot-product operations speculatively executed"
         },
         {
             "Alias_Name": "ase_fp_mmla_spec",
             "Raw_Index": "0x80f5",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd floating-point matrix multiply operations speculatively executed"
         },
         {
             "Alias_Name": "sve_fp_mmla_spec",
             "Raw_Index": "0x80f6",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve floating-point matrix multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_fp_mmla_spec",
             "Raw_Index": "0x80f7",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve floating-point matrix multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int_dot_spec",
             "Raw_Index": "0x80f9",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd integer dot-product operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_dot_spec",
             "Raw_Index": "0x80fa",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer dot-product operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int_dot_spec",
             "Raw_Index": "0x80fb",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve integer dot-product operations speculatively executed"
         },
         {
             "Alias_Name": "ase_int_mmla_spec",
             "Raw_Index": "0x80fd",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd integer matrix multiply operations speculatively executed"
         },
         {
             "Alias_Name": "sve_int_mmla_spec",
             "Raw_Index": "0x80fe",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "sve integer matrix multiply operations speculatively executed"
         },
         {
             "Alias_Name": "ase_sve_int_mmla_spec",
             "Raw_Index": "0x80ff",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "advanced simd and sve integer matrix multiply operations speculatively executed"
         },
         {
             "Alias_Name": "br_skip_retired",
             "Raw_Index": "0x8107",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, branch not taken"
         },
         {
             "Alias_Name": "br_immed_taken_retired",
             "Raw_Index": "0x8108",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, immediate branch taken"
         },
         {
             "Alias_Name": "br_immed_skip_retired",
             "Raw_Index": "0x8109",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, immediate branch not taken"
         },
         {
             "Alias_Name": "br_ind_taken_retired",
             "Raw_Index": "0x810a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, indirect branch taken"
         },
         {
             "Alias_Name": "br_ind_skip_retired",
             "Raw_Index": "0x810b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, indirect branch not taken"
         },
         {
             "Alias_Name": "br_indnr_taken_retired",
             "Raw_Index": "0x810c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, indirect branch taken excluding returns"
         },
         {
             "Alias_Name": "br_indnr_skip_retired",
             "Raw_Index": "0x810d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, indirect branch not taken excluding returns"
         },
         {
             "Alias_Name": "br_return_any_retired",
             "Raw_Index": "0x810e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, procedure return"
         },
         {
             "Alias_Name": "br_return_skip_retired",
             "Raw_Index": "0x810f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, procedure return not taken"
         },
         {
             "Alias_Name": "br_immed_pred_retired",
             "Raw_Index": "0x8110",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, predicted immediate branch"
         },
         {
             "Alias_Name": "br_immed_mis_pred_retired",
             "Raw_Index": "0x8111",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted immediate branch"
         },
         {
             "Alias_Name": "br_ind_pred_retired",
             "Raw_Index": "0x8112",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, predicted indirect branch"
         },
         {
             "Alias_Name": "br_ind_mis_pred_retired",
             "Raw_Index": "0x8113",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted indirect branch"
         },
         {
             "Alias_Name": "br_return_pred_retired",
             "Raw_Index": "0x8114",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, predicted procedure return"
         },
         {
             "Alias_Name": "br_return_mis_pred_retired",
             "Raw_Index": "0x8115",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted procedure return"
         },
         {
             "Alias_Name": "br_indnr_pred_retired",
             "Raw_Index": "0x8116",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, predicted indirect branch, excluding return"
         },
         {
             "Alias_Name": "br_indnr_mis_pred_retired",
             "Raw_Index": "0x8117",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted indirect branch, excluding return"
         },
         {
             "Alias_Name": "br_taken_pred_retired",
             "Raw_Index": "0x8118",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, predicted branch, taken"
         },
         {
             "Alias_Name": "br_taken_mis_pred_retired",
             "Raw_Index": "0x8119",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted branch, taken"
         },
         {
             "Alias_Name": "br_skip_pred_retired",
             "Raw_Index": "0x811a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, predicted branch, not taken"
         },
         {
             "Alias_Name": "br_skip_mis_pred_retired",
             "Raw_Index": "0x811b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, mispredicted branch, not taken"
         },
         {
             "Alias_Name": "br_pred_retired",
             "Raw_Index": "0x811c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally excecuted, predicted branch"
         },
         {
             "Alias_Name": "br_ind_retired",
             "Raw_Index": "0x811d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, indirect branch"
         },
         {
             "Alias_Name": "br_indnr_retired",
             "Raw_Index": "0x811e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction architecturally executed, indirect branch excluding procedure return"
         },
         {
             "Alias_Name": "inst_fetch_percyc",
             "Raw_Index": "0x8120",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "event in progress, inst_fetch"
         },
         {
             "Alias_Name": "mem_access_rd_percyc",
             "Raw_Index": "0x8121",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "event in progress, mem_access_rd"
         },
         {
             "Alias_Name": "mem_access_wr_percyc",
             "Raw_Index": "0x8122",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "event in progress, mem_access_wr"
         },
         {
             "Alias_Name": "mem_access_percyc",
             "Raw_Index": "0x8123",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "event in progress, mem_access"
         },
         {
             "Alias_Name": "inst_fetch",
             "Raw_Index": "0x8124",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction memory access"
         },
         {
             "Alias_Name": "dtlb_walk_percyc",
             "Raw_Index": "0x8128",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "event in progress, dtlb_walk"
         },
         {
             "Alias_Name": "itlb_walk_percyc",
             "Raw_Index": "0x8129",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "event in progress, itlb_walk"
         },
         {
             "Alias_Name": "sample_feed_br",
             "Raw_Index": "0x812a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "statistical profiling sample taken, branch"
         },
         {
             "Alias_Name": "sample_feed_ld",
             "Raw_Index": "0x812b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "statistical profiling sample taken, load"
         },
         {
             "Alias_Name": "sample_feed_st",
             "Raw_Index": "0x812c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "statistical profiling sample taken, store"
         },
         {
             "Alias_Name": "sample_feed_op",
             "Raw_Index": "0x812d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "statistical profiling sample taken, matching operation type"
         },
         {
             "Alias_Name": "sample_feed_event",
             "Raw_Index": "0x812e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "statistical profiling sample taken, matching events"
         },
         {
             "Alias_Name": "sample_feed_lat",
             "Raw_Index": "0x812f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "statistical profiling sample taken, exceeding minimum latency"
         },
         {
             "Alias_Name": "l1d_tlb_rw",
             "Raw_Index": "0x8130",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified tlb demand access"
         },
         {
             "Alias_Name": "l1i_tlb_rd",
             "Raw_Index": "0x8131",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction tlb demand access"
         },
         {
             "Alias_Name": "l1d_tlb_prfm",
             "Raw_Index": "0x8132",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified tlb preload or prefetch"
         },
         {
             "Alias_Name": "l1i_tlb_prfm",
             "Raw_Index": "0x8133",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction tlb preload or prefetch"
         },
         {
             "Alias_Name": "dtlb_hwupd",
             "Raw_Index": "0x8134",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data tlb hardware update of translation table"
         },
         {
             "Alias_Name": "itlb_hwupd",
             "Raw_Index": "0x8135",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction tlb hardware update of translation table"
         },
         {
             "Alias_Name": "dtlb_step",
             "Raw_Index": "0x8136",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data tlb translation table walk, step"
         },
         {
             "Alias_Name": "itlb_step",
             "Raw_Index": "0x8137",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction tlb translation table walk, step"
         },
         {
             "Alias_Name": "dtlb_walk_large",
             "Raw_Index": "0x8138",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data tlb large page translation table walk"
         },
         {
             "Alias_Name": "itlb_walk_large",
             "Raw_Index": "0x8139",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction tlb large page translation table walk"
         },
         {
             "Alias_Name": "dtlb_walk_small",
             "Raw_Index": "0x813a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data tlb small page translation table walk"
         },
         {
             "Alias_Name": "itlb_walk_small",
             "Raw_Index": "0x813b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction tlb small page translation table walk"
         },
         {
             "Alias_Name": "dtlb_walk_rw",
             "Raw_Index": "0x813c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data tlb demand access with at least one translation table walk"
         },
         {
             "Alias_Name": "itlb_walk_rd",
             "Raw_Index": "0x813d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction tlb demand access with at least one translation table walk"
         },
         {
             "Alias_Name": "dtlb_walk_prfm",
             "Raw_Index": "0x813e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "data tlb preload or prefetch with at least one translation table walk"
         },
         {
             "Alias_Name": "itlb_walk_prfm",
             "Raw_Index": "0x813f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "instruction tlb preload or prefetch with at least one translation table walk"
         },
         {
             "Alias_Name": "l1d_cache_rw",
             "Raw_Index": "0x8140",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified cache demand access"
         },
         {
             "Alias_Name": "l1i_cache_rd",
             "Raw_Index": "0x8141",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache demand access"
         },
         {
             "Alias_Name": "l1d_cache_prfm",
             "Raw_Index": "0x8142",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified cache preload or prefetch"
         },
         {
             "Alias_Name": "l1i_cache_prfm",
             "Raw_Index": "0x8143",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache preload or prefetch"
         },
         {
             "Alias_Name": "l1d_cache_miss",
             "Raw_Index": "0x8144",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified cache demand access miss"
         },
         {
             "Alias_Name": "l1i_cache_hwprf",
             "Raw_Index": "0x8145",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache hardware prefetch"
         },
         {
             "Alias_Name": "l1d_cache_refill_prfm",
             "Raw_Index": "0x8146",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data or unified cache refill, preload or prefetch"
         },
         {
             "Alias_Name": "l1i_cache_refill_prfm",
             "Raw_Index": "0x8147",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 instruction cache refill, preload or prefetch"
         },
         {
             "Alias_Name": "l2d_cache_rw",
             "Raw_Index": "0x8148",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data or unified cache demand access"
         },
         {
             "Alias_Name": "l2i_cache_rd",
             "Raw_Index": "0x8149",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 instruction cache demand access"
         },
         {
             "Alias_Name": "l2d_cache_prfm",
             "Raw_Index": "0x814a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data or unified cache preload or prefetch"
         },
         {
             "Alias_Name": "l2i_cache_prfm",
             "Raw_Index": "0x814b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 instruction cache preload or prefetch"
         },
         {
             "Alias_Name": "l2d_cache_miss",
             "Raw_Index": "0x814c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data or unified cache demand access miss"
         },
         {
             "Alias_Name": "l2i_cache_hwprf",
             "Raw_Index": "0x814d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 instruction cache hardware prefetch"
         },
         {
             "Alias_Name": "l2d_cache_refill_prfm",
             "Raw_Index": "0x814e",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data or unified cache refill, preload or prefetch"
         },
         {
             "Alias_Name": "l2i_cache_refill_prfm",
             "Raw_Index": "0x814f",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 instruction cache refill, preload or prefetch"
         },
         {
             "Alias_Name": "l3d_cache_rw",
             "Raw_Index": "0x8150",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 3 data or unified cache demand access"
         },
         {
             "Alias_Name": "l3d_cache_prfm",
             "Raw_Index": "0x8151",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 3 data or unified cache preload or prefetch"
         },
         {
             "Alias_Name": "l3d_cache_miss",
             "Raw_Index": "0x8152",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 3 data or unified cache demand access miss"
         },
         {
             "Alias_Name": "l3d_cache_refill_prfm",
             "Raw_Index": "0x8153",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 3 data or unified cache refill, preload or prefetch"
         },
         {
             "Alias_Name": "l1d_cache_hwprf",
             "Raw_Index": "0x8154",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 1 data cache hardware prefetch"
         },
         {
             "Alias_Name": "l2d_cache_hwprf",
             "Raw_Index": "0x8155",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 2 data cache hardware prefetch"
         },
         {
             "Alias_Name": "l3d_cache_hwprf",
             "Raw_Index": "0x8156",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "level 3 data cache hardware prefetch"
         },
         {
             "Alias_Name": "stall_frontend_membound",
             "Raw_Index": "0x8158",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, memory bound"
         },
         {
             "Alias_Name": "stall_frontend_l1i",
             "Raw_Index": "0x8159",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, level 1 instruction cache"
         },
         {
             "Alias_Name": "stall_frontend_l2i",
             "Raw_Index": "0x815a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, level 2 instruction or unified cache"
         },
         {
             "Alias_Name": "stall_frontend_mem",
             "Raw_Index": "0x815b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, last level pe cache or memory"
         },
         {
             "Alias_Name": "stall_frontend_tlb",
             "Raw_Index": "0x815c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, tlb"
         },
         {
             "Alias_Name": "stall_frontend_cpubound",
             "Raw_Index": "0x8160",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, processor bound"
         },
         {
             "Alias_Name": "stall_frontend_flow",
             "Raw_Index": "0x8161",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, flow control"
         },
         {
             "Alias_Name": "stall_frontend_flush",
             "Raw_Index": "0x8162",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, flush recovery"
         },
         {
             "Alias_Name": "stall_frontend_rename",
             "Raw_Index": "0x8163",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "frontend stall cycles, rename full"
         },
         {
             "Alias_Name": "stall_backend_membound",
             "Raw_Index": "0x8164",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, memory bound"
         },
         {
             "Alias_Name": "stall_backend_l1d",
             "Raw_Index": "0x8165",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, level 1 data cache"
         },
         {
             "Alias_Name": "stall_backend_l2d",
             "Raw_Index": "0x8166",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, level 2 data or unified cache"
         },
         {
             "Alias_Name": "stall_backend_tlb",
             "Raw_Index": "0x8167",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, tlb"
         },
         {
             "Alias_Name": "stall_backend_st",
             "Raw_Index": "0x8168",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, store"
         },
         {
             "Alias_Name": "stall_backend_cpubound",
             "Raw_Index": "0x816a",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, processor bound"
         },
         {
             "Alias_Name": "stall_backend_busy",
             "Raw_Index": "0x816b",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, backend busy"
         },
         {
             "Alias_Name": "stall_backend_ilock",
             "Raw_Index": "0x816c",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, input dependency"
         },
         {
             "Alias_Name": "stall_backend_rename",
             "Raw_Index": "0x816d",
-            "Event_Type": "[core PMU event]"
+            "Event_Type": "[core PMU event]",
+            "Description": "backend stall cycles, rename full"
         }
     ],
     "Predefined_Metrics": [
         {
             "Metric": "dcache",
-            "Events": "{l1d_cache,l1d_cache_refill,l2d_cache,l2d_cache_refill,inst_retired}"
+            "Events": "{l1d_cache,l1d_cache_refill,l2d_cache,l2d_cache_refill,inst_retired}",
+            "Formula": "---",
+            "Unit": "---",
+            "Description": "---"
         },
         {
             "Metric": "dtlb",
-            "Events": "{l1d_tlb,l1d_tlb_refill,l2d_tlb,l2d_tlb_refill,inst_retired}"
+            "Events": "{l1d_tlb,l1d_tlb_refill,l2d_tlb,l2d_tlb_refill,inst_retired}",
+            "Formula": "---",
+            "Unit": "---",
+            "Description": "---"
         },
         {
             "Metric": "icache",
-            "Events": "{l1i_cache,l1i_cache_refill,l2i_cache,l2i_cache_refill,inst_retired}"
+            "Events": "{l1i_cache,l1i_cache_refill,l2i_cache,l2i_cache_refill,inst_retired}",
+            "Formula": "---",
+            "Unit": "---",
+            "Description": "---"
         },
         {
             "Metric": "imix",
-            "Events": "{inst_spec,dp_spec,vfp_spec,ase_spec,ld_spec}"
+            "Events": "{inst_spec,dp_spec,vfp_spec,ase_spec,ld_spec}",
+            "Formula": "---",
+            "Unit": "---",
+            "Description": "---"
         },
         {
             "Metric": "itlb",
-            "Events": "{l1i_tlb,l1i_tlb_refill,l2i_tlb,l2i_tlb_refill,inst_retired}"
+            "Events": "{l1i_tlb,l1i_tlb_refill,l2i_tlb,l2i_tlb_refill,inst_retired}",
+            "Formula": "---",
+            "Unit": "---",
+            "Description": "---"
         }
     ],
     "Predefined_Groups_of_Metrics": []

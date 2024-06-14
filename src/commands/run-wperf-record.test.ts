@@ -6,10 +6,11 @@ import { faker } from '@faker-js/faker';
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
 import { SampleSource } from '../views/sampling-results/sample-source';
-import { sampleFactory } from '../wperf/parse.factories';
+import { predefinedEventFactory, sampleFactory } from '../wperf/parse.factories';
 import { recordOptionsFactory } from '../wperf/run.factories';
 import {
     RunWperfRecord,
+    getQuickPickItemsFromPredefinedEvents,
     promptUserForRecordOptions,
     validateFrequencyInput,
 } from './run-wperf-record';
@@ -215,5 +216,21 @@ describe('validateFrequencyInput', () => {
         const got = validateFrequencyInput('42');
 
         expect(got).toBeUndefined();
+    });
+});
+
+describe('getQuickPickItemsFromPredefinedEvents', () => {
+    it('returns a sorted array of QuickPickItems from an array of PredefinedEvents', () => {
+        const event1 = predefinedEventFactory({ Alias_Name: 'Last' });
+        const event2 = predefinedEventFactory({ Alias_Name: 'First' });
+        const events = [event1, event2];
+
+        const got = getQuickPickItemsFromPredefinedEvents(events);
+
+        const want = [
+            { label: 'First', description: event2.Description },
+            { label: 'Last', description: event1.Description },
+        ];
+        expect(got).toEqual(want);
     });
 });
