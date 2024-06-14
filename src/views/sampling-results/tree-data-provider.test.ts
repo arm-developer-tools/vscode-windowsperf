@@ -159,7 +159,7 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-            expect(got.description).toEqual(`Date: ${record.date}`);
+            expect(got.description).toEqual(record.date);
         });
     });
 

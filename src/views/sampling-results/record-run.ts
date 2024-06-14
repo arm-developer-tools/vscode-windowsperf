@@ -3,6 +3,7 @@
  */
 
 import { Sample } from '../../wperf/parse';
+import { generateTimeStamp } from './date';
 
 export class RecordRun {
     private readonly timestamp: string;
@@ -26,9 +27,3 @@ export class RecordRun {
         return this.command;
     }
 }
-
-const generateTimeStamp = (): string => {
-    const timeStamp = Date.now();
-    const dateTime = new Date(timeStamp);
-    return `${dateTime.getFullYear()}-${dateTime.getMonth() + 1}-${dateTime.getDate()} - ${dateTime.toTimeString()}`;
-};
