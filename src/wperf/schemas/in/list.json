@@ -1,10 +1,7 @@
 {
     "$comment": "Source: https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/blob/dc29da908d7e0bb48a0d6422049000bac831dff4/wperf-scripts/tests/schemas/wperf.list.schema",
     "type": "object",
-    "required": [
-        "Predefined_Events",
-        "Predefined_Metrics"
-    ],
+    "required": ["Predefined_Events", "Predefined_Metrics"],
     "additionalProperties": false,
     "properties": {
         "Predefined_Events": {
@@ -12,11 +9,7 @@
             "uniqueItems": true,
             "items": {
                 "type": "object",
-                "required": [
-                    "Alias_Name",
-                    "Event_Type",
-                    "Raw_Index"
-                ],
+                "required": ["Alias_Name", "Event_Type", "Raw_Index"],
                 "additionalProperties": false,
                 "properties": {
                     "Alias_Name": {
@@ -36,10 +29,7 @@
             "uniqueItems": true,
             "items": {
                 "type": "object",
-                "required": [
-                    "Events",
-                    "Metric"
-                ],
+                "required": ["Events", "Metric"],
                 "additionalProperties": false,
                 "properties": {
                     "Events": {
@@ -56,10 +46,7 @@
             "uniqueItems": true,
             "items": {
                 "type": "object",
-                "required": [
-                    "Group",
-                    "Metrics"
-                ],
+                "required": ["Group", "Metrics"],
                 "additionalProperties": false,
                 "properties": {
                     "Group": {

@@ -9,42 +9,52 @@ import { recordOptionsFactory } from './run.factories';
 
 describe('buildRecordArgs', () => {
     it('concatenates events and the frequency', () => {
-        const got = buildRecordArgs(recordOptionsFactory({
-            events: ['event1', 'event2'],
-            frequency: 100,
-        }));
+        const got = buildRecordArgs(
+            recordOptionsFactory({
+                events: ['event1', 'event2'],
+                frequency: 100,
+            }),
+        );
 
         expect(got).toContain('event1,event2:100');
     });
 
     it('includes the timeout argument if it is provided', () => {
-        const got = buildRecordArgs(recordOptionsFactory({
-            timeoutSeconds: 10,
-        }));
+        const got = buildRecordArgs(
+            recordOptionsFactory({
+                timeoutSeconds: 10,
+            }),
+        );
 
         expect(got).toContain('--timeout 10');
     });
 
     it('does not include the timeout argument if it is not provided', () => {
-        const got = buildRecordArgs(recordOptionsFactory({
-            timeoutSeconds: undefined,
-        }));
+        const got = buildRecordArgs(
+            recordOptionsFactory({
+                timeoutSeconds: undefined,
+            }),
+        );
 
         expect(got).not.toContain('--timeout');
     });
 
     it('includes the core', () => {
-        const got = buildRecordArgs(recordOptionsFactory({
-            core: 1,
-        }));
+        const got = buildRecordArgs(
+            recordOptionsFactory({
+                core: 1,
+            }),
+        );
 
         expect(got).toContain('-c 1');
     });
 
     it('includes the command', () => {
-        const got = buildRecordArgs(recordOptionsFactory({
-            command: 'test command',
-        }));
+        const got = buildRecordArgs(
+            recordOptionsFactory({
+                command: 'test command',
+            }),
+        );
 
         expect(got).toContain('test command');
     });

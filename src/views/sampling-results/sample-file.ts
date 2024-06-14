@@ -22,7 +22,7 @@ export class SampleFile {
 
     constructor(
         readonly uri: Uri,
-        readonly parsedContent: Sample
+        readonly parsedContent: Sample,
     ) {
         this.id = randomUUID();
     }

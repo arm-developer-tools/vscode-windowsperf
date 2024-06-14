@@ -13,19 +13,19 @@ const extensionConfig = {
 
     entry: './src/extension.ts', // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
     output: {
-    // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
+        // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
         path: path.resolve(__dirname, 'dist'),
         filename: 'extension.js',
-        libraryTarget: 'commonjs2'
+        libraryTarget: 'commonjs2',
     },
     externals: {
-    // modules added here also need to be added in the .vscodeignore file
+        // modules added here also need to be added in the .vscodeignore file
         vscode: 'commonjs vscode', // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
-        'ctrlc-windows': 'commonjs ctrlc-windows'
+        'ctrlc-windows': 'commonjs ctrlc-windows',
     },
     resolve: {
-    // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-        extensions: ['.ts', '.js']
+        // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
+        extensions: ['.ts', '.js'],
     },
     module: {
         rules: [
@@ -34,15 +34,15 @@ const extensionConfig = {
                 exclude: /node_modules/,
                 use: [
                     {
-                        loader: 'ts-loader'
-                    }
-                ]
-            }
-        ]
+                        loader: 'ts-loader',
+                    },
+                ],
+            },
+        ],
     },
     devtool: 'nosources-source-map',
     infrastructureLogging: {
         level: 'log', // enables logging required for problem matchers
     },
 };
-module.exports = [ extensionConfig ];
+module.exports = [extensionConfig];

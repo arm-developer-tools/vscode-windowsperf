@@ -4,4 +4,6 @@
 
 import * as vscode from 'vscode';
 
-export const logger = vscode.window.createOutputChannel('WindowsPerf', { log: true });
+export const logger = vscode.window.createOutputChannel('WindowsPerf', {
+    log: true,
+});

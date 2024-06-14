@@ -7,7 +7,11 @@ import { ObservableCollection } from '../observable-collection';
 import { RecordRun } from '../views/sampling-results/record-run';
 import { sampleFactory } from '../wperf/parse.factories';
 import { recordOptionsFactory } from '../wperf/run.factories';
-import { RunWperfRecord, promptUserForRecordOptions, validateFrequencyInput } from './run-wperf-record';
+import {
+    RunWperfRecord,
+    promptUserForRecordOptions,
+    validateFrequencyInput,
+} from './run-wperf-record';
 import { RecordOptions } from '../wperf/run';
 
 describe('RunWperfRecord', () => {
@@ -15,7 +19,12 @@ describe('RunWperfRecord', () => {
         const recordRuns = new ObservableCollection<RecordRun>();
         const cancellingPromptForRecordOptions = jest.fn().mockResolvedValue(undefined);
         const runWperfRecord = jest.fn();
-        const command = new RunWperfRecord(recordRuns, cancellingPromptForRecordOptions, runWperfRecord, jest.fn());
+        const command = new RunWperfRecord(
+            recordRuns,
+            cancellingPromptForRecordOptions,
+            runWperfRecord,
+            jest.fn(),
+        );
 
         await command.execute();
 
@@ -27,7 +36,12 @@ describe('RunWperfRecord', () => {
         const recordOptions = recordOptionsFactory();
         const getRecordOptions = jest.fn().mockResolvedValue(recordOptions);
         const runWperfRecord = jest.fn().mockResolvedValue(undefined);
-        const command = new RunWperfRecord(new ObservableCollection(), getRecordOptions, runWperfRecord, jest.fn());
+        const command = new RunWperfRecord(
+            new ObservableCollection(),
+            getRecordOptions,
+            runWperfRecord,
+            jest.fn(),
+        );
 
         await command.execute();
 
@@ -38,7 +52,12 @@ describe('RunWperfRecord', () => {
         const recordRuns = new ObservableCollection<RecordRun>();
         const getRecordOptions = jest.fn().mockResolvedValue(recordOptionsFactory());
         const failingRunWperfRecord = jest.fn().mockResolvedValue(undefined);
-        const command = new RunWperfRecord(recordRuns, getRecordOptions, failingRunWperfRecord, jest.fn());
+        const command = new RunWperfRecord(
+            recordRuns,
+            getRecordOptions,
+            failingRunWperfRecord,
+            jest.fn(),
+        );
 
         await command.execute();
 
@@ -72,7 +91,11 @@ describe('promptUserForRecordOptions', () => {
     it('returns undefined if the user cancels the frequency input after entering an event', async () => {
         const promptForEvents = jest.fn().mockResolvedValue([faker.word.noun()]);
         const cancellingFrequencyPrompt = jest.fn().mockResolvedValue(undefined);
-        const got = await promptUserForRecordOptions(promptForEvents, cancellingFrequencyPrompt, jest.fn());
+        const got = await promptUserForRecordOptions(
+            promptForEvents,
+            cancellingFrequencyPrompt,
+            jest.fn(),
+        );
 
         expect(got).toBeUndefined();
     });
@@ -81,7 +104,11 @@ describe('promptUserForRecordOptions', () => {
         const promptForEvents = jest.fn().mockResolvedValue([faker.word.noun()]);
         const promptForFrequency = jest.fn().mockResolvedValue(faker.number.int());
         const cancellingPromptForCommand = jest.fn().mockResolvedValue(undefined);
-        const got = await promptUserForRecordOptions(promptForEvents, promptForFrequency, cancellingPromptForCommand);
+        const got = await promptUserForRecordOptions(
+            promptForEvents,
+            promptForFrequency,
+            cancellingPromptForCommand,
+        );
 
         expect(got).toBeUndefined();
     });
@@ -94,9 +121,19 @@ describe('promptUserForRecordOptions', () => {
         const command = faker.lorem.sentence();
         const promptForCommand = jest.fn().mockResolvedValue(command);
 
-        const got = await promptUserForRecordOptions(promptForEvents, promptForFrequency, promptForCommand);
+        const got = await promptUserForRecordOptions(
+            promptForEvents,
+            promptForFrequency,
+            promptForCommand,
+        );
 
-        const want: RecordOptions = { events, frequency, core: 1, command, timeoutSeconds: undefined };
+        const want: RecordOptions = {
+            events,
+            frequency,
+            core: 1,
+            command,
+            timeoutSeconds: undefined,
+        };
         expect(got).toEqual(want);
     });
 });

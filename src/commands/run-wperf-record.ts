@@ -109,10 +109,16 @@ const promptForFrequencyWithQuickPick = async (): Promise<number | undefined> =>
     return isNaN(frequency) ? undefined : frequency;
 };
 
-const runWperfRecordWithProgress = async (wperfOptions: RecordOptions): Promise<Sample | undefined> => {
+const runWperfRecordWithProgress = async (
+    wperfOptions: RecordOptions,
+): Promise<Sample | undefined> => {
     try {
         return vscode.window.withProgress(
-            { title: 'Recording…', location: ProgressLocation.Notification, cancellable: true },
+            {
+                title: 'Recording…',
+                location: ProgressLocation.Notification,
+                cancellable: true,
+            },
             (_progress, cancellationToken) => runRecord(wperfOptions, cancellationToken),
         );
     } catch (error: unknown) {

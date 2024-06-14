@@ -8,8 +8,8 @@ import { Sample, Event, Annotation, SourceCode, EventSample } from './parse';
 
 export const sampleFactory = (options?: Partial<{ events: Event[] }>): Sample => ({
     sampling: {
-        events: options?.events ?? faker.helpers.multiple(eventFactory)
-    }
+        events: options?.events ?? faker.helpers.multiple(eventFactory),
+    },
 });
 
 export const eventFactory = (options?: Partial<Event>): Event => ({
@@ -30,16 +30,15 @@ export const annotationFactory = (options?: Partial<Annotation>): Annotation => 
 });
 
 export const sourceCodeFactory = (options?: Partial<SourceCode>): SourceCode => {
-    const disassembled_line =
-        options?.disassembled_line ?? disassembledLineFactory();
-    const instruction_address = faker.helpers.arrayElement(disassembled_line.disassemble).address;
+    const disassembledLine = options?.disassembled_line ?? disassembledLineFactory();
+    const instructionAddress = faker.helpers.arrayElement(disassembledLine.disassemble).address;
 
     return {
         filename: options?.filename ?? faker.system.filePath(),
         hits: options?.hits ?? faker.number.int(),
         line_number: options?.line_number ?? faker.number.int(),
-        disassembled_line,
-        instruction_address,
+        disassembled_line: disassembledLine,
+        instruction_address: instructionAddress,
         overhead: options?.overhead ?? overheadFactory(),
     };
 };
@@ -51,7 +50,7 @@ const disassembledLineFactory = (): SourceCode['disassembled_line'] => ({
             'cmp x8 x9',
             'ldr x8, [sp, #0x10]',
             'mov x9 #0x7fffffe',
-            'adrp x8, 0x180a3e000'
+            'adrp x8, 0x180a3e000',
         ]),
     })),
 });

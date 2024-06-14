@@ -11,7 +11,7 @@ export class RecordRun {
 
     constructor(
         readonly command: string,
-        readonly parsedContent: Sample
+        readonly parsedContent: Sample,
     ) {
         this.id = randomUUID();
         this.timestamp = this.generateTimestamp();

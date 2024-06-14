@@ -1,219 +1,227 @@
 {
-  "name": "windowsperf",
-  "displayName": "Arm WindowsPerf",
-  "description": "VS Code extension for performance analysis using WindowsPerf",
-  "version": "0.0.1",
-  "repository": "https://github.com/Arm-Software/vscode-windowsperf",
-  "engines": {
-    "vscode": "^1.70.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [],
-  "main": "dist/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "windowsperf.openResultFile",
-        "title": "Open Sampling JSON File",
-        "icon": "$(new-file)",
-        "category": "WindowsPerf"
-      },
-      {
-        "command": "windowsperf.record",
-        "title": "Record",
-        "icon": "$(record)",
-        "category": "WindowsPerf"
-      },
-      {
-        "command": "windowsperf.closeResultFile",
-        "title": "Close Sampling JSON File",
-        "icon": "$(close)",
-        "category": "WindowsPerf"
-      },
-      {
-        "command": "windowsperf.selectActiveResultFile",
-        "title": "Select Active Sampling JSON File",
-        "icon": "$(eye)",
-        "category": "WindowsPerf"
-      },
-      {
-        "command": "windowsperf.clearActiveResultFileSelection",
-        "title": "Clear Active Sampling JSON File Selection",
-        "icon": "$(eye-closed)",
-        "category": "WindowsPerf"
-      }
+    "name": "windowsperf",
+    "displayName": "Arm WindowsPerf",
+    "description": "VS Code extension for performance analysis using WindowsPerf",
+    "version": "0.0.1",
+    "repository": "https://github.com/Arm-Software/vscode-windowsperf",
+    "engines": {
+        "vscode": "^1.70.0"
+    },
+    "categories": [
+        "Other"
     ],
-    "menus": {
-      "view/title": [
-        {
-          "command": "windowsperf.record",
-          "when": "view == samplingResults",
-          "group": "navigation@1"
-        },
-        {
-          "command": "windowsperf.openResultFile",
-          "when": "view == samplingResults",
-          "group": "navigation@2"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "windowsperf.selectActiveResultFile",
-          "when": "view == samplingResults && viewItem == rootNode",
-          "group": "inline@1"
-        },
-        {
-          "command": "windowsperf.clearActiveResultFileSelection",
-          "when": "view == samplingResults && viewItem == rootNode--selected",
-          "group": "inline@1"
-        },
-        {
-          "command": "windowsperf.closeResultFile",
-          "when": "view == samplingResults && viewItem =~ /^rootNode/",
-          "group": "inline@2"
-        }
-      ],
-      "commandPalette": [
-        {
-          "command": "windowsperf.closeResultFile",
-          "when": "false"
-        },
-        {
-          "command": "windowsperf.selectActiveResultFile",
-          "when": "false"
-        }
-      ],
-      "explorer/context": [
-        {
-          "command": "windowsperf.openResultFile",
-          "when": "resourceFilename =~ /.+\\.json$/",
-          "group": "WindowsPerf"
-        }
-      ]
-    },
-    "viewsContainers": {
-      "panel": [
-        {
-          "id": "windowsperf",
-          "title": "WindowsPerf",
-          "icon": "$(graph)"
-        }
-      ]
-    },
-    "views": {
-      "windowsperf": [
-        {
-          "id": "samplingResults",
-          "name": "Sampling Results Explorer"
-        }
-      ]
-    },
-    "viewsWelcome": [
-      {
-        "view": "samplingResults",
-        "contents": "Record events from WindowsPerf to use the Sampling Results Explorer.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
-      }
-    ],
-    "configuration":[
-      {
-        "title": "WindowsPerf",
-        "properties": {
-          "windowsPerf.wperfPath": {
-            "type": "string",
-            "description": "Specify the absolute path to the WindowsPerf executable."
-          }
-        }
-      }
-    ]
-  },
-  "scripts": {
-    "prepare": "npm run build",
-    "build": "webpack --mode production",
-    "watch": "webpack --watch",
-    "package": "vsce package",
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
-    "compile": "tsc --noEmit",
-    "compile:watch": "tsc -w --noEmit",
-    "test": "jest",
-    "test:watch": "jest --watch --collectCoverage=false",
-    "compile-schemas": "json2ts -i src/wperf/schemas/in/ -o src/wperf/schemas/out/",
-    "prepare-test-workspace": "ts-node ./test-workspace/wperf-output/render-templates.ts"
-  },
-  "devDependencies": {
-    "@faker-js/faker": "^8.4.1",
-    "@types/d3": "^7.4.3",
-    "@types/jest": "^29.5.12",
-    "@types/node": "20.x",
-    "@types/vscode": "^1.70.0",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
-    "@vscode/vsce": "^2.27.0",
-    "d3": "^7.9.0",
-    "eslint": "^8.57.0",
-    "jest": "^29.7.0",
-    "json-schema-to-typescript": "^14.0.5",
-    "ts-jest": "^29.1.4",
-    "ts-loader": "^9.5.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3",
-    "vscode-uri": "^3.0.8",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4"
-  },
-  "jest": {
-    "clearMocks": true,
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
-    "moduleNameMapper": {
-      "^d3$": "<rootDir>/node_modules/d3/dist/d3.min.js",
-      "error-logging": "<rootDir>/src/logging/__mocks__/error-logging.ts",
-      "logger": "<rootDir>/src/logging/__mocks__/logger.ts"
-    },
-    "transform": {
-      "^.+\\.(ts|tsx|js)$": [
-        "ts-jest",
-        {
-          "tsconfig": "<rootDir>/tsconfig.json",
-          "isolatedModules": true,
-          "diagnostics": {
-            "ignoreCodes": [
-              "TS151001"
+    "activationEvents": [],
+    "main": "dist/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "windowsperf.openResultFile",
+                "title": "Open Sampling JSON File",
+                "icon": "$(new-file)",
+                "category": "WindowsPerf"
+            },
+            {
+                "command": "windowsperf.record",
+                "title": "Record",
+                "icon": "$(record)",
+                "category": "WindowsPerf"
+            },
+            {
+                "command": "windowsperf.closeResultFile",
+                "title": "Close Sampling JSON File",
+                "icon": "$(close)",
+                "category": "WindowsPerf"
+            },
+            {
+                "command": "windowsperf.selectActiveResultFile",
+                "title": "Select Active Sampling JSON File",
+                "icon": "$(eye)",
+                "category": "WindowsPerf"
+            },
+            {
+                "command": "windowsperf.clearActiveResultFileSelection",
+                "title": "Clear Active Sampling JSON File Selection",
+                "icon": "$(eye-closed)",
+                "category": "WindowsPerf"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "windowsperf.record",
+                    "when": "view == samplingResults",
+                    "group": "navigation@1"
+                },
+                {
+                    "command": "windowsperf.openResultFile",
+                    "when": "view == samplingResults",
+                    "group": "navigation@2"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "windowsperf.selectActiveResultFile",
+                    "when": "view == samplingResults && viewItem == rootNode",
+                    "group": "inline@1"
+                },
+                {
+                    "command": "windowsperf.clearActiveResultFileSelection",
+                    "when": "view == samplingResults && viewItem == rootNode--selected",
+                    "group": "inline@1"
+                },
+                {
+                    "command": "windowsperf.closeResultFile",
+                    "when": "view == samplingResults && viewItem =~ /^rootNode/",
+                    "group": "inline@2"
+                }
+            ],
+            "commandPalette": [
+                {
+                    "command": "windowsperf.closeResultFile",
+                    "when": "false"
+                },
+                {
+                    "command": "windowsperf.selectActiveResultFile",
+                    "when": "false"
+                }
+            ],
+            "explorer/context": [
+                {
+                    "command": "windowsperf.openResultFile",
+                    "when": "resourceFilename =~ /.+\\.json$/",
+                    "group": "WindowsPerf"
+                }
             ]
-          }
-        }
-      ]
+        },
+        "viewsContainers": {
+            "panel": [
+                {
+                    "id": "windowsperf",
+                    "title": "WindowsPerf",
+                    "icon": "$(graph)"
+                }
+            ]
+        },
+        "views": {
+            "windowsperf": [
+                {
+                    "id": "samplingResults",
+                    "name": "Sampling Results Explorer"
+                }
+            ]
+        },
+        "viewsWelcome": [
+            {
+                "view": "samplingResults",
+                "contents": "Record events from WindowsPerf to use the Sampling Results Explorer.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
+            }
+        ],
+        "configuration": [
+            {
+                "title": "WindowsPerf",
+                "properties": {
+                    "windowsPerf.wperfPath": {
+                        "type": "string",
+                        "description": "Specify the absolute path to the WindowsPerf executable."
+                    }
+                }
+            }
+        ]
     },
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ],
-    "testMatch": [
-      "**/*.test.+(ts|tsx)"
-    ],
-    "testEnvironment": "node",
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "**/*.{ts,tsx}",
-      "!**/node_modules/**",
-      "!**/dist/**",
-      "!**/*.d.ts",
-      "!**/*.factories.ts",
-      "!src/extension.ts",
-      "!**/test-workspace/**"
-    ],
-    "coverageDirectory": "./coverage",
-    "coverageReporters": [
-      "lcov",
-      "text"
-    ]
-  },
-  "dependencies": {
-    "ajv": "^8.16.0",
-    "ctrlc-windows": "2.1.0"
-  }
+    "scripts": {
+        "prepare": "npm run build",
+        "build": "webpack --mode production",
+        "watch": "webpack --watch",
+        "package": "vsce package",
+        "lint": "concurrently npm:eslint npm:format",
+        "lint:fix": "concurrently npm:eslint:fix npm:format:fix",
+        "eslint": "eslint . --ext .ts",
+        "eslint:fix": "eslint . --ext .ts --fix",
+        "compile": "tsc --noEmit",
+        "compile:watch": "tsc -w --noEmit",
+        "test": "jest",
+        "test:watch": "jest --watch --collectCoverage=false",
+        "compile-schemas": "json2ts -i src/wperf/schemas/in/ -o src/wperf/schemas/out/",
+        "prepare-test-workspace": "ts-node ./test-workspace/wperf-output/render-templates.ts",
+        "format": "prettier --check .",
+        "format:fix": "prettier --write ."
+    },
+    "devDependencies": {
+        "@faker-js/faker": "^8.4.1",
+        "@types/d3": "^7.4.3",
+        "@types/jest": "^29.5.12",
+        "@types/node": "20.x",
+        "@types/vscode": "^1.70.0",
+        "@typescript-eslint/eslint-plugin": "^7.13.0",
+        "@typescript-eslint/parser": "^7.13.0",
+        "@vscode/vsce": "^2.27.0",
+        "concurrently": "^8.2.2",
+        "d3": "^7.9.0",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-check-file": "^2.8.0",
+        "jest": "^29.7.0",
+        "json-schema-to-typescript": "^14.0.5",
+        "prettier": "^3.2.5",
+        "ts-jest": "^29.1.4",
+        "ts-loader": "^9.5.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3",
+        "vscode-uri": "^3.0.8",
+        "webpack": "^5.91.0",
+        "webpack-cli": "^5.1.4"
+    },
+    "jest": {
+        "clearMocks": true,
+        "moduleFileExtensions": [
+            "js",
+            "ts",
+            "tsx"
+        ],
+        "moduleNameMapper": {
+            "^d3$": "<rootDir>/node_modules/d3/dist/d3.min.js",
+            "error-logging": "<rootDir>/src/logging/__mocks__/error-logging.ts",
+            "logger": "<rootDir>/src/logging/__mocks__/logger.ts"
+        },
+        "transform": {
+            "^.+\\.(ts|tsx|js)$": [
+                "ts-jest",
+                {
+                    "tsconfig": "<rootDir>/tsconfig.json",
+                    "isolatedModules": true,
+                    "diagnostics": {
+                        "ignoreCodes": [
+                            "TS151001"
+                        ]
+                    }
+                }
+            ]
+        },
+        "testPathIgnorePatterns": [
+            "/node_modules/"
+        ],
+        "testMatch": [
+            "**/*.test.+(ts|tsx)"
+        ],
+        "testEnvironment": "node",
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+            "**/*.{ts,tsx}",
+            "!**/node_modules/**",
+            "!**/dist/**",
+            "!**/*.d.ts",
+            "!**/*.factories.ts",
+            "!src/extension.ts",
+            "!**/test-workspace/**"
+        ],
+        "coverageDirectory": "./coverage",
+        "coverageReporters": [
+            "lcov",
+            "text"
+        ]
+    },
+    "dependencies": {
+        "ajv": "^8.16.0",
+        "ctrlc-windows": "2.1.0"
+    }
 }

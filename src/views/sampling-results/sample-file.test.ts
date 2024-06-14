@@ -25,9 +25,7 @@ describe('SampleFile', () => {
             const error = new Error('boom!');
             const loadSampleFile = jest.fn().mockRejectedValue(error);
 
-            expect(
-                SampleFile.fromUri(uri, loadSampleFile)
-            ).rejects.toThrow(error);
+            expect(SampleFile.fromUri(uri, loadSampleFile)).rejects.toThrow(error);
         });
     });
 

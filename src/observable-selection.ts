@@ -4,10 +4,7 @@
 
 import * as vscode from 'vscode';
 
-type MutationEvent<T> =
-    | { type: 'select', item: T }
-    | { type: 'clear' };
-
+type MutationEvent<T> = { type: 'select'; item: T } | { type: 'clear' };
 
 export type Selection<T> = T | null;
 
@@ -26,10 +23,6 @@ export class ObservableSelection<T> {
 
     set selected(item: Selection<T>) {
         this._selected = item;
-        this._onDidChange.fire(
-            item === null
-                ? { type: 'clear' }
-                : { type: 'select', item }
-        );
+        this._onDidChange.fire(item === null ? { type: 'clear' } : { type: 'select', item });
     }
 }

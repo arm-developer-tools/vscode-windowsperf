@@ -4,24 +4,24 @@
 
 import { ObservableSelection } from './observable-selection';
 
-type days = 'Friday' | 'Saturday' | 'Sunday';
+type Days = 'Friday' | 'Saturday' | 'Sunday';
 
 describe('ObservableSelection', () => {
     it('starts empty', () => {
-        const day = new ObservableSelection<days>();
+        const day = new ObservableSelection<Days>();
 
         expect(day.selected).toBeNull();
     });
 
     it('can be seeded with values', () => {
-        const day = new ObservableSelection<days>('Friday');
+        const day = new ObservableSelection<Days>('Friday');
 
         expect(day.selected).toEqual('Friday');
     });
 
     describe('selecting an item', () => {
         it('selects new item', async () => {
-            const day = new ObservableSelection<days>('Friday');
+            const day = new ObservableSelection<Days>('Friday');
 
             day.selected = 'Sunday';
 
@@ -29,7 +29,7 @@ describe('ObservableSelection', () => {
         });
 
         it('notifies listeners', () => {
-            const day = new ObservableSelection<days>('Friday');
+            const day = new ObservableSelection<Days>('Friday');
             const listener = jest.fn();
             day.onDidChange(listener);
 
@@ -42,7 +42,7 @@ describe('ObservableSelection', () => {
 
     describe('clearing the selection', () => {
         it('notifies listeners', () => {
-            const day = new ObservableSelection<days>('Friday');
+            const day = new ObservableSelection<Days>('Friday');
             const listener = jest.fn();
             day.onDidChange(listener);
 
@@ -53,4 +53,3 @@ describe('ObservableSelection', () => {
         });
     });
 });
-

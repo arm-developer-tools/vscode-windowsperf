@@ -17,32 +17,25 @@ type SchemaSourceCode = SchemaAnnotation['source_code'][number];
 
 export type Sample = { sampling: Sampling };
 type Sampling = { events: Event[] };
-export type Event = Pick<
-    SchemaEvent,
-    | 'type'
-> & {
-    annotate: Annotation[]
-    samples: EventSample[]
+export type Event = Pick<SchemaEvent, 'type'> & {
+    annotate: Annotation[];
+    samples: EventSample[];
 };
 export type Annotation = Pick<SchemaAnnotation, 'function_name'> & {
-    source_code: SourceCode[]
+    source_code: SourceCode[];
 };
 export type EventSample = SchemaEvent['samples'][number];
 export type SourceCode = Pick<
     SchemaSourceCode,
-    | 'filename'
-    | 'hits'
-    | 'line_number'
-    | 'instruction_address'
-    | 'disassembled_line'
+    'filename' | 'hits' | 'line_number' | 'instruction_address' | 'disassembled_line'
 > & {
-    overhead: number
+    overhead: number;
 };
 
 export type ListOutput = Required<SchemaList>;
 
-export const getEventNames = (listOutput: ListOutput): string[] => listOutput.Predefined_Events
-    .map(event => event.Alias_Name);
+export const getEventNames = (listOutput: ListOutput): string[] =>
+    listOutput.Predefined_Events.map((event) => event.Alias_Name);
 
 const ajv = new Ajv();
 const validateSample = ajv.compile<SchemaSample>(schemaSample);
@@ -60,26 +53,26 @@ export const parseSample = (toParse: SchemaSample): Sample => {
     return {
         sampling: {
             ...toParse.sampling,
-            events: toParse.sampling.events.map(event => ({
+            events: toParse.sampling.events.map((event) => ({
                 ...event,
                 annotate: event.annotate.map(embedSourceCodeOverhead),
-            }))
-        }
+            })),
+        },
     };
 };
 
 const embedSourceCodeOverhead = (annotation: SchemaAnnotation): Annotation => {
     const totalHits = annotation.source_code.reduce(
         (totalHits, source) => totalHits + source.hits,
-        0
+        0,
     );
 
     return {
         ...annotation,
-        source_code: annotation.source_code.map(source => ({
+        source_code: annotation.source_code.map((source) => ({
             ...source,
             overhead: percentage(source.hits, totalHits),
-        }))
+        })),
     };
 };
 
@@ -113,12 +106,9 @@ export class SchemaValidationError extends Error implements PrintableError {
 
     readonly getDisplayMessage = () => {
         const validationErrorStrings = this.validationErrors.map(
-            error => `${error.instancePath}: ${error.message || error.keyword}`
+            (error) => `${error.instancePath}: ${error.message || error.keyword}`,
         );
 
-        return [
-            this.message,
-            ...validationErrorStrings,
-        ].join('\n    ');
+        return [this.message, ...validationErrorStrings].join('\n    ');
     };
 }

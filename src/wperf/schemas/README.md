@@ -4,8 +4,8 @@ This directory is used to manage and compile [`wperf` JSON schemas](https://gitl
 
 ## Directory Structure
 
-- `in/`: This subdirectory is designated for storing JSON schemas. Any new schemas that need to be converted into TypeScript types should be placed here.
-- `out/`: This is where the TypeScript types, generated from the JSON schemas in the `in/` directory, are stored.
+-   `in/`: This subdirectory is designated for storing JSON schemas. Any new schemas that need to be converted into TypeScript types should be placed here.
+-   `out/`: This is where the TypeScript types, generated from the JSON schemas in the `in/` directory, are stored.
 
 ## Compiling Schemas
 
@@ -25,6 +25,6 @@ Example of a `$comment` field:
 
 ```json
 {
-  "$comment": "Source: https://gitlab.com/Linaro/WindowsPerf/28d635d9a1/schemas/wperf.sample.schema"
+    "$comment": "Source: https://gitlab.com/Linaro/WindowsPerf/28d635d9a1/schemas/wperf.sample.schema"
 }
 ```

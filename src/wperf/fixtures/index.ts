@@ -6,7 +6,9 @@ import * as path from 'path';
 import { promises as fs } from 'fs';
 
 export const loadFixtureFile = async (pathInFixturesDir: string): Promise<string> => {
-    return await fs.readFile(absoluteFixturePath(pathInFixturesDir), { encoding: 'ascii' });
+    return await fs.readFile(absoluteFixturePath(pathInFixturesDir), {
+        encoding: 'ascii',
+    });
 };
 
 export const absoluteFixturePath = (pathInFixturesDir: string): string => {

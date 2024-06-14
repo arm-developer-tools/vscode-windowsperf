@@ -5,8 +5,8 @@
 import * as vscode from 'vscode';
 
 type MutationEvent<T> = {
-    type: 'add' | 'delete',
-    item: T
+    type: 'add' | 'delete';
+    item: T;
 };
 
 export class ObservableCollection<T> {

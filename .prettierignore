@@ -1,0 +1,10 @@
+node_modules
+src/wperf/fixtures/unparseable.json
+package-lock.json
+.github
+.vscode/*
+coverage/*
+dist/*
+out/*
+test-workspace/*
+__mocks__

@@ -12,7 +12,9 @@ describe('SelectActiveResultsFile.execute', () => {
     it('picks matching file from collection and selects it', () => {
         const toSelect = sampleFileFactory();
         const collection = new ObservableCollection<SampleFile>([
-            sampleFileFactory(), toSelect, sampleFileFactory()
+            sampleFileFactory(),
+            toSelect,
+            sampleFileFactory(),
         ]);
         const selection = new ObservableSelection<SampleFile>();
         const command = new SelectActiveResultFile(collection, selection);

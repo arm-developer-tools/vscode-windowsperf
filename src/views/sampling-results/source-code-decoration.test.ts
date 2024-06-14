@@ -53,7 +53,7 @@ describe('buildDecoration', () => {
                 contentText: `${formatFraction(sourceCode.overhead)}% (${sourceCode.hits} hits)`,
                 fontStyle: 'italic',
                 margin: '30px',
-                color: new vscode.ThemeColor('editor.inlineValuesForeground')
+                color: new vscode.ThemeColor('editor.inlineValuesForeground'),
             };
             expect(got).toEqual(want);
         });
@@ -61,15 +61,18 @@ describe('buildDecoration', () => {
         it.each([
             { overhead: 100, want: textEditorColour(100) },
             { overhead: 20, want: textEditorColour(20) },
-            { overhead: 5, want: textEditorColour(5) }
-        ])('returns editor background colour $want from $overhead value treshold', ({ overhead, want }) => {
-            const event = eventFactory();
-            const annotation = annotationFactory();
-            const sourceCode = sourceCodeFactory({ overhead });
+            { overhead: 5, want: textEditorColour(5) },
+        ])(
+            'returns editor background colour $want from $overhead value treshold',
+            ({ overhead, want }) => {
+                const event = eventFactory();
+                const annotation = annotationFactory();
+                const sourceCode = sourceCodeFactory({ overhead });
 
-            const got = buildDecoration(event, annotation, sourceCode).backgroundColor;
+                const got = buildDecoration(event, annotation, sourceCode).backgroundColor;
 
-            expect(got).toBe(want);
-        });
+                expect(got).toBe(want);
+            },
+        );
     });
 });

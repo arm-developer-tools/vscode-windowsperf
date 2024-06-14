@@ -2,7 +2,11 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { OpenResultFile, openFileAtUriOrPrompt, promptUserToSelectResultFile } from './open-result-file';
+import {
+    OpenResultFile,
+    openFileAtUriOrPrompt,
+    promptUserToSelectResultFile,
+} from './open-result-file';
 import { ObservableCollection } from '../observable-collection';
 import { SampleFile } from '../views/sampling-results/sample-file';
 import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
@@ -51,7 +55,8 @@ describe('OpenResultFile', () => {
             const sampleFile = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => sampleFile);
             const files = new ObservableCollection<SampleFile>([
-                sampleFileFactory(), sampleFileFactory()
+                sampleFileFactory(),
+                sampleFileFactory(),
             ]);
             const selectedFile = new ObservableSelection<SampleFile>();
             const command = new OpenResultFile(files, selectedFile, openFileOrPrompt);
@@ -65,7 +70,8 @@ describe('OpenResultFile', () => {
     describe('openFileAtUriOrPrompt', () => {
         it('loads file at the Uri given', async () => {
             const uri = Uri.file(faker.system.filePath());
-            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> = jest.fn();
+            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> =
+                jest.fn();
             const loadFile: jest.MockedFn<typeof SampleFile.fromUri> = jest.fn();
             const sampleFile = sampleFileFactory();
             loadFile.mockResolvedValue(sampleFile);
@@ -78,7 +84,8 @@ describe('OpenResultFile', () => {
 
         it('prompts the user to select a file if no Uri is given and loads the selected file', async () => {
             const uri = Uri.file(faker.system.filePath());
-            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> = jest.fn();
+            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> =
+                jest.fn();
             promptUserToSelectFile.mockResolvedValue(uri);
             const sampleFile = sampleFileFactory();
             const loadFile: jest.MockedFn<typeof SampleFile.fromUri> = jest.fn();
@@ -91,7 +98,8 @@ describe('OpenResultFile', () => {
         });
 
         it('returns undefined when the user does not select a Uri', async () => {
-            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> = jest.fn();
+            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> =
+                jest.fn();
             promptUserToSelectFile.mockResolvedValue(undefined);
             const sampleFile = sampleFileFactory();
             const loadFile: jest.MockedFn<typeof SampleFile.fromUri> = jest.fn();
@@ -105,7 +113,8 @@ describe('OpenResultFile', () => {
 
         it('returns undefined and logs an error if the file fails to load', async () => {
             const sampleFile = sampleFileFactory();
-            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> = jest.fn();
+            const promptUserToSelectFile: jest.MockedFn<typeof promptUserToSelectResultFile> =
+                jest.fn();
             promptUserToSelectFile.mockResolvedValue(sampleFile.uri);
             const loadFile: jest.MockedFn<typeof SampleFile.fromUri> = jest.fn();
             const error = new Error('Failed to load file');

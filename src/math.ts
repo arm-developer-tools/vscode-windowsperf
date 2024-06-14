@@ -3,7 +3,7 @@
  */
 
 export const percentage = (value: number, total: number): number => {
-    return value * 100 / total;
+    return (value * 100) / total;
 };
 
 export const formatFraction = (toFormat: number, fractionDigits: number = 2): number => {

@@ -6,20 +6,36 @@
         "project": true,
         "sourceType": "module"
     },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended"
-    ],
+    "plugins": ["@typescript-eslint", "check-file"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "prettier"],
     "rules": {
         "@typescript-eslint/naming-convention": [
             "warn",
             {
                 "selector": "import",
-                "format": [ "camelCase", "PascalCase" ]
+                "format": ["camelCase", "PascalCase"]
+            },
+            {
+                "selector": ["variable"],
+                "format": ["camelCase", "UPPER_CASE"],
+                "leadingUnderscore": "allow",
+                "trailingUnderscore": "allow"
+            },
+            {
+                "selector": "typeLike",
+                "format": ["PascalCase"]
+            },
+            {
+                "selector": "function",
+                "format": ["camelCase"]
             }
+        ],
+        "check-file/filename-naming-convention": [
+            "error",
+            {
+                "src/*.{js,ts}": "KEBAB_CASE"
+            },
+            { "ignoreMiddleExtensions": true }
         ],
         "@typescript-eslint/no-unused-vars": [
             "warn",
@@ -29,19 +45,11 @@
         ],
         "@typescript-eslint/no-this-alias": "off",
         "@typescript-eslint/prefer-readonly": "error",
-        "block-spacing": [
+        "no-constant-condition": [
             "error",
-            "always"
-        ],
-        "brace-style": [
-            "error",
-            "1tbs",
             {
-                "allowSingleLine": true
+                "checkLoops": false
             }
-        ],
-        "eol-last": [
-            "error"
         ],
         "indent": [
             "error",
@@ -50,45 +58,15 @@
                 "SwitchCase": 1
             }
         ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "no-constant-condition": [
-            "error",
-            {
-                "checkLoops": false
-            }
-        ],
-        "no-redeclare":"off",
-        "no-trailing-spaces": [
-            "error"
-        ],
-        "object-curly-spacing": [
-            "error",
-            "always"
-        ],
-        "quotes": [
-            "error",
-            "single",
-            { "avoidEscape": true }
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "space-in-parens": "error",
-        "space-before-blocks": "error",
+        "linebreak-style": ["error", "unix"],
+        "no-redeclare": "off",
+        "object-curly-spacing": ["error", "always"],
+        "quotes": ["error", "single", { "avoidEscape": true }],
         "keyword-spacing": "error",
         "space-infix-ops": "error",
-        "@typescript-eslint/semi": "warn",
         "curly": "warn",
         "eqeqeq": "warn",
         "no-throw-literal": "warn"
     },
-    "ignorePatterns": [
-        "out",
-        "dist",
-        "node_modules"
-    ]
+    "ignorePatterns": ["out", "dist", "node_modules", "__mocks__"]
 }

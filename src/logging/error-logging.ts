@@ -10,8 +10,9 @@ export const logErrorAndNotify = (error: unknown, notificationMessage: string) =
     const loggableError = getLoggableError(error);
     logger.error(loggableError);
 
-    vscode.window.showErrorMessage(`${notificationMessage} See the log for more information.`, 'Open Log')
-        .then(result => {
+    vscode.window
+        .showErrorMessage(`${notificationMessage} See the log for more information.`, 'Open Log')
+        .then((result) => {
             if (result === 'Open Log') {
                 logger.show(true);
             }

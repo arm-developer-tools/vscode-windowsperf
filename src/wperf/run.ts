@@ -19,12 +19,17 @@ const shellEscape = (input: string): string => `"${input}"`;
 
 export const buildRecordArgs = (options: RecordOptions): string => {
     const eventsArg = options.events.join(',') + ':' + options.frequency.toString();
-    const timeoutArgs = options.timeoutSeconds === undefined ? [] : ['--timeout', options.timeoutSeconds.toString()];
+    const timeoutArgs =
+        options.timeoutSeconds === undefined
+            ? []
+            : ['--timeout', options.timeoutSeconds.toString()];
 
     return [
         'record',
-        '-e', eventsArg,
-        '-c', options.core.toString(),
+        '-e',
+        eventsArg,
+        '-c',
+        options.core.toString(),
         ...timeoutArgs,
         '--json',
         '--disassemble',
@@ -38,10 +43,13 @@ export const buildRecordCommand = (executablePath: string, options: RecordOption
     return `${shellEscape(executablePath)} ${args}`;
 };
 
-export const buildListCommand = (executablePath: string) => `${shellEscape(executablePath)} list --json`;
+export const buildListCommand = (executablePath: string) =>
+    `${shellEscape(executablePath)} list --json`;
 
-const getExecutable = (): string => vscode.workspace.getConfiguration('windowsPerf').get('wperfPath') || 'wperf';
-const getCwd = (): string | undefined => vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || undefined;
+const getExecutable = (): string =>
+    vscode.workspace.getConfiguration('windowsPerf').get('wperfPath') || 'wperf';
+const getCwd = (): string | undefined =>
+    vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || undefined;
 
 const run = async (command: string, cancellationToken?: CancellationToken): Promise<string> => {
     const cwd = getCwd();
@@ -49,7 +57,10 @@ const run = async (command: string, cancellationToken?: CancellationToken): Prom
     return stdout;
 };
 
-export const runRecord = async (options: RecordOptions, cancellationToken?: CancellationToken): Promise<Sample> => {
+export const runRecord = async (
+    options: RecordOptions,
+    cancellationToken?: CancellationToken,
+): Promise<Sample> => {
     const args = buildRecordCommand(getExecutable(), options);
     const resultJson = await run(args, cancellationToken);
     return parseSampleJson(resultJson);
@@ -57,5 +68,5 @@ export const runRecord = async (options: RecordOptions, cancellationToken?: Canc
 
 export const runList = async (cancellationToken?: CancellationToken): Promise<string[]> => {
     const resultJson = await run(buildListCommand(getExecutable()), cancellationToken);
-    return parseListJson(resultJson).Predefined_Events.map(event => event.Alias_Name);
+    return parseListJson(resultJson).Predefined_Events.map((event) => event.Alias_Name);
 };

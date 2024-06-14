@@ -22,25 +22,19 @@ export async function activate(context: vscode.ExtensionContext) {
     const editorHighligter = new EditorHighlighter(selectedFile);
 
     vscode.window.registerTreeDataProvider(
-        'samplingResults', new TreeDataProvider(sampleFiles, recordRuns, selectedFile),
+        'samplingResults',
+        new TreeDataProvider(sampleFiles, recordRuns, selectedFile),
     );
 
     const commands: Record<string, (...args: any) => any> = {
-        'windowsperf.openResultFile': (
-            new OpenResultFile(sampleFiles, selectedFile)
+        'windowsperf.openResultFile': new OpenResultFile(sampleFiles, selectedFile).execute,
+        'windowsperf.closeResultFile': new CloseResultFile(sampleFiles, selectedFile).execute,
+        'windowsperf.selectActiveResultFile': new SelectActiveResultFile(sampleFiles, selectedFile)
+            .execute,
+        'windowsperf.clearActiveResultFileSelection': new ClearActiveResultFileSelection(
+            selectedFile,
         ).execute,
-        'windowsperf.closeResultFile': (
-            new CloseResultFile(sampleFiles, selectedFile)
-        ).execute,
-        'windowsperf.selectActiveResultFile': (
-            new SelectActiveResultFile(sampleFiles, selectedFile)
-        ).execute,
-        'windowsperf.clearActiveResultFileSelection': (
-            new ClearActiveResultFileSelection(selectedFile)
-        ).execute,
-        'windowsperf.record': (
-            new RunWperfRecord(recordRuns)
-        ).execute,
+        'windowsperf.record': new RunWperfRecord(recordRuns).execute,
     };
 
     Object.entries(commands).forEach(([name, command]) => {

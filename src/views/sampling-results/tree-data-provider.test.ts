@@ -4,9 +4,22 @@
 
 import * as vscode from 'vscode';
 import { faker } from '@faker-js/faker';
-import { TreeDataProvider, buildEventSampleNode, buildEventNode, buildSampleFileRootNode, buildSourceCodeNode, buildRecordRunRootNode } from './tree-data-provider';
+import {
+    TreeDataProvider,
+    buildEventSampleNode,
+    buildEventNode,
+    buildSampleFileRootNode,
+    buildSourceCodeNode,
+    buildRecordRunRootNode,
+} from './tree-data-provider';
 import { sampleFileFactory } from './sample-file.factories';
-import { annotationFactory, eventFactory, eventSampleFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
+import {
+    annotationFactory,
+    eventFactory,
+    eventSampleFactory,
+    sampleFactory,
+    sourceCodeFactory,
+} from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { MarkdownString, Uri } from 'vscode';
@@ -20,7 +33,11 @@ describe('TreeDataProvider', () => {
             const recordRun = recordRunFactory();
             const samples = new ObservableCollection([sampleFile]);
             const commands = new ObservableCollection([recordRun]);
-            const treeDataProvider = new TreeDataProvider(samples, commands, new ObservableSelection());
+            const treeDataProvider = new TreeDataProvider(
+                samples,
+                commands,
+                new ObservableSelection(),
+            );
 
             const got = treeDataProvider.getChildren();
 
@@ -35,7 +52,11 @@ describe('TreeDataProvider', () => {
             const sampleFile = sampleFileFactory();
             const samples = new ObservableCollection([sampleFile]);
             const selectedSample = new ObservableSelection(sampleFile);
-            const treeDataProvider = new TreeDataProvider(samples, new ObservableCollection, selectedSample);
+            const treeDataProvider = new TreeDataProvider(
+                samples,
+                new ObservableCollection(),
+                selectedSample,
+            );
 
             const got = treeDataProvider.getChildren();
 
@@ -46,9 +67,11 @@ describe('TreeDataProvider', () => {
 
         it('returns children of the given node', () => {
             const treeDataProvider = new TreeDataProvider(
-                new ObservableCollection(), new ObservableCollection(), new ObservableSelection(),
+                new ObservableCollection(),
+                new ObservableCollection(),
+                new ObservableSelection(),
             );
-            const nodeWithChildren = { children: [ { label: 'some-label' } ] };
+            const nodeWithChildren = { children: [{ label: 'some-label' }] };
 
             const got = treeDataProvider.getChildren(nodeWithChildren);
 
@@ -58,7 +81,9 @@ describe('TreeDataProvider', () => {
 
         it('returns empty list if node has no children', () => {
             const treeDataProvider = new TreeDataProvider(
-                new ObservableCollection(), new ObservableCollection(), new ObservableSelection(),
+                new ObservableCollection(),
+                new ObservableCollection(),
+                new ObservableSelection(),
             );
             const nodeWithoutChildren = {};
 
@@ -71,7 +96,9 @@ describe('TreeDataProvider', () => {
     describe('getTreeItem', () => {
         it('returns given node as is', () => {
             const treeDataProvider = new TreeDataProvider(
-                new ObservableCollection(), new ObservableCollection(), new ObservableSelection(),
+                new ObservableCollection(),
+                new ObservableCollection(),
+                new ObservableSelection(),
             );
             const node = { label: 'foo' };
 
@@ -87,12 +114,12 @@ describe('buildSampleFileRootNode', () => {
         const first = eventFactory();
         const second = eventFactory();
         const sampleFile = sampleFileFactory({
-            parsedContent: sampleFactory({ events: [ first, second ] }),
+            parsedContent: sampleFactory({ events: [first, second] }),
         });
 
         const got = buildSampleFileRootNode(sampleFile, faker.datatype.boolean());
 
-        const want = [ buildEventNode(first), buildEventNode(second) ];
+        const want = [buildEventNode(first), buildEventNode(second)];
         expect(got.children).toEqual(want);
     });
 
@@ -136,7 +163,8 @@ describe('buildSampleFileRootNode', () => {
             const got = buildSampleFileRootNode(sampleFileFactory(), isSelected);
 
             const want = new vscode.ThemeIcon(
-                'eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'),
+                'eye-closed',
+                new vscode.ThemeColor('list.deemphasizedForeground'),
             );
             expect(got.iconPath).toEqual(want);
         });
@@ -156,12 +184,12 @@ describe('buildrecordRunRootNode', () => {
         const first = eventFactory();
         const second = eventFactory();
         const recordRun = recordRunFactory({
-            parsedContent: sampleFactory({ events: [ first, second ] }),
+            parsedContent: sampleFactory({ events: [first, second] }),
         });
 
         const got = buildRecordRunRootNode(recordRun, faker.datatype.boolean());
 
-        const want = [ buildEventNode(first), buildEventNode(second) ];
+        const want = [buildEventNode(first), buildEventNode(second)];
         expect(got.children).toEqual(want);
     });
 
@@ -194,19 +222,23 @@ describe('buildrecordRunRootNode', () => {
 
 describe('buildEventNode', () => {
     it('calculates child nodes for all samples with matching annotations', () => {
-        const sampleWithMatchingAnnotation = eventSampleFactory({ symbol: 'a-function' });
+        const sampleWithMatchingAnnotation = eventSampleFactory({
+            symbol: 'a-function',
+        });
         const otherSample = eventSampleFactory();
-        const matchingAnnotation = annotationFactory({ function_name: 'a-function' });
+        const matchingAnnotation = annotationFactory({
+            function_name: 'a-function',
+        });
         const event = eventFactory({
-            samples: [ sampleWithMatchingAnnotation, otherSample ],
-            annotate: [ matchingAnnotation, annotationFactory() ],
+            samples: [sampleWithMatchingAnnotation, otherSample],
+            annotate: [matchingAnnotation, annotationFactory()],
         });
 
         const got = buildEventNode(event);
 
         const want = [
             buildEventSampleNode(event, sampleWithMatchingAnnotation, matchingAnnotation),
-            buildEventSampleNode(event, otherSample, undefined)
+            buildEventSampleNode(event, otherSample, undefined),
         ];
         expect(got.children).toEqual(want);
     });
@@ -225,13 +257,13 @@ describe('buildEventSampleNode', () => {
         const first = sourceCodeFactory();
         const second = sourceCodeFactory();
         const event = eventFactory();
-        const annotation = annotationFactory({ source_code: [first, second], });
+        const annotation = annotationFactory({ source_code: [first, second] });
 
         const got = buildEventSampleNode(event, eventSampleFactory(), annotation);
 
         const want = [
             buildSourceCodeNode(event, annotation, first),
-            buildSourceCodeNode(event, annotation, second)
+            buildSourceCodeNode(event, annotation, second),
         ];
         expect(got.children).toEqual(want);
         expect(got.collapsibleState).toEqual(vscode.TreeItemCollapsibleState.Collapsed);
@@ -253,7 +285,7 @@ describe('buildEventSampleNode', () => {
     });
 
     it('decorates node with count and overhead', () => {
-        const eventSample = eventSampleFactory({ count: 5, overhead: 12.10310 });
+        const eventSample = eventSampleFactory({ count: 5, overhead: 12.1031 });
 
         const got = buildEventSampleNode(eventFactory(), eventSample, annotationFactory());
 
@@ -264,7 +296,10 @@ describe('buildEventSampleNode', () => {
 
 describe('buildSourceNode', () => {
     it('sets node label to filename and line number', () => {
-        const sourceCode = sourceCodeFactory({ filename: 'some-file.c', line_number: 99 });
+        const sourceCode = sourceCodeFactory({
+            filename: 'some-file.c',
+            line_number: 99,
+        });
 
         const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
 
@@ -288,7 +323,7 @@ describe('buildSourceNode', () => {
         const want = {
             command: 'vscode.open',
             title: 'Open File',
-            arguments: [Uri.parse(`file://${sourceCode.filename}#${sourceCode.line_number}`)]
+            arguments: [Uri.parse(`file://${sourceCode.filename}#${sourceCode.line_number}`)],
         };
         expect(got).toEqual(want);
     });
@@ -300,7 +335,9 @@ describe('buildSourceNode', () => {
 
         const got = buildSourceCodeNode(event, annotation, sourceCode).tooltip;
 
-        const want = new MarkdownString(buildDecoration(event, annotation, sourceCode).hoverMessage);
+        const want = new MarkdownString(
+            buildDecoration(event, annotation, sourceCode).hoverMessage,
+        );
         expect(got).toEqual(want);
     });
 });

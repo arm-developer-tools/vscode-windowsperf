@@ -4,7 +4,12 @@
 
 import { ObservableSelection } from '../../observable-selection';
 import { SampleFile } from '../sampling-results/sample-file';
-import { annotationFactory, eventFactory, sampleFactory, sourceCodeFactory } from '../../wperf/parse.factories';
+import {
+    annotationFactory,
+    eventFactory,
+    sampleFactory,
+    sourceCodeFactory,
+} from '../../wperf/parse.factories';
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
 import { EditorHighlighter, calculateDecorations } from './editor-highlighter';
 import { buildDecoration } from './source-code-decoration';
@@ -71,10 +76,12 @@ describe('calculateDecorations', () => {
     it('returns decorations for all source code', () => {
         const sourceCodeA = sourceCodeFactory();
         const sourceCodeB = sourceCodeFactory();
-        const annotation = annotationFactory({ source_code: [sourceCodeA, sourceCodeB] });
+        const annotation = annotationFactory({
+            source_code: [sourceCodeA, sourceCodeB],
+        });
         const event = eventFactory({ annotate: [annotation] });
         const sampleFile = sampleFileFactory({
-            parsedContent: sampleFactory({ events: [event] })
+            parsedContent: sampleFactory({ events: [event] }),
         });
 
         const got = calculateDecorations(sampleFile);

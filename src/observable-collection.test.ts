@@ -12,17 +12,17 @@ describe('ObservableCollection', () => {
     });
 
     it('can be seeded with values', () => {
-        const numbers = new ObservableCollection([1,2,3]);
+        const numbers = new ObservableCollection([1, 2, 3]);
 
-        expect(numbers.items).toEqual([1,2,3]);
+        expect(numbers.items).toEqual([1, 2, 3]);
     });
 
     it('prevents collection mutations', () => {
-        const numbers = new ObservableCollection([1,2,3]);
+        const numbers = new ObservableCollection([1, 2, 3]);
 
         numbers.items.push(4);
 
-        expect(numbers.items).toEqual([1,2,3]);
+        expect(numbers.items).toEqual([1, 2, 3]);
     });
 
     describe('add', () => {
@@ -48,19 +48,19 @@ describe('ObservableCollection', () => {
 
     describe('deleteFirst', () => {
         it('removes first item matching the predicate', async () => {
-            const numbers = new ObservableCollection<number>([1,2,3]);
+            const numbers = new ObservableCollection<number>([1, 2, 3]);
 
-            numbers.deleteFirst(number => number > 1);
+            numbers.deleteFirst((number) => number > 1);
 
-            expect(numbers.items).toEqual([1,3]);
+            expect(numbers.items).toEqual([1, 3]);
         });
 
         it('notifies about the removal', () => {
-            const numbers = new ObservableCollection<number>([1,2,3]);
+            const numbers = new ObservableCollection<number>([1, 2, 3]);
             const listener = jest.fn();
 
             numbers.onDidChange(listener);
-            numbers.deleteFirst(number => number === 3);
+            numbers.deleteFirst((number) => number === 3);
 
             const wantEvent = { item: 3, type: 'delete' };
             expect(listener).toHaveBeenCalledWith(wantEvent);

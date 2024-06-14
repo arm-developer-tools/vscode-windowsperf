@@ -35,8 +35,8 @@ export const openFileAtUriOrPrompt = async (
     inputUri: Uri | undefined,
     promptUserToSelectFile: typeof promptUserToSelectResultFile = promptUserToSelectResultFile,
     loadFile: typeof SampleFile.fromUri = SampleFile.fromUri,
-): Promise<SampleFile | undefined > => {
-    const uri = inputUri || await promptUserToSelectFile();
+): Promise<SampleFile | undefined> => {
+    const uri = inputUri || (await promptUserToSelectFile());
     if (uri) {
         try {
             return await loadFile(uri);

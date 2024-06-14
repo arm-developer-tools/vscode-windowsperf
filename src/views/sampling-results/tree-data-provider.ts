@@ -36,7 +36,10 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
             this.refresh();
         });
         selectedFile.onDidChange(() => {
-            logger.debug('Selected file changed, refreshing tree data', selectedFile.selected?.uri.toString());
+            logger.debug(
+                'Selected file changed, refreshing tree data',
+                selectedFile.selected?.uri.toString(),
+            );
             this.refresh();
         });
     }
@@ -47,11 +50,11 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     getChildren(node?: Node): Node[] {
         if (node === undefined) {
-            const sampleFileTree = this.sampleFiles.items.map(file => {
+            const sampleFileTree = this.sampleFiles.items.map((file) => {
                 const isSelected = this.selectedFile.selected === file;
                 return buildSampleFileRootNode(file, isSelected);
             });
-            const recordRunTree = this.recordRuns.items.map(recordRun => {
+            const recordRunTree = this.recordRuns.items.map((recordRun) => {
                 return buildRecordRunRootNode(recordRun, false); // hard coded to be false. To-Do update the selectedFile to accept two Types
             });
             return recordRunTree.concat(sampleFileTree);
@@ -98,8 +101,8 @@ const selectionContextValue = (selected: boolean): string => {
 export const buildEventNode = (event: Event): Node => {
     const lookup = buildAnnotationLookup(event.annotate);
     return {
-        children: event.samples.map(
-            sample => buildEventSampleNode(event, sample, lookup[sample.symbol])
+        children: event.samples.map((sample) =>
+            buildEventSampleNode(event, sample, lookup[sample.symbol]),
         ),
         collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
         label: event.type,
@@ -118,22 +121,28 @@ const buildAnnotationLookup = (annotations: Annotation[]): AnnotationByFunctionN
 export const buildEventSampleNode = (
     event: Event,
     eventSample: EventSample,
-    annotation: Annotation | undefined
+    annotation: Annotation | undefined,
 ): Node => {
-    const children = annotation?.source_code.map(
-        sourceCode => buildSourceCodeNode(event, annotation, sourceCode)
-    ) || [];
+    const children =
+        annotation?.source_code.map((sourceCode) =>
+            buildSourceCodeNode(event, annotation, sourceCode),
+        ) || [];
     return {
         children,
-        collapsibleState: children.length > 0
-            ? vscode.TreeItemCollapsibleState.Collapsed
-            : vscode.TreeItemCollapsibleState.None,
+        collapsibleState:
+            children.length > 0
+                ? vscode.TreeItemCollapsibleState.Collapsed
+                : vscode.TreeItemCollapsibleState.None,
         label: eventSample.symbol,
         description: `${formatFraction(eventSample.overhead)}% (hits: ${eventSample.count})`,
     };
 };
 
-export const buildSourceCodeNode = (event: Event, annotation: Annotation, sourceCode: SourceCode): Node => ({
+export const buildSourceCodeNode = (
+    event: Event,
+    annotation: Annotation,
+    sourceCode: SourceCode,
+): Node => ({
     collapsibleState: vscode.TreeItemCollapsibleState.None,
     description: `${formatFraction(sourceCode.overhead)}% (hits: ${sourceCode.hits})`,
     label: `${sourceCode.filename}:${sourceCode.line_number}`,
@@ -142,9 +151,9 @@ export const buildSourceCodeNode = (event: Event, annotation: Annotation, source
         command: 'vscode.open',
         title: 'Open File',
         arguments: [
-            Uri
-                .file(`${sourceCode.filename}`)
-                .with({ fragment: sourceCode.line_number.toString() })
+            Uri.file(`${sourceCode.filename}`).with({
+                fragment: sourceCode.line_number.toString(),
+            }),
         ],
-    }
+    },
 });

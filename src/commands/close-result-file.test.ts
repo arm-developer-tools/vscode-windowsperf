@@ -13,9 +13,7 @@ describe('CloseResultFile.execute', () => {
         const fileBefore = sampleFileFactory();
         const willBeRemoved = sampleFileFactory();
         const fileAfter = sampleFileFactory();
-        const files = new ObservableCollection<SampleFile>([
-            fileBefore, willBeRemoved, fileAfter
-        ]);
+        const files = new ObservableCollection<SampleFile>([fileBefore, willBeRemoved, fileAfter]);
         const command = new CloseResultFile(files, new ObservableSelection());
 
         command.execute({ resourceUri: willBeRemoved.uri });

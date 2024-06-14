@@ -6,17 +6,17 @@
  */
 
 export interface List {
-  Predefined_Events: {
-    Alias_Name: string;
-    Event_Type: string;
-    Raw_Index: string;
-  }[];
-  Predefined_Metrics: {
-    Events: string;
-    Metric: string;
-  }[];
-  Predefined_Groups_of_Metrics?: {
-    Group: string;
-    Metrics: string;
-  }[];
+    Predefined_Events: {
+        Alias_Name: string;
+        Event_Type: string;
+        Raw_Index: string;
+    }[];
+    Predefined_Metrics: {
+        Events: string;
+        Metric: string;
+    }[];
+    Predefined_Groups_of_Metrics?: {
+        Group: string;
+        Metrics: string;
+    }[];
 }

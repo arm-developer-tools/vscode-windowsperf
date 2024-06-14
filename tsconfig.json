@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES2022", // JavaScript language version 
+        "target": "ES2022", // JavaScript language version
         "module": "CommonJS", // Specify what module code is generated.
         "outDir": "out", // Specify an output folder for all emitted files.
         "strict": true, // Enable all strict type checking options.
@@ -13,16 +13,16 @@
             "ES2022" /* Specify a set of bundled library declaration files that describe the target runtime environment. */
         ],
         /* Additional Checks */
-        "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-        "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
-        "noUnusedParameters": true,  /* Report errors on unused parameters. */
-        "resolveJsonModule": true, /* Enables importing json files. */
+        "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+        "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+        "noUnusedParameters": true /* Report errors on unused parameters. */,
+        "resolveJsonModule": true /* Enables importing json files. */,
         "noPropertyAccessFromIndexSignature": true,
-        "noUncheckedIndexedAccess": true,
+        "noUncheckedIndexedAccess": true
     },
     "include": [
         "src",
-        "__mocks__", /* Make eslint happy */
+        "__mocks__" /* Make eslint happy */,
         "test-workspace" /* Make eslint happy */
     ]
 }

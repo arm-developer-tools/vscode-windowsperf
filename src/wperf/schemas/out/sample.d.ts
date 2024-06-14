@@ -6,64 +6,64 @@
  */
 
 export interface Sample {
-  sampling: {
-    events: {
-      type: string;
-      samples: {
-        count: number;
-        overhead: number;
-        symbol: string;
-      }[];
-      annotate: {
-        function_name: string;
-        source_code: {
-          filename: string;
-          line_number: number;
-          hits: number;
-          instruction_address: string;
-          disassembled_line: {
-            disassemble: {
-              address: string;
-              instruction: string;
+    sampling: {
+        events: {
+            type: string;
+            samples: {
+                count: number;
+                overhead: number;
+                symbol: string;
             }[];
-          };
+            annotate: {
+                function_name: string;
+                source_code: {
+                    filename: string;
+                    line_number: number;
+                    hits: number;
+                    instruction_address: string;
+                    disassembled_line: {
+                        disassemble: {
+                            address: string;
+                            instruction: string;
+                        }[];
+                    };
+                }[];
+            }[];
+            pcs?: {
+                address: number;
+                count: number;
+                [k: string]: unknown;
+            }[];
+            interval: number;
+            printed_sample_num: number;
+            [k: string]: unknown;
         }[];
-      }[];
-      pcs?: {
-        address: number;
-        count: number;
+        base_address?: number;
+        runtime_delta?: number;
+        sample_display_row: number;
+        samples_generated: number;
+        pe_file: string;
+        pdb_file: string;
+        samples_dropped: number;
+        modules?: {
+            name: string;
+            address: number;
+            path: string;
+            [k: string]: unknown;
+        }[];
+        modules_info?: {
+            pdb_file: string;
+            pe_name: string;
+            module: string;
+            sections: {
+                section: string;
+                offset: number;
+                virtual_size: number;
+                [k: string]: unknown;
+            }[];
+            [k: string]: unknown;
+        }[];
         [k: string]: unknown;
-      }[];
-      interval: number;
-      printed_sample_num: number;
-      [k: string]: unknown;
-    }[];
-    base_address?: number;
-    runtime_delta?: number;
-    sample_display_row: number;
-    samples_generated: number;
-    pe_file: string;
-    pdb_file: string;
-    samples_dropped: number;
-    modules?: {
-      name: string;
-      address: number;
-      path: string;
-      [k: string]: unknown;
-    }[];
-    modules_info?: {
-      pdb_file: string;
-      pe_name: string;
-      module: string;
-      sections: {
-        section: string;
-        offset: number;
-        virtual_size: number;
-        [k: string]: unknown;
-      }[];
-      [k: string]: unknown;
-    }[];
+    };
     [k: string]: unknown;
-  };
-  [k: string]: unknown;
 }

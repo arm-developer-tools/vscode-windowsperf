@@ -9,8 +9,8 @@ import { isSamePath } from '../../path';
 import { Decoration, buildDecoration } from './source-code-decoration';
 
 export type TextEditorDecorator = {
-    decorate: (decorations: Decoration[]) => void
-    dispose: () => void
+    decorate: (decorations: Decoration[]) => void;
+    dispose: () => void;
 };
 
 export class EditorHighlighter {
@@ -32,8 +32,7 @@ export class EditorHighlighter {
     }
 
     dispose() {
-        this.eventHandler.dispose(),
-        this.decorator.dispose();
+        this.eventHandler.dispose(), this.decorator.dispose();
     }
 }
 
@@ -45,10 +44,10 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
         this.dispose();
         this.decorateEditors(vscode.window.visibleTextEditors, decorations);
         this.onDidChangeVisibleTextEditors = vscode.window.onDidChangeVisibleTextEditors(
-            editors => {
+            (editors) => {
                 this.clearActiveDecorations();
                 this.decorateEditors(editors, decorations);
-            }
+            },
         );
     }
 
@@ -57,13 +56,10 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
         this.clearActiveDecorations();
     }
 
-    private decorateEditors(
-        editors: readonly vscode.TextEditor[],
-        decorations: Decoration[],
-    ) {
-        editors.forEach(editor => {
-            const fileDecorations = decorations.filter(decoration =>
-                isSamePath(decoration.filename, editor.document.fileName)
+    private decorateEditors(editors: readonly vscode.TextEditor[], decorations: Decoration[]) {
+        editors.forEach((editor) => {
+            const fileDecorations = decorations.filter((decoration) =>
+                isSamePath(decoration.filename, editor.document.fileName),
             );
             if (fileDecorations) {
                 this.decorateEditor(editor, fileDecorations);
@@ -76,20 +72,20 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
             const decorationType = vscode.window.createTextEditorDecorationType({
                 backgroundColor: decoration.backgroundColor,
                 overviewRulerColor: decoration.backgroundColor,
-                after: decoration.after
+                after: decoration.after,
             });
             this.activeDecorations.push(decorationType);
             editor.setDecorations(decorationType, [
                 {
                     range: editor.document.lineAt(decoration.line_number - 1).range,
                     hoverMessage: new vscode.MarkdownString(decoration.hoverMessage),
-                }
+                },
             ]);
         }
     }
 
     private clearActiveDecorations() {
-        this.activeDecorations.forEach(d => d.dispose());
+        this.activeDecorations.forEach((d) => d.dispose());
         this.activeDecorations.length = 0;
     }
 }

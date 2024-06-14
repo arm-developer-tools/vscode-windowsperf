@@ -60,7 +60,7 @@ describe('exec', () => {
     });
 
     it('logs appropriately on success', async () => {
-        const jsScript = 'console.log(\'STDOUT message\'); console.error(\'STDERR message\')';
+        const jsScript = "console.log('STDOUT message'); console.error('STDERR message')";
         const command = `node -e "${jsScript}"`;
 
         await exec(command);
@@ -71,7 +71,7 @@ describe('exec', () => {
     });
 
     it('logs appropriately on error', async () => {
-        const jsScript = 'console.log(\'OH NO!\'); process.exit(1)';
+        const jsScript = "console.log('OH NO!'); process.exit(1)";
         const command = `node -e "${jsScript}"`;
 
         await expect(exec(command)).rejects.toThrow();
