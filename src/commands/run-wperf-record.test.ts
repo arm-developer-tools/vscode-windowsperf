@@ -4,7 +4,8 @@
 
 import { faker } from '@faker-js/faker';
 import { ObservableCollection } from '../observable-collection';
-import { RecordRun } from '../views/sampling-results/record-run';
+import { ObservableSelection } from '../observable-selection';
+import { SampleSource } from '../views/sampling-results/sample-source';
 import { sampleFactory } from '../wperf/parse.factories';
 import { recordOptionsFactory } from '../wperf/run.factories';
 import {
@@ -16,11 +17,12 @@ import { RecordOptions } from '../wperf/run';
 
 describe('RunWperfRecord', () => {
     it('does nothing if the user cancels the recording', async () => {
-        const recordRuns = new ObservableCollection<RecordRun>();
+        const collection = new ObservableCollection<SampleSource>();
         const cancellingPromptForRecordOptions = jest.fn().mockResolvedValue(undefined);
         const runWperfRecord = jest.fn();
         const command = new RunWperfRecord(
-            recordRuns,
+            collection,
+            new ObservableSelection<SampleSource>(),
             cancellingPromptForRecordOptions,
             runWperfRecord,
             jest.fn(),
@@ -29,7 +31,29 @@ describe('RunWperfRecord', () => {
         await command.execute();
 
         expect(runWperfRecord).not.toHaveBeenCalled();
-        expect(recordRuns.items).toHaveLength(0);
+        expect(collection.items).toHaveLength(0);
+    });
+
+    it('selects the first loaded record when none are loaded', async () => {
+        const collection = new ObservableCollection<SampleSource>();
+        const selection = new ObservableSelection<SampleSource>();
+        const recordOptions = recordOptionsFactory();
+        const getRecordOptions = jest.fn().mockResolvedValue(recordOptions);
+        const sample = sampleFactory();
+        const runWperfRecord = jest.fn().mockResolvedValue(sample);
+        const command = new RunWperfRecord(
+            collection,
+            selection,
+            getRecordOptions,
+            runWperfRecord,
+            jest.fn(),
+        );
+
+        await command.execute();
+
+        const got = selection.selected?.context.result;
+
+        expect(got?.parsedContent).toEqual(sample);
     });
 
     it('runs wperf record with the record options returned by getRecordOptions', async () => {
@@ -38,6 +62,7 @@ describe('RunWperfRecord', () => {
         const runWperfRecord = jest.fn().mockResolvedValue(undefined);
         const command = new RunWperfRecord(
             new ObservableCollection(),
+            new ObservableSelection<SampleSource>(),
             getRecordOptions,
             runWperfRecord,
             jest.fn(),
@@ -49,11 +74,12 @@ describe('RunWperfRecord', () => {
     });
 
     it('does not add a RecordRun if the recording fails', async () => {
-        const recordRuns = new ObservableCollection<RecordRun>();
+        const collection = new ObservableCollection<SampleSource>();
         const getRecordOptions = jest.fn().mockResolvedValue(recordOptionsFactory());
         const failingRunWperfRecord = jest.fn().mockResolvedValue(undefined);
         const command = new RunWperfRecord(
-            recordRuns,
+            collection,
+            new ObservableSelection<SampleSource>(),
             getRecordOptions,
             failingRunWperfRecord,
             jest.fn(),
@@ -61,22 +87,62 @@ describe('RunWperfRecord', () => {
 
         await command.execute();
 
-        expect(recordRuns.items).toHaveLength(0);
+        expect(collection.items).toHaveLength(0);
     });
 
-    it('adds the recording to the recordRuns collection if the recording is successful', async () => {
-        const recordRuns = new ObservableCollection<RecordRun>();
+    it('runs wperf record with the record options returned by getRecordOptions', async () => {
+        const recordOptions = recordOptionsFactory();
+        const getRecordOptions = jest.fn().mockResolvedValue(recordOptions);
+        const runWperfRecord = jest.fn().mockResolvedValue(undefined);
+        const command = new RunWperfRecord(
+            new ObservableCollection(),
+            new ObservableSelection<SampleSource>(),
+            getRecordOptions,
+            runWperfRecord,
+            jest.fn(),
+        );
+
+        await command.execute();
+
+        expect(runWperfRecord).toHaveBeenCalledWith(recordOptions);
+    });
+
+    it('does not add a RecordRun if the recording fails', async () => {
+        const collection = new ObservableCollection<SampleSource>();
+        const getRecordOptions = jest.fn().mockResolvedValue(recordOptionsFactory());
+        const failingRunWperfRecord = jest.fn().mockResolvedValue(undefined);
+        const command = new RunWperfRecord(
+            collection,
+            new ObservableSelection<SampleSource>(),
+            getRecordOptions,
+            failingRunWperfRecord,
+            jest.fn(),
+        );
+
+        await command.execute();
+
+        expect(collection.items).toHaveLength(0);
+    });
+
+    it('adds the recording to the collection if the recording is successful', async () => {
+        const collection = new ObservableCollection<SampleSource>();
         const recordOptions = recordOptionsFactory();
         const getRecordOptions = jest.fn().mockResolvedValue(recordOptions);
         const sample = sampleFactory();
         const runWperfRecord = jest.fn().mockResolvedValue(sample);
-        const command = new RunWperfRecord(recordRuns, getRecordOptions, runWperfRecord, jest.fn());
+        const command = new RunWperfRecord(
+            collection,
+            new ObservableSelection<SampleSource>(),
+            getRecordOptions,
+            runWperfRecord,
+            jest.fn(),
+        );
 
         await command.execute();
 
-        expect(recordRuns.items).toHaveLength(1);
-        expect(recordRuns.items[0]!.command).toBe(recordOptions.command);
-        expect(recordRuns.items[0]!.parsedContent).toEqual(sample);
+        expect(collection.items).toHaveLength(1);
+        expect(collection.items[0]!.context.result.displayName).toBe(recordOptions.command);
+        expect(collection.items[0]!.context.result.parsedContent).toEqual(sample);
     });
 });
 

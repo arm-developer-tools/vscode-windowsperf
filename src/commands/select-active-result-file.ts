@@ -6,23 +6,35 @@ import * as vscode from 'vscode';
 
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/sample-file';
 import { logger } from '../logging/logger';
+import { SampleSource } from '../views/sampling-results/sample-source';
 
 export class SelectActiveResultFile {
     constructor(
-        private readonly collection: ObservableCollection<SampleFile>,
-        private readonly selection: ObservableSelection<SampleFile>,
+        private readonly sources: ObservableCollection<SampleSource>,
+        private readonly selection: ObservableSelection<SampleSource>,
     ) {}
 
-    execute = async (file: vscode.TreeItem) => {
-        logger.info('Executing windowsperf.selectActiveResultFile', file.resourceUri?.toString());
-        logger.debug('File tree item', file);
-        for (const item of this.collection.items) {
-            if (item.uri === file.resourceUri) {
+    execute = async (sampleSource: vscode.TreeItem) => {
+        logCommandExecution(sampleSource);
+        for (const item of this.sources.items) {
+            if (item.id === sampleSource.id) {
                 this.selection.selected = item;
                 return;
             }
         }
     };
 }
+
+const logCommandExecution = (sampleSource: vscode.TreeItem): void => {
+    if (sampleSource.resourceUri) {
+        logger.info(
+            'Executing windowsperf.selectActiveResultFile',
+            sampleSource.resourceUri?.toString(),
+        );
+        logger.debug('File tree item', sampleSource);
+    } else {
+        logger.info('Executing windowsperf.selectActiveResultFile', sampleSource.label);
+        logger.debug('Record command tree item', sampleSource);
+    }
+};

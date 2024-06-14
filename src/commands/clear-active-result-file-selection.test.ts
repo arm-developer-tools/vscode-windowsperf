@@ -4,12 +4,12 @@
 
 import { ClearActiveResultFileSelection } from './clear-active-result-file-selection';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/sample-file';
-import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
+import { sampleSourceFactory } from '../views/sampling-results/sample-source.factories';
+import { SampleSource } from '../views/sampling-results/sample-source';
 
 describe('ClearActiveResultFileSelection.execute', () => {
     it('clears selection', () => {
-        const selection = new ObservableSelection<SampleFile>(sampleFileFactory());
+        const selection = new ObservableSelection<SampleSource>(sampleSourceFactory());
         const command = new ClearActiveResultFileSelection(selection);
 
         command.execute();

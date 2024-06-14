@@ -4,9 +4,9 @@
 
 import * as vscode from 'vscode';
 import { ObservableSelection } from '../../observable-selection';
-import { SampleFile } from '../sampling-results/sample-file';
 import { isSamePath } from '../../path';
 import { Decoration, buildDecoration } from './source-code-decoration';
+import { SampleSource } from './sample-source';
 
 export type TextEditorDecorator = {
     decorate: (decorations: Decoration[]) => void;
@@ -17,7 +17,7 @@ export class EditorHighlighter {
     private readonly eventHandler: vscode.Disposable;
 
     constructor(
-        selectedFile: ObservableSelection<SampleFile>,
+        selectedFile: ObservableSelection<SampleSource>,
         private readonly decorator: TextEditorDecorator = new VscodeTextEditorDecorator(),
     ) {
         this.eventHandler = selectedFile.onDidChange(() => {
@@ -90,9 +90,9 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
     }
 }
 
-export const calculateDecorations = (sample: SampleFile): Decoration[] => {
+export const calculateDecorations = (sample: SampleSource): Decoration[] => {
     const decorations: Decoration[] = [];
-    for (const event of sample.parsedContent.sampling.events) {
+    for (const event of sample.context.result.parsedContent.sampling.events) {
         for (const annotation of event.annotate) {
             for (const sourceCode of annotation.source_code) {
                 decorations.push(buildDecoration(event, annotation, sourceCode));

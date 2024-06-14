@@ -3,7 +3,6 @@
  */
 
 import { ObservableSelection } from '../../observable-selection';
-import { SampleFile } from '../sampling-results/sample-file';
 import {
     annotationFactory,
     eventFactory,
@@ -13,24 +12,26 @@ import {
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
 import { EditorHighlighter, calculateDecorations } from './editor-highlighter';
 import { buildDecoration } from './source-code-decoration';
+import { sampleSourceFileFactory } from './sample-source.factories';
+import { SampleSource } from './sample-source';
 
 describe('EditorHighlighter', () => {
     it('applies decorations to currently selected sample', () => {
-        const selectedFile = new ObservableSelection<SampleFile>();
+        const selectedFile = new ObservableSelection<SampleSource>();
         const decorator = {
             decorate: jest.fn(),
             dispose: jest.fn(),
         };
 
         new EditorHighlighter(selectedFile, decorator);
-        const selectedSample = sampleFileFactory();
+        const selectedSample = sampleSourceFileFactory();
         selectedFile.selected = selectedSample;
 
         expect(decorator.decorate).toHaveBeenCalledWith(calculateDecorations(selectedSample));
     });
 
     it('clears decorations to when selection is cleared', () => {
-        const selectedFile = new ObservableSelection<SampleFile>(sampleFileFactory());
+        const selectedFile = new ObservableSelection<SampleSource>(sampleSourceFileFactory());
         const decorator = {
             decorate: jest.fn(),
             dispose: jest.fn(),
@@ -44,7 +45,7 @@ describe('EditorHighlighter', () => {
 
     describe('dispose', () => {
         it('disposes of decorator', () => {
-            const selectedFile = new ObservableSelection<SampleFile>();
+            const selectedFile = new ObservableSelection<SampleSource>();
             const decorator = {
                 decorate: jest.fn(),
                 dispose: jest.fn(),
@@ -57,7 +58,7 @@ describe('EditorHighlighter', () => {
         });
 
         it('will not call highlight when selected sample changes', () => {
-            const selectedFile = new ObservableSelection<SampleFile>();
+            const selectedFile = new ObservableSelection<SampleSource>();
             const decorator = {
                 decorate: jest.fn(),
                 dispose: jest.fn(),
@@ -65,7 +66,8 @@ describe('EditorHighlighter', () => {
 
             const highlighter = new EditorHighlighter(selectedFile, decorator);
             highlighter.dispose();
-            selectedFile.selected = sampleFileFactory();
+            const sampleSource = sampleSourceFileFactory();
+            selectedFile.selected = sampleSource;
 
             expect(decorator.decorate).not.toHaveBeenCalled();
         });
@@ -84,7 +86,7 @@ describe('calculateDecorations', () => {
             parsedContent: sampleFactory({ events: [event] }),
         });
 
-        const got = calculateDecorations(sampleFile);
+        const got = calculateDecorations(sampleSourceFileFactory({ result: sampleFile }));
 
         const want = [
             buildDecoration(event, annotation, sourceCodeA),

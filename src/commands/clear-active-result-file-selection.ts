@@ -4,10 +4,10 @@
 
 import { logger } from '../logging/logger';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/sample-file';
+import { SampleSource } from '../views/sampling-results/sample-source';
 
 export class ClearActiveResultFileSelection {
-    constructor(private readonly selection: ObservableSelection<SampleFile>) {}
+    constructor(private readonly selection: ObservableSelection<SampleSource>) {}
 
     execute = async () => {
         logger.info('Executing windowsperf.clearActiveResultFileSelection');

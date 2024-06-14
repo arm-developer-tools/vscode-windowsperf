@@ -10,10 +10,13 @@ import { Sample } from '../wperf/parse';
 import { logger } from '../logging/logger';
 import { RecordRun } from '../views/sampling-results/record-run';
 import { logErrorAndNotify } from '../logging/error-logging';
+import { SampleSource } from '../views/sampling-results/sample-source';
+import { ObservableSelection } from '../observable-selection';
 
 export class RunWperfRecord {
     constructor(
-        private readonly recordRuns: ObservableCollection<RecordRun>,
+        private readonly sources: ObservableCollection<SampleSource>,
+        private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly getRecordOptions: typeof promptUserForRecordOptions = promptUserForRecordOptions,
         private readonly runWperfRecord: typeof runWperfRecordWithProgress = runWperfRecordWithProgress,
         private readonly focusSamplingResults: typeof executeFocusSamplingResults = executeFocusSamplingResults,
@@ -36,7 +39,13 @@ export class RunWperfRecord {
 
         logger.debug(`Recording complete, recorded ${sample.sampling.events.length} events`);
 
-        this.recordRuns.add(new RecordRun(recordOptions.command, sample));
+        const newSampleSource = SampleSource.fromRecordRun(
+            new RecordRun(recordOptions.command, sample),
+        );
+        if (this.sources.items.length === 0) {
+            this.selectedFile.selected = newSampleSource;
+        }
+        this.sources.add(newSampleSource);
         this.focusSamplingResults();
     };
 }

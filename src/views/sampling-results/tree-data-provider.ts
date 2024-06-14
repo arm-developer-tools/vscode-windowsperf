@@ -8,10 +8,11 @@ import { Annotation, Event, EventSample, SourceCode } from '../../wperf/parse';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { formatFraction } from '../../math';
-import { SampleFile } from './sample-file';
 import { buildDecoration } from './source-code-decoration';
 import { Uri } from 'vscode';
 import { logger } from '../../logging/logger';
+import { SampleSource, isSourceSampleFile } from './sample-source';
+import { SampleFile } from './sample-file';
 import { RecordRun } from './record-run';
 
 type Node = vscode.TreeItem & { children?: Node[] };
@@ -21,24 +22,17 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
     readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
 
     constructor(
-        private readonly sampleFiles: ObservableCollection<SampleFile>,
-        private readonly recordRuns: ObservableCollection<RecordRun>,
-        private readonly selectedFile: ObservableSelection<SampleFile>, // To-Do: selected has to be either SampleFile or RecordRun Type
+        private readonly collection: ObservableCollection<SampleSource>,
+        private readonly selectedSample: ObservableSelection<SampleSource>,
     ) {
-        sampleFiles.onDidChange(() => {
-            logger.debug('Sample files changed, refreshing tree data');
-            logger.trace('Sample files', sampleFiles.items);
+        collection.onDidChange(() => {
+            logger.trace('Refreshing tree data with new items', collection.items);
             this.refresh();
         });
-        recordRuns.onDidChange(() => {
-            logger.debug('Command runs list changed, refreshing tree data');
-            logger.trace('Command runs', recordRuns.items);
-            this.refresh();
-        });
-        selectedFile.onDidChange(() => {
+        selectedSample.onDidChange(() => {
             logger.debug(
                 'Selected file changed, refreshing tree data',
-                selectedFile.selected?.uri.toString(),
+                selectedSample.selected?.context.result.displayLog,
             );
             this.refresh();
         });
@@ -50,14 +44,12 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     getChildren(node?: Node): Node[] {
         if (node === undefined) {
-            const sampleFileTree = this.sampleFiles.items.map((file) => {
-                const isSelected = this.selectedFile.selected === file;
-                return buildSampleFileRootNode(file, isSelected);
-            });
-            const recordRunTree = this.recordRuns.items.map((recordRun) => {
-                return buildRecordRunRootNode(recordRun, false); // hard coded to be false. To-Do update the selectedFile to accept two Types
-            });
-            return recordRunTree.concat(sampleFileTree);
+            return this.collection.items
+                .map((sample) => {
+                    const isSelected = this.selectedSample.selected?.context === sample.context;
+                    return buildSampleSourceRootNode(sample, isSelected);
+                })
+                .reverse();
         }
         return node.children ?? [];
     }
@@ -67,8 +59,16 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
     }
 }
 
-export const buildSampleFileRootNode = (file: SampleFile, isSelected: boolean): Node => ({
-    id: file.id,
+export const buildSampleSourceRootNode = (source: SampleSource, isSelected: boolean): Node => {
+    if (isSourceSampleFile(source.context)) {
+        return buildSampleFileRootNode(source.id, source.context.result, isSelected);
+    } else {
+        return buildRecordRunRootNode(source.id, source.context.result, isSelected);
+    }
+};
+
+const buildSampleFileRootNode = (id: string, file: SampleFile, isSelected: boolean): Node => ({
+    id: id,
     children: file.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: buildRootNodeIcon(isSelected),
@@ -77,13 +77,13 @@ export const buildSampleFileRootNode = (file: SampleFile, isSelected: boolean): 
     resourceUri: file.uri,
 });
 
-export const buildRecordRunRootNode = (run: RecordRun, isSelected: boolean): Node => ({
-    id: run.id,
+const buildRecordRunRootNode = (id: string, run: RecordRun, isSelected: boolean): Node => ({
+    id: id,
     children: run.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: buildRootNodeIcon(isSelected),
-    label: run.displayName,
-    description: run.timestamp,
+    label: `Command: ${run.displayName}`,
+    description: `Date: ${run.date}`,
     contextValue: selectionContextValue(isSelected),
     resourceUri: undefined,
 });

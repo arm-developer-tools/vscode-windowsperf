@@ -10,11 +10,12 @@ import { SampleFile } from '../views/sampling-results/sample-file';
 import { Uri } from 'vscode';
 import { logger } from '../logging/logger';
 import { logErrorAndNotify } from '../logging/error-logging';
+import { SampleSource } from '../views/sampling-results/sample-source';
 
 export class OpenResultFile {
     constructor(
-        private readonly files: ObservableCollection<SampleFile>,
-        private readonly selectedFile: ObservableSelection<SampleFile>,
+        private readonly files: ObservableCollection<SampleSource>,
+        private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly openFileOrPrompt: typeof openFileAtUriOrPrompt = openFileAtUriOrPrompt,
     ) {}
 
@@ -23,10 +24,11 @@ export class OpenResultFile {
         const file = await this.openFileOrPrompt(inputUri);
         if (file) {
             logger.info('Opened result file', file.uri.toString());
+            const newSampleSource = SampleSource.fromSampleFile(file);
             if (this.files.items.length === 0) {
-                this.selectedFile.selected = file;
+                this.selectedFile.selected = newSampleSource;
             }
-            this.files.add(file);
+            this.files.add(newSampleSource);
         }
     };
 }

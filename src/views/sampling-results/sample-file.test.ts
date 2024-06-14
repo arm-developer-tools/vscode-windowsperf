@@ -29,24 +29,21 @@ describe('SampleFile', () => {
         });
     });
 
-    describe('id', () => {
-        it('returns a uuid', () => {
-            const uri = Uri.file('foo-bar.c');
-            const file1 = new SampleFile(uri, sampleFactory());
-            const file2 = new SampleFile(uri, sampleFactory());
-
-            expect(file1.id).not.toBeUndefined();
-            expect(file2.id).not.toBeUndefined();
-            expect(file1.id).not.toEqual(file2.id);
-        });
-    });
-
     describe('displayName', () => {
         it('returns base name of the file path', () => {
             const uri = Uri.file(path.join('foo', 'bar', 'baz.json'));
             const sampleFile = new SampleFile(uri, sampleFactory());
 
             expect(sampleFile.displayName).toEqual('baz.json');
+        });
+    });
+
+    describe('displayLog', () => {
+        it('returns path of the file path', () => {
+            const uri = Uri.file(path.join('foo', 'bar', 'baz.json'));
+            const sampleFile = new SampleFile(uri, sampleFactory());
+
+            expect(sampleFile.displayLog).toEqual(uri.toString());
         });
     });
 });

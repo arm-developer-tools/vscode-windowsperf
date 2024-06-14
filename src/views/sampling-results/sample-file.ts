@@ -3,7 +3,6 @@
  */
 
 import path from 'path';
-import { randomUUID } from 'crypto';
 
 import { Sample } from '../../wperf/parse';
 import { loadSampleFile } from '../../wperf/load';
@@ -18,16 +17,16 @@ export class SampleFile {
         return new SampleFile(uri, parsedContent);
     }
 
-    readonly id: string;
-
     constructor(
         readonly uri: Uri,
         readonly parsedContent: Sample,
-    ) {
-        this.id = randomUUID();
-    }
+    ) {}
 
     get displayName(): string {
         return path.basename(this.uri.path);
+    }
+
+    get displayLog(): string {
+        return this.uri.toString();
     }
 }

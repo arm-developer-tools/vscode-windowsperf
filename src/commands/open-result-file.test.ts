@@ -14,24 +14,27 @@ import { ObservableSelection } from '../observable-selection';
 import { faker } from '@faker-js/faker';
 import { Uri } from 'vscode';
 import { logErrorAndNotify } from '../logging/error-logging';
+import { SampleSource } from '../views/sampling-results/sample-source';
+import { sampleSourceFileFactory } from '../views/sampling-results/sample-source.factories';
 
 describe('OpenResultFile', () => {
     describe('execute', () => {
         it('adds opened file to the file list', async () => {
             const file = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => file);
-            const files = new ObservableCollection<SampleFile>();
+            const files = new ObservableCollection<SampleSource>();
             const command = new OpenResultFile(files, new ObservableSelection(), openFileOrPrompt);
 
             await command.execute(file.uri);
 
-            const wantFiles: SampleFile[] = [file];
-            expect(files.items).toEqual(wantFiles);
+            const got = files.items.map((file) => file.context);
+            const wantFiles = [{ type: 'file', result: file }];
+            expect(got).toEqual(wantFiles);
         });
 
         it('when file opening fails, it retains existing file list', async () => {
             const openFileOrPrompt = jest.fn().mockResolvedValue(undefined);
-            const files = new ObservableCollection<SampleFile>();
+            const files = new ObservableCollection<SampleSource>();
             const command = new OpenResultFile(files, new ObservableSelection(), openFileOrPrompt);
 
             await command.execute(Uri.file(faker.system.filePath()));
@@ -42,23 +45,25 @@ describe('OpenResultFile', () => {
         it('selects first loaded file when none are loaded', async () => {
             const file = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => file);
-            const files = new ObservableCollection<SampleFile>();
-            const selectedFile = new ObservableSelection<SampleFile>();
+            const files = new ObservableCollection<SampleSource>();
+            const selectedFile = new ObservableSelection<SampleSource>();
             const command = new OpenResultFile(files, selectedFile, openFileOrPrompt);
 
             await command.execute(file.uri);
 
-            expect(selectedFile.selected).toEqual(file);
+            const got = selectedFile.selected?.context.result;
+
+            expect(got).toEqual(file);
         });
 
         it('loading n-th file does not affect selection', async () => {
             const sampleFile = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => sampleFile);
-            const files = new ObservableCollection<SampleFile>([
-                sampleFileFactory(),
-                sampleFileFactory(),
+            const files = new ObservableCollection<SampleSource>([
+                sampleSourceFileFactory(),
+                sampleSourceFileFactory(),
             ]);
-            const selectedFile = new ObservableSelection<SampleFile>();
+            const selectedFile = new ObservableSelection<SampleSource>();
             const command = new OpenResultFile(files, selectedFile, openFileOrPrompt);
 
             await command.execute(sampleFile.uri);

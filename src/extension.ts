@@ -4,7 +4,6 @@ import * as vscode from 'vscode';
 
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
-import { SampleFile } from './views/sampling-results/sample-file';
 import { OpenResultFile } from './commands/open-result-file';
 import { CloseResultFile } from './commands/close-result-file';
 import { SelectActiveResultFile } from './commands/select-active-result-file';
@@ -13,28 +12,29 @@ import { EditorHighlighter } from './views/sampling-results/editor-highlighter';
 import { logger } from './logging/logger';
 import { RunWperfRecord } from './commands/run-wperf-record';
 import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
-import { RecordRun } from './views/sampling-results/record-run';
+import { SampleSource } from './views/sampling-results/sample-source';
 
 export async function activate(context: vscode.ExtensionContext) {
-    const sampleFiles = new ObservableCollection<SampleFile>(); // To-Do: combine the two observable collections into a common type for ordering of the tree.
-    const recordRuns = new ObservableCollection<RecordRun>();
-    const selectedFile = new ObservableSelection<SampleFile>(); // To-Do: selected has to be new type CollectionType { type: 'file' | 'command', result: SampleFile | RecordRun }.
-    const editorHighligter = new EditorHighlighter(selectedFile);
+    const sampleSources = new ObservableCollection<SampleSource>();
+    const selectedSample = new ObservableSelection<SampleSource>();
+    const editorHighligter = new EditorHighlighter(selectedSample);
 
     vscode.window.registerTreeDataProvider(
         'samplingResults',
-        new TreeDataProvider(sampleFiles, recordRuns, selectedFile),
+        new TreeDataProvider(sampleSources, selectedSample),
     );
 
     const commands: Record<string, (...args: any) => any> = {
-        'windowsperf.openResultFile': new OpenResultFile(sampleFiles, selectedFile).execute,
-        'windowsperf.closeResultFile': new CloseResultFile(sampleFiles, selectedFile).execute,
-        'windowsperf.selectActiveResultFile': new SelectActiveResultFile(sampleFiles, selectedFile)
-            .execute,
-        'windowsperf.clearActiveResultFileSelection': new ClearActiveResultFileSelection(
-            selectedFile,
+        'windowsperf.openResultFile': new OpenResultFile(sampleSources, selectedSample).execute,
+        'windowsperf.closeResultFile': new CloseResultFile(sampleSources, selectedSample).execute,
+        'windowsperf.selectActiveResultFile': new SelectActiveResultFile(
+            sampleSources,
+            selectedSample,
         ).execute,
-        'windowsperf.record': new RunWperfRecord(recordRuns).execute,
+        'windowsperf.clearActiveResultFileSelection': new ClearActiveResultFileSelection(
+            selectedSample,
+        ).execute,
+        'windowsperf.record': new RunWperfRecord(sampleSources, selectedSample).execute,
     };
 
     Object.entries(commands).forEach(([name, command]) => {

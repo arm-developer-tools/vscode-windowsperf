@@ -4,22 +4,23 @@
 
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
-import { SampleFile } from '../views/sampling-results/sample-file';
+import { SampleSource } from '../views/sampling-results/sample-source';
 import { sampleFileFactory } from '../views/sampling-results/sample-file.factories';
 import { SelectActiveResultFile } from './select-active-result-file';
+import { sampleSourceFactory } from '../views/sampling-results/sample-source.factories';
 
 describe('SelectActiveResultsFile.execute', () => {
-    it('picks matching file from collection and selects it', () => {
-        const toSelect = sampleFileFactory();
-        const collection = new ObservableCollection<SampleFile>([
-            sampleFileFactory(),
+    it('picks matching id from collection and set as active selection', () => {
+        const toSelect = sampleSourceFactory();
+        const collection = new ObservableCollection<SampleSource>([
+            SampleSource.fromSampleFile(sampleFileFactory()),
             toSelect,
-            sampleFileFactory(),
+            SampleSource.fromSampleFile(sampleFileFactory()),
         ]);
-        const selection = new ObservableSelection<SampleFile>();
+        const selection = new ObservableSelection<SampleSource>();
         const command = new SelectActiveResultFile(collection, selection);
 
-        command.execute({ resourceUri: toSelect.uri });
+        command.execute({ id: toSelect.id });
 
         expect(selection.selected).toEqual(toSelect);
     });

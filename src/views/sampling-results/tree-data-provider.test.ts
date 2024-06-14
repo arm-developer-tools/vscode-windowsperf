@@ -8,9 +8,8 @@ import {
     TreeDataProvider,
     buildEventSampleNode,
     buildEventNode,
-    buildSampleFileRootNode,
     buildSourceCodeNode,
-    buildRecordRunRootNode,
+    buildSampleSourceRootNode,
 } from './tree-data-provider';
 import { sampleFileFactory } from './sample-file.factories';
 import {
@@ -25,49 +24,43 @@ import { ObservableSelection } from '../../observable-selection';
 import { MarkdownString, Uri } from 'vscode';
 import { buildDecoration } from './source-code-decoration';
 import { recordRunFactory } from './record-run.factories';
+import {
+    sampleSourceFactory,
+    sampleSourceFileFactory,
+    sampleSourceRunFactory,
+} from './sample-source.factories';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
-        it('returns root nodes by default', () => {
-            const sampleFile = sampleFileFactory();
-            const recordRun = recordRunFactory();
-            const samples = new ObservableCollection([sampleFile]);
-            const commands = new ObservableCollection([recordRun]);
-            const treeDataProvider = new TreeDataProvider(
-                samples,
-                commands,
-                new ObservableSelection(),
-            );
+        it('returns root nodes by default with last collection appear in the tree first', () => {
+            const sampleSourceFile = sampleSourceFileFactory();
+            const sampleRecordRun = sampleSourceFileFactory();
+            const collections = new ObservableCollection([sampleSourceFile, sampleRecordRun]);
+            const treeDataProvider = new TreeDataProvider(collections, new ObservableSelection());
 
             const got = treeDataProvider.getChildren();
 
             const wantIsSelected = false;
-            const wantFiles = [buildSampleFileRootNode(sampleFile, wantIsSelected)];
-            const wantCommands = [buildRecordRunRootNode(recordRun, wantIsSelected)];
-            // To-Do: Should not concat but instead should arrange tree that last run appears at the top of the tree.
-            expect(got).toEqual(wantCommands.concat(wantFiles));
+            const wantFiles = [buildSampleSourceRootNode(sampleSourceFile, wantIsSelected)];
+            const wantCommands = [buildSampleSourceRootNode(sampleRecordRun, wantIsSelected)];
+            expect(got).toEqual([...wantCommands, ...wantFiles]);
         });
 
         it('root nodes are correctly marked as selected', () => {
-            const sampleFile = sampleFileFactory();
-            const samples = new ObservableCollection([sampleFile]);
-            const selectedSample = new ObservableSelection(sampleFile);
-            const treeDataProvider = new TreeDataProvider(
-                samples,
-                new ObservableCollection(),
-                selectedSample,
-            );
+            const sourceFile = sampleSourceFileFactory();
+            const collections = new ObservableCollection([sourceFile]);
+            const selectedSample = new ObservableSelection(sourceFile);
+            const treeDataProvider = new TreeDataProvider(collections, selectedSample);
 
             const got = treeDataProvider.getChildren();
 
             const wantIsSelected = true;
-            const want = [buildSampleFileRootNode(sampleFile, wantIsSelected)];
+            const want = [buildSampleSourceRootNode(sourceFile, wantIsSelected)];
             expect(got).toEqual(want);
         });
 
         it('returns children of the given node', () => {
             const treeDataProvider = new TreeDataProvider(
-                new ObservableCollection(),
                 new ObservableCollection(),
                 new ObservableSelection(),
             );
@@ -81,7 +74,6 @@ describe('TreeDataProvider', () => {
 
         it('returns empty list if node has no children', () => {
             const treeDataProvider = new TreeDataProvider(
-                new ObservableCollection(),
                 new ObservableCollection(),
                 new ObservableSelection(),
             );
@@ -97,7 +89,6 @@ describe('TreeDataProvider', () => {
         it('returns given node as is', () => {
             const treeDataProvider = new TreeDataProvider(
                 new ObservableCollection(),
-                new ObservableCollection(),
                 new ObservableSelection(),
             );
             const node = { label: 'foo' };
@@ -109,41 +100,74 @@ describe('TreeDataProvider', () => {
     });
 });
 
-describe('buildSampleFileRootNode', () => {
+describe('buildSampleSourceRootNode', () => {
+    it('sets id', () => {
+        const sampleSource = sampleSourceFactory();
+
+        const got = buildSampleSourceRootNode(sampleSource, faker.datatype.boolean());
+
+        expect(got.id).toEqual(sampleSource.id);
+    });
+
     it('calculates children nodes', () => {
         const first = eventFactory();
         const second = eventFactory();
         const sampleFile = sampleFileFactory({
             parsedContent: sampleFactory({ events: [first, second] }),
         });
+        const sampleSourceFile = sampleSourceFileFactory({
+            result: sampleFile,
+        });
 
-        const got = buildSampleFileRootNode(sampleFile, faker.datatype.boolean());
+        const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
         const want = [buildEventNode(first), buildEventNode(second)];
         expect(got.children).toEqual(want);
     });
 
-    it('sets label to display name', () => {
-        const sampleFile = sampleFileFactory();
+    describe('given sample sourced from a file', () => {
+        it('sets label to display name', () => {
+            const sampleSourceFile = sampleSourceFileFactory();
 
-        const got = buildSampleFileRootNode(sampleFile, faker.datatype.boolean());
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-        expect(got.label).toEqual(sampleFile.displayName);
+            expect(got.label).toEqual(sampleSourceFile.context.result.displayName);
+        });
+
+        it('sets resource uri to file uri', () => {
+            const sampleFile = sampleFileFactory();
+            const sampleSourceFile = sampleSourceFileFactory({ result: sampleFile });
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
+
+            expect(got.resourceUri).toEqual(sampleFile.uri);
+        });
     });
 
-    it('sets id', () => {
-        const sampleFile = sampleFileFactory();
+    describe('given sample sourced from a record run', () => {
+        it('sets label to display name', () => {
+            const sampleSourceFile = sampleSourceRunFactory();
 
-        const got = buildSampleFileRootNode(sampleFile, faker.datatype.boolean());
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-        expect(got.id).toEqual(sampleFile.id);
+            expect(got.label).toEqual(`Command: ${sampleSourceFile.context.result.displayName}`);
+        });
+
+        it('sets description to current date', () => {
+            const record = recordRunFactory();
+            const sampleSourceFile = sampleSourceRunFactory({ result: record });
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
+
+            expect(got.description).toEqual(`Date: ${record.date}`);
+        });
     });
 
     describe('selected state', () => {
         it('displays an icon indicating node is active', () => {
             const isSelected = true;
 
-            const got = buildSampleFileRootNode(sampleFileFactory(), isSelected);
+            const got = buildSampleSourceRootNode(sampleSourceFileFactory(), isSelected);
 
             const want = new vscode.ThemeIcon('eye', new vscode.ThemeColor('list.focusOutline'));
             expect(got.iconPath).toEqual(want);
@@ -152,7 +176,7 @@ describe('buildSampleFileRootNode', () => {
         it('sets "selected" context value when node is selected', () => {
             const isSelected = true;
 
-            const got = buildSampleFileRootNode(sampleFileFactory(), isSelected);
+            const got = buildSampleSourceRootNode(sampleSourceFileFactory(), isSelected);
 
             expect(got.contextValue).toEqual('rootNode--selected');
         });
@@ -160,7 +184,7 @@ describe('buildSampleFileRootNode', () => {
         it('does an icon indicating node is not selected', () => {
             const isSelected = false;
 
-            const got = buildSampleFileRootNode(sampleFileFactory(), isSelected);
+            const got = buildSampleSourceRootNode(sampleSourceFileFactory(), isSelected);
 
             const want = new vscode.ThemeIcon(
                 'eye-closed',
@@ -172,51 +196,10 @@ describe('buildSampleFileRootNode', () => {
         it('does not set "selected" context value when node is not active', () => {
             const isSelected = false;
 
-            const got = buildSampleFileRootNode(sampleFileFactory(), isSelected);
+            const got = buildSampleSourceRootNode(sampleSourceFileFactory(), isSelected);
 
             expect(got.contextValue).toEqual('rootNode');
         });
-    });
-});
-
-describe('buildrecordRunRootNode', () => {
-    it('calculates children nodes', () => {
-        const first = eventFactory();
-        const second = eventFactory();
-        const recordRun = recordRunFactory({
-            parsedContent: sampleFactory({ events: [first, second] }),
-        });
-
-        const got = buildRecordRunRootNode(recordRun, faker.datatype.boolean());
-
-        const want = [buildEventNode(first), buildEventNode(second)];
-        expect(got.children).toEqual(want);
-    });
-
-    it('sets label to display name', () => {
-        const recordRun = recordRunFactory();
-
-        const got = buildRecordRunRootNode(recordRun, faker.datatype.boolean());
-
-        expect(got.label).toEqual(recordRun.displayName);
-    });
-
-    it('sets description to current date', () => {
-        const dateTime = new Date(Date.now());
-        const today = `Date: ${dateTime.getFullYear()}-${dateTime.getMonth() + 1}-${dateTime.getDate()} - ${dateTime.toTimeString()}`;
-        const recordRun = recordRunFactory();
-
-        const got = buildRecordRunRootNode(recordRun, faker.datatype.boolean());
-
-        expect(got.description).toBe(today);
-    });
-
-    it('sets id', () => {
-        const recordRun = recordRunFactory();
-
-        const got = buildRecordRunRootNode(recordRun, faker.datatype.boolean());
-
-        expect(got.id).toEqual(recordRun.id);
     });
 });
 
