@@ -82,7 +82,7 @@ const buildRecordRunRootNode = (id: string, run: RecordRun, isSelected: boolean)
     children: run.parsedContent.sampling.events.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: buildRootNodeIcon(isSelected),
-    label: `Command: ${run.displayName}`,
+    label: run.displayName,
     description: run.date,
     contextValue: selectionContextValue(isSelected),
     resourceUri: undefined,

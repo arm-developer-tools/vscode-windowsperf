@@ -150,7 +150,7 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-            expect(got.label).toEqual(`Command: ${sampleSourceFile.context.result.displayName}`);
+            expect(got.label).toEqual(sampleSourceFile.context.result.displayName);
         });
 
         it('sets description to current date', () => {

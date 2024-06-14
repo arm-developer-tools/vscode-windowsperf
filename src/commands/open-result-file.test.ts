@@ -15,7 +15,6 @@ import { faker } from '@faker-js/faker';
 import { Uri } from 'vscode';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
-import { sampleSourceFileFactory } from '../views/sampling-results/sample-source.factories';
 
 describe('OpenResultFile', () => {
     describe('execute', () => {
@@ -42,7 +41,7 @@ describe('OpenResultFile', () => {
             expect(files.items).toEqual([]);
         });
 
-        it('selects first loaded file when none are loaded', async () => {
+        it('selects the loaded file', async () => {
             const file = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => file);
             const files = new ObservableCollection<SampleSource>();
@@ -54,21 +53,6 @@ describe('OpenResultFile', () => {
             const got = selectedFile.selected?.context.result;
 
             expect(got).toEqual(file);
-        });
-
-        it('loading n-th file does not affect selection', async () => {
-            const sampleFile = sampleFileFactory();
-            const openFileOrPrompt = jest.fn(async () => sampleFile);
-            const files = new ObservableCollection<SampleSource>([
-                sampleSourceFileFactory(),
-                sampleSourceFileFactory(),
-            ]);
-            const selectedFile = new ObservableSelection<SampleSource>();
-            const command = new OpenResultFile(files, selectedFile, openFileOrPrompt);
-
-            await command.execute(sampleFile.uri);
-
-            expect(selectedFile.selected).toBeNull();
         });
     });
 

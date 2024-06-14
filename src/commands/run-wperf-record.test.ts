@@ -35,7 +35,7 @@ describe('RunWperfRecord', () => {
         expect(collection.items).toHaveLength(0);
     });
 
-    it('selects the first loaded record when none are loaded', async () => {
+    it('selects the loaded record command', async () => {
         const collection = new ObservableCollection<SampleSource>();
         const selection = new ObservableSelection<SampleSource>();
         const recordOptions = recordOptionsFactory();

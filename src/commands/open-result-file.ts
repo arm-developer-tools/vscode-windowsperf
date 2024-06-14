@@ -25,9 +25,7 @@ export class OpenResultFile {
         if (file) {
             logger.info('Opened result file', file.uri.toString());
             const newSampleSource = SampleSource.fromSampleFile(file);
-            if (this.files.items.length === 0) {
-                this.selectedFile.selected = newSampleSource;
-            }
+            this.selectedFile.selected = newSampleSource;
             this.files.add(newSampleSource);
         }
     };
