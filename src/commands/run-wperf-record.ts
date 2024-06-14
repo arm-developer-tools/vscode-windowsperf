@@ -106,6 +106,7 @@ const promptForEventsWithQuickPick = async (): Promise<string[]> => {
         events = await vscode.window.showQuickPick(getPmuEventsFromWperf(), {
             canPickMany: true,
             title: 'Select events to record',
+            ignoreFocusOut: true,
         });
     } catch (error: unknown) {
         logErrorAndNotify(error, 'Failed to get PMU events from wperf list.');
@@ -115,7 +116,7 @@ const promptForEventsWithQuickPick = async (): Promise<string[]> => {
 };
 
 const promptForCommandWithQuickPick = async (): Promise<string | undefined> => {
-    return vscode.window.showInputBox({ title: 'Enter command to run' });
+    return vscode.window.showInputBox({ title: 'Enter command to run', ignoreFocusOut: true });
 };
 
 const promptForFrequencyWithQuickPick = async (): Promise<number | undefined> => {
@@ -123,6 +124,7 @@ const promptForFrequencyWithQuickPick = async (): Promise<number | undefined> =>
         title: 'Enter frequency',
         value: '100000',
         validateInput: validateFrequencyInput,
+        ignoreFocusOut: true,
     });
     const frequency = parseInt(value ?? '');
     return isNaN(frequency) ? undefined : frequency;
