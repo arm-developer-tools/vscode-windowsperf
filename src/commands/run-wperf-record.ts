@@ -3,37 +3,32 @@
  */
 
 import * as vscode from 'vscode';
+import { ObservableCollection } from '../observable-collection';
 import { ProgressLocation } from 'vscode';
 import { RecordOptions, runList, runRecord } from '../wperf/run';
-import { logger } from '../logging/logger';
 import { Sample } from '../wperf/parse';
+import { logger } from '../logging/logger';
 import { RecordRun } from '../views/sampling-results/record-run';
-import { ObservableCollection } from '../observable-collection';
 import { logErrorAndNotify } from '../logging/error-logging';
 
 export class RunWperfRecord {
     constructor(
         private readonly recordRuns: ObservableCollection<RecordRun>,
-        private readonly getPmuEvents: typeof getPmuEventsFromWperf = getPmuEventsFromWperf,
+        private readonly getRecordOptions: typeof promptUserForRecordOptions = promptUserForRecordOptions,
         private readonly runWperfRecord: typeof runWperfRecordWithProgress = runWperfRecordWithProgress,
+        private readonly focusSamplingResults: typeof executeFocusSamplingResults = executeFocusSamplingResults,
     ) {}
 
     execute = async () => {
         logger.info('Executing windowsperf.runWperfRecord');
 
-        const pmuEvents = await this.getPmuEvents();
-
-        if (!pmuEvents) {
+        const recordOptions = await this.getRecordOptions();
+        if (!recordOptions) {
+            logger.debug('Recording cancelled');
             return;
         }
 
-        // TODO: Prompt the user to select events, frequency and command
-        const events = pmuEvents.filter(event => ['ld_spec', 'st_spec'].includes(event));
-        const frequency = 100000;
-        const command = 'cpython\\PCbuild\\arm64\\python_d.exe -c 10**10**10';
-        const wperfOptions = { events, frequency, core: 1, command, timeoutSeconds: undefined };
-
-        const sample = await this.runWperfRecord(wperfOptions);
+        const sample = await this.runWperfRecord(recordOptions);
 
         if (!sample) {
             return;
@@ -41,17 +36,77 @@ export class RunWperfRecord {
 
         logger.debug(`Recording complete, recorded ${sample.sampling.events.length} events`);
 
-        this.recordRuns.add(new RecordRun(command, sample));
+        this.recordRuns.add(new RecordRun(recordOptions.command, sample));
+        this.focusSamplingResults();
     };
 }
 
-const getPmuEventsFromWperf = async (): Promise<string[] | undefined> => {
+export const validateFrequencyInput = (value: string): string | undefined => {
+    const frequency = parseInt(value ?? '');
+    return isNaN(frequency) ? 'Please enter a valid number' : undefined;
+};
+
+export const promptUserForRecordOptions = async (
+    promptForEvents: typeof promptForEventsWithQuickPick = promptForEventsWithQuickPick,
+    promptForFrequency: typeof promptForFrequencyWithQuickPick = promptForFrequencyWithQuickPick,
+    promptForCommand: typeof promptForCommandWithQuickPick = promptForCommandWithQuickPick,
+): Promise<RecordOptions | undefined> => {
+    const events = await promptForEvents();
+
+    if (events.length === 0) {
+        return;
+    }
+
+    const frequency = await promptForFrequency();
+
+    if (frequency === undefined) {
+        return;
+    }
+
+    const command = await promptForCommand();
+
+    if (command === undefined) {
+        return;
+    }
+
+    return { events, frequency, core: 1, command, timeoutSeconds: undefined };
+};
+
+const executeFocusSamplingResults = () => {
+    vscode.commands.executeCommand('samplingResults.focus');
+};
+
+const getPmuEventsFromWperf = async (): Promise<string[]> => {
+    return (await runList()).sort();
+};
+
+const promptForEventsWithQuickPick = async (): Promise<string[]> => {
+    let events: string[] | undefined;
+
     try {
-        return await runList();
+        events = await vscode.window.showQuickPick(getPmuEventsFromWperf(), {
+            canPickMany: true,
+            title: 'Select events to record',
+        });
     } catch (error: unknown) {
         logErrorAndNotify(error, 'Failed to get PMU events from wperf list.');
-        return undefined;
     }
+
+    return events || [];
+};
+
+const promptForCommandWithQuickPick = async (): Promise<string | undefined> => {
+    return vscode.window.showInputBox({ title: 'Enter command to run' });
+};
+
+const promptForFrequencyWithQuickPick = async (): Promise<number | undefined> => {
+    const value = await vscode.window.showInputBox({
+        title: 'Enter frequency',
+        value: '100000',
+        validateInput: validateFrequencyInput,
+    });
+    const frequency = parseInt(value ?? '');
+    return isNaN(frequency) ? undefined : frequency;
 };
 
 const runWperfRecordWithProgress = async (wperfOptions: RecordOptions): Promise<Sample | undefined> => {
