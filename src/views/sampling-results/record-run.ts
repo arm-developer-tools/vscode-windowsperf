@@ -4,19 +4,20 @@
 
 import { Sample } from '../../wperf/parse';
 import { generateTimeStamp } from './date';
+import { RecordOptions } from '../../wperf/run';
 
 export class RecordRun {
     private readonly timestamp: string;
 
     constructor(
-        readonly command: string,
+        readonly recordOptions: RecordOptions,
         readonly parsedContent: Sample,
     ) {
         this.timestamp = generateTimeStamp();
     }
 
     get displayName(): string {
-        return this.command;
+        return this.recordOptions.command;
     }
 
     get date(): string {
@@ -24,6 +25,6 @@ export class RecordRun {
     }
 
     get displayLog(): string {
-        return this.command;
+        return this.recordOptions.command;
     }
 }

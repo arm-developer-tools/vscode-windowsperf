@@ -39,9 +39,7 @@ export class RunWperfRecord {
 
         logger.debug(`Recording complete, recorded ${sample.sampling.events.length} events`);
 
-        const newSampleSource = SampleSource.fromRecordRun(
-            new RecordRun(recordOptions.command, sample),
-        );
+        const newSampleSource = SampleSource.fromRecordRun(new RecordRun(recordOptions, sample));
         this.selectedFile.selected = newSampleSource;
         this.sources.add(newSampleSource);
         this.focusSamplingResults();
