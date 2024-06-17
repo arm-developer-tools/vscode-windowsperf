@@ -41,7 +41,7 @@ export class RunWperfRecord {
 
         const newSampleSource = SampleSource.fromRecordRun(new RecordRun(recordOptions, sample));
         this.selectedFile.selected = newSampleSource;
-        this.sources.add(newSampleSource);
+        this.sources.prepend(newSampleSource);
         this.focusSamplingResults();
     };
 }

@@ -25,13 +25,13 @@ describe('ObservableCollection', () => {
         expect(numbers.items).toEqual([1, 2, 3]);
     });
 
-    describe('add', () => {
-        it('adds items to the collection', async () => {
-            const numbers = new ObservableCollection<number>();
+    describe('prepend', () => {
+        it('adds items to the start of the collection', async () => {
+            const numbers = new ObservableCollection<number>([2]);
 
-            numbers.add(1);
+            numbers.prepend(1);
 
-            expect(numbers.items).toEqual([1]);
+            expect(numbers.items).toEqual([1, 2]);
         });
 
         it('notifies listeners when items are added', () => {
@@ -39,7 +39,7 @@ describe('ObservableCollection', () => {
             const listener = jest.fn();
 
             numbers.onDidChange(listener);
-            numbers.add(9);
+            numbers.prepend(9);
 
             const wantEvent = { item: 9, type: 'add' };
             expect(listener).toHaveBeenCalledWith(wantEvent);

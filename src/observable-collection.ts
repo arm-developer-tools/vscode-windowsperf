@@ -24,8 +24,8 @@ export class ObservableCollection<T> {
         return [...this._items];
     }
 
-    add(item: T) {
-        this._items.push(item);
+    prepend(item: T) {
+        this._items.unshift(item);
         this._onDidChange.fire({ item, type: 'add' });
     }
 

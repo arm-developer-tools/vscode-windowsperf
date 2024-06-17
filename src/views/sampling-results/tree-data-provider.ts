@@ -44,12 +44,10 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
     getChildren(node?: Node): Node[] {
         if (node === undefined) {
-            return this.collection.items
-                .map((sample) => {
-                    const isSelected = this.selectedSample.selected?.context === sample.context;
-                    return buildSampleSourceRootNode(sample, isSelected);
-                })
-                .reverse();
+            return this.collection.items.map((sample) => {
+                const isSelected = this.selectedSample.selected?.context === sample.context;
+                return buildSampleSourceRootNode(sample, isSelected);
+            });
         }
         return node.children ?? [];
     }

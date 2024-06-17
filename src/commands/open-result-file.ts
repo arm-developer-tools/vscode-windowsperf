@@ -26,7 +26,7 @@ export class OpenResultFile {
             logger.info('Opened result file', file.uri.toString());
             const newSampleSource = SampleSource.fromSampleFile(file);
             this.selectedFile.selected = newSampleSource;
-            this.files.add(newSampleSource);
+            this.files.prepend(newSampleSource);
         }
     };
 }

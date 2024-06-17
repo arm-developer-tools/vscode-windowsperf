@@ -32,7 +32,7 @@ import {
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
-        it('returns root nodes by default with last collection appear in the tree first', () => {
+        it('returns root nodes by default', () => {
             const sampleSourceFile = sampleSourceFileFactory();
             const sampleRecordRun = sampleSourceFileFactory();
             const collections = new ObservableCollection([sampleSourceFile, sampleRecordRun]);
@@ -41,9 +41,11 @@ describe('TreeDataProvider', () => {
             const got = treeDataProvider.getChildren();
 
             const wantIsSelected = false;
-            const wantFiles = [buildSampleSourceRootNode(sampleSourceFile, wantIsSelected)];
-            const wantCommands = [buildSampleSourceRootNode(sampleRecordRun, wantIsSelected)];
-            expect(got).toEqual([...wantCommands, ...wantFiles]);
+            const want = [
+                buildSampleSourceRootNode(sampleSourceFile, wantIsSelected),
+                buildSampleSourceRootNode(sampleRecordRun, wantIsSelected),
+            ];
+            expect(got).toEqual(want);
         });
 
         it('root nodes are correctly marked as selected', () => {
