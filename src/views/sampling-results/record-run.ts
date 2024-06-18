@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Arm Limited
  */
 
-import { Sample } from '../../wperf/parse';
+import { Sample } from '../../wperf/parse/record';
 import { generateTimeStamp } from './date';
 import { RecordOptions } from '../../wperf/run';
 

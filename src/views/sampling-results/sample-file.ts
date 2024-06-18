@@ -4,9 +4,9 @@
 
 import path from 'path';
 
-import { Sample } from '../../wperf/parse';
 import { loadSampleFile } from '../../wperf/load';
 import { Uri } from 'vscode';
+import { Sample } from '../../wperf/parse/record';
 
 export class SampleFile {
     static async fromUri(

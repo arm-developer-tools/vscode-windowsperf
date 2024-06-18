@@ -2,7 +2,7 @@
  * Copyright (c) 2024 Arm Limited
  */
 
-import { sampleFactory } from '../../wperf/parse.factories';
+import { sampleFactory } from '../../wperf/parse/record.factories';
 import { recordOptionsFactory } from '../../wperf/run.factories';
 import { RecordRun } from './record-run';
 

@@ -3,17 +3,16 @@
  */
 
 import { ObservableSelection } from '../../observable-selection';
-import {
-    annotationFactory,
-    eventFactory,
-    sampleFactory,
-    sourceCodeFactory,
-} from '../../wperf/parse.factories';
 import { sampleFileFactory } from '../sampling-results/sample-file.factories';
 import { EditorHighlighter, calculateDecorations } from './editor-highlighter';
 import { buildDecoration } from './source-code-decoration';
 import { sampleSourceFileFactory } from './sample-source.factories';
 import { SampleSource } from './sample-source';
+import {
+    annotationFactory,
+    eventFactory,
+    sourceCodeFactory,
+} from '../../wperf/parse/record.factories';
 
 describe('EditorHighlighter', () => {
     it('applies decorations to currently selected sample', () => {
@@ -83,7 +82,7 @@ describe('calculateDecorations', () => {
         });
         const event = eventFactory({ annotate: [annotation] });
         const sampleFile = sampleFileFactory({
-            parsedContent: sampleFactory({ events: [event] }),
+            parsedContent: [event],
         });
 
         const got = calculateDecorations(sampleSourceFileFactory({ result: sampleFile }));

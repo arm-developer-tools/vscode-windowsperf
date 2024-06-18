@@ -3,9 +3,9 @@
  */
 
 import { SampleFile } from './sample-file';
-import { sampleFactory } from '../../wperf/parse.factories';
 import path from 'path';
 import { Uri } from 'vscode';
+import { sampleFactory } from '../../wperf/parse/record.factories';
 
 describe('SampleFile', () => {
     describe('fromUri', () => {

@@ -12,13 +12,6 @@ import {
     buildSampleSourceRootNode,
 } from './tree-data-provider';
 import { sampleFileFactory } from './sample-file.factories';
-import {
-    annotationFactory,
-    eventFactory,
-    eventSampleFactory,
-    sampleFactory,
-    sourceCodeFactory,
-} from '../../wperf/parse.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { MarkdownString, Uri } from 'vscode';
@@ -29,6 +22,12 @@ import {
     sampleSourceFileFactory,
     sampleSourceRunFactory,
 } from './sample-source.factories';
+import {
+    annotationFactory,
+    eventFactory,
+    eventSampleFactory,
+    sourceCodeFactory,
+} from '../../wperf/parse/record.factories';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -115,7 +114,7 @@ describe('buildSampleSourceRootNode', () => {
         const first = eventFactory();
         const second = eventFactory();
         const sampleFile = sampleFileFactory({
-            parsedContent: sampleFactory({ events: [first, second] }),
+            parsedContent: [first, second],
         });
         const sampleSourceFile = sampleSourceFileFactory({
             result: sampleFile,

@@ -6,7 +6,6 @@ import { faker } from '@faker-js/faker';
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
 import { SampleSource } from '../views/sampling-results/sample-source';
-import { predefinedEventFactory, sampleFactory } from '../wperf/parse.factories';
 import { recordOptionsFactory } from '../wperf/run.factories';
 import {
     RunWperfRecord,
@@ -15,6 +14,8 @@ import {
     validateFrequencyInput,
 } from './run-wperf-record';
 import { RecordOptions } from '../wperf/run';
+import { sampleFactory } from '../wperf/parse/record.factories';
+import { predefinedEventFactory } from '../wperf/parse/list.factories';
 
 describe('RunWperfRecord', () => {
     it('does nothing if the user cancels the recording', async () => {

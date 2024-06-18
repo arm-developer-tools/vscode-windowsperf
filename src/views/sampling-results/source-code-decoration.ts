@@ -4,8 +4,8 @@
 import * as vscode from 'vscode';
 
 import { formatFraction } from '../../math';
-import { Annotation, Event, SourceCode } from '../../wperf/parse';
 import { textEditorColour } from './colours';
+import { SourceCode, Annotation, Event } from '../../wperf/parse/record';
 
 export type Decoration = SourceCode & {
     backgroundColor: string;

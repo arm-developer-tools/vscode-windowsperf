@@ -3,10 +3,9 @@
  */
 
 import { promises as fs } from 'fs';
-
-import { Sample, parseSampleJson } from './parse';
+import { Sample, parseRecordJson } from './parse/record';
 
 export const loadSampleFile = async (fullPath: string): Promise<Sample> => {
     const fileContents = await fs.readFile(fullPath, { encoding: 'ascii' });
-    return parseSampleJson(fileContents);
+    return parseRecordJson(fileContents);
 };

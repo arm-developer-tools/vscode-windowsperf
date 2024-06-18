@@ -4,7 +4,6 @@
 
 import * as vscode from 'vscode';
 
-import { Annotation, Event, EventSample, SourceCode } from '../../wperf/parse';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { formatFraction } from '../../math';
@@ -14,6 +13,7 @@ import { logger } from '../../logging/logger';
 import { SampleSource, isSourceSampleFile } from './sample-source';
 import { SampleFile } from './sample-file';
 import { RecordRun } from './record-run';
+import { SourceCode, Event, Annotation, EventSample } from '../../wperf/parse/record';
 
 type Node = vscode.TreeItem & { children?: Node[] };
 
@@ -67,7 +67,7 @@ export const buildSampleSourceRootNode = (source: SampleSource, isSelected: bool
 
 const buildSampleFileRootNode = (id: string, file: SampleFile, isSelected: boolean): Node => ({
     id: id,
-    children: file.parsedContent.sampling.events.map(buildEventNode),
+    children: file.parsedContent.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: buildRootNodeIcon(isSelected),
     label: file.displayName,
@@ -77,7 +77,7 @@ const buildSampleFileRootNode = (id: string, file: SampleFile, isSelected: boole
 
 const buildRecordRunRootNode = (id: string, run: RecordRun, isSelected: boolean): Node => ({
     id: id,
-    children: run.parsedContent.sampling.events.map(buildEventNode),
+    children: run.parsedContent.map(buildEventNode),
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: buildRootNodeIcon(isSelected),
     label: run.displayName,
@@ -122,7 +122,7 @@ export const buildEventSampleNode = (
     annotation: Annotation | undefined,
 ): Node => {
     const children =
-        annotation?.source_code.map((sourceCode) =>
+        annotation?.source_code.map((sourceCode: SourceCode) =>
             buildSourceCodeNode(event, annotation, sourceCode),
         ) || [];
     return {

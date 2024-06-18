@@ -6,12 +6,13 @@ import * as vscode from 'vscode';
 import { ObservableCollection } from '../observable-collection';
 import { ProgressLocation, QuickPickItem } from 'vscode';
 import { RecordOptions, runList, runRecord } from '../wperf/run';
-import { PredefinedEvent, Sample } from '../wperf/parse';
 import { logger } from '../logging/logger';
 import { RecordRun } from '../views/sampling-results/record-run';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
 import { ObservableSelection } from '../observable-selection';
+import { Sample } from '../wperf/parse/record';
+import { PredefinedEvent } from '../wperf/parse/list';
 
 export class RunWperfRecord {
     constructor(
@@ -37,7 +38,7 @@ export class RunWperfRecord {
             return;
         }
 
-        logger.debug(`Recording complete, recorded ${sample.sampling.events.length} events`);
+        logger.debug(`Recording complete, recorded ${sample.length} events`);
 
         const newSampleSource = SampleSource.fromRecordRun(new RecordRun(recordOptions, sample));
         this.selectedFile.selected = newSampleSource;

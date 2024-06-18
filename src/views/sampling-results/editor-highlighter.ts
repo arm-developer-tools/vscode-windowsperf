@@ -92,7 +92,7 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
 
 export const calculateDecorations = (sample: SampleSource): Decoration[] => {
     const decorations: Decoration[] = [];
-    for (const event of sample.context.result.parsedContent.sampling.events) {
+    for (const event of sample.context.result.parsedContent) {
         for (const annotation of event.annotate) {
             for (const sourceCode of annotation.source_code) {
                 decorations.push(buildDecoration(event, annotation, sourceCode));

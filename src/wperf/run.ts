@@ -3,9 +3,10 @@
  */
 
 import * as vscode from 'vscode';
-import { PredefinedEvent, Sample, parseListJson, parseSampleJson } from './parse';
 import { CancellationToken } from 'vscode';
 import { exec } from '../node/process';
+import { Sample, parseRecordJson } from './parse/record';
+import { PredefinedEvent, parseListJson } from './parse/list';
 
 export type RecordOptions = {
     events: string[];
@@ -63,12 +64,12 @@ export const runRecord = async (
 ): Promise<Sample> => {
     const args = buildRecordCommand(getExecutable(), options);
     const resultJson = await run(args, cancellationToken);
-    return parseSampleJson(resultJson);
+    return parseRecordJson(resultJson);
 };
 
 export const runList = async (
     cancellationToken?: CancellationToken,
 ): Promise<PredefinedEvent[]> => {
     const resultJson = await run(buildListCommand(getExecutable()), cancellationToken);
-    return parseListJson(resultJson).Predefined_Events;
+    return parseListJson(resultJson);
 };

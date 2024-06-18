@@ -8,6 +8,7 @@ import os from 'os';
 import { faker } from '@faker-js/faker';
 
 import { loadSampleFile } from './load';
+import { parseRecordJson } from './parse/record';
 
 describe('loadSampleFile', () => {
     it('loads sample file from the filesystem', async () => {
@@ -26,7 +27,7 @@ describe('loadSampleFile', () => {
 
         const got = await loadSampleFile(filePath);
 
-        expect(got).toEqual(data);
+        expect(got).toEqual(parseRecordJson(json));
     });
 });
 

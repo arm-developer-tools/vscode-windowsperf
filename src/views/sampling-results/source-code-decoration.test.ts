@@ -5,9 +5,13 @@ import * as vscode from 'vscode';
 
 import 'jest';
 import { buildDecoration } from './source-code-decoration';
-import { eventFactory, annotationFactory, sourceCodeFactory } from '../../wperf/parse.factories';
 import { formatFraction } from '../../math';
 import { textEditorColour } from './colours';
+import {
+    eventFactory,
+    annotationFactory,
+    sourceCodeFactory,
+} from '../../wperf/parse/record.factories';
 
 describe('buildDecoration', () => {
     describe('hover message', () => {
