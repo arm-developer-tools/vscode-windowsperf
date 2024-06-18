@@ -9,7 +9,7 @@ import { RecordOptions, runList, runRecord } from '../wperf/run';
 import { logger } from '../logging/logger';
 import { RecordRun } from '../views/sampling-results/record-run';
 import { logErrorAndNotify } from '../logging/error-logging';
-import { SampleSource } from '../views/sampling-results/sample-source';
+import { SampleSource, isSourceRecordRun } from '../views/sampling-results/sample-source';
 import { ObservableSelection } from '../observable-selection';
 import { Sample } from '../wperf/parse/record';
 import { PredefinedEvent } from '../wperf/parse/list';
@@ -26,7 +26,8 @@ export class RunWperfRecord {
     execute = async () => {
         logger.info('Executing windowsperf.runWperfRecord');
 
-        const recordOptions = await this.getRecordOptions();
+        const previousCommand = getPreviousCommand(this.sources);
+        const recordOptions = await this.getRecordOptions(previousCommand);
         if (!recordOptions) {
             logger.debug('Recording cancelled');
             return;
@@ -47,12 +48,23 @@ export class RunWperfRecord {
     };
 }
 
+export const getPreviousCommand = (
+    sources: ObservableCollection<SampleSource>,
+): string | undefined => {
+    const previousSourceRecordRun = sources.items
+        .map(({ context }) => context)
+        .find(isSourceRecordRun);
+
+    return previousSourceRecordRun?.result.recordOptions.command;
+};
+
 export const validateFrequencyInput = (value: string): string | undefined => {
     const frequency = parseInt(value ?? '');
     return isNaN(frequency) ? 'Please enter a valid number' : undefined;
 };
 
 export const promptUserForRecordOptions = async (
+    previousCommand: string | undefined,
     promptForEvents: typeof promptForEventsWithQuickPick = promptForEventsWithQuickPick,
     promptForFrequency: typeof promptForFrequencyWithQuickPick = promptForFrequencyWithQuickPick,
     promptForCommand: typeof promptForCommandWithQuickPick = promptForCommandWithQuickPick,
@@ -69,7 +81,7 @@ export const promptUserForRecordOptions = async (
         return;
     }
 
-    const command = await promptForCommand();
+    const command = await promptForCommand(previousCommand);
 
     if (command === undefined) {
         return;
@@ -112,8 +124,14 @@ const promptForEventsWithQuickPick = async (): Promise<string[]> => {
     return events?.map(({ label }) => label) || [];
 };
 
-const promptForCommandWithQuickPick = async (): Promise<string | undefined> => {
-    return vscode.window.showInputBox({ title: 'Enter command to run', ignoreFocusOut: true });
+const promptForCommandWithQuickPick = async (
+    initialValue: string | undefined,
+): Promise<string | undefined> => {
+    return vscode.window.showInputBox({
+        title: 'Enter command to run',
+        ignoreFocusOut: true,
+        value: initialValue,
+    });
 };
 
 const promptForFrequencyWithQuickPick = async (): Promise<number | undefined> => {

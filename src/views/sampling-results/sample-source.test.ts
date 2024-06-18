@@ -4,7 +4,7 @@
 
 import { recordRunFactory } from './record-run.factories';
 import { sampleFileFactory } from './sample-file.factories';
-import { SampleSource, isSourceSampleFile } from './sample-source';
+import { SampleSource, isSourceRecordRun, isSourceSampleFile } from './sample-source';
 import { sampleSourceFileFactory, sampleSourceRunFactory } from './sample-source.factories';
 
 describe('SampleSource', () => {
@@ -49,9 +49,25 @@ describe('SampleSource', () => {
             expect(got).toEqual(true);
         });
 
-        it('returns false when type is Not file', () => {
+        it('returns false when type is not file', () => {
             const sourceRun = sampleSourceRunFactory().context;
             const got = isSourceSampleFile(sourceRun);
+
+            expect(got).toEqual(false);
+        });
+    });
+
+    describe('isSourceRecordRun', () => {
+        it('returns true when type is run', () => {
+            const sourceRun = sampleSourceRunFactory().context;
+            const got = isSourceRecordRun(sourceRun);
+
+            expect(got).toEqual(true);
+        });
+
+        it('returns false when type is not run', () => {
+            const sourceFile = sampleSourceFileFactory().context;
+            const got = isSourceRecordRun(sourceFile);
 
             expect(got).toEqual(false);
         });

@@ -9,6 +9,7 @@ import { SampleSource } from '../views/sampling-results/sample-source';
 import { recordOptionsFactory } from '../wperf/run.factories';
 import {
     RunWperfRecord,
+    getPreviousCommand,
     getQuickPickItemsFromPredefinedEvents,
     promptUserForRecordOptions,
     validateFrequencyInput,
@@ -16,6 +17,11 @@ import {
 import { RecordOptions } from '../wperf/run';
 import { sampleFactory } from '../wperf/parse/record.factories';
 import { predefinedEventFactory } from '../wperf/parse/list.factories';
+import {
+    sampleSourceFileFactory,
+    sampleSourceRunFactory,
+} from '../views/sampling-results/sample-source.factories';
+import { recordRunFactory } from '../views/sampling-results/record-run.factories';
 
 describe('RunWperfRecord', () => {
     it('does nothing if the user cancels the recording', async () => {
@@ -151,7 +157,12 @@ describe('RunWperfRecord', () => {
 describe('promptUserForRecordOptions', () => {
     it('returns undefined if the user cancels the event selection', async () => {
         const cancellingEventsPrompt = jest.fn().mockResolvedValue([]);
-        const got = await promptUserForRecordOptions(cancellingEventsPrompt, jest.fn(), jest.fn());
+        const got = await promptUserForRecordOptions(
+            undefined,
+            cancellingEventsPrompt,
+            jest.fn(),
+            jest.fn(),
+        );
 
         expect(got).toBeUndefined();
     });
@@ -160,6 +171,7 @@ describe('promptUserForRecordOptions', () => {
         const promptForEvents = jest.fn().mockResolvedValue([faker.word.noun()]);
         const cancellingFrequencyPrompt = jest.fn().mockResolvedValue(undefined);
         const got = await promptUserForRecordOptions(
+            undefined,
             promptForEvents,
             cancellingFrequencyPrompt,
             jest.fn(),
@@ -173,6 +185,7 @@ describe('promptUserForRecordOptions', () => {
         const promptForFrequency = jest.fn().mockResolvedValue(faker.number.int());
         const cancellingPromptForCommand = jest.fn().mockResolvedValue(undefined);
         const got = await promptUserForRecordOptions(
+            undefined,
             promptForEvents,
             promptForFrequency,
             cancellingPromptForCommand,
@@ -190,6 +203,7 @@ describe('promptUserForRecordOptions', () => {
         const promptForCommand = jest.fn().mockResolvedValue(command);
 
         const got = await promptUserForRecordOptions(
+            undefined,
             promptForEvents,
             promptForFrequency,
             promptForCommand,
@@ -203,6 +217,24 @@ describe('promptUserForRecordOptions', () => {
             timeoutSeconds: undefined,
         };
         expect(got).toEqual(want);
+    });
+
+    it('passes the previous command to promptForCommand if provided', async () => {
+        const events = [faker.word.noun()];
+        const promptForEvents = jest.fn().mockResolvedValue(events);
+        const frequency = faker.number.int();
+        const promptForFrequency = jest.fn().mockResolvedValue(frequency);
+        const previousCommand = faker.lorem.sentence();
+        const promptForCommand = jest.fn().mockResolvedValue(undefined);
+
+        await promptUserForRecordOptions(
+            previousCommand,
+            promptForEvents,
+            promptForFrequency,
+            promptForCommand,
+        );
+
+        expect(promptForCommand).toHaveBeenCalledWith(previousCommand);
     });
 });
 
@@ -233,5 +265,31 @@ describe('getQuickPickItemsFromPredefinedEvents', () => {
             { label: 'Last', description: event1.Description },
         ];
         expect(got).toEqual(want);
+    });
+});
+
+describe('getPreviousCommand', () => {
+    it('returns the command of the first SourceRecordRun in the collection', () => {
+        const recordRun = recordRunFactory();
+        const firstRecordRun = sampleSourceRunFactory({ result: recordRun });
+        const secondRecordRun = sampleSourceRunFactory();
+
+        const sources = new ObservableCollection<SampleSource>([
+            sampleSourceFileFactory(),
+            firstRecordRun,
+            secondRecordRun,
+        ]);
+
+        const got = getPreviousCommand(sources);
+
+        expect(got).toBe(recordRun.recordOptions.command);
+    });
+
+    it('returns undefined if there are no SourceRecordRuns in the collection', () => {
+        const sources = new ObservableCollection<SampleSource>([sampleSourceFileFactory()]);
+
+        const got = getPreviousCommand(sources);
+
+        expect(got).toBeUndefined();
     });
 });

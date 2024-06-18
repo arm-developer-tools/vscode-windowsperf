@@ -9,6 +9,9 @@ import { randomUUID } from 'crypto';
 export const isSourceSampleFile = (source: Source): source is SourceSampleFile =>
     source.type === 'file';
 
+export const isSourceRecordRun = (source: Source): source is SourceRecordRun =>
+    source.type === 'run';
+
 export type SourceSampleFile = { type: 'file'; result: SampleFile };
 export type SourceRecordRun = { type: 'run'; result: RecordRun };
 
