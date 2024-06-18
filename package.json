@@ -168,7 +168,7 @@
         "ts-node": "^10.9.2",
         "typescript": "^5.3.3",
         "vscode-uri": "^3.0.8",
-        "webpack": "^5.91.0",
+        "webpack": "^5.92.0",
         "webpack-cli": "^5.1.4"
     },
     "jest": {
