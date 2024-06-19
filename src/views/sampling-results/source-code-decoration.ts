@@ -5,7 +5,7 @@ import * as vscode from 'vscode';
 
 import { formatFraction } from '../../math';
 import { textEditorColour } from './colours';
-import { SourceCode, Annotation, Event } from '../../wperf/parse/record';
+import { SourceCode, Annotation, Event, DisassemblyInstruction } from '../../wperf/parse/record';
 
 export type Decoration = SourceCode & {
     backgroundColor: string;
@@ -35,18 +35,32 @@ const renderHoverMessage = (
 * Function: ${annotation.function_name}
 * Hits: ${sourceCode.hits}
 * Overhead: ${formatFraction(sourceCode.overhead)}%
+${renderDisassemblySection(sourceCode)}
+`;
+};
 
+const renderDisassemblySection = (sourceCode: SourceCode): string => {
+    if (
+        sourceCode.disassembled_line === undefined ||
+        sourceCode.instruction_address === undefined
+    ) {
+        return '';
+    } else
+        return `
 #### Disassembly
 ${'```'}
-${renderDisassembly(sourceCode)}
+${renderDisassembly(sourceCode.instruction_address, sourceCode.disassembled_line.disassemble)}
 ${'```'}
 `;
 };
 
-const renderDisassembly = (sourceCode: SourceCode): string => {
-    return sourceCode.disassembled_line.disassemble
+const renderDisassembly = (
+    instructionAddress: string,
+    disassemblyInstructions: DisassemblyInstruction[],
+): string => {
+    return disassemblyInstructions
         .map((line) => {
-            const marker = line.address === sourceCode.instruction_address ? '<-' : '  ';
+            const marker = line.address === instructionAddress ? '<-' : '  ';
             return `${line.address} ${marker} | ${line.instruction}`;
         })
         .join('\n');

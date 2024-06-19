@@ -38,7 +38,7 @@ describe('buildDecoration', () => {
                 sourceCode,
             ).hoverMessage;
 
-            for (const line of sourceCode.disassembled_line.disassemble) {
+            for (const line of sourceCode.disassembled_line!.disassemble) {
                 expect(got).toContain(line.address);
                 expect(got).toContain(line.instruction);
             }

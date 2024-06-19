@@ -27,8 +27,16 @@ describe('parseRecordJSON', () => {
         expect(got).toEqual([]);
     });
 
-    it('parses wperf output json', async () => {
+    it('parses wperf output json generated with the --disassemble option', async () => {
         const json = await loadFixtureFile('wperf-3.3.3.record.json');
+
+        const got = parseRecordJson(json);
+
+        expect(got.length).toBeGreaterThan(0);
+    });
+
+    it('parses wperf output json generated with the --annotate option but without the --disassemble option', async () => {
+        const json = await loadFixtureFile('wperf-3.5.0.record-no-disassembly.json');
 
         const got = parseRecordJson(json);
 

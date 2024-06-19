@@ -6,19 +6,21 @@ import * as z from 'zod';
 import { percentage } from '../../math';
 import { validateAgainstShape } from './validate';
 
+const disassemblyInstructionShape = z.object({
+    address: z.string(),
+    instruction: z.string(),
+});
+
+const disassembledLineShape = z.object({
+    disassemble: z.array(disassemblyInstructionShape),
+});
+
 const sourceCodeShape = z.object({
     filename: z.string(),
     hits: z.number(),
     line_number: z.number(),
-    instruction_address: z.string(),
-    disassembled_line: z.object({
-        disassemble: z.array(
-            z.object({
-                address: z.string(),
-                instruction: z.string(),
-            }),
-        ),
-    }),
+    instruction_address: z.string().optional(), // Not present when --disassemble is not used
+    disassembled_line: disassembledLineShape.optional(), // Not present when --disassemble is not used
 });
 
 const annotationShape = z.object({
@@ -34,7 +36,6 @@ const eventSampleShape = z.object({
 
 const eventShape = z.object({
     type: z.string(),
-    // TODO: Make this optional
     annotate: z.array(annotationShape),
     samples: z.array(eventSampleShape),
 });
@@ -48,9 +49,10 @@ const recordOutputShape = z.object({
 export type RecordJsonOutput = z.infer<typeof recordOutputShape>;
 type AnnotationJson = z.infer<typeof annotationShape>;
 
+export type DisassemblyInstruction = z.infer<typeof disassemblyInstructionShape>;
+export type DisassembledLine = z.infer<typeof disassembledLineShape>;
 export type SourceCode = z.infer<typeof sourceCodeShape> & { overhead: number };
 export type Annotation = AnnotationJson & { source_code: SourceCode[] };
-
 export type EventSample = z.infer<typeof eventSampleShape>;
 export type Event = z.infer<typeof eventShape> & { annotate: Annotation[] };
 export type Sample = Event[];

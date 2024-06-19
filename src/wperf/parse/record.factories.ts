@@ -3,7 +3,7 @@
  */
 
 import { faker } from '@faker-js/faker';
-import { Sample, Event, EventSample, Annotation, SourceCode } from './record';
+import { Sample, Event, EventSample, Annotation, SourceCode, DisassembledLine } from './record';
 
 export const sampleFactory = (): Sample => faker.helpers.multiple(eventFactory);
 
@@ -38,7 +38,7 @@ export const sourceCodeFactory = (options?: Partial<SourceCode>): SourceCode => 
     };
 };
 
-const disassembledLineFactory = (): SourceCode['disassembled_line'] => ({
+const disassembledLineFactory = (): DisassembledLine => ({
     disassemble: faker.helpers.multiple(() => ({
         address: faker.number.hex(),
         instruction: faker.helpers.arrayElement([
