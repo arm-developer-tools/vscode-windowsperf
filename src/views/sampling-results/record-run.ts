@@ -27,4 +27,8 @@ export class RecordRun {
     get displayLog(): string {
         return this.recordOptions.command;
     }
+
+    get treeContextName(): string {
+        return 'recordRun';
+    }
 }

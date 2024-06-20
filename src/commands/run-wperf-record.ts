@@ -23,11 +23,14 @@ export class RunWperfRecord {
         private readonly focusSamplingResults: typeof executeFocusSamplingResults = executeFocusSamplingResults,
     ) {}
 
-    execute = async () => {
+    execute = async (sampleSource?: vscode.TreeItem) => {
         logger.info('Executing windowsperf.runWperfRecord');
 
         const previousCommand = getPreviousCommand(this.sources);
-        const recordOptions = await this.getRecordOptions(previousCommand);
+        const recordOptions = sampleSource
+            ? this.extractRecordOptions(sampleSource)
+            : await this.getRecordOptions(previousCommand);
+
         if (!recordOptions) {
             logger.debug('Recording cancelled');
             return;
@@ -46,6 +49,19 @@ export class RunWperfRecord {
         this.sources.prepend(newSampleSource);
         this.focusSamplingResults();
     };
+
+    public extractRecordOptions(sampleSource: vscode.TreeItem) {
+        const source = this.sources.items.find((item) => item.id === `${sampleSource.id}`);
+        if (!source) {
+            throw new Error(
+                `Recorded run matching tree item ${sampleSource.id} could not be found.`,
+            );
+        }
+        if (isSourceRecordRun(source.context)) {
+            return source.context.result.recordOptions;
+        }
+        throw new Error(`Tree item ${sampleSource.label} is not a wperf command option`);
+    }
 }
 
 export const getPreviousCommand = (

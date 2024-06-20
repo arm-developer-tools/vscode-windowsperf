@@ -152,6 +152,33 @@ describe('RunWperfRecord', () => {
         expect(collection.items[0]!.context.result.displayName).toBe(recordOptions.command);
         expect(collection.items[0]!.context.result.parsedContent).toEqual(sample);
     });
+
+    it('runs the recording from a tree item action and add to collection', async () => {
+        const recordRun = recordRunFactory();
+        const source = sampleSourceRunFactory({ result: recordRun });
+
+        const collection = new ObservableCollection<SampleSource>([source]);
+        const getRecordOptions = jest.fn().mockResolvedValue(recordRun.recordOptions);
+        const runWperfRecord = jest.fn().mockResolvedValue(sampleFactory());
+        const command = new RunWperfRecord(
+            collection,
+            new ObservableSelection<SampleSource>(),
+            getRecordOptions,
+            runWperfRecord,
+            jest.fn(),
+        );
+
+        await command.execute({ id: source.id });
+
+        expect(collection.items).toHaveLength(2);
+        expect(collection.items[1]!.context.result.displayName).toEqual(
+            collection.items[0]!.context.result.displayName,
+        );
+        expect(collection.items[1]!.context.result.parsedContent).not.toEqual(
+            collection.items[0]!.context.result.parsedContent,
+        );
+        expect(collection.items[1]!.id).not.toBe(collection.items[0]!.id);
+    });
 });
 
 describe('promptUserForRecordOptions', () => {

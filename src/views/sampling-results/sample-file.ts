@@ -29,4 +29,8 @@ export class SampleFile {
     get displayLog(): string {
         return this.uri.toString();
     }
+
+    get treeContextName(): string {
+        return 'sampleFile';
+    }
 }

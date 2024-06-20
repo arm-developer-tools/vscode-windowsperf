@@ -143,6 +143,16 @@ describe('buildSampleSourceRootNode', () => {
 
             expect(got.resourceUri).toEqual(sampleFile.uri);
         });
+
+        it('sets the context value', () => {
+            const sampleFile = sampleFileFactory();
+            const sampleSourceFile = sampleSourceFileFactory({ result: sampleFile });
+            const selected = false;
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, selected);
+
+            expect(got.contextValue).toEqual(sampleFile.treeContextName);
+        });
     });
 
     describe('given sample sourced from a record run', () => {
@@ -162,6 +172,16 @@ describe('buildSampleSourceRootNode', () => {
 
             expect(got.description).toEqual(record.date);
         });
+
+        it('sets the context value', () => {
+            const record = recordRunFactory();
+            const sampleSourceFile = sampleSourceRunFactory({ result: record });
+            const selected = false;
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, selected);
+
+            expect(got.contextValue).toEqual(record.treeContextName);
+        });
     });
 
     describe('selected state', () => {
@@ -179,7 +199,7 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFileFactory(), isSelected);
 
-            expect(got.contextValue).toEqual('rootNode--selected');
+            expect(got.contextValue).toEqual('sampleFile--selected');
         });
 
         it('does an icon indicating node is not selected', () => {
@@ -199,7 +219,7 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFileFactory(), isSelected);
 
-            expect(got.contextValue).toEqual('rootNode');
+            expect(got.contextValue).toEqual('sampleFile');
         });
     });
 });

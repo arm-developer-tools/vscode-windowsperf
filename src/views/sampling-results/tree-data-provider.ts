@@ -71,7 +71,7 @@ const buildSampleFileRootNode = (id: string, file: SampleFile, isSelected: boole
     collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
     iconPath: buildRootNodeIcon(isSelected),
     label: file.displayName,
-    contextValue: selectionContextValue(isSelected),
+    contextValue: getContextValue({ selected: isSelected, name: file.treeContextName }),
     resourceUri: file.uri,
 });
 
@@ -82,7 +82,7 @@ const buildRecordRunRootNode = (id: string, run: RecordRun, isSelected: boolean)
     iconPath: buildRootNodeIcon(isSelected),
     label: run.displayName,
     description: run.date,
-    contextValue: selectionContextValue(isSelected),
+    contextValue: getContextValue({ selected: isSelected, name: run.treeContextName }),
     resourceUri: undefined,
 });
 
@@ -92,8 +92,9 @@ const buildRootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
         : new vscode.ThemeIcon('eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'));
 };
 
-const selectionContextValue = (selected: boolean): string => {
-    return selected ? 'rootNode--selected' : 'rootNode';
+const getContextValue = (context: { selected: boolean; name: string }): string => {
+    const isSelected = context.selected ? '--selected' : '';
+    return `${context.name}${isSelected}`;
 };
 
 export const buildEventNode = (event: Event): Node => {

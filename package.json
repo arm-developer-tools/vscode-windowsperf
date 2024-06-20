@@ -60,19 +60,24 @@
             ],
             "view/item/context": [
                 {
-                    "command": "windowsperf.selectActiveResultFile",
-                    "when": "view == samplingResults && viewItem == rootNode",
+                    "command": "windowsperf.record",
+                    "when": "view == samplingResults && viewItem =~ /recordRun/",
                     "group": "inline@1"
+                },
+                {
+                    "command": "windowsperf.selectActiveResultFile",
+                    "when": "view == samplingResults && !(viewItem =~ /--selected$/)",
+                    "group": "inline@2"
                 },
                 {
                     "command": "windowsperf.clearActiveResultFileSelection",
-                    "when": "view == samplingResults && viewItem == rootNode--selected",
-                    "group": "inline@1"
+                    "when": "view == samplingResults && viewItem =~ /--selected$/",
+                    "group": "inline@2"
                 },
                 {
                     "command": "windowsperf.closeResultFile",
-                    "when": "view == samplingResults && viewItem =~ /^rootNode/",
-                    "group": "inline@2"
+                    "when": "view == samplingResults && viewItem =~ /^sampleFile/ || viewItem =~ /^recordRun/",
+                    "group": "inline@3"
                 }
             ],
             "commandPalette": [
