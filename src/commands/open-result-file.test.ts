@@ -21,8 +21,14 @@ describe('OpenResultFile', () => {
         it('adds opened file to the file list', async () => {
             const file = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => file);
+            const focusOnSamplingResults = jest.fn();
             const files = new ObservableCollection<SampleSource>();
-            const command = new OpenResultFile(files, new ObservableSelection(), openFileOrPrompt);
+            const command = new OpenResultFile(
+                files,
+                new ObservableSelection(),
+                openFileOrPrompt,
+                focusOnSamplingResults,
+            );
 
             await command.execute(file.uri);
 
@@ -31,10 +37,33 @@ describe('OpenResultFile', () => {
             expect(got).toEqual(wantFiles);
         });
 
+        it('focuses on the sampling results treeview', async () => {
+            const openFileOrPrompt = jest.fn(async () => file);
+            const focusOnSamplingResults = jest.fn();
+            const file = sampleFileFactory();
+            const files = new ObservableCollection<SampleSource>();
+            const command = new OpenResultFile(
+                files,
+                new ObservableSelection(),
+                openFileOrPrompt,
+                focusOnSamplingResults,
+            );
+
+            await command.execute(file.uri);
+
+            expect(focusOnSamplingResults).toHaveBeenCalled;
+        });
+
         it('when file opening fails, it retains existing file list', async () => {
             const openFileOrPrompt = jest.fn().mockResolvedValue(undefined);
+            const focusOnSamplingResults = jest.fn();
             const files = new ObservableCollection<SampleSource>();
-            const command = new OpenResultFile(files, new ObservableSelection(), openFileOrPrompt);
+            const command = new OpenResultFile(
+                files,
+                new ObservableSelection(),
+                openFileOrPrompt,
+                focusOnSamplingResults,
+            );
 
             await command.execute(Uri.file(faker.system.filePath()));
 
@@ -44,9 +73,15 @@ describe('OpenResultFile', () => {
         it('selects the loaded file', async () => {
             const file = sampleFileFactory();
             const openFileOrPrompt = jest.fn(async () => file);
+            const focusOnSamplingResults = jest.fn();
             const files = new ObservableCollection<SampleSource>();
             const selectedFile = new ObservableSelection<SampleSource>();
-            const command = new OpenResultFile(files, selectedFile, openFileOrPrompt);
+            const command = new OpenResultFile(
+                files,
+                selectedFile,
+                openFileOrPrompt,
+                focusOnSamplingResults,
+            );
 
             await command.execute(file.uri);
 

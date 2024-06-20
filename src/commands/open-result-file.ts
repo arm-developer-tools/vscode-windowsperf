@@ -17,6 +17,7 @@ export class OpenResultFile {
         private readonly files: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly openFileOrPrompt: typeof openFileAtUriOrPrompt = openFileAtUriOrPrompt,
+        private readonly focusOnSamplingResults: typeof executeResultsFocusCommand = executeResultsFocusCommand,
     ) {}
 
     readonly execute = async (inputUri: Uri | undefined) => {
@@ -27,6 +28,7 @@ export class OpenResultFile {
             const newSampleSource = SampleSource.fromSampleFile(file);
             this.selectedFile.selected = newSampleSource;
             this.files.prepend(newSampleSource);
+            this.focusOnSamplingResults();
         }
     };
 }
@@ -45,6 +47,10 @@ export const openFileAtUriOrPrompt = async (
         }
     }
     return undefined;
+};
+
+export const executeResultsFocusCommand = async () => {
+    await vscode.commands.executeCommand('samplingResults.focus');
 };
 
 export const promptUserToSelectResultFile = async (): Promise<vscode.Uri | undefined> => {
