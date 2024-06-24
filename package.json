@@ -66,7 +66,7 @@
                 },
                 {
                     "command": "windowsperf.selectActiveResultFile",
-                    "when": "view == samplingResults && !(viewItem =~ /--selected$/)",
+                    "when": "view == samplingResults && viewItem =~ /^(sampleFile|recordRun)/ && !(viewItem =~ /--selected$/)",
                     "group": "inline@2"
                 },
                 {
@@ -76,7 +76,7 @@
                 },
                 {
                     "command": "windowsperf.closeResultFile",
-                    "when": "view == samplingResults && viewItem =~ /^sampleFile/ || viewItem =~ /^recordRun/",
+                    "when": "view == samplingResults && viewItem =~ /^(sampleFile|recordRun)/",
                     "group": "inline@3"
                 }
             ],
