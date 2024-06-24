@@ -10,9 +10,7 @@ import { formatFraction } from '../../math';
 import { buildDecoration } from './source-code-decoration';
 import { Uri } from 'vscode';
 import { logger } from '../../logging/logger';
-import { SampleSource, isSourceSampleFile } from './sample-source';
-import { SampleFile } from './sample-file';
-import { RecordRun } from './record-run';
+import { SampleSource, Source, isSourceRecordRun, isSourceSampleFile } from './sample-source';
 import { SourceCode, Event, Annotation, EventSample } from '../../wperf/parse/record';
 
 type Node = vscode.TreeItem & { children?: Node[] };
@@ -58,33 +56,17 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 }
 
 export const buildSampleSourceRootNode = (source: SampleSource, isSelected: boolean): Node => {
-    if (isSourceSampleFile(source.context)) {
-        return buildSampleFileRootNode(source.id, source.context.result, isSelected);
-    } else {
-        return buildRecordRunRootNode(source.id, source.context.result, isSelected);
-    }
+    return {
+        id: source.id,
+        children: source.context.result.parsedContent.map(buildEventNode),
+        label: source.context.result.displayName,
+        description: getDescription(source.context),
+        resourceUri: getResourceUri(source.context),
+        contextValue: getContextValue(source.context.result.treeContextName, isSelected),
+        collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+        iconPath: buildRootNodeIcon(isSelected),
+    };
 };
-
-const buildSampleFileRootNode = (id: string, file: SampleFile, isSelected: boolean): Node => ({
-    id: id,
-    children: file.parsedContent.map(buildEventNode),
-    collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    iconPath: buildRootNodeIcon(isSelected),
-    label: file.displayName,
-    contextValue: getContextValue({ selected: isSelected, name: file.treeContextName }),
-    resourceUri: file.uri,
-});
-
-const buildRecordRunRootNode = (id: string, run: RecordRun, isSelected: boolean): Node => ({
-    id: id,
-    children: run.parsedContent.map(buildEventNode),
-    collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
-    iconPath: buildRootNodeIcon(isSelected),
-    label: run.displayName,
-    description: run.date,
-    contextValue: getContextValue({ selected: isSelected, name: run.treeContextName }),
-    resourceUri: undefined,
-});
 
 const buildRootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
     return selected
@@ -92,9 +74,23 @@ const buildRootNodeIcon = (selected: boolean): vscode.ThemeIcon | undefined => {
         : new vscode.ThemeIcon('eye-closed', new vscode.ThemeColor('list.deemphasizedForeground'));
 };
 
-const getContextValue = (context: { selected: boolean; name: string }): string => {
-    const isSelected = context.selected ? '--selected' : '';
-    return `${context.name}${isSelected}`;
+const getContextValue = (name: string, selected: boolean): string => {
+    const isSelected = selected ? '--selected' : '';
+    return `${name}${isSelected}`;
+};
+
+const getDescription = (source: Source): string | undefined => {
+    if (isSourceRecordRun(source)) {
+        return source.result.date;
+    }
+    return undefined;
+};
+
+const getResourceUri = (source: Source): Uri | undefined => {
+    if (isSourceSampleFile(source)) {
+        return source.result.uri;
+    }
+    return undefined;
 };
 
 export const buildEventNode = (event: Event): Node => {
