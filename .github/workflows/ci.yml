@@ -16,7 +16,7 @@ concurrency:
 jobs:
   build-and-verify:
     name: Build and verify
-    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@f71f64f5eb79201b8ac92a8d1d124fb06374e237
+    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@v2.0.0
     secrets:
       EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
       EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
