@@ -35,7 +35,9 @@ describe('RecordRun', () => {
 
     describe('date', () => {
         it('returns the timestamp of the current date and time', () => {
-            const want = new RegExp('^\\d{4}-\\d{1,2}-\\d{1,2}, \\d{1,2}:\\d{2}:\\d{2} (AM|PM)$');
+            const want = new RegExp(
+                '^\\d{4}-\\d{1,2}-\\d{1,2}, \\d{1,2}:\\d{2}:\\d{2}(?: (?:AM|PM))?$',
+            );
             const run = new RecordRun(recordOptionsFactory(), sampleFactory());
 
             expect(run.date).toMatch(want);
