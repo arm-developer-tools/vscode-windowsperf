@@ -19,7 +19,7 @@
         "printed_sample_num": 18,
         "annotate": [
           {
-            "function_name": "calculator.dll",
+            "function_name": "add.dll",
             "source_code": [
               {
                 "line_number": 4,

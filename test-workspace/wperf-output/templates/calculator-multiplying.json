@@ -12,14 +12,14 @@
           {
             "overhead": 100,
             "count": 999,
-            "symbol": "add.dll"
+            "symbol": "multiply.dll"
           }
         ],
         "interval": 100000,
         "printed_sample_num": 18,
         "annotate": [
           {
-            "function_name": "calculator.dll",
+            "function_name": "multiply.dll",
             "source_code": [
               {
                 "line_number": 8,
