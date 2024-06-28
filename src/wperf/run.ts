@@ -7,14 +7,7 @@ import { CancellationToken } from 'vscode';
 import { exec } from '../node/process';
 import { Sample, parseRecordJson } from './parse/record';
 import { PredefinedEvent, parseListJson } from './parse/list';
-
-export type RecordOptions = {
-    events: string[];
-    frequency: number;
-    core: number;
-    command: string;
-    timeoutSeconds: number | undefined;
-};
+import { RecordOptions } from './record-options';
 
 const shellEscape = (input: string): string => `"${input}"`;
 

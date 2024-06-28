@@ -3,8 +3,8 @@
  */
 
 import { Sample } from '../../wperf/parse/record';
+import { RecordOptions } from '../../wperf/record-options';
 import { generateTimeStamp } from './date';
-import { RecordOptions } from '../../wperf/run';
 
 export class RecordRun {
     private readonly timestamp: string;

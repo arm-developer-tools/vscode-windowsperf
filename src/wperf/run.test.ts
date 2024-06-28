@@ -5,7 +5,7 @@
 import 'jest';
 import { buildListCommand, buildRecordArgs, buildRecordCommand } from './run';
 import { faker } from '@faker-js/faker';
-import { recordOptionsFactory } from './run.factories';
+import { recordOptionsFactory } from './record-options.factories';
 
 describe('buildRecordArgs', () => {
     it('concatenates events and the frequency', () => {

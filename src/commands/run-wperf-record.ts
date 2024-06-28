@@ -5,7 +5,7 @@
 import * as vscode from 'vscode';
 import { ObservableCollection } from '../observable-collection';
 import { ProgressLocation, QuickPickItem } from 'vscode';
-import { RecordOptions, runList, runRecord } from '../wperf/run';
+import { runList, runRecord } from '../wperf/run';
 import { logger } from '../logging/logger';
 import { RecordRun } from '../views/sampling-results/record-run';
 import { logErrorAndNotify } from '../logging/error-logging';
@@ -13,6 +13,7 @@ import { SampleSource, isSourceRecordRun } from '../views/sampling-results/sampl
 import { ObservableSelection } from '../observable-selection';
 import { Sample } from '../wperf/parse/record';
 import { PredefinedEvent } from '../wperf/parse/list';
+import { RecordOptions } from '../wperf/record-options';
 
 export class RunWperfRecord {
     constructor(

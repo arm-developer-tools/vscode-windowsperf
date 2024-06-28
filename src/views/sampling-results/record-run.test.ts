@@ -3,7 +3,7 @@
  */
 
 import { sampleFactory } from '../../wperf/parse/record.factories';
-import { recordOptionsFactory } from '../../wperf/run.factories';
+import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { RecordRun } from './record-run';
 
 describe('RecordRun', () => {

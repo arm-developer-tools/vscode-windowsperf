@@ -2,7 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { RecordOptions } from './run';
+import { RecordOptions } from './record-options';
 
 export const recordOptionsFactory = (options?: Partial<RecordOptions>): RecordOptions => ({
     events: options?.events ?? ['event1', 'event2'],

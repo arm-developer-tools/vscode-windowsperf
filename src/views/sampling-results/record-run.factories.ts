@@ -4,7 +4,7 @@
 
 import { RecordRun } from './record-run';
 import { sampleFactory } from '../../wperf/parse/record.factories';
-import { recordOptionsFactory } from '../../wperf/run.factories';
+import { recordOptionsFactory } from '../../wperf/record-options.factories';
 
 export const recordRunFactory = (options?: Partial<RecordRun>): RecordRun => {
     const parsedContent = options?.parsedContent ?? sampleFactory();
