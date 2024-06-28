@@ -43,6 +43,12 @@
                 "title": "Clear Active Sampling JSON File Selection",
                 "icon": "$(eye-closed)",
                 "category": "WindowsPerf"
+            },
+            {
+                "command": "windowsperf.clearAllSampleResults",
+                "title": "Clear All",
+                "icon": "$(clear-all)",
+                "category": "WindowsPerf"
             }
         ],
         "menus": {
@@ -56,6 +62,11 @@
                     "command": "windowsperf.openResultFile",
                     "when": "view == samplingResults",
                     "group": "navigation@2"
+                },
+                {
+                    "command": "windowsperf.clearAllSampleResults",
+                    "when": "view == samplingResults",
+                    "group": "navigation@3"
                 }
             ],
             "view/item/context": [
@@ -87,6 +98,10 @@
                 },
                 {
                     "command": "windowsperf.selectActiveResultFile",
+                    "when": "false"
+                },
+                {
+                    "command": "windowsperf.clearAllSampleResults",
                     "when": "false"
                 }
             ],

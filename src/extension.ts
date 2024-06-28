@@ -13,6 +13,7 @@ import { logger } from './logging/logger';
 import { RunWperfRecord } from './commands/run-wperf-record';
 import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { SampleSource } from './views/sampling-results/sample-source';
+import { ClearAllSampleResults } from './commands/clear-all-sample-results';
 
 export async function activate(context: vscode.ExtensionContext) {
     const sampleSources = new ObservableCollection<SampleSource>();
@@ -35,6 +36,10 @@ export async function activate(context: vscode.ExtensionContext) {
             selectedSample,
         ).execute,
         'windowsperf.record': new RunWperfRecord(sampleSources, selectedSample).execute,
+        'windowsperf.clearAllSampleResults': new ClearAllSampleResults(
+            sampleSources,
+            selectedSample,
+        ).execute,
     };
 
     Object.entries(commands).forEach(([name, command]) => {

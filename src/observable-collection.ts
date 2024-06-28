@@ -42,4 +42,8 @@ export class ObservableCollection<T> {
             this._onDidChange.fire({ item: deleted, type: 'delete' });
         }
     }
+
+    deleteAll() {
+        this._items.splice(0, this.items.length);
+    }
 }

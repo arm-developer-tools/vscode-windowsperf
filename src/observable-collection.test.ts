@@ -66,4 +66,14 @@ describe('ObservableCollection', () => {
             expect(listener).toHaveBeenCalledWith(wantEvent);
         });
     });
+
+    describe('deleteAll', () => {
+        it('removes all items', () => {
+            const numbers = new ObservableCollection<number>([1, 2, 3]);
+
+            numbers.deleteAll();
+
+            expect(numbers.items).toEqual([]);
+        });
+    });
 });
