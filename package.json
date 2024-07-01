@@ -45,6 +45,12 @@
                 "category": "WindowsPerf"
             },
             {
+                "command": "windowsperf.showSamplingSettings",
+                "title": "Show Sampling Settings",
+                "icon": "$(gear)",
+                "category": "WindowsPerf"
+            },
+            {
                 "command": "windowsperf.clearAllSampleResults",
                 "title": "Clear All",
                 "icon": "$(clear-all)",
@@ -64,9 +70,14 @@
                     "group": "navigation@2"
                 },
                 {
-                    "command": "windowsperf.clearAllSampleResults",
+                    "command": "windowsperf.showSamplingSettings",
                     "when": "view == samplingResults",
                     "group": "navigation@3"
+                },
+                {
+                    "command": "windowsperf.clearAllSampleResults",
+                    "when": "view == samplingResults",
+                    "group": "navigation@4"
                 }
             ],
             "view/item/context": [
@@ -170,7 +181,10 @@
         "@types/d3": "^7.4.3",
         "@types/jest": "^29.5.12",
         "@types/node": "20.x",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "18.3.0",
         "@types/vscode": "^1.70.0",
+        "@types/vscode-webview": "^1.57.5",
         "@typescript-eslint/eslint-plugin": "^7.14.1",
         "@typescript-eslint/parser": "^7.14.1",
         "@vscode/vsce": "^2.29.0",
@@ -240,6 +254,8 @@
     },
     "dependencies": {
         "ctrlc-windows": "2.1.0",
+        "react": "~18.3.1",
+        "react-dom": "~18.3.1",
         "zod": "^3.0.0"
     }
 }

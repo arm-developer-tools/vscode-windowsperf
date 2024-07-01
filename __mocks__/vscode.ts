@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2024 Arm Limited
+ */
+
+import * as VscodeUri from 'vscode-uri';
+
 export enum TreeItemCollapsibleState {
     None = 0,
     Collapsed = 1,
@@ -7,7 +13,12 @@ export enum TreeItemCollapsibleState {
 export const ThemeIcon = jest.fn().mockImplementation((...args) => args);
 export const ThemeColor = jest.fn().mockImplementation((...args) => args);
 
-export { URI as Uri } from 'vscode-uri';
+export class Uri extends VscodeUri.URI {
+    public static readonly file = VscodeUri.URI.file;
+    public static readonly from = VscodeUri.URI.from;
+    public static readonly parse = VscodeUri.URI.parse;
+    public static readonly joinPath = VscodeUri.Utils.joinPath;
+}
 
 type listenerFn<T> = (e: T) => any;
 
@@ -46,5 +57,19 @@ export class CancellationTokenSource {
     };
 
     dispose() {
+    }
+}
+
+export class Disposable {
+    static from(...disposableLikes: { dispose: () => unknown }[]): Disposable {
+        return new Disposable(() => {
+            disposableLikes.forEach(({ dispose }) => dispose());
+        });
+    }
+
+    constructor(private readonly toDispose: () => unknown) {}
+
+    dispose() {
+        this.toDispose();
     }
 }

@@ -1,5 +1,7 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/**
+ * Copyright (C) 2024 Arm Limited
+ */
+
 import * as vscode from 'vscode';
 
 import { ObservableCollection } from './observable-collection';
@@ -14,11 +16,21 @@ import { RunWperfRecord } from './commands/run-wperf-record';
 import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { SampleSource } from './views/sampling-results/sample-source';
 import { ClearAllSampleResults } from './commands/clear-all-sample-results';
+import { ShowSamplingSettings } from './commands/show-sampling-settings';
+import {
+    SamplingSettingsWebview,
+    SamplingSettingsWebviewFactory,
+} from './views/sampling-settings/main';
+import { MementoSamplingSettings } from './sampling-settings';
 
 export async function activate(context: vscode.ExtensionContext) {
+    const samplingSettings = new MementoSamplingSettings(context.workspaceState);
     const sampleSources = new ObservableCollection<SampleSource>();
     const selectedSample = new ObservableSelection<SampleSource>();
-    const editorHighligter = new EditorHighlighter(selectedSample);
+    const editorHighlighter = new EditorHighlighter(selectedSample);
+
+    const samplingSettingsWebviewFactory: SamplingSettingsWebviewFactory = (distRoot, webview) =>
+        new SamplingSettingsWebview(distRoot, webview, samplingSettings);
 
     vscode.window.registerTreeDataProvider(
         'samplingResults',
@@ -36,6 +48,10 @@ export async function activate(context: vscode.ExtensionContext) {
             selectedSample,
         ).execute,
         'windowsperf.record': new RunWperfRecord(sampleSources, selectedSample).execute,
+        'windowsperf.showSamplingSettings': new ShowSamplingSettings(
+            context,
+            samplingSettingsWebviewFactory,
+        ).execute,
         'windowsperf.clearAllSampleResults': new ClearAllSampleResults(
             sampleSources,
             selectedSample,
@@ -46,7 +62,7 @@ export async function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(vscode.commands.registerCommand(name, command));
     });
 
-    const disposables: vscode.Disposable[] = [editorHighligter];
+    const disposables: vscode.Disposable[] = [editorHighlighter];
     for (const toDispose of disposables) {
         context.subscriptions.push(toDispose);
     }
