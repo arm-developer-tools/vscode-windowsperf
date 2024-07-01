@@ -3,10 +3,17 @@
  */
 
 import * as React from 'react';
-import { WebviewApi } from 'vscode-webview';
+import { Dispatch } from 'react';
+import { Action } from '../reducer';
+import { RecordOptions } from '../../../wperf/record-options';
+import { PredefinedEvent } from '../../../wperf/parse/list';
+import { Core } from '../messages';
 
-export type SamplingSettingsProps = {
-    api: WebviewApi<unknown>;
+export type FormProps = {
+    dispatch: Dispatch<Action>;
+    cores: Core[];
+    events: PredefinedEvent[];
+    recordOptions: RecordOptions;
 };
 
 type Section = {
@@ -16,7 +23,7 @@ type Section = {
     component: React.ReactNode;
 };
 
-export const SamplingSettings = () => {
+export const Form = (_: FormProps) => {
     const sections: Section[] = [
         {
             id: 'section-1',

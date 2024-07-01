@@ -5,7 +5,7 @@
 import * as z from 'zod';
 import { validateAgainstShape } from './validate';
 
-const predefinedEventShape = z.object({
+export const predefinedEventShape = z.object({
     Alias_Name: z.string(),
     Description: z.string().optional(),
 });
