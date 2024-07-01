@@ -1,0 +1,19 @@
+/**
+ * Copyright (C) 2024 Arm Limited
+ */
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul a {
+    color: var(--vscode-foreground);
+    line-height: 22px;
+    text-decoration: unset;
+}
+
+nav ul a:hover {
+    color: var(--vscode-settings-settingsHeaderHoverForeground);
+}

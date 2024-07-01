@@ -69,7 +69,7 @@ export class SamplingSettingsWebview {
 
         // Use a nonce for added security. Only scripts with this nonce will be loaded by the browser.
         const nonce = randomBytes(16).toString('base64');
-        const contentSecurityPolicy = `default-src ${cspSource}; style-src ${cspSource}; img-src ${cspSource} data:; script-src 'nonce-${nonce}'`;
+        const contentSecurityPolicy = `default-src ${cspSource}; style-src ${cspSource} 'nonce-${nonce}'; img-src ${cspSource} data:; script-src 'nonce-${nonce}'`;
 
         // Webpack public path must end with a trailing slash
         const webpackPublicPath = `${webview.asWebviewUri(this.distRoot)}/`;

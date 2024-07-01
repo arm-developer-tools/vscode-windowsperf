@@ -1,0 +1,21 @@
+/**
+ * Copyright (C) 2024 Arm Limited
+ */
+
+input {
+    background-color: var(--vscode-settings-textInputBackground);
+    color: var(--vscode-settings-textInputForeground);
+    border: 1px solid var(--vscode-settings-textInputBorder, transparent);
+    padding: 4px 6px;
+}
+
+input:focus {
+    outline-color: var(--vscode-focusBorder);
+    outline-offset: -1px;
+    outline-style: solid;
+    outline-width: 1px;
+}
+
+input::placeholder {
+    color: var(--vscode-input-placeholderForeground);
+}
