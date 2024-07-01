@@ -40,6 +40,8 @@ export const buildRecordCommand = (executablePath: string, options: RecordOption
 export const buildListCommand = (executablePath: string) =>
     `${shellEscape(executablePath)} list -v --json`;
 
+export const buildTestCommand = (executablePath: string) => `${shellEscape(executablePath)} test`;
+
 const getExecutable = (): string =>
     vscode.workspace.getConfiguration('windowsPerf').get('wperfPath') || 'wperf';
 const getCwd = (): string | undefined =>
@@ -65,4 +67,8 @@ export const runList = async (
 ): Promise<PredefinedEvent[]> => {
     const resultJson = await run(buildListCommand(getExecutable()), cancellationToken);
     return parseListJson(resultJson);
+};
+
+export const runTest = async (cancellationToken?: CancellationToken): Promise<string> => {
+    return await run(buildTestCommand(getExecutable()), cancellationToken);
 };

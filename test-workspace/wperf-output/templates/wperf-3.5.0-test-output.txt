@@ -1,0 +1,49 @@
+Test Name                                           Result                                                                                              
+=========                                           ======                                                                                              
+request.ioctl_events [EVT_CORE]                     False                                                                                               
+request.ioctl_events [EVT_DSU]                      False                                                                                               
+request.ioctl_events [EVT_DMC_CLK/EVT_DMC_CLKDIV2]  False                                                                                               
+pmu_device.vendor_name                              Arm Limited                                                                                         
+pmu_device.product_name                             armv8-a                                                                                             
+pmu_device.product_name(extended)                                                                                                                       
+pmu_device.product []                               armv8-a,armv9-a,neoverse-n1,neoverse-n2,neoverse-n2-r0p0,neoverse-n2-r0p1,neoverse-n2-r0p3,neoverse-v1
+pmu_device.m_product_alias                          (neoverse-n2-r0p0:neoverse-n2),(neoverse-n2-r0p1:neoverse-n2)                                       
+pmu_device.events_query(events) [EVT_CORE]          463                                                                                                 
+pmu_device.events_query(events) [EVT_DSU]           0                                                                                                   
+pmu_device.events_query(events) [EVT_DMC_CLK]       0                                                                                                   
+pmu_device.events_query(events) [EVT_DMC_CLKDIV2]   0                                                                                                   
+pmu_device.sampling.INTERVAL_DEFAULT                0x4000000                                                                                           
+pmu_device.version_name                             FEAT_PMUv3p1                                                                                        
+PMU_CTL_QUERY_HW_CFG [arch_id]                      0x000f                                                                                              
+PMU_CTL_QUERY_HW_CFG [core_num]                     0x0008                                                                                              
+PMU_CTL_QUERY_HW_CFG [fpc_num]                      0x0001                                                                                              
+PMU_CTL_QUERY_HW_CFG [gpc_num]                      0x0005                                                                                              
+PMU_CTL_QUERY_HW_CFG [total_gpc_num]                0x0005                                                                                              
+PMU_CTL_QUERY_HW_CFG [part_id]                      0x0d4c                                                                                              
+PMU_CTL_QUERY_HW_CFG [pmu_ver]                      0x0004                                                                                              
+PMU_CTL_QUERY_HW_CFG [rev_id]                       0x0000                                                                                              
+PMU_CTL_QUERY_HW_CFG [variant_id]                   0x0000                                                                                              
+PMU_CTL_QUERY_HW_CFG [vendor_id]                    0x0041                                                                                              
+PMU_CTL_QUERY_HW_CFG [midr_value]                   0x000000000000410fd4c0                                                                              
+PMU_CTL_QUERY_HW_CFG [id_aa64dfr0_value]            0x00000000000010305408                                                                              
+gpc_nums[EVT_CORE]                                  5                                                                                                   
+gpc_nums[EVT_DSU]                                   0                                                                                                   
+gpc_nums[EVT_DMC_CLK]                               0                                                                                                   
+gpc_nums[EVT_DMC_CLKDIV2]                           0                                                                                                   
+fpc_nums[EVT_CORE]                                  1                                                                                                   
+fpc_nums[EVT_DSU]                                   0                                                                                                   
+fpc_nums[EVT_DMC_CLK]                               0                                                                                                   
+fpc_nums[EVT_DMC_CLKDIV2]                           0                                                                                                   
+ioctl_events[EVT_CORE].index                                                                                                                            
+ioctl_events[EVT_CORE].note                                                                                                                             
+ioctl_events[EVT_DSU].index                                                                                                                             
+ioctl_events[EVT_DSU].note                                                                                                                              
+ioctl_events[EVT_DMC_CLK].index                                                                                                                         
+ioctl_events[EVT_DMC_CLK].note                                                                                                                          
+ioctl_events[EVT_DMC_CLKDIV2].index                                                                                                                     
+ioctl_events[EVT_DMC_CLKDIV2].note                                                                                                                      
+PMU_CTL_QUERY_HW_CFG [counter_idx_map]              0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31                                    
+config.count.period                                 100                                                                                                 
+config.count.period_max                             100                                                                                                 
+config.count.period_min                             10                                                                                                  
+spe_device.version_name                             not implemented

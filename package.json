@@ -27,6 +27,11 @@
                 "category": "WindowsPerf"
             },
             {
+                "command": "windowsperf.test",
+                "title": "Check Driver Configuration",
+                "category": "WindowsPerf"
+            },
+            {
                 "command": "windowsperf.rerunRecord",
                 "title": "Rerun Record",
                 "icon": "$(refresh)",
@@ -225,7 +230,8 @@
         "moduleNameMapper": {
             "^d3$": "<rootDir>/node_modules/d3/dist/d3.min.js",
             "error-logging": "<rootDir>/src/logging/__mocks__/error-logging.ts",
-            "logger": "<rootDir>/src/logging/__mocks__/logger.ts"
+            "logger": "<rootDir>/src/logging/__mocks__/logger.ts",
+            "wrap-ansi": "<rootDir>/__mocks__/wrap-ansi.ts"
         },
         "transform": {
             "^.+\\.(ts|tsx|js)$": [
@@ -266,6 +272,7 @@
     },
     "dependencies": {
         "ctrlc-windows": "2.1.0",
+        "wrap-ansi": "9.0.0",
         "react": "~18.3.1",
         "react-dom": "~18.3.1",
         "zod": "^3.0.0"

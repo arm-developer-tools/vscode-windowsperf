@@ -3,7 +3,7 @@
  */
 
 import 'jest';
-import { buildListCommand, buildRecordArgs, buildRecordCommand } from './run';
+import { buildListCommand, buildRecordArgs, buildRecordCommand, buildTestCommand } from './run';
 import { faker } from '@faker-js/faker';
 import { recordOptionsFactory } from './record-options.factories';
 
@@ -79,5 +79,15 @@ describe('buildListCommand', () => {
         const got = buildListCommand(executablePath);
 
         expect(got).toEqual(`"${executablePath}" list -v --json`);
+    });
+});
+
+describe('buildTestCommand', () => {
+    it('escapes the executable and returns the correct arguments', () => {
+        const executablePath = faker.system.filePath();
+
+        const got = buildTestCommand(executablePath);
+
+        expect(got).toEqual(`"${executablePath}" test`);
     });
 });
