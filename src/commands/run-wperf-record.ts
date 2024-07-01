@@ -4,15 +4,15 @@
 
 import * as vscode from 'vscode';
 import { ObservableCollection } from '../observable-collection';
-import { ProgressLocation, QuickPickItem } from 'vscode';
-import { runList, runRecord } from '../wperf/run';
+import { QuickPickItem } from 'vscode';
+import { runList } from '../wperf/run';
 import { logger } from '../logging/logger';
-import { RecordRun } from '../views/sampling-results/record-run';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource, isSourceRecordRun } from '../views/sampling-results/sample-source';
 import { ObservableSelection } from '../observable-selection';
-import { Sample } from '../wperf/parse/record';
 import { PredefinedEvent } from '../wperf/parse/list';
+import { prependSampleAndMakeSelected, record } from '../record';
+import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
 import { RecordOptions } from '../wperf/record-options';
 
 export class RunWperfRecord {
@@ -20,49 +20,26 @@ export class RunWperfRecord {
         private readonly sources: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly getRecordOptions: typeof promptUserForRecordOptions = promptUserForRecordOptions,
-        private readonly runWperfRecord: typeof runWperfRecordWithProgress = runWperfRecordWithProgress,
-        private readonly focusSamplingResults: typeof executeFocusSamplingResults = executeFocusSamplingResults,
+        private readonly runRecord: typeof record = record,
+        private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
     ) {}
 
-    execute = async (sampleSource?: vscode.TreeItem) => {
+    execute = async () => {
         logger.info('Executing windowsperf.runWperfRecord');
 
         const previousCommand = getPreviousCommand(this.sources);
-        const recordOptions = sampleSource
-            ? this.extractRecordOptions(sampleSource)
-            : await this.getRecordOptions(previousCommand);
+        const recordOptions = await this.getRecordOptions(previousCommand);
 
         if (!recordOptions) {
             logger.debug('Recording cancelled');
             return;
         }
-
-        const sample = await this.runWperfRecord(recordOptions);
-
-        if (!sample) {
-            return;
+        const newSampleSource = await this.runRecord(recordOptions);
+        if (newSampleSource) {
+            prependSampleAndMakeSelected(newSampleSource, this.sources, this.selectedFile);
         }
-
-        logger.debug(`Recording complete, recorded ${sample.length} events`);
-
-        const newSampleSource = SampleSource.fromRecordRun(new RecordRun(recordOptions, sample));
-        this.selectedFile.selected = newSampleSource;
-        this.sources.prepend(newSampleSource);
-        this.focusSamplingResults();
+        this.focusResults();
     };
-
-    public extractRecordOptions(sampleSource: vscode.TreeItem) {
-        const source = this.sources.items.find((item) => item.id === `${sampleSource.id}`);
-        if (!source) {
-            throw new Error(
-                `Recorded run matching tree item ${sampleSource.id} could not be found.`,
-            );
-        }
-        if (isSourceRecordRun(source.context)) {
-            return source.context.result.recordOptions;
-        }
-        throw new Error(`Tree item ${sampleSource.label} is not a wperf command option`);
-    }
 }
 
 export const getPreviousCommand = (
@@ -105,10 +82,6 @@ export const promptUserForRecordOptions = async (
     }
 
     return { events, frequency, core: 1, command, timeoutSeconds: undefined };
-};
-
-const executeFocusSamplingResults = () => {
-    vscode.commands.executeCommand('samplingResults.focus');
 };
 
 export const getQuickPickItemsFromPredefinedEvents = (events: PredefinedEvent[]): QuickPickItem[] =>
@@ -160,22 +133,4 @@ const promptForFrequencyWithQuickPick = async (): Promise<number | undefined> =>
     });
     const frequency = parseInt(value ?? '');
     return isNaN(frequency) ? undefined : frequency;
-};
-
-const runWperfRecordWithProgress = async (
-    wperfOptions: RecordOptions,
-): Promise<Sample | undefined> => {
-    try {
-        return vscode.window.withProgress(
-            {
-                title: 'Recording…',
-                location: ProgressLocation.Notification,
-                cancellable: true,
-            },
-            (_progress, cancellationToken) => runRecord(wperfOptions, cancellationToken),
-        );
-    } catch (error: unknown) {
-        logErrorAndNotify(error, 'Failed to run wperf record.');
-        return undefined;
-    }
 };

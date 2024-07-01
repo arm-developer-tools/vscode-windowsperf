@@ -27,6 +27,12 @@
                 "category": "WindowsPerf"
             },
             {
+                "command": "windowsperf.rerunRecord",
+                "title": "Rerun Record",
+                "icon": "$(refresh)",
+                "category": "WindowsPerf"
+            },
+            {
                 "command": "windowsperf.closeResultFile",
                 "title": "Close Sampling JSON File",
                 "icon": "$(close)",
@@ -82,7 +88,7 @@
             ],
             "view/item/context": [
                 {
-                    "command": "windowsperf.record",
+                    "command": "windowsperf.rerunRecord",
                     "when": "view == samplingResults && viewItem =~ /recordRun/",
                     "group": "inline@1"
                 },
@@ -113,6 +119,10 @@
                 },
                 {
                     "command": "windowsperf.clearAllSampleResults",
+                    "when": "false"
+                },
+                {
+                    "command": "windowsperf.rerunRecord",
                     "when": "false"
                 }
             ],

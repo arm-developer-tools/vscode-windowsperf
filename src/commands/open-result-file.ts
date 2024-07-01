@@ -11,13 +11,14 @@ import { Uri } from 'vscode';
 import { logger } from '../logging/logger';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
+import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
 
 export class OpenResultFile {
     constructor(
         private readonly files: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly openFileOrPrompt: typeof openFileAtUriOrPrompt = openFileAtUriOrPrompt,
-        private readonly focusOnSamplingResults: typeof executeResultsFocusCommand = executeResultsFocusCommand,
+        private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
     ) {}
 
     readonly execute = async (inputUri: Uri | undefined) => {
@@ -28,7 +29,7 @@ export class OpenResultFile {
             const newSampleSource = SampleSource.fromSampleFile(file);
             this.selectedFile.selected = newSampleSource;
             this.files.prepend(newSampleSource);
-            this.focusOnSamplingResults();
+            this.focusResults();
         }
     };
 }
@@ -47,10 +48,6 @@ export const openFileAtUriOrPrompt = async (
         }
     }
     return undefined;
-};
-
-export const executeResultsFocusCommand = async () => {
-    await vscode.commands.executeCommand('samplingResults.focus');
 };
 
 export const promptUserToSelectResultFile = async (): Promise<vscode.Uri | undefined> => {

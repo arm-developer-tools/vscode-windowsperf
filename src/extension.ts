@@ -15,6 +15,7 @@ import { logger } from './logging/logger';
 import { RunWperfRecord } from './commands/run-wperf-record';
 import { TreeDataProvider } from './views/sampling-results/tree-data-provider';
 import { SampleSource } from './views/sampling-results/sample-source';
+import { RerunWperfRecord } from './commands/rerun-wperf-record';
 import { ClearAllSampleResults } from './commands/clear-all-sample-results';
 import { ShowSamplingSettings } from './commands/show-sampling-settings';
 import {
@@ -48,6 +49,7 @@ export async function activate(context: vscode.ExtensionContext) {
             selectedSample,
         ).execute,
         'windowsperf.record': new RunWperfRecord(sampleSources, selectedSample).execute,
+        'windowsperf.rerunRecord': new RerunWperfRecord(sampleSources, selectedSample).execute,
         'windowsperf.showSamplingSettings': new ShowSamplingSettings(
             context,
             samplingSettingsWebviewFactory,
