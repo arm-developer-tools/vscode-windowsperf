@@ -48,7 +48,7 @@ const renderDisassemblySection = (sourceCode: SourceCode): string => {
     } else
         return `
 #### Disassembly
-${'```'}
+${'```arm'}
 ${renderDisassembly(sourceCode.instruction_address, sourceCode.disassembled_line.disassemble)}
 ${'```'}
 `;
