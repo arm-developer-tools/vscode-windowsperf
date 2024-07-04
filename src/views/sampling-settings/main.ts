@@ -5,10 +5,11 @@
 import { randomBytes } from 'crypto';
 import * as vscode from 'vscode';
 import { Disposable, Uri } from 'vscode';
-import { Core, EventsLoadResult, ToView, fromViewShape } from './messages';
+import { EventsLoadResult, ToView, fromViewShape } from './messages';
 import { logger } from '../../logging/logger';
 import { SamplingSettings } from '../../sampling-settings';
 import { runList } from '../../wperf/run';
+import { Core, getCpuInfo } from '../../wperf/cores';
 
 type Webview = Pick<
     vscode.Webview,
@@ -71,8 +72,7 @@ export class SamplingSettingsWebview {
     };
 
     private readonly listCores = (): Core[] => {
-        // TODO: List cores
-        return [];
+        return getCpuInfo();
     };
 
     private readonly loadEvents = async (): Promise<EventsLoadResult> => {

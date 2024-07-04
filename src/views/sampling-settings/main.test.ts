@@ -67,7 +67,7 @@ describe('SamplingSettingsWebview', () => {
         const want: ToView = {
             type: 'initialData',
             recordOptions,
-            cores: [],
+            cores: expect.any(Object),
             events: { type: 'success', events },
         };
         expect(webview.postMessage).toHaveBeenCalledWith(want);
@@ -94,7 +94,7 @@ describe('SamplingSettingsWebview', () => {
         const want: ToView = {
             type: 'initialData',
             recordOptions,
-            cores: [],
+            cores: expect.any(Object),
             events: { type: 'error', error: {} },
         };
         expect(webview.postMessage).toHaveBeenCalledWith(want);

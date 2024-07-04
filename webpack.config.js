@@ -16,6 +16,9 @@ const common = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        fallback: {
+            os: require.resolve('os-browserify'),
+        },
     },
     module: {
         rules: [

@@ -5,6 +5,7 @@
 import * as z from 'zod';
 import { recordOptionsShape } from '../../wperf/record-options';
 import { predefinedEventShape } from '../../wperf/parse/list';
+import { coreShape } from '../../wperf/cores';
 
 export const fromViewShape = z.union([
     z.object({
@@ -31,10 +32,6 @@ const eventsLoadResultShape = z.union([
 ]);
 
 export type EventsLoadResult = z.infer<typeof eventsLoadResultShape>;
-
-// TODO: Define core type
-const coreShape = z.NEVER;
-export type Core = z.infer<typeof coreShape>;
 
 export const toViewShape = z.object({
     type: z.literal('initialData'),

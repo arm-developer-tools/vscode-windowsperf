@@ -4,10 +4,10 @@
 
 import * as React from 'react';
 import { Dispatch } from 'react';
-import { Action } from '../reducer';
-import { RecordOptions } from '../../../wperf/record-options';
+import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
-import { Core } from '../messages';
+import { RecordOptions } from '../../../wperf/record-options';
+import { Action } from '../reducer';
 
 export type FormProps = {
     dispatch: Dispatch<Action>;

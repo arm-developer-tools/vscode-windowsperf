@@ -2,13 +2,14 @@
  * Copyright (C) 2024 Arm Limited
  */
 
+import { Core } from '../../wperf/cores';
 import { PredefinedEvent } from '../../wperf/parse/list';
 import { RecordOptions } from '../../wperf/record-options';
 import { ToView } from './messages';
 
 export type LoadedState = {
     type: 'loaded';
-    cores: never[];
+    cores: Core[];
     events: PredefinedEvent[];
     recordOptions: RecordOptions;
 };
