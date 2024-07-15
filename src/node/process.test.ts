@@ -2,7 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { ctrlc } from 'ctrlc-windows';
+import { ctrlc } from '@arm-debug/ctrlc-windows';
 import { logger } from '../logging/logger';
 import { exec } from './process';
 import { CancellationTokenSource } from 'vscode';

@@ -12,7 +12,7 @@ const common = {
     externals: {
         // modules added here also need to be added in the .vscodeignore file
         vscode: 'commonjs vscode', // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
-        'ctrlc-windows': 'commonjs ctrlc-windows',
+        '@arm-debug/ctrlc-windows': 'commonjs @arm-debug/ctrlc-windows',
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],

@@ -2,7 +2,7 @@
 .vscode-test/**
 out/**
 node_modules/**
-!node_modules/ctrlc-windows
+!node_modules/@arm-debug/ctrlc-windows
 src/**
 .gitignore
 .gitattributes
