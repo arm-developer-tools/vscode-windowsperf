@@ -6,66 +6,40 @@ import * as React from 'react';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions } from '../../../wperf/record-options';
+import { SearchableForm } from './searchable-form';
+
+type UpdateRecordOption = <K extends keyof RecordOptions>(key: K, value: RecordOptions[K]) => void;
 
 export type FormProps = {
     cores: Core[];
     events: PredefinedEvent[];
     recordOptions: RecordOptions;
-    updateRecordOption: <K extends keyof RecordOptions>(key: K, value: RecordOptions[K]) => void;
+    updateRecordOption: UpdateRecordOption;
 };
 
-type Section = {
-    id: string;
-    description: string;
-    title: string;
-    component: React.ReactNode;
-};
-
-export const Form = (_: FormProps) => {
-    const sections: Section[] = [
-        {
-            id: 'section-1',
-            title: 'Section 1',
-            description: 'This is the first section of the settings.',
-            component: <div>Some input 1</div>,
-        },
-        {
-            id: 'section-1',
-            title: 'Section 2',
-            description: 'This is the second section of the settings.',
-            component: <div>Some input 2</div>,
-        },
-        {
-            id: 'section-1',
-            title: 'Section 3',
-            description: 'This is the third section of the settings.',
-            component: <div>Some input 3</div>,
-        },
-    ];
-
+export const Form = (_props: FormProps) => {
     return (
-        <>
-            <search>
-                <input type="text" placeholder="Search settings" />
-            </search>
-            <nav>
-                <ul>
-                    {sections.map((section) => (
-                        <li>
-                            <a href={`#${section.id}`}>{section.title}</a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            <section id="content">
-                {sections.map((section) => (
-                    <section className="setting" id={section.id}>
-                        <h1>{section.title}</h1>
-                        <div>{section.description}</div>
-                        {section.component}
-                    </section>
-                ))}
-            </section>
-        </>
+        <SearchableForm
+            sections={[
+                {
+                    id: 'section-1',
+                    title: 'Section 1',
+                    description: 'This is the first section of the settings.',
+                    component: <div>Some input 1</div>,
+                },
+                {
+                    id: 'section-2',
+                    title: 'Section 2',
+                    description: 'This is the second section of the settings.',
+                    component: <div>Some input 2</div>,
+                },
+                {
+                    id: 'section-3',
+                    title: 'Section 3',
+                    description: 'This is the third section of the settings.',
+                    component: <div>Some input 3</div>,
+                },
+            ]}
+        />
     );
 };
