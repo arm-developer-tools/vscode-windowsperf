@@ -3,17 +3,15 @@
  */
 
 import * as React from 'react';
-import { Dispatch } from 'react';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions } from '../../../wperf/record-options';
-import { Action } from '../reducer';
 
 export type FormProps = {
-    dispatch: Dispatch<Action>;
     cores: Core[];
     events: PredefinedEvent[];
     recordOptions: RecordOptions;
+    updateRecordOption: <K extends keyof RecordOptions>(key: K, value: RecordOptions[K]) => void;
 };
 
 type Section = {

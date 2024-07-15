@@ -53,7 +53,7 @@ describe('reducer', () => {
         expect(got).toEqual(want);
     });
 
-    it('handles a set command action', () => {
+    it('handles an updateRecordOption action', () => {
         const command = 'some command';
 
         const got = reducer(
@@ -63,27 +63,10 @@ describe('reducer', () => {
                 cores: [],
                 recordOptions: recordOptionsFactory(),
             },
-            { type: 'setCommand', command },
+            { type: 'updateRecordOption', key: 'command', value: command },
         );
 
         expect(got.type).toBe('loaded');
         expect((got as LoadedState).recordOptions.command).toBe(command);
-    });
-
-    it('handles a set frequency action', () => {
-        const frequency = 42;
-
-        const got = reducer(
-            {
-                type: 'loaded',
-                events: [],
-                cores: [],
-                recordOptions: recordOptionsFactory(),
-            },
-            { type: 'setFrequency', frequency },
-        );
-
-        expect(got.type).toBe('loaded');
-        expect((got as LoadedState).recordOptions.frequency).toBe(frequency);
     });
 });

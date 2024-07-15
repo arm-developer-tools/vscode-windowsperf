@@ -22,10 +22,15 @@ export type State =
 
 export const initialState: State = { type: 'loading' };
 
+export type UpdateRecordOptionAction<K extends keyof RecordOptions> = {
+    type: 'updateRecordOption';
+    key: K;
+    value: RecordOptions[K];
+};
+
 export type Action =
     | { type: 'handleMessage'; message: ToView }
-    | { type: 'setCommand'; command: string }
-    | { type: 'setFrequency'; frequency: number };
+    | UpdateRecordOptionAction<keyof RecordOptions>;
 
 const setRecordOptionsField = <K extends keyof RecordOptions>(
     field: K,
@@ -65,9 +70,7 @@ export const reducer = (state: State, action: Action): State => {
     switch (action.type) {
         case 'handleMessage':
             return toViewMessageToState(action.message);
-        case 'setCommand':
-            return setRecordOptionsField('command', action.command, state);
-        case 'setFrequency':
-            return setRecordOptionsField('frequency', action.frequency, state);
+        case 'updateRecordOption':
+            return setRecordOptionsField(action.key, action.value, state);
     }
 };

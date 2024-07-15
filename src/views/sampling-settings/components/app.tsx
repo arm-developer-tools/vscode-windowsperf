@@ -8,6 +8,7 @@ import { WebviewApi } from 'vscode-webview';
 import { FromView, toViewShape } from '../messages';
 import { initialState, reducer } from '../reducer';
 import { Form } from './form';
+import { RecordOptions } from '../../../wperf/record-options';
 import { LoadingSpinner } from './loading-spinner';
 
 export type AppProps = {
@@ -46,12 +47,24 @@ export const App = (props: AppProps) => {
     } else if (state.type === 'error') {
         return <div>Error</div>;
     } else {
+        const updateRecordOption = <K extends keyof RecordOptions>(
+            key: K,
+            value: RecordOptions[K],
+        ) => {
+            const fromView: FromView = {
+                type: 'recordOptions',
+                recordOptions: { ...state.recordOptions, [key]: value },
+            };
+            props.api.postMessage(fromView);
+            dispatch({ type: 'updateRecordOption', key, value });
+        };
+
         return (
             <Form
-                dispatch={dispatch}
                 cores={state.cores}
                 events={state.events}
                 recordOptions={state.recordOptions}
+                updateRecordOption={updateRecordOption}
             />
         );
     }
