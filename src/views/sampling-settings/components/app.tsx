@@ -8,6 +8,7 @@ import { WebviewApi } from 'vscode-webview';
 import { FromView, toViewShape } from '../messages';
 import { initialState, reducer } from '../reducer';
 import { Form } from './form';
+import { LoadingSpinner } from './loading-spinner';
 
 export type AppProps = {
     api: WebviewApi<unknown>;
@@ -41,7 +42,7 @@ export const App = (props: AppProps) => {
     }, []);
 
     if (state.type === 'loading') {
-        return <div>Loading…</div>;
+        return <LoadingSpinner />;
     } else if (state.type === 'error') {
         return <div>Error</div>;
     } else {

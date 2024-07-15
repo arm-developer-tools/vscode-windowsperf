@@ -271,6 +271,7 @@
         ]
     },
     "dependencies": {
+        "@vscode/webview-ui-toolkit": "^1.4.0",
         "@arm-debug/ctrlc-windows": "1.0.0",
         "wrap-ansi": "9.0.0",
         "os-browserify": "^0.3.0",
