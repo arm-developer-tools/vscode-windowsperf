@@ -29,6 +29,7 @@ export const buildRecordArgs = (options: RecordOptions): string => {
         '--disassemble',
         '--',
         options.command,
+        options.arguments,
     ].join(' ');
 };
 

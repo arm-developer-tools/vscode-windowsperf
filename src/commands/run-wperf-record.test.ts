@@ -220,6 +220,7 @@ describe('promptUserForRecordOptions', () => {
             frequency,
             core: 1,
             command,
+            arguments: '',
             timeoutSeconds: undefined,
         };
         expect(got).toEqual(want);

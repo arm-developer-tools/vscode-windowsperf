@@ -55,18 +55,23 @@ nav {
     }
 }
 
-search input {
+search input[type='text'] {
     box-sizing: border-box;
     width: 100%;
 }
 
 section.setting {
-    margin-bottom: 12px;
+    margin-bottom: 24px;
 }
 
 h1 {
     color: var(--vscode-settings-headerForeground);
-    margin: 0 0 2px 0;
+    font-size: 13px;
+    margin: 0 0 6px 0;
+}
+
+.description {
+    margin: 0 0 6px 0;
 }
 
 .loading-spinner {

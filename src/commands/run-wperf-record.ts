@@ -81,7 +81,7 @@ export const promptUserForRecordOptions = async (
         return;
     }
 
-    return { events, frequency, core: 1, command, timeoutSeconds: undefined };
+    return { events, frequency, core: 1, command, arguments: '', timeoutSeconds: undefined };
 };
 
 export const getQuickPickItemsFromPredefinedEvents = (events: PredefinedEvent[]): QuickPickItem[] =>

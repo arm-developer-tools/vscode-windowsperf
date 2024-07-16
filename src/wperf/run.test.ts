@@ -58,6 +58,16 @@ describe('buildRecordArgs', () => {
 
         expect(got).toContain('test command');
     });
+
+    it('includes the arguments', () => {
+        const got = buildRecordArgs(
+            recordOptionsFactory({
+                arguments: '--some-flag',
+            }),
+        );
+
+        expect(got).toContain('--some-flag');
+    });
 });
 
 describe('buildRecordCommand', () => {

@@ -19,3 +19,7 @@ input:focus {
 input::placeholder {
     color: var(--vscode-input-placeholderForeground);
 }
+
+input[type='text'] {
+    width: 418px;
+}

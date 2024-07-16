@@ -9,6 +9,7 @@ export const recordOptionsShape = z.object({
     frequency: z.number(),
     core: z.number(),
     command: z.string(),
+    arguments: z.string(),
     timeoutSeconds: z.number().optional(),
 });
 

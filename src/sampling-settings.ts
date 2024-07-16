@@ -42,5 +42,6 @@ export const defaultRecordOptions: RecordOptions = {
     frequency: 10000,
     core: 0,
     command: '',
+    arguments: '',
     timeoutSeconds: undefined,
 };

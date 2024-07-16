@@ -8,6 +8,7 @@ export const recordOptionsFactory = (options?: Partial<RecordOptions>): RecordOp
     events: options?.events ?? ['event1', 'event2'],
     frequency: options?.frequency ?? 100,
     core: options?.core ?? 1,
-    command: options?.command ?? 'test command',
+    command: options?.command ?? 'test-command',
+    arguments: options?.arguments ?? '--some-flag --another-flag',
     timeoutSeconds: options && 'timeoutSeconds' in options ? options.timeoutSeconds : 10,
 });

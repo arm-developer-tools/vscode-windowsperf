@@ -17,27 +17,55 @@ export type FormProps = {
     updateRecordOption: UpdateRecordOption;
 };
 
-export const Form = (_props: FormProps) => {
+type RecordOptionTextInputProps = {
+    recordOption: 'command' | 'arguments';
+    recordOptions: RecordOptions;
+    updateRecordOption: UpdateRecordOption;
+};
+
+const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
+    return (
+        <div>
+            <input
+                type="text"
+                value={props.recordOptions[props.recordOption]}
+                data-testid={`${props.recordOption}-input`}
+                onChange={(event) => {
+                    props.updateRecordOption(props.recordOption, event.target.value);
+                }}
+            />
+        </div>
+    );
+};
+
+export const Form = (props: FormProps) => {
     return (
         <SearchableForm
             sections={[
                 {
-                    id: 'section-1',
-                    title: 'Section 1',
-                    description: 'This is the first section of the settings.',
-                    component: <div>Some input 1</div>,
+                    id: 'command',
+                    title: 'Command',
+                    description:
+                        'The executable to spawn. Absolute path or relative to the workspace root.',
+                    component: (
+                        <RecordOptionTextInput
+                            recordOption="command"
+                            recordOptions={props.recordOptions}
+                            updateRecordOption={props.updateRecordOption}
+                        />
+                    ),
                 },
                 {
-                    id: 'section-2',
-                    title: 'Section 2',
-                    description: 'This is the second section of the settings.',
-                    component: <div>Some input 2</div>,
-                },
-                {
-                    id: 'section-3',
-                    title: 'Section 3',
-                    description: 'This is the third section of the settings.',
-                    component: <div>Some input 3</div>,
+                    id: 'arguments',
+                    title: 'Arguments',
+                    description: 'The arguments to pass to the command.',
+                    component: (
+                        <RecordOptionTextInput
+                            recordOption="arguments"
+                            recordOptions={props.recordOptions}
+                            updateRecordOption={props.updateRecordOption}
+                        />
+                    ),
                 },
             ]}
         />
