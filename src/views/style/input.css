@@ -4,6 +4,7 @@
 
 input {
     background-color: var(--vscode-settings-textInputBackground);
+    border-radius: 2px;
     color: var(--vscode-settings-textInputForeground);
     border: 1px solid var(--vscode-settings-textInputBorder, transparent);
     padding: 4px 6px;
