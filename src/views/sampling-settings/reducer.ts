@@ -50,26 +50,33 @@ const setRecordOptionsField = <K extends keyof RecordOptions>(
     }
 };
 
-const toViewMessageToState = (message: ToView): State => {
-    if (message.events.type === 'error') {
-        return {
-            type: 'error',
-            error: message.events.error,
-        };
-    } else {
-        return {
-            type: 'loaded',
-            cores: message.cores,
-            events: message.events.events,
-            recordOptions: message.recordOptions,
-        };
+const toViewMessageReducer = (state: State, message: ToView): State => {
+    switch (message.type) {
+        case 'initialData':
+            switch (message.events.type) {
+                case 'error':
+                    return {
+                        type: 'error',
+                        error: message.events.error,
+                    };
+                case 'success':
+                    return {
+                        type: 'loaded',
+                        cores: message.cores,
+                        events: message.events.events,
+                        recordOptions: message.recordOptions,
+                    };
+            }
+            break;
+        case 'selectedCommand':
+            return setRecordOptionsField('command', message.command, state);
     }
 };
 
 export const reducer = (state: State, action: Action): State => {
     switch (action.type) {
         case 'handleMessage':
-            return toViewMessageToState(action.message);
+            return toViewMessageReducer(state, action.message);
         case 'updateRecordOption':
             return setRecordOptionsField(action.key, action.value, state);
     }

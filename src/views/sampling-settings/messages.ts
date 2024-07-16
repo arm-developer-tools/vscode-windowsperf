@@ -13,6 +13,9 @@ export const fromViewShape = z.union([
         recordOptions: recordOptionsShape,
     }),
     z.object({
+        type: z.literal('openCommandFilePicker'),
+    }),
+    z.object({
         type: z.literal('ready'),
     }),
 ]);
@@ -33,11 +36,17 @@ const eventsLoadResultShape = z.union([
 
 export type EventsLoadResult = z.infer<typeof eventsLoadResultShape>;
 
-export const toViewShape = z.object({
-    type: z.literal('initialData'),
-    recordOptions: recordOptionsShape,
-    cores: z.array(coreShape),
-    events: eventsLoadResultShape,
-});
+export const toViewShape = z.union([
+    z.object({
+        type: z.literal('initialData'),
+        recordOptions: recordOptionsShape,
+        cores: z.array(coreShape),
+        events: eventsLoadResultShape,
+    }),
+    z.object({
+        type: z.literal('selectedCommand'),
+        command: z.string(),
+    }),
+]);
 
 export type ToView = z.infer<typeof toViewShape>;

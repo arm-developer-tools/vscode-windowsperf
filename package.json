@@ -192,6 +192,7 @@
         "format:fix": "prettier --write ."
     },
     "devDependencies": {
+        "@babel/plugin-transform-modules-commonjs": "^7.24.8",
         "@faker-js/faker": "^8.4.1",
         "@types/d3": "^7.4.3",
         "@types/jest": "^29.5.12",
@@ -237,6 +238,14 @@
             "wrap-ansi": "<rootDir>/__mocks__/wrap-ansi.ts"
         },
         "transform": {
+            "\\.js$": [
+                "babel-jest",
+                {
+                    "plugins": [
+                        "@babel/plugin-transform-modules-commonjs"
+                    ]
+                }
+            ],
             "^.+\\.(ts|tsx|js)$": [
                 "ts-jest",
                 {
@@ -257,6 +266,9 @@
             "**/*.test.+(ts|tsx)"
         ],
         "testEnvironment": "jsdom",
+        "transformIgnorePatterns": [
+            "/node_modules/(?!(@vscode/webview-ui-toolkit|@microsoft|exenv-es6)/)"
+        ],
         "setupFiles": [
             "./jest-setup-file.js"
         ],

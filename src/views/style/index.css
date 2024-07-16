@@ -5,6 +5,10 @@
 @import url('./input.css');
 @import url('./nav.css');
 
+:root {
+    --form-margin-base: 6px;
+}
+
 html,
 body {
     height: 100%;
@@ -23,7 +27,7 @@ main {
     grid-template-columns: minmax(var(--content-max-width), 1fr);
     box-sizing: border-box;
     padding: 12px 24px;
-    grid-gap: 12px 24px;
+    grid-gap: 12px 20px;
 }
 
 search {
@@ -37,6 +41,7 @@ nav {
 #content {
     grid-area: 2 / 1 / 3 / 3;
     overflow: auto;
+    padding: 0 0 0 4px;
 }
 
 @media (min-width: 672px) {
@@ -61,17 +66,18 @@ search input[type='text'] {
 }
 
 section.setting {
-    margin-bottom: 24px;
+    margin-bottom: calc(4 * var(--form-margin-base));
 }
 
 h1 {
     color: var(--vscode-settings-headerForeground);
     font-size: 13px;
-    margin: 0 0 6px 0;
+    margin: 0 0 var(--form-margin-base) 0;
 }
 
-.description {
-    margin: 0 0 6px 0;
+.description,
+.file-picker-input {
+    margin: 0 0 var(--form-margin-base) 0;
 }
 
 .loading-spinner {

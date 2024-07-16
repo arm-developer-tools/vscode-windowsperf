@@ -57,11 +57,10 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
     });
 
     it('updates the current record options and does not reply in response to a recordOptions message', async () => {
-        const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
         const samplingSettings = { recordOptions: recordOptionsFactory() };
         const messageHandler = new SamplingSettingsMessageHandlerImpl(
             samplingSettings,
-            getPredefinedEventsFactory(events),
+            getPredefinedEventsFactory(),
         );
         const newRecordOptions = recordOptionsFactory();
         const message: FromView = { type: 'recordOptions', recordOptions: newRecordOptions };
@@ -70,5 +69,58 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
 
         expect(got).toBeUndefined();
         expect(samplingSettings.recordOptions).toEqual(newRecordOptions);
+    });
+
+    describe('handling openCommandFilePicker', () => {
+        it('updates the sampling settings when the user picks a file', async () => {
+            const newCommand = '/path/to/new-command';
+            const promptForCommand = jest.fn();
+            promptForCommand.mockResolvedValue(newCommand);
+            const samplingSettings = { recordOptions: recordOptionsFactory() };
+            const messageHandler = new SamplingSettingsMessageHandlerImpl(
+                samplingSettings,
+                jest.fn(),
+                promptForCommand,
+            );
+            const message: FromView = { type: 'openCommandFilePicker' };
+
+            await messageHandler.handleMessage(message);
+
+            expect(samplingSettings.recordOptions.command).toBe(newCommand);
+        });
+
+        it('notifies the caller when the user picks a file', async () => {
+            const newCommand = '/path/to/new-command';
+            const promptForCommand = jest.fn();
+            promptForCommand.mockResolvedValue(newCommand);
+            const messageHandler = new SamplingSettingsMessageHandlerImpl(
+                { recordOptions: recordOptionsFactory() },
+                jest.fn(),
+                promptForCommand,
+            );
+            const message: FromView = { type: 'openCommandFilePicker' };
+
+            const got = await messageHandler.handleMessage(message);
+
+            const want: ToView = { type: 'selectedCommand', command: newCommand };
+            expect(got).toEqual(want);
+        });
+
+        it('does nothing when the user does not pick a file', async () => {
+            const promptForCommand = jest.fn();
+            promptForCommand.mockResolvedValue(undefined);
+            const initialRecordOptions = recordOptionsFactory();
+            const samplingSettings = { recordOptions: initialRecordOptions };
+            const messageHandler = new SamplingSettingsMessageHandlerImpl(
+                samplingSettings,
+                jest.fn(),
+                promptForCommand,
+            );
+            const message: FromView = { type: 'openCommandFilePicker' };
+
+            await messageHandler.handleMessage(message);
+
+            expect(samplingSettings.recordOptions.command).toBe(initialRecordOptions.command);
+        });
     });
 });

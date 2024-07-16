@@ -59,11 +59,17 @@ export const App = (props: AppProps) => {
             dispatch({ type: 'updateRecordOption', key, value });
         };
 
+        const openCommandFilePicker = () => {
+            const fromView: FromView = { type: 'openCommandFilePicker' };
+            props.api.postMessage(fromView);
+        };
+
         return (
             <Form
                 cores={state.cores}
                 events={state.events}
                 recordOptions={state.recordOptions}
+                openCommandFilePicker={openCommandFilePicker}
                 updateRecordOption={updateRecordOption}
             />
         );

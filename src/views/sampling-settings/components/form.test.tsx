@@ -17,6 +17,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                openCommandFilePicker={jest.fn()}
                 updateRecordOption={updateRecordOption}
             />,
         );
@@ -34,6 +35,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                openCommandFilePicker={jest.fn()}
                 updateRecordOption={updateRecordOption}
             />,
         );
@@ -44,5 +46,22 @@ describe('Form', () => {
         });
 
         expect(updateRecordOption).toHaveBeenCalledWith('arguments', newArguments);
+    });
+
+    it('calls openCommandFilePicker when the browse button is clicked', () => {
+        const openCommandFilePicker = jest.fn();
+        render(
+            <Form
+                cores={[]}
+                events={[]}
+                recordOptions={recordOptionsFactory()}
+                openCommandFilePicker={openCommandFilePicker}
+                updateRecordOption={jest.fn()}
+            />,
+        );
+
+        fireEvent.click(screen.getByText('Browse'));
+
+        expect(openCommandFilePicker).toHaveBeenCalled();
     });
 });
