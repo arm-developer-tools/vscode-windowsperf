@@ -5,11 +5,7 @@
 import { randomBytes } from 'crypto';
 import * as vscode from 'vscode';
 import { Disposable, Uri } from 'vscode';
-import { EventsLoadResult, ToView, fromViewShape } from './messages';
-import { logger } from '../../logging/logger';
-import { SamplingSettings } from '../../sampling-settings';
-import { runList } from '../../wperf/run';
-import { Core, getCpuInfo } from '../../wperf/cores';
+import { SamplingSettingsMessageHandler } from './message-handler';
 
 type Webview = Pick<
     vscode.Webview,
@@ -21,66 +17,24 @@ export type SamplingSettingsWebviewFactory = (distRoot: Uri, webview: Webview) =
 export class SamplingSettingsWebview {
     private readonly messageListenerDisposable: Disposable;
 
-    private readonly eventsPromise: Promise<EventsLoadResult> | undefined;
-
     constructor(
         private readonly distRoot: Uri,
         private readonly webview: Webview,
-        private readonly samplingSettings: SamplingSettings,
-        private readonly getPredefinedEvents = runList,
+        private readonly messageHandler: SamplingSettingsMessageHandler,
     ) {
         this.renderWebview(webview);
         this.messageListenerDisposable = webview.onDidReceiveMessage(this.handleMessage);
-
-        // Start loading while the webview content loads, to improve start up time
-        this.eventsPromise = this.loadEvents();
     }
 
     public readonly dispose = (): void => {
         this.messageListenerDisposable.dispose();
     };
 
-    private readonly handleMessage = (message: unknown): void => {
-        const parseResult = fromViewShape.safeParse(message);
+    private readonly handleMessage = async (message: unknown): Promise<void> => {
+        const maybeResponse = await this.messageHandler.handleMessage(message);
 
-        if (parseResult.success) {
-            const fromViewMessage = parseResult.data;
-            logger.debug('Message from SamplingSettings view', fromViewMessage);
-
-            switch (fromViewMessage.type) {
-                case 'ready': {
-                    this.sendInitialData();
-                    break;
-                }
-                case 'recordOptions':
-                    this.samplingSettings.recordOptions = fromViewMessage.recordOptions;
-                    break;
-            }
-        } else {
-            logger.error('Received invalid message from webview', parseResult.error, message);
-        }
-    };
-
-    private readonly sendInitialData = async () => {
-        const message: ToView = {
-            type: 'initialData',
-            recordOptions: this.samplingSettings.recordOptions,
-            cores: this.listCores(),
-            events: await (this.eventsPromise || this.loadEvents()),
-        };
-        this.webview.postMessage(message);
-    };
-
-    private readonly listCores = (): Core[] => {
-        return getCpuInfo();
-    };
-
-    private readonly loadEvents = async (): Promise<EventsLoadResult> => {
-        try {
-            const events = await this.getPredefinedEvents();
-            return { type: 'success', events };
-        } catch (error) {
-            return { type: 'error', error: {} };
+        if (maybeResponse) {
+            this.webview.postMessage(maybeResponse);
         }
     };
 

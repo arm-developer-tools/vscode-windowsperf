@@ -25,96 +25,37 @@ const webviewFactory = (
     onDidReceiveMessage: receiveMessageEmitter.event,
 });
 
-const getPredefinedEventsFactory = (
-    result = [predefinedEventFactory(), predefinedEventFactory()],
-) => jest.fn(async () => result);
-
 const waitTimeout = () => new Promise((resolve) => setTimeout(resolve, 5));
 
 describe('SamplingSettingsWebview', () => {
     it('renders the webview on construction', () => {
         const distRoot = Uri.file(faker.system.directoryPath());
         const webview = webviewFactory();
-        new SamplingSettingsWebview(
-            distRoot,
-            webview,
-            { recordOptions: recordOptionsFactory() },
-            getPredefinedEventsFactory(),
-        );
+        new SamplingSettingsWebview(distRoot, webview, { handleMessage: jest.fn() });
 
         expect(webview.html).toContain('<html>');
         expect(webview.html).toContain('sampling-settings.js');
         expect(webview.html).toContain(webview.asWebviewUri(distRoot).toString());
     });
 
-    it('handles a ready message from the webview by sending the initial data when the event load succeeds', async () => {
+    it('handles a message from the webview using the message handler', async () => {
         const receiveMessageEmitter = new EventEmitter<FromView>();
         const recordOptions = recordOptionsFactory();
         const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
         const webview = webviewFactory(receiveMessageEmitter);
-        new SamplingSettingsWebview(
-            Uri.file(faker.system.directoryPath()),
-            webview,
-            {
-                recordOptions,
-            },
-            getPredefinedEventsFactory(events),
-        );
-
-        receiveMessageEmitter.fire({ type: 'ready' });
-        await waitTimeout();
-
         const want: ToView = {
             type: 'initialData',
             recordOptions,
             cores: expect.any(Object),
             events: { type: 'success', events },
         };
-        expect(webview.postMessage).toHaveBeenCalledWith(want);
-    });
-
-    it('handles a ready message from the webview by sending the initial data when the event load fails', async () => {
-        const receiveMessageEmitter = new EventEmitter<FromView>();
-        const recordOptions = recordOptionsFactory();
-        const webview = webviewFactory(receiveMessageEmitter);
-        const failingGetPredefinedEvents = jest.fn();
-        failingGetPredefinedEvents.mockRejectedValue(new Error('Failed to load events'));
-        new SamplingSettingsWebview(
-            Uri.file(faker.system.directoryPath()),
-            webview,
-            {
-                recordOptions,
-            },
-            failingGetPredefinedEvents,
-        );
+        new SamplingSettingsWebview(Uri.file(faker.system.directoryPath()), webview, {
+            handleMessage: () => Promise.resolve(want),
+        });
 
         receiveMessageEmitter.fire({ type: 'ready' });
         await waitTimeout();
 
-        const want: ToView = {
-            type: 'initialData',
-            recordOptions,
-            cores: expect.any(Object),
-            events: { type: 'error', error: {} },
-        };
         expect(webview.postMessage).toHaveBeenCalledWith(want);
-    });
-
-    it('updates the current record options in response to a recordOptions message', () => {
-        const newRecordOptions = recordOptionsFactory();
-        const receiveMessageEmitter = new EventEmitter<FromView>();
-        const webview = webviewFactory(receiveMessageEmitter);
-        new SamplingSettingsWebview(
-            Uri.file(faker.system.directoryPath()),
-            webview,
-            {
-                recordOptions: recordOptionsFactory(),
-            },
-            getPredefinedEventsFactory(),
-        );
-
-        receiveMessageEmitter.fire({ type: 'recordOptions', recordOptions: newRecordOptions });
-
-        expect(webview.postMessage).not.toHaveBeenCalled();
     });
 });
