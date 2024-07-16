@@ -40,7 +40,9 @@ export class SamplingSettingsWebview {
 
     private readonly renderWebview = (webview: Webview): void => {
         const scriptName = 'sampling-settings.js';
-        const scriptUri = Uri.joinPath(this.distRoot, 'views', scriptName);
+        const viewsDirUri = Uri.joinPath(this.distRoot, 'views');
+        const viewsWebviewUri = webview.asWebviewUri(viewsDirUri);
+        const scriptUri = Uri.joinPath(viewsDirUri, scriptName);
         const scriptWebviewUri = webview.asWebviewUri(scriptUri);
 
         // webview.cspSource does not include all CSP sources for VS Code Web
@@ -53,7 +55,7 @@ export class SamplingSettingsWebview {
         const contentSecurityPolicy = `default-src ${cspSource}; style-src ${cspSource} 'nonce-${nonce}'; img-src ${cspSource} data:; script-src 'nonce-${nonce}'`;
 
         // Webpack public path must end with a trailing slash
-        const webpackPublicPath = `${webview.asWebviewUri(this.distRoot)}/`;
+        const webpackPublicPath = `${webview.asWebviewUri(viewsWebviewUri)}/`;
 
         webview.html = `<!DOCTYPE html>
             <html>
