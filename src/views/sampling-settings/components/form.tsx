@@ -8,8 +8,7 @@ import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions } from '../../../wperf/record-options';
 import { SearchableForm } from './searchable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
-
-type UpdateRecordOption = <K extends keyof RecordOptions>(key: K, value: RecordOptions[K]) => void;
+import { UpdateRecordOption } from '../update-record-option';
 
 export type FormProps = {
     cores: Core[];
@@ -22,7 +21,7 @@ export type FormProps = {
 type RecordOptionTextInputProps = {
     recordOption: 'command' | 'arguments';
     recordOptions: RecordOptions;
-    updateRecordOption: UpdateRecordOption;
+    onChange: (value: string) => void;
 };
 
 const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
@@ -32,7 +31,7 @@ const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
             value={props.recordOptions[props.recordOption]}
             data-testid={`${props.recordOption}-input`}
             onChange={(event) => {
-                props.updateRecordOption(props.recordOption, event.target.value);
+                props.onChange(event.target.value);
             }}
         />
     );
@@ -53,7 +52,12 @@ export const Form = (props: FormProps) => {
                                 <RecordOptionTextInput
                                     recordOption="command"
                                     recordOptions={props.recordOptions}
-                                    updateRecordOption={props.updateRecordOption}
+                                    onChange={(value) => {
+                                        props.updateRecordOption({
+                                            type: 'setCommand',
+                                            command: value,
+                                        });
+                                    }}
                                 />
                             </div>
                             <div className="file-picker-control">
@@ -73,7 +77,12 @@ export const Form = (props: FormProps) => {
                             <RecordOptionTextInput
                                 recordOption="arguments"
                                 recordOptions={props.recordOptions}
-                                updateRecordOption={props.updateRecordOption}
+                                onChange={(value) => {
+                                    props.updateRecordOption({
+                                        type: 'setArguments',
+                                        arguments: value,
+                                    });
+                                }}
                             />
                         </div>
                     ),

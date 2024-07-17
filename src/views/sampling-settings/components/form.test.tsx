@@ -8,9 +8,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Form } from './form';
 import { recordOptionsFactory } from '../../../wperf/record-options.factories';
+import { UpdateRecordOptionAction } from '../reducer';
 
 describe('Form', () => {
-    it('updates the command record option when the input changes', () => {
+    it('calls updateRecordOption when the command input changes', () => {
         const updateRecordOption = jest.fn();
         render(
             <Form
@@ -25,10 +26,11 @@ describe('Form', () => {
         const newCommand = 'new-command';
         fireEvent.change(screen.getByTestId('command-input'), { target: { value: newCommand } });
 
-        expect(updateRecordOption).toHaveBeenCalledWith('command', newCommand);
+        const want: UpdateRecordOptionAction = { type: 'setCommand', command: newCommand };
+        expect(updateRecordOption).toHaveBeenCalledWith(want);
     });
 
-    it('updates the arguments record option when the input changes', () => {
+    it('calls updateRecordOption when the arguments input changes', () => {
         const updateRecordOption = jest.fn();
         render(
             <Form
@@ -45,7 +47,8 @@ describe('Form', () => {
             target: { value: newArguments },
         });
 
-        expect(updateRecordOption).toHaveBeenCalledWith('arguments', newArguments);
+        const want: UpdateRecordOptionAction = { type: 'setArguments', arguments: newArguments };
+        expect(updateRecordOption).toHaveBeenCalledWith(want);
     });
 
     it('calls openCommandFilePicker when the browse button is clicked', () => {
