@@ -24,3 +24,33 @@ input::placeholder {
 input[type='text'] {
     width: 418px;
 }
+
+input[type='checkbox'] {
+    --checkbox-size: 18px;
+    appearance: none;
+    position: relative;
+    height: var(--checkbox-size);
+    width: var(--checkbox-size);
+    margin: 0 10px 0 0;
+    border-radius: 3px;
+    color: var(--vscode-checkbox-foreground);
+    border-color: var(--vscode-checkbox-border);
+    background: var(--vscode-checkbox-background);
+    outline: none;
+    cursor: pointer;
+    vertical-align: -4px;
+}
+
+input[type='checkbox']::before {
+    /* Check codicon */
+    content: '\eab2';
+    font: normal normal normal 16px/1 codicon;
+    position: absolute;
+    visibility: hidden;
+    right: 0;
+    top: 0;
+}
+
+input[type='checkbox']:checked::before {
+    visibility: visible;
+}

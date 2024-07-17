@@ -8,6 +8,7 @@ import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions } from '../../../wperf/record-options';
 import { SearchableForm } from './searchable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
+import { EventSelector } from './event-selector';
 import { UpdateRecordOption } from '../update-record-option';
 
 export type FormProps = {
@@ -85,6 +86,18 @@ export const Form = (props: FormProps) => {
                                 }}
                             />
                         </div>
+                    ),
+                },
+                {
+                    id: 'events',
+                    title: 'Events',
+                    description: 'The hardware events to sample.',
+                    component: (
+                        <EventSelector
+                            events={props.events}
+                            recordOptions={props.recordOptions}
+                            updateRecordOption={props.updateRecordOption}
+                        />
                     ),
                 },
             ]}

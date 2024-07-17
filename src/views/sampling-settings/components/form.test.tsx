@@ -51,6 +51,20 @@ describe('Form', () => {
         expect(updateRecordOption).toHaveBeenCalledWith(want);
     });
 
+    it('renders the event selection', () => {
+        render(
+            <Form
+                cores={[]}
+                events={[]}
+                recordOptions={recordOptionsFactory()}
+                openCommandFilePicker={jest.fn()}
+                updateRecordOption={jest.fn()}
+            />,
+        );
+
+        expect(screen.queryByText('Events', { selector: 'h1' })).toBeInTheDocument();
+    });
+
     it('calls openCommandFilePicker when the browse button is clicked', () => {
         const openCommandFilePicker = jest.fn();
         render(
