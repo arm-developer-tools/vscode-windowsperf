@@ -55,7 +55,7 @@ export class SamplingSettingsWebview {
         const contentSecurityPolicy = `default-src ${cspSource}; style-src ${cspSource} 'nonce-${nonce}'; img-src ${cspSource} data:; script-src 'nonce-${nonce}'`;
 
         // Webpack public path must end with a trailing slash
-        const webpackPublicPath = `${webview.asWebviewUri(viewsWebviewUri)}/`;
+        const webpackPublicPath = `${viewsWebviewUri}/`;
 
         webview.html = `<!DOCTYPE html>
             <html>
