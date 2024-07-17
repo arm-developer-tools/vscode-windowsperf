@@ -8,6 +8,7 @@ import { PredefinedEvent } from '../../wperf/parse/list';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
 import { SamplingSettingsMessageHandlerImpl } from './message-handler';
 import { FromView, ToView } from './messages';
+import { recordOptionsFromViewFactory } from './messages.factories';
 
 const getPredefinedEventsFactory = (
     result = [predefinedEventFactory(), predefinedEventFactory()],
@@ -62,13 +63,12 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             samplingSettings,
             getPredefinedEventsFactory(),
         );
-        const newRecordOptions = recordOptionsFactory();
-        const message: FromView = { type: 'recordOptions', recordOptions: newRecordOptions };
+        const message: FromView = recordOptionsFromViewFactory();
 
         const got = await messageHandler.handleMessage(message);
 
         expect(got).toBeUndefined();
-        expect(samplingSettings.recordOptions).toEqual(newRecordOptions);
+        expect(samplingSettings.recordOptions).toEqual(message.recordOptions);
     });
 
     describe('handling openCommandFilePicker', () => {

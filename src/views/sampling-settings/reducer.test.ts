@@ -4,19 +4,14 @@
 
 import 'jest';
 import { LoadedState, State, initialState, reducer } from './reducer';
-import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { ToView } from './messages';
-import { PredefinedEvent } from '../../wperf/parse/list';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
+import { initialDataToViewFactory } from './messages.factories';
+import { loadedStateFactory } from './reducer.factories';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
-        const message: ToView = {
-            type: 'initialData',
-            cores: [],
-            recordOptions: recordOptionsFactory(),
-            events: { type: 'error', error: {} },
-        };
+        const message: ToView = initialDataToViewFactory({ events: { type: 'error', error: {} } });
 
         const got = reducer(initialState, {
             type: 'handleMessage',
@@ -31,13 +26,8 @@ describe('reducer', () => {
     });
 
     it('handles a success initial data message', () => {
-        const events: PredefinedEvent[] = [predefinedEventFactory()];
-        const message: ToView = {
-            type: 'initialData',
-            cores: [],
-            recordOptions: recordOptionsFactory(),
-            events: { type: 'success', events },
-        };
+        const events = [predefinedEventFactory(), predefinedEventFactory()];
+        const message: ToView = initialDataToViewFactory({ events: { type: 'success', events } });
 
         const got = reducer(initialState, {
             type: 'handleMessage',
@@ -48,7 +38,7 @@ describe('reducer', () => {
             type: 'loaded',
             cores: message.cores,
             recordOptions: message.recordOptions,
-            events: events,
+            events,
         };
         expect(got).toEqual(want);
     });
@@ -56,15 +46,11 @@ describe('reducer', () => {
     it('handles an updateRecordOption action', () => {
         const command = 'some command';
 
-        const got = reducer(
-            {
-                type: 'loaded',
-                events: [],
-                cores: [],
-                recordOptions: recordOptionsFactory(),
-            },
-            { type: 'updateRecordOption', key: 'command', value: command },
-        );
+        const got = reducer(loadedStateFactory(), {
+            type: 'updateRecordOption',
+            key: 'command',
+            value: command,
+        });
 
         expect(got.type).toBe('loaded');
         expect((got as LoadedState).recordOptions.command).toBe(command);
