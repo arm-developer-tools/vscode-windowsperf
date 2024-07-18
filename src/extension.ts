@@ -23,11 +23,11 @@ import {
     SamplingSettingsWebview,
     SamplingSettingsWebviewFactory,
 } from './views/sampling-settings/main';
-import { MementoSamplingSettings } from './sampling-settings';
+import { MementoRecordOptionsStore } from './record-options-store';
 import { SamplingSettingsMessageHandlerImpl } from './views/sampling-settings/message-handler';
 
 export async function activate(context: vscode.ExtensionContext) {
-    const samplingSettings = new MementoSamplingSettings(context.workspaceState);
+    const recordOptionsStore = new MementoRecordOptionsStore(context.workspaceState);
     const sampleSources = new ObservableCollection<SampleSource>();
     const selectedSample = new ObservableSelection<SampleSource>();
     const editorHighlighter = new EditorHighlighter(selectedSample);
@@ -36,7 +36,7 @@ export async function activate(context: vscode.ExtensionContext) {
         new SamplingSettingsWebview(
             distRoot,
             webview,
-            new SamplingSettingsMessageHandlerImpl(samplingSettings),
+            new SamplingSettingsMessageHandlerImpl(recordOptionsStore),
         );
 
     vscode.window.registerTreeDataProvider(

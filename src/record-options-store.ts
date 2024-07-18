@@ -6,17 +6,17 @@ import { Memento } from 'vscode';
 import { RecordOptions, recordOptionsShape } from './wperf/record-options';
 import { logger } from './logging/logger';
 
-export type SamplingSettings = {
+export type RecordOptionsStore = {
     recordOptions: RecordOptions;
 };
 
-export class MementoSamplingSettings implements SamplingSettings {
-    public static readonly mementoKey = 'sampling-settings';
+export class MementoRecordOptionsStore implements RecordOptionsStore {
+    public static readonly mementoKey = 'record-options';
 
     constructor(private readonly memento: Pick<Memento, 'get' | 'update'>) {}
 
     get recordOptions(): RecordOptions {
-        const storedRecordOptions = this.memento.get<unknown>(MementoSamplingSettings.mementoKey);
+        const storedRecordOptions = this.memento.get<unknown>(MementoRecordOptionsStore.mementoKey);
         if (storedRecordOptions) {
             const parseResult = recordOptionsShape.safeParse(storedRecordOptions);
             if (parseResult.success) {
@@ -33,7 +33,7 @@ export class MementoSamplingSettings implements SamplingSettings {
     }
 
     set recordOptions(recordOptions: RecordOptions) {
-        this.memento.update(MementoSamplingSettings.mementoKey, recordOptions);
+        this.memento.update(MementoRecordOptionsStore.mementoKey, recordOptions);
     }
 }
 

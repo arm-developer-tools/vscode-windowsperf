@@ -5,7 +5,7 @@
 import { Uri } from 'vscode';
 import * as vscode from 'vscode';
 import { logger } from '../../logging/logger';
-import { SamplingSettings } from '../../sampling-settings';
+import { RecordOptionsStore } from '../../record-options-store';
 import { Core, getCpuInfo } from '../../wperf/cores';
 import { RecordOptions } from '../../wperf/record-options';
 import { runList } from '../../wperf/run';
@@ -20,7 +20,7 @@ export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessa
     private readonly eventsPromise: Promise<EventsLoadResult>;
 
     constructor(
-        private readonly samplingSettings: SamplingSettings,
+        private readonly recordOptionsStore: RecordOptionsStore,
         private readonly getPredefinedEvents = runList,
         private readonly promptForCommand = promptUserForCommand,
     ) {
@@ -51,7 +51,7 @@ export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessa
     };
 
     private readonly handleOpenCommandFilePicker = async (): Promise<ToView | undefined> => {
-        const currentCommand = this.samplingSettings.recordOptions.command;
+        const currentCommand = this.recordOptionsStore.recordOptions.command;
         const defaultUri = path.isAbsolute(currentCommand)
             ? Uri.file(path.dirname(currentCommand))
             : undefined;
@@ -59,8 +59,8 @@ export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessa
         const command = await this.promptForCommand(defaultUri);
 
         if (command) {
-            this.samplingSettings.recordOptions = {
-                ...this.samplingSettings.recordOptions,
+            this.recordOptionsStore.recordOptions = {
+                ...this.recordOptionsStore.recordOptions,
                 command,
             };
 
@@ -73,7 +73,7 @@ export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessa
     public readonly handleReady = async (): Promise<ToView> => {
         return {
             type: 'initialData',
-            recordOptions: this.samplingSettings.recordOptions,
+            recordOptions: this.recordOptionsStore.recordOptions,
             cores: this.listCores(),
             events: await this.eventsPromise,
         };
@@ -82,7 +82,7 @@ export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessa
     public readonly handleRecordOptions = async (
         recordOptions: RecordOptions,
     ): Promise<undefined> => {
-        this.samplingSettings.recordOptions = recordOptions;
+        this.recordOptionsStore.recordOptions = recordOptions;
         return undefined;
     };
 

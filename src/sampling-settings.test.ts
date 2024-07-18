@@ -4,7 +4,7 @@
 
 import 'jest';
 import type { Memento } from 'vscode';
-import { MementoSamplingSettings, defaultRecordOptions } from './sampling-settings';
+import { MementoRecordOptionsStore, defaultRecordOptions } from './record-options-store';
 import { recordOptionsFactory } from './wperf/record-options.factories';
 
 const mementoFactory = (): jest.Mocked<Pick<Memento, 'get' | 'update'>> => ({
@@ -12,11 +12,11 @@ const mementoFactory = (): jest.Mocked<Pick<Memento, 'get' | 'update'>> => ({
     update: jest.fn(),
 });
 
-describe('SamplingSettings', () => {
+describe('RecordOptionsStore', () => {
     it('returns the default options when the memento is empty', () => {
         const memento = mementoFactory();
         memento.get.mockReturnValue(undefined);
-        const settings = new MementoSamplingSettings(memento);
+        const settings = new MementoRecordOptionsStore(memento);
 
         const got = settings.recordOptions;
 
@@ -27,7 +27,7 @@ describe('SamplingSettings', () => {
         const recordOptions = recordOptionsFactory();
         const memento = mementoFactory();
         memento.get.mockReturnValue(recordOptions);
-        const settings = new MementoSamplingSettings(memento);
+        const settings = new MementoRecordOptionsStore(memento);
 
         const got = settings.recordOptions;
 
@@ -37,7 +37,7 @@ describe('SamplingSettings', () => {
     it('returns the default options when the stored options are invalid', () => {
         const memento = mementoFactory();
         memento.get.mockReturnValue({ events: 'not an array' });
-        const settings = new MementoSamplingSettings(memento);
+        const settings = new MementoRecordOptionsStore(memento);
 
         const got = settings.recordOptions;
 
@@ -46,7 +46,7 @@ describe('SamplingSettings', () => {
 
     it('updates the stored options when the field is set', () => {
         const memento = mementoFactory();
-        const settings = new MementoSamplingSettings(memento);
+        const settings = new MementoRecordOptionsStore(memento);
         const recordOptions = recordOptionsFactory();
         settings.recordOptions = recordOptions;
 
@@ -54,7 +54,7 @@ describe('SamplingSettings', () => {
 
         expect(got).toEqual(defaultRecordOptions);
         expect(memento.update).toHaveBeenCalledWith(
-            MementoSamplingSettings.mementoKey,
+            MementoRecordOptionsStore.mementoKey,
             recordOptions,
         );
     });
