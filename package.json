@@ -1,5 +1,6 @@
 {
     "name": "windowsperf",
+    "publisher": "Arm",
     "displayName": "Arm WindowsPerf",
     "description": "VS Code extension for performance analysis using WindowsPerf",
     "version": "0.0.1",
@@ -205,7 +206,7 @@
         "@typescript-eslint/parser": "^7.16.0",
         "@testing-library/jest-dom": "^6.4.6",
         "@testing-library/react": "^16.0.0",
-        "@vscode/vsce": "^2.29.0",
+        "@vscode/vsce": "^2.30.0",
         "concurrently": "^8.2.2",
         "css-loader": "^7.0.2",
         "d3": "^7.9.0",
