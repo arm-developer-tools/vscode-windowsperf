@@ -8,30 +8,9 @@ import { exec } from '../node/process';
 import { Sample, parseRecordJson } from './parse/record';
 import { PredefinedEvent, parseListJson } from './parse/list';
 import { RecordOptions } from './record-options';
+import { buildRecordArgs } from './record-options';
 
 const shellEscape = (input: string): string => `"${input}"`;
-
-export const buildRecordArgs = (options: RecordOptions): string => {
-    const eventsArg = options.events.join(',') + ':' + options.frequency.toString();
-    const timeoutArgs =
-        options.timeoutSeconds === undefined
-            ? []
-            : ['--timeout', options.timeoutSeconds.toString()];
-
-    return [
-        'record',
-        '-e',
-        eventsArg,
-        '-c',
-        options.core.toString(),
-        ...timeoutArgs,
-        '--json',
-        '--disassemble',
-        '--',
-        options.command,
-        options.arguments,
-    ].join(' ');
-};
 
 export const buildRecordCommand = (executablePath: string, options: RecordOptions): string => {
     const args = buildRecordArgs(options);

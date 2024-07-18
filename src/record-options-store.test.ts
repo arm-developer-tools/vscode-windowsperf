@@ -4,7 +4,8 @@
 
 import 'jest';
 import type { Memento } from 'vscode';
-import { MementoRecordOptionsStore, defaultRecordOptions } from './record-options-store';
+import { MementoRecordOptionsStore } from './record-options-store';
+import { defaultRecordOptions } from './wperf/record-options';
 import { recordOptionsFactory } from './wperf/record-options.factories';
 
 const mementoFactory = (): jest.Mocked<Pick<Memento, 'get' | 'update'>> => ({

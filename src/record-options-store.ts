@@ -5,6 +5,7 @@
 import { Memento } from 'vscode';
 import { RecordOptions, recordOptionsShape } from './wperf/record-options';
 import { logger } from './logging/logger';
+import { defaultRecordOptions } from './wperf/record-options';
 
 export type RecordOptionsStore = {
     recordOptions: RecordOptions;
@@ -36,12 +37,3 @@ export class MementoRecordOptionsStore implements RecordOptionsStore {
         this.memento.update(MementoRecordOptionsStore.mementoKey, recordOptions);
     }
 }
-
-export const defaultRecordOptions: RecordOptions = {
-    events: [],
-    frequency: 10000,
-    core: 0,
-    command: '',
-    arguments: '',
-    timeoutSeconds: undefined,
-};
