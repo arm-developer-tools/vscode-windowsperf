@@ -45,14 +45,10 @@ export class SamplingSettingsWebview {
         const scriptUri = Uri.joinPath(viewsDirUri, scriptName);
         const scriptWebviewUri = webview.asWebviewUri(scriptUri);
 
-        // webview.cspSource does not include all CSP sources for VS Code Web
-        const webviewUri = webview.asWebviewUri(this.distRoot);
-        const baseSource = `${webviewUri.scheme}://${webviewUri.authority}`;
-        const cspSource = `${webview.cspSource} ${baseSource}`;
-
         // Use a nonce for added security. Only scripts with this nonce will be loaded by the browser.
         const nonce = randomBytes(16).toString('base64');
-        const contentSecurityPolicy = `default-src ${cspSource}; style-src ${cspSource} 'nonce-${nonce}'; img-src ${cspSource} data:; script-src 'nonce-${nonce}'`;
+        const cspSource = `${webview.cspSource} 'nonce-${nonce}'`;
+        const contentSecurityPolicy = `default-src 'none'; font-src ${cspSource}; style-src 'unsafe-inline'; img-src ${cspSource} data:; script-src ${cspSource}`;
 
         // Webpack public path must end with a trailing slash
         const webpackPublicPath = `${viewsWebviewUri}/`;
