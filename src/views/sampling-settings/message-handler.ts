@@ -17,7 +17,7 @@ export type SamplingSettingsMessageHandler = {
 };
 
 export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessageHandler {
-    private readonly eventsPromise: Promise<EventsLoadResult> | undefined;
+    private readonly eventsPromise: Promise<EventsLoadResult>;
 
     constructor(
         private readonly samplingSettings: SamplingSettings,
@@ -75,7 +75,7 @@ export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessa
             type: 'initialData',
             recordOptions: this.samplingSettings.recordOptions,
             cores: this.listCores(),
-            events: await (this.eventsPromise || this.loadEvents()),
+            events: await this.eventsPromise,
         };
     };
 
