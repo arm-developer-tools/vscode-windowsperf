@@ -59,7 +59,7 @@
             {
                 "command": "windowsperf.showSamplingSettings",
                 "title": "Show Sampling Settings",
-                "icon": "$(gear)",
+                "icon": "$(settings)",
                 "category": "WindowsPerf"
             },
             {

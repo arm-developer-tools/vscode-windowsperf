@@ -37,7 +37,8 @@ export class ShowSamplingSettings {
 
     private readonly createPanel = (): WebviewPanel => {
         const distRoot = Uri.joinPath(this.context.extensionUri, 'dist');
-        const panel = this.createWebviewPanel(distRoot);
+        const mediaDir = Uri.joinPath(this.context.extensionUri, 'media');
+        const panel = this.createWebviewPanel({ distRoot, mediaDir });
 
         const samplingSettingsWebview = this.samplingSettingsWebviewFactory(
             distRoot,
@@ -53,13 +54,22 @@ export class ShowSamplingSettings {
     };
 }
 
-const createSamplingSettingsWebviewPanel = (distRoot: Uri): WebviewPanel =>
-    vscode.window.createWebviewPanel(
+const createSamplingSettingsWebviewPanel = (uris: {
+    distRoot: Uri;
+    mediaDir: Uri;
+}): WebviewPanel => {
+    const panel = vscode.window.createWebviewPanel(
         'windowsperf.samplingSettings',
         'Sampling Settings',
         ViewColumn.One,
         {
             enableScripts: true,
-            localResourceRoots: [distRoot],
+            localResourceRoots: [uris.distRoot],
         },
     );
+    panel.iconPath = {
+        light: vscode.Uri.joinPath(uris.mediaDir, 'settings-light.svg'),
+        dark: vscode.Uri.joinPath(uris.mediaDir, 'settings-dark.svg'),
+    };
+    return panel;
+};
