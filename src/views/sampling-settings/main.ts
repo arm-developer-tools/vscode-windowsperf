@@ -12,9 +12,16 @@ type Webview = Pick<
     'cspSource' | 'html' | 'asWebviewUri' | 'onDidReceiveMessage' | 'postMessage'
 >;
 
-export type SamplingSettingsWebviewFactory = (distRoot: Uri, webview: Webview) => Disposable;
+export type SamplingSettingsWebview = {
+    dispose: () => void;
+};
 
-export class SamplingSettingsWebview {
+export type SamplingSettingsWebviewFactory = (
+    distRoot: Uri,
+    webview: Webview,
+) => SamplingSettingsWebview;
+
+export class SamplingSettingsWebviewImpl implements SamplingSettingsWebview {
     private readonly messageListenerDisposable: Disposable;
 
     constructor(

@@ -3,7 +3,7 @@
  */
 
 import 'jest';
-import { SamplingSettingsWebview } from './main';
+import { SamplingSettingsWebviewImpl } from './main';
 import * as vscode from 'vscode';
 import { EventEmitter, Uri } from 'vscode';
 import { faker } from '@faker-js/faker';
@@ -31,7 +31,7 @@ describe('SamplingSettingsWebview', () => {
     it('renders the webview on construction', () => {
         const distRoot = Uri.file(faker.system.directoryPath());
         const webview = webviewFactory();
-        new SamplingSettingsWebview(distRoot, webview, { handleMessage: jest.fn() });
+        new SamplingSettingsWebviewImpl(distRoot, webview, { handleMessage: jest.fn() });
 
         expect(webview.html).toContain('<html>');
         expect(webview.html).toContain('sampling-settings.js');
@@ -49,7 +49,7 @@ describe('SamplingSettingsWebview', () => {
             cores: expect.any(Object),
             events: { type: 'success', events },
         };
-        new SamplingSettingsWebview(Uri.file(faker.system.directoryPath()), webview, {
+        new SamplingSettingsWebviewImpl(Uri.file(faker.system.directoryPath()), webview, {
             handleMessage: () => Promise.resolve(want),
         });
 

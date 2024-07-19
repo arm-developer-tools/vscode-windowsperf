@@ -19,12 +19,10 @@ import { RunWperfTest } from './commands/run-wperf-test';
 import { RerunWperfRecord } from './commands/rerun-wperf-record';
 import { ClearAllSampleResults } from './commands/clear-all-sample-results';
 import { ShowSamplingSettings } from './commands/show-sampling-settings';
-import {
-    SamplingSettingsWebview,
-    SamplingSettingsWebviewFactory,
-} from './views/sampling-settings/main';
+import { SamplingSettingsWebviewImpl } from './views/sampling-settings/main';
 import { MementoRecordOptionsStore } from './record-options-store';
 import { SamplingSettingsMessageHandlerImpl } from './views/sampling-settings/message-handler';
+import { SamplingSettingsWebviewPanelImpl } from './views/sampling-settings/panel';
 
 export async function activate(context: vscode.ExtensionContext) {
     const recordOptionsStore = new MementoRecordOptionsStore(context.workspaceState);
@@ -32,12 +30,15 @@ export async function activate(context: vscode.ExtensionContext) {
     const selectedSample = new ObservableSelection<SampleSource>();
     const editorHighlighter = new EditorHighlighter(selectedSample);
 
-    const samplingSettingsWebviewFactory: SamplingSettingsWebviewFactory = (distRoot, webview) =>
-        new SamplingSettingsWebview(
-            distRoot,
-            webview,
-            new SamplingSettingsMessageHandlerImpl(recordOptionsStore),
-        );
+    const samplingSettingsWebviewPanel = new SamplingSettingsWebviewPanelImpl(
+        context,
+        (distRoot, webview) =>
+            new SamplingSettingsWebviewImpl(
+                distRoot,
+                webview,
+                new SamplingSettingsMessageHandlerImpl(recordOptionsStore),
+            ),
+    );
 
     vscode.window.registerTreeDataProvider(
         'samplingResults',
@@ -54,13 +55,16 @@ export async function activate(context: vscode.ExtensionContext) {
         'windowsperf.clearActiveResultFileSelection': new ClearActiveResultFileSelection(
             selectedSample,
         ).execute,
-        'windowsperf.record': new RunWperfRecord(sampleSources, selectedSample).execute,
+        'windowsperf.record': new RunWperfRecord(
+            sampleSources,
+            selectedSample,
+            recordOptionsStore,
+            samplingSettingsWebviewPanel,
+        ).execute,
         'windowsperf.test': new RunWperfTest().execute,
         'windowsperf.rerunRecord': new RerunWperfRecord(sampleSources, selectedSample).execute,
-        'windowsperf.showSamplingSettings': new ShowSamplingSettings(
-            context,
-            samplingSettingsWebviewFactory,
-        ).execute,
+        'windowsperf.showSamplingSettings': new ShowSamplingSettings(samplingSettingsWebviewPanel)
+            .execute,
         'windowsperf.clearAllSampleResults': new ClearAllSampleResults(
             sampleSources,
             selectedSample,
