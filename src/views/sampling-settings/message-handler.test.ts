@@ -6,9 +6,14 @@ import 'jest';
 import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { PredefinedEvent } from '../../wperf/parse/list';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
-import { SamplingSettingsMessageHandlerImpl } from './message-handler';
+import {
+    SamplingSettingsMessageHandlerImpl,
+    asPathRelativeToFirstWorkspace,
+} from './message-handler';
 import { FromView, ToView } from './messages';
 import { recordOptionsFromViewFactory } from './messages.factories';
+import { faker } from '@faker-js/faker';
+import { Uri } from 'vscode';
 
 const getPredefinedEventsFactory = (
     result = [predefinedEventFactory(), predefinedEventFactory()],
@@ -122,5 +127,47 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
 
             expect(recordOptionsStore.recordOptions.command).toBe(initialRecordOptions.command);
         });
+    });
+});
+
+describe('asPathRelativeToFirstWorkspace', () => {
+    it('returns the absolute path when no workspaces are open', () => {
+        const inputUri = Uri.file(faker.system.filePath());
+
+        const got = asPathRelativeToFirstWorkspace(inputUri, undefined);
+
+        expect(got).toBe(inputUri.fsPath);
+    });
+
+    it('returns the absolute path when there is no first workspace', () => {
+        const inputUri = Uri.file(faker.system.filePath());
+
+        const got = asPathRelativeToFirstWorkspace(inputUri, []);
+
+        expect(got).toBe(inputUri.fsPath);
+    });
+
+    it('returns the absolute path when the file is not inside the first workspace', () => {
+        const inputUri = Uri.file(faker.system.filePath());
+
+        const got = asPathRelativeToFirstWorkspace(inputUri, [
+            { uri: Uri.file(faker.system.directoryPath()) },
+            { uri: Uri.file(faker.system.directoryPath()) },
+        ]);
+
+        expect(got).toBe(inputUri.fsPath);
+    });
+
+    it('returns a relative path when the file is inside the first workspace', () => {
+        const fileName = 'file.txt';
+        const firstWorkspaceUri = Uri.file(faker.system.directoryPath());
+        const inputUri = Uri.joinPath(firstWorkspaceUri, fileName);
+
+        const got = asPathRelativeToFirstWorkspace(inputUri, [
+            { uri: firstWorkspaceUri },
+            { uri: Uri.file(faker.system.directoryPath()) },
+        ]);
+
+        expect(got).toBe(fileName);
     });
 });

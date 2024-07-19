@@ -2,7 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { Uri } from 'vscode';
+import { Uri, WorkspaceFolder } from 'vscode';
 import * as vscode from 'vscode';
 import { logger } from '../../logging/logger';
 import { RecordOptionsStore } from '../../record-options-store';
@@ -110,5 +110,23 @@ const promptUserForCommand = async (defaultUri: Uri | undefined): Promise<string
         defaultUri,
     });
 
-    return maybeUris?.[0] ? vscode.workspace.asRelativePath(maybeUris[0].fsPath) : undefined;
+    const maybeUri = maybeUris?.[0];
+    return maybeUri && asPathRelativeToFirstWorkspace(maybeUri, vscode.workspace.workspaceFolders);
+};
+
+export const asPathRelativeToFirstWorkspace = (
+    fileUri: Uri,
+    workspaceFolders: readonly Pick<WorkspaceFolder, 'uri'>[] | undefined,
+): string => {
+    const workspacePath = workspaceFolders?.[0]?.uri.fsPath;
+
+    if (workspacePath) {
+        const relativePath = path.relative(workspacePath, fileUri.fsPath);
+
+        if (relativePath && !relativePath.startsWith('..')) {
+            return relativePath;
+        }
+    }
+
+    return fileUri.fsPath;
 };
