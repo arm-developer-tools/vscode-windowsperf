@@ -6,12 +6,12 @@ import 'jest';
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { SearchableForm } from './searchable-form';
+import { NavigableForm } from './navigable-form';
 
-describe('SearchableForm', () => {
+describe('NavigableForm', () => {
     it('renders each of the given sections', () => {
         render(
-            <SearchableForm
+            <NavigableForm
                 sections={[
                     {
                         id: 'one',
@@ -39,7 +39,7 @@ describe('SearchableForm', () => {
 
     it('renders a nav entry for each of the given sections', () => {
         render(
-            <SearchableForm
+            <NavigableForm
                 sections={[
                     {
                         id: 'one',

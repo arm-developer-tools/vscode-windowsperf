@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions } from '../../../wperf/record-options';
-import { SearchableForm } from './searchable-form';
+import { NavigableForm } from './navigable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 import { EventSelector } from './event-selector';
 import { UpdateRecordOption } from '../update-record-option';
@@ -40,7 +40,7 @@ const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
 
 export const Form = (props: FormProps) => {
     return (
-        <SearchableForm
+        <NavigableForm
             sections={[
                 {
                     id: 'command',

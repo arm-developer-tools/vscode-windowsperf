@@ -3,7 +3,6 @@
  */
 
 import * as React from 'react';
-import { useState } from 'react';
 
 export type FormSection = {
     id: string;
@@ -12,11 +11,11 @@ export type FormSection = {
     component: React.ReactNode;
 };
 
-export type SearchableFormProps = {
+export type NavigableFormProps = {
     sections: FormSection[];
 };
 
-const Nav = (props: SearchableFormProps) => {
+const Nav = (props: NavigableFormProps) => {
     return (
         <nav>
             <ul>
@@ -30,7 +29,7 @@ const Nav = (props: SearchableFormProps) => {
     );
 };
 
-const Content = (props: SearchableFormProps) => {
+const Content = (props: NavigableFormProps) => {
     return (
         <section id="content">
             {props.sections.map((section) => (
@@ -44,21 +43,9 @@ const Content = (props: SearchableFormProps) => {
     );
 };
 
-export const SearchableForm = (props: SearchableFormProps) => {
-    const [searchText, updateSearchText] = useState('');
-
-    // TODO: Filter sections based on search text.
-
+export const NavigableForm = (props: NavigableFormProps) => {
     return (
         <>
-            <search>
-                <input
-                    type="text"
-                    placeholder="Search settings"
-                    value={searchText}
-                    onChange={(event) => updateSearchText(event.target.value)}
-                />
-            </search>
             <Nav sections={props.sections} />
             <Content sections={props.sections} />
         </>

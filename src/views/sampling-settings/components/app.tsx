@@ -10,6 +10,7 @@ import { initialState, reducer } from '../reducer';
 import { Form } from './form';
 import { LoadingSpinner } from './loading-spinner';
 import { createUpdateRecordOption } from '../update-record-option';
+import { Footer } from './footer';
 
 export type AppProps = {
     api: WebviewApi<unknown>;
@@ -59,13 +60,16 @@ export const App = (props: AppProps) => {
         };
 
         return (
-            <Form
-                cores={state.cores}
-                events={state.events}
-                recordOptions={state.recordOptions}
-                openCommandFilePicker={openCommandFilePicker}
-                updateRecordOption={updateRecordOption}
-            />
+            <>
+                <Form
+                    cores={state.cores}
+                    events={state.events}
+                    recordOptions={state.recordOptions}
+                    openCommandFilePicker={openCommandFilePicker}
+                    updateRecordOption={updateRecordOption}
+                />
+                <Footer recordOptions={state.recordOptions} />
+            </>
         );
     }
 };
