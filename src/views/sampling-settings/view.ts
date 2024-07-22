@@ -6,12 +6,12 @@ import '../../webviews/webpack-globals';
 import '../style/index.css';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './components/app';
+import { Root } from './components/root';
 
 const api = acquireVsCodeApi();
 
-const containerEl = document.createElement('main');
-document.body.appendChild(containerEl);
-const root = createRoot(containerEl);
+const container = document.createElement('main');
+document.body.appendChild(container);
+const root = createRoot(container);
 
-root.render(React.createElement(App, { api }));
+root.render(React.createElement(Root, { api, container }));
