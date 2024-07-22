@@ -21,7 +21,7 @@ import { ClearAllSampleResults } from './commands/clear-all-sample-results';
 import { ShowSamplingSettings } from './commands/show-sampling-settings';
 import { SamplingSettingsWebviewImpl } from './views/sampling-settings/main';
 import { MementoRecordOptionsStore } from './record-options-store';
-import { SamplingSettingsMessageHandlerImpl } from './views/sampling-settings/message-handler';
+import { MessageHandlerImpl } from './views/sampling-settings/message-handler';
 import { SamplingSettingsWebviewPanelImpl } from './views/sampling-settings/panel';
 
 export async function activate(context: vscode.ExtensionContext) {
@@ -36,7 +36,7 @@ export async function activate(context: vscode.ExtensionContext) {
             new SamplingSettingsWebviewImpl(
                 distRoot,
                 webview,
-                new SamplingSettingsMessageHandlerImpl(recordOptionsStore),
+                new MessageHandlerImpl(recordOptionsStore),
             ),
     );
 

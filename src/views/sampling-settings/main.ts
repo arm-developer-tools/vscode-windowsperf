@@ -5,7 +5,7 @@
 import { randomBytes } from 'crypto';
 import * as vscode from 'vscode';
 import { Disposable, Uri } from 'vscode';
-import { SamplingSettingsMessageHandler } from './message-handler';
+import { MessageHandler } from './message-handler';
 
 type Webview = Pick<
     vscode.Webview,
@@ -27,7 +27,7 @@ export class SamplingSettingsWebviewImpl implements SamplingSettingsWebview {
     constructor(
         private readonly distRoot: Uri,
         private readonly webview: Webview,
-        private readonly messageHandler: SamplingSettingsMessageHandler,
+        private readonly messageHandler: MessageHandler,
     ) {
         this.renderWebview(webview);
         this.messageListenerDisposable = webview.onDidReceiveMessage(this.handleMessage);

@@ -12,11 +12,11 @@ import { runList } from '../../wperf/run';
 import { EventsLoadResult, ToView, fromViewShape } from './messages';
 import * as path from 'path';
 
-export type SamplingSettingsMessageHandler = {
+export type MessageHandler = {
     handleMessage: (message: unknown) => Promise<ToView | undefined>;
 };
 
-export class SamplingSettingsMessageHandlerImpl implements SamplingSettingsMessageHandler {
+export class MessageHandlerImpl implements MessageHandler {
     private readonly eventsPromise: Promise<EventsLoadResult>;
 
     constructor(
