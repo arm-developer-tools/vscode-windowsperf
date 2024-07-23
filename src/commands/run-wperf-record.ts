@@ -29,7 +29,7 @@ export class RunWperfRecord {
 
         if (validationResult.missingFields.length > 0) {
             logger.debug('SamplingSettings invalid, not running wperf record');
-            this.samplingSettingsWebviewPanel.show();
+            this.samplingSettingsWebviewPanel.show(true);
         } else {
             const newSampleSource = await this.runRecord(this.recordOptionsStore.recordOptions);
             if (newSampleSource) {

@@ -10,6 +10,6 @@ export class ShowSamplingSettings {
 
     readonly execute = async () => {
         logger.info('Executing windowsperf.showSamplingSettings');
-        this.panel.show();
+        this.panel.show(false);
     };
 }

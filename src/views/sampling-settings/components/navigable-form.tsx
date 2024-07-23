@@ -9,6 +9,7 @@ export type FormSection = {
     description: string;
     title: string;
     component: React.ReactNode;
+    invalid?: boolean;
 };
 
 export type NavigableFormProps = {
@@ -21,7 +22,9 @@ const Nav = (props: NavigableFormProps) => {
             <ul>
                 {props.sections.map((section) => (
                     <li key={section.id}>
-                        <a href={`#${section.id}`}>{section.title}</a>
+                        <a href={`#${section.id}`} className={section.invalid ? 'invalid' : ''}>
+                            {section.title}
+                        </a>
                     </li>
                 ))}
             </ul>

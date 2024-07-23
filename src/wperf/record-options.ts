@@ -24,7 +24,8 @@ export const defaultRecordOptions: RecordOptions = {
     timeoutSeconds: undefined,
 };
 
-type ValidatedField = 'events' | 'command';
+export const validatedFields = ['events', 'command'] as const;
+export type ValidatedField = (typeof validatedFields)[number];
 
 export type RecordOptionsValidationResult = { missingFields: ValidatedField[] };
 

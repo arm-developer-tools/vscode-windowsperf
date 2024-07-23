@@ -54,3 +54,9 @@ input[type='checkbox']::before {
 input[type='checkbox']:checked::before {
     visibility: visible;
 }
+
+input.invalid,
+input:invalid {
+    border-color: var(--vscode-inputValidation-errorBorder);
+    color: var(--vscode-inputValidation-errorForeground);
+}

@@ -45,12 +45,10 @@ export const EventSelector = (props: EventSelectorProps) => {
     const sortedEvents = props.events.sort((a, b) => a.Alias_Name.localeCompare(b.Alias_Name));
 
     return (
-        <>
-            <ul className="event-selector">
-                {sortedEvents.map((event) => (
-                    <EventListItem event={event} key={event.Alias_Name} {...props} />
-                ))}
-            </ul>
-        </>
+        <ul className="event-selector">
+            {sortedEvents.map((event) => (
+                <EventListItem event={event} key={event.Alias_Name} {...props} />
+            ))}
+        </ul>
     );
 };

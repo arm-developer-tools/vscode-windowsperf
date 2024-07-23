@@ -17,9 +17,9 @@ describe('RecordOptionsStore', () => {
     it('returns the default options when the memento is empty', () => {
         const memento = mementoFactory();
         memento.get.mockReturnValue(undefined);
-        const settings = new MementoRecordOptionsStore(memento);
+        const store = new MementoRecordOptionsStore(memento);
 
-        const got = settings.recordOptions;
+        const got = store.recordOptions;
 
         expect(got).toEqual(defaultRecordOptions);
     });
@@ -28,9 +28,9 @@ describe('RecordOptionsStore', () => {
         const recordOptions = recordOptionsFactory();
         const memento = mementoFactory();
         memento.get.mockReturnValue(recordOptions);
-        const settings = new MementoRecordOptionsStore(memento);
+        const store = new MementoRecordOptionsStore(memento);
 
-        const got = settings.recordOptions;
+        const got = store.recordOptions;
 
         expect(got).toEqual(recordOptions);
     });
@@ -38,20 +38,20 @@ describe('RecordOptionsStore', () => {
     it('returns the default options when the stored options are invalid', () => {
         const memento = mementoFactory();
         memento.get.mockReturnValue({ events: 'not an array' });
-        const settings = new MementoRecordOptionsStore(memento);
+        const store = new MementoRecordOptionsStore(memento);
 
-        const got = settings.recordOptions;
+        const got = store.recordOptions;
 
         expect(got).toEqual(defaultRecordOptions);
     });
 
     it('updates the stored options when the field is set', () => {
         const memento = mementoFactory();
-        const settings = new MementoRecordOptionsStore(memento);
+        const store = new MementoRecordOptionsStore(memento);
         const recordOptions = recordOptionsFactory();
-        settings.recordOptions = recordOptions;
+        store.recordOptions = recordOptions;
 
-        const got = settings.recordOptions;
+        const got = store.recordOptions;
 
         expect(got).toEqual(defaultRecordOptions);
         expect(memento.update).toHaveBeenCalledWith(

@@ -15,7 +15,7 @@ type PanelAndView = {
 };
 
 export type SamplingSettingsWebviewPanel = {
-    show: () => void;
+    show: (validate: boolean) => void;
 };
 
 export class SamplingSettingsWebviewPanelImpl implements SamplingSettingsWebviewPanel {
@@ -33,15 +33,19 @@ export class SamplingSettingsWebviewPanelImpl implements SamplingSettingsWebview
         );
     }
 
-    public readonly show = () => {
+    public readonly show = (validate: boolean) => {
         if (this.panelAndView) {
             this.panelAndView.panel.reveal();
+
+            if (validate) {
+                this.panelAndView.webview.validate();
+            }
         } else {
-            this.panelAndView = this.createPanelAndView();
+            this.panelAndView = this.createPanelAndView(validate);
         }
     };
 
-    private readonly createPanelAndView = (): PanelAndView => {
+    private readonly createPanelAndView = (validateOnCreate: boolean): PanelAndView => {
         const distRoot = Uri.joinPath(this.context.extensionUri, 'dist');
         const mediaDir = Uri.joinPath(this.context.extensionUri, 'media');
         const panel = this.createWebviewPanel({ distRoot, mediaDir });
@@ -49,6 +53,7 @@ export class SamplingSettingsWebviewPanelImpl implements SamplingSettingsWebview
         const samplingSettingsWebview = this.samplingSettingsWebviewFactory(
             distRoot,
             panel.webview,
+            validateOnCreate,
         );
 
         panel.onDidDispose(() => {

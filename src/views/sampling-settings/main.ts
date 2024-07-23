@@ -14,11 +14,13 @@ type Webview = Pick<
 
 export type SamplingSettingsWebview = {
     dispose: () => void;
+    validate: () => void;
 };
 
 export type SamplingSettingsWebviewFactory = (
     distRoot: Uri,
     webview: Webview,
+    validateOnCreate: boolean,
 ) => SamplingSettingsWebview;
 
 export class SamplingSettingsWebviewImpl implements SamplingSettingsWebview {
@@ -35,6 +37,10 @@ export class SamplingSettingsWebviewImpl implements SamplingSettingsWebview {
 
     public readonly dispose = (): void => {
         this.messageListenerDisposable.dispose();
+    };
+
+    public readonly validate = (): void => {
+        this.webview.postMessage({ type: 'validate' });
     };
 
     private readonly handleMessage = async (message: unknown): Promise<void> => {

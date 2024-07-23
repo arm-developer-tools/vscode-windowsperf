@@ -32,11 +32,11 @@ export async function activate(context: vscode.ExtensionContext) {
 
     const samplingSettingsWebviewPanel = new SamplingSettingsWebviewPanelImpl(
         context,
-        (distRoot, webview) =>
+        (distRoot, webview, validateOnCreate) =>
             new SamplingSettingsWebviewImpl(
                 distRoot,
                 webview,
-                new MessageHandlerImpl(recordOptionsStore),
+                new MessageHandlerImpl(recordOptionsStore, validateOnCreate),
             ),
     );
 

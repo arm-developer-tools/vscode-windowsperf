@@ -22,6 +22,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
         const messageHandler = new MessageHandlerImpl(
             { recordOptions },
+            false,
             getPredefinedEventsFactory(events),
         );
 
@@ -34,16 +35,19 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             cores: expect.any(Object),
             events: { type: 'success', events },
+            validate: false,
         };
         expect(got).toEqual(want);
     });
 
     it('handles a ready message by sending the initial data when the event load fails', async () => {
+        const validateOnCreate = true;
         const recordOptions = recordOptionsFactory();
         const failingGetPredefinedEvents = jest.fn();
         failingGetPredefinedEvents.mockRejectedValue(new Error('Failed to load events'));
         const messageHandler = new MessageHandlerImpl(
             { recordOptions },
+            true,
             failingGetPredefinedEvents,
         );
         const message: FromView = { type: 'ready' };
@@ -55,6 +59,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             cores: expect.any(Object),
             events: { type: 'error', error: {} },
+            validate: validateOnCreate,
         };
         expect(got).toEqual(want);
     });
@@ -63,6 +68,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const recordOptionsStore = { recordOptions: recordOptionsFactory() };
         const messageHandler = new MessageHandlerImpl(
             recordOptionsStore,
+            false,
             getPredefinedEventsFactory(),
         );
         const message: FromView = recordOptionsFromViewFactory();
@@ -81,6 +87,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             const recordOptionsStore = { recordOptions: recordOptionsFactory() };
             const messageHandler = new MessageHandlerImpl(
                 recordOptionsStore,
+                false,
                 jest.fn(),
                 promptForCommand,
             );
@@ -97,6 +104,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             promptForCommand.mockResolvedValue(newCommand);
             const messageHandler = new MessageHandlerImpl(
                 { recordOptions: recordOptionsFactory() },
+                false,
                 jest.fn(),
                 promptForCommand,
             );
@@ -115,6 +123,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             const recordOptionsStore = { recordOptions: initialRecordOptions };
             const messageHandler = new MessageHandlerImpl(
                 recordOptionsStore,
+                false,
                 jest.fn(),
                 promptForCommand,
             );

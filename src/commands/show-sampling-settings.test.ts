@@ -13,6 +13,6 @@ describe('ShowSamplingSettings', () => {
 
         await command.execute();
 
-        expect(panel.show).toHaveBeenCalled();
+        expect(panel.show).toHaveBeenCalledWith(false);
     });
 });

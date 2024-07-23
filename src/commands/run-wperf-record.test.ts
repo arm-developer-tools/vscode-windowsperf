@@ -27,7 +27,7 @@ describe('RunWperfRecord', () => {
 
         await command.execute();
 
-        expect(samplingSettingsWebviewPanel.show).toHaveBeenCalledWith();
+        expect(samplingSettingsWebviewPanel.show).toHaveBeenCalledWith(true);
         expect(record).not.toHaveBeenCalled();
     });
 

@@ -52,6 +52,7 @@ export const App = (props: AppProps) => {
                     recordOptions={props.state.recordOptions}
                     openCommandFilePicker={openCommandFilePicker}
                     updateRecordOption={updateRecordOption}
+                    fieldsToValidate={props.state.fieldsToValidate}
                 />
                 <Footer recordOptions={props.state.recordOptions} />
             </>

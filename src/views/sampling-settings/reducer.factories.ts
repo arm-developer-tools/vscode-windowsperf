@@ -11,4 +11,5 @@ export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>)
     cores: options?.cores ?? [],
     events: options?.events ?? [predefinedEventFactory()],
     recordOptions: recordOptionsFactory(),
+    fieldsToValidate: options?.fieldsToValidate ?? [],
 });

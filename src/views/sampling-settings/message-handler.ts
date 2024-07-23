@@ -21,6 +21,7 @@ export class MessageHandlerImpl implements MessageHandler {
 
     constructor(
         private readonly recordOptionsStore: RecordOptionsStore,
+        private readonly validateOnCreate: boolean,
         private readonly getPredefinedEvents = runList,
         private readonly promptForCommand = promptUserForCommand,
     ) {
@@ -76,6 +77,7 @@ export class MessageHandlerImpl implements MessageHandler {
             recordOptions: this.recordOptionsStore.recordOptions,
             cores: this.listCores(),
             events: await this.eventsPromise,
+            validate: this.validateOnCreate,
         };
     };
 

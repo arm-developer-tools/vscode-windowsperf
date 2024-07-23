@@ -20,6 +20,7 @@ export const initialDataToViewFactory = (
     cores: options?.cores ?? [],
     events: options?.events ?? { type: 'success', events: [predefinedEventFactory()] },
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
+    validate: options?.validate ?? false,
 });
 
 export const selectedCommandToViewFactory = (

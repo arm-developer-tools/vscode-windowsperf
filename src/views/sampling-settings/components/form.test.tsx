@@ -20,6 +20,7 @@ describe('Form', () => {
                 recordOptions={recordOptionsFactory()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={updateRecordOption}
+                fieldsToValidate={[]}
             />,
         );
 
@@ -39,6 +40,7 @@ describe('Form', () => {
                 recordOptions={recordOptionsFactory()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={updateRecordOption}
+                fieldsToValidate={[]}
             />,
         );
 
@@ -59,6 +61,7 @@ describe('Form', () => {
                 recordOptions={recordOptionsFactory()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={jest.fn()}
+                fieldsToValidate={[]}
             />,
         );
 
@@ -74,11 +77,42 @@ describe('Form', () => {
                 recordOptions={recordOptionsFactory()}
                 openCommandFilePicker={openCommandFilePicker}
                 updateRecordOption={jest.fn()}
+                fieldsToValidate={[]}
             />,
         );
 
         fireEvent.click(screen.getByText('Browse'));
 
         expect(openCommandFilePicker).toHaveBeenCalled();
+    });
+
+    it('does not render the command input with an invalid class when the command is missing but command is not a field to validate', () => {
+        render(
+            <Form
+                cores={[]}
+                events={[]}
+                recordOptions={recordOptionsFactory({ command: '' })}
+                openCommandFilePicker={jest.fn()}
+                updateRecordOption={jest.fn()}
+                fieldsToValidate={[]}
+            />,
+        );
+
+        expect(screen.getByTestId('command-input')).not.toHaveClass('invalid');
+    });
+
+    it('renders the command input with an invalid class when the command is missing and command is a field to validate', () => {
+        render(
+            <Form
+                cores={[]}
+                events={[]}
+                recordOptions={recordOptionsFactory({ command: '' })}
+                openCommandFilePicker={jest.fn()}
+                updateRecordOption={jest.fn()}
+                fieldsToValidate={['command']}
+            />,
+        );
+
+        expect(screen.getByTestId('command-input')).toHaveClass('invalid');
     });
 });

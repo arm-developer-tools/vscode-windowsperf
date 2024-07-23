@@ -5,7 +5,11 @@
 import * as React from 'react';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
-import { RecordOptions } from '../../../wperf/record-options';
+import {
+    RecordOptions,
+    ValidatedField,
+    validateRecordOptions,
+} from '../../../wperf/record-options';
 import { NavigableForm } from './navigable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 import { EventSelector } from './event-selector';
@@ -17,11 +21,13 @@ export type FormProps = {
     recordOptions: RecordOptions;
     openCommandFilePicker: () => void;
     updateRecordOption: UpdateRecordOption;
+    fieldsToValidate: readonly ValidatedField[];
 };
 
 type RecordOptionTextInputProps = {
     recordOption: 'command' | 'arguments';
     recordOptions: RecordOptions;
+    isInvalid: boolean;
     onChange: (value: string) => void;
 };
 
@@ -29,6 +35,7 @@ const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
     return (
         <input
             type="text"
+            className={props.isInvalid ? 'invalid' : ''}
             value={props.recordOptions[props.recordOption]}
             data-testid={`${props.recordOption}-input`}
             onChange={(event) => {
@@ -39,6 +46,12 @@ const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
 };
 
 export const Form = (props: FormProps) => {
+    const { missingFields } = validateRecordOptions(props.recordOptions);
+    const showMissingCommandValidation =
+        props.fieldsToValidate.includes('command') && missingFields.includes('command');
+    const showMissingEventsValidation =
+        props.fieldsToValidate.includes('events') && missingFields.includes('events');
+
     return (
         <NavigableForm
             sections={[
@@ -47,12 +60,14 @@ export const Form = (props: FormProps) => {
                     title: 'Command',
                     description:
                         'The executable to spawn. Absolute path or relative to the workspace root.',
+                    invalid: showMissingCommandValidation,
                     component: (
                         <>
                             <div className="file-picker-input">
                                 <RecordOptionTextInput
                                     recordOption="command"
                                     recordOptions={props.recordOptions}
+                                    isInvalid={showMissingCommandValidation}
                                     onChange={(value) => {
                                         props.updateRecordOption({
                                             type: 'setCommand',
@@ -66,6 +81,9 @@ export const Form = (props: FormProps) => {
                                     Browse
                                 </VSCodeButton>
                             </div>
+                            {showMissingCommandValidation && (
+                                <div className="error-message">This field is required</div>
+                            )}
                         </>
                     ),
                 },
@@ -78,6 +96,7 @@ export const Form = (props: FormProps) => {
                             <RecordOptionTextInput
                                 recordOption="arguments"
                                 recordOptions={props.recordOptions}
+                                isInvalid={false}
                                 onChange={(value) => {
                                     props.updateRecordOption({
                                         type: 'setArguments',
@@ -92,12 +111,18 @@ export const Form = (props: FormProps) => {
                     id: 'events',
                     title: 'Events',
                     description: 'The hardware events to sample.',
+                    invalid: showMissingEventsValidation,
                     component: (
-                        <EventSelector
-                            events={props.events}
-                            recordOptions={props.recordOptions}
-                            updateRecordOption={props.updateRecordOption}
-                        />
+                        <>
+                            <EventSelector
+                                events={props.events}
+                                recordOptions={props.recordOptions}
+                                updateRecordOption={props.updateRecordOption}
+                            />
+                            {showMissingEventsValidation && (
+                                <div className="error-message">This field is required</div>
+                            )}
+                        </>
                     ),
                 },
             ]}

@@ -48,6 +48,7 @@ describe('SamplingSettingsWebview', () => {
             recordOptions,
             cores: expect.any(Object),
             events: { type: 'success', events },
+            validate: false,
         };
         new SamplingSettingsWebviewImpl(Uri.file(faker.system.directoryPath()), webview, {
             handleMessage: () => Promise.resolve(want),
@@ -56,6 +57,21 @@ describe('SamplingSettingsWebview', () => {
         receiveMessageEmitter.fire({ type: 'ready' });
         await waitTimeout();
 
+        expect(webview.postMessage).toHaveBeenCalledWith(want);
+    });
+
+    it('sends a message to the webview when asked to validate', async () => {
+        const webview = webviewFactory();
+        const samplingSettingsWebview = new SamplingSettingsWebviewImpl(
+            Uri.file(faker.system.directoryPath()),
+            webview,
+            {
+                handleMessage: jest.fn(),
+            },
+        );
+        samplingSettingsWebview.validate();
+
+        const want: ToView = { type: 'validate' };
         expect(webview.postMessage).toHaveBeenCalledWith(want);
     });
 });

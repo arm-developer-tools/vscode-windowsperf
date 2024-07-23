@@ -4,7 +4,7 @@
 
 import { Core } from '../../wperf/cores';
 import { PredefinedEvent } from '../../wperf/parse/list';
-import { RecordOptions } from '../../wperf/record-options';
+import { RecordOptions, ValidatedField, validatedFields } from '../../wperf/record-options';
 import { ToView } from './messages';
 
 export type LoadedState = {
@@ -12,6 +12,7 @@ export type LoadedState = {
     cores: Core[];
     events: PredefinedEvent[];
     recordOptions: RecordOptions;
+    fieldsToValidate: readonly ValidatedField[];
 };
 
 export type State =
@@ -52,28 +53,48 @@ export const updateRecordOptionReducer = (
     }
 };
 
+const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): State => {
+    switch (message.events.type) {
+        case 'error':
+            return {
+                type: 'error',
+                error: message.events.error,
+            };
+        case 'success':
+            return {
+                type: 'loaded',
+                cores: message.cores,
+                events: message.events.events,
+                recordOptions: message.recordOptions,
+                fieldsToValidate: message.validate ? validatedFields : [],
+            };
+    }
+};
+
 const toViewMessageReducer = (state: State, message: ToView): State => {
     switch (message.type) {
         case 'initialData':
-            switch (message.events.type) {
-                case 'error':
-                    return {
-                        type: 'error',
-                        error: message.events.error,
-                    };
-                case 'success':
-                    return {
-                        type: 'loaded',
-                        cores: message.cores,
-                        events: message.events.events,
-                        recordOptions: message.recordOptions,
-                    };
-            }
-            break;
+            return initialDataToState(message);
         case 'selectedCommand':
             return state.type === 'loaded'
                 ? { ...state, recordOptions: { ...state.recordOptions, command: message.command } }
                 : state;
+        case 'validate':
+            return state.type === 'loaded'
+                ? { ...state, fieldsToValidate: validatedFields }
+                : state;
+    }
+};
+
+const getAffectedField = (action: UpdateRecordOptionAction): keyof RecordOptions => {
+    switch (action.type) {
+        case 'setCommand':
+            return 'command';
+        case 'setArguments':
+            return 'arguments';
+        case 'addEvent':
+        case 'removeEvent':
+            return 'events';
     }
 };
 
@@ -86,9 +107,14 @@ export const reducer = (state: State, action: Action): State => {
         case 'addEvent':
         case 'removeEvent':
             if (state.type === 'loaded') {
+                const affectedField = getAffectedField(action);
+
                 return {
                     ...state,
                     recordOptions: updateRecordOptionReducer(state.recordOptions, action),
+                    fieldsToValidate: state.fieldsToValidate.filter(
+                        (field) => field !== affectedField,
+                    ),
                 };
             } else {
                 return state;

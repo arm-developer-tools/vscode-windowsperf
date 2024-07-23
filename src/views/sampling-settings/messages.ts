@@ -42,11 +42,13 @@ export const toViewShape = z.union([
         recordOptions: recordOptionsShape,
         cores: z.array(coreShape),
         events: eventsLoadResultShape,
+        validate: z.boolean(),
     }),
     z.object({
         type: z.literal('selectedCommand'),
         command: z.string(),
     }),
+    z.object({ type: z.literal('validate') }),
 ]);
 
 export type ToView = z.infer<typeof toViewShape>;
