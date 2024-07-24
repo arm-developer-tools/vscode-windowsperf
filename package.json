@@ -186,6 +186,7 @@
         "eslint:fix": "eslint --ext .ts,tsx src --fix",
         "compile": "tsc --noEmit",
         "compile:watch": "tsc -w --noEmit",
+        "e2e-test": "playwright test",
         "test": "jest",
         "test:watch": "jest --watch --collectCoverage=false",
         "prepare-test-workspace": "ts-node ./test-workspace/wperf-output/render-templates.ts",
@@ -193,6 +194,7 @@
         "format:fix": "prettier --write ."
     },
     "devDependencies": {
+        "@arm-debug/vscode-playwright-test": "^0.2.0",
         "@babel/plugin-transform-modules-commonjs": "^7.24.8",
         "@faker-js/faker": "^8.4.1",
         "@testing-library/react": "^16.0.0",
@@ -291,9 +293,9 @@
         ]
     },
     "dependencies": {
+        "@arm-debug/ctrlc-windows": "1.0.0",
         "@vscode/codicons": "^0.0.35",
         "@vscode/webview-ui-toolkit": "^1.4.0",
-        "@arm-debug/ctrlc-windows": "1.0.0",
         "os-browserify": "^0.3.0",
         "react": "~18.3.1",
         "react-dom": "~18.3.1",
