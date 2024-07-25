@@ -186,7 +186,7 @@
         "eslint:fix": "eslint --ext .ts,tsx src --fix",
         "compile": "tsc --noEmit",
         "compile:watch": "tsc -w --noEmit",
-        "e2e-test": "playwright test",
+        "test:e2e": "playwright test",
         "test": "jest",
         "test:watch": "jest --watch --collectCoverage=false",
         "prepare-test-workspace": "ts-node ./test-workspace/wperf-output/render-templates.ts",
@@ -264,7 +264,8 @@
             ]
         },
         "testPathIgnorePatterns": [
-            "/node_modules/"
+            "/node_modules/",
+            "/tests/"
         ],
         "testMatch": [
             "**/*.test.+(ts|tsx)"

@@ -25,6 +25,7 @@
     "include": [
         "src",
         "__mocks__" /* Make eslint happy */,
-        "test-workspace" /* Make eslint happy */
+        "test-workspace" /* Make eslint happy */,
+        "playwright.config.ts" /* Make eslint happy */
     ]
 }
