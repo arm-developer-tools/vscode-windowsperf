@@ -11,6 +11,7 @@ import { FromView, ToView } from './messages';
 import { recordOptionsFromViewFactory } from './messages.factories';
 import { faker } from '@faker-js/faker';
 import { Uri } from 'vscode';
+import path from 'path';
 
 const getPredefinedEventsFactory = (
     result = [predefinedEventFactory(), predefinedEventFactory()],
@@ -157,8 +158,8 @@ describe('asPathRelativeToFirstWorkspace', () => {
         const inputUri = Uri.file(faker.system.filePath());
 
         const got = asPathRelativeToFirstWorkspace(inputUri, [
-            { uri: Uri.file(faker.system.directoryPath()) },
-            { uri: Uri.file(faker.system.directoryPath()) },
+            { uri: Uri.file(path.join('path', 'to', 'directory1')) },
+            { uri: Uri.file(path.join('path', 'to', 'directory2')) },
         ]);
 
         expect(got).toBe(inputUri.fsPath);
