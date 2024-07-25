@@ -3,9 +3,15 @@
  */
 
 import * as React from 'react';
+import './select.css';
+
+export type SelectOption = {
+    id: string;
+    label: string;
+};
 
 type SelectProps = {
-    items: string[];
+    items: SelectOption[];
     selected: string;
     onChange: (input: string) => void;
 };
@@ -15,9 +21,9 @@ export const Select = (props: SelectProps) => {
 
     return (
         <select value={selected} onChange={(event) => onChange(event.target.value)}>
-            {items.map((item, idx) => (
-                <option key={idx} value={item}>
-                    {item}
+            {items.map((item) => (
+                <option key={item.id} value={item.id}>
+                    {item.label}
                 </option>
             ))}
         </select>

@@ -27,7 +27,8 @@ export type UpdateRecordOptionAction =
     | { type: 'setCommand'; command: string }
     | { type: 'setArguments'; arguments: string }
     | { type: 'addEvent'; event: string }
-    | { type: 'removeEvent'; event: string };
+    | { type: 'removeEvent'; event: string }
+    | { type: 'setCore'; core: number };
 
 export type Action = { type: 'handleMessage'; message: ToView } | UpdateRecordOptionAction;
 
@@ -50,6 +51,8 @@ export const updateRecordOptionReducer = (
                 ...recordOptions,
                 events: recordOptions.events.filter((e) => e !== action.event),
             };
+        case 'setCore':
+            return { ...recordOptions, core: action.core };
     }
 };
 
@@ -92,6 +95,8 @@ const getAffectedField = (action: UpdateRecordOptionAction): keyof RecordOptions
             return 'command';
         case 'setArguments':
             return 'arguments';
+        case 'setCore':
+            return 'core';
         case 'addEvent':
         case 'removeEvent':
             return 'events';
@@ -105,6 +110,7 @@ export const reducer = (state: State, action: Action): State => {
         case 'setCommand':
         case 'setArguments':
         case 'addEvent':
+        case 'setCore':
         case 'removeEvent':
             if (state.type === 'loaded') {
                 const affectedField = getAffectedField(action);

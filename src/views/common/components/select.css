@@ -1,0 +1,23 @@
+/*
+ * Copyright (c) 2024 Arm Limited
+ */
+
+select {
+    background-color: var(--vscode-settings-dropdownBackground);
+    color: var(--vscode-settings-dropdownForeground);
+    border: 1px solid var(--vscode-settings-dropdownBorder);
+    border-radius: 2px;
+    width: 320px;
+    font-size: 13px;
+    font-family: inherit;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+select:hover {
+    border-color: var(--vscode-focusBorder);
+}
+
+select:focus {
+    border-color: var(--vscode-focusBorder);
+}

@@ -128,4 +128,15 @@ describe('updateRecordOptionReducer', () => {
 
         expect(got.events).toEqual([]);
     });
+
+    it('handles a setCore action', () => {
+        const newCore = 2;
+
+        const got = updateRecordOptionReducer(recordOptionsFactory(), {
+            type: 'setCore',
+            core: newCore,
+        });
+
+        expect(got.core).toBe(newCore);
+    });
 });

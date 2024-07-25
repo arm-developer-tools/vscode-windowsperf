@@ -14,6 +14,7 @@ import { NavigableForm } from './navigable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 import { EventSelector } from './event-selector';
 import { UpdateRecordOption } from '../update-record-option';
+import { Select } from '../../common/components/select';
 
 export type FormProps = {
     cores: Core[];
@@ -101,6 +102,28 @@ export const Form = (props: FormProps) => {
                                     props.updateRecordOption({
                                         type: 'setArguments',
                                         arguments: value,
+                                    });
+                                }}
+                            />
+                        </div>
+                    ),
+                },
+                {
+                    id: 'core',
+                    title: 'CPU Core',
+                    description: 'Specifies the CPU Core to monitor.',
+                    component: (
+                        <div>
+                            <Select
+                                items={props.cores.map((core) => ({
+                                    id: core.number.toString(),
+                                    label: `Core ${core.number} - ${core.model}`,
+                                }))}
+                                selected={props.recordOptions.core.toString() || ''}
+                                onChange={(value) => {
+                                    props.updateRecordOption({
+                                        type: 'setCore',
+                                        core: parseInt(value),
                                     });
                                 }}
                             />
