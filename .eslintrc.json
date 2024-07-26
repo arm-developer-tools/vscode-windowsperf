@@ -4,7 +4,10 @@
     "parserOptions": {
         "ecmaVersion": 6,
         "project": true,
-        "sourceType": "module"
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "plugins": ["@typescript-eslint", "check-file"],
     "extends": ["eslint:recommended", "plugin:@typescript-eslint/eslint-recommended", "prettier"],
@@ -16,8 +19,8 @@
                 "format": ["camelCase", "PascalCase"]
             },
             {
-                "selector": ["variable"],
-                "format": ["camelCase", "UPPER_CASE"],
+                "selector": "variable",
+                "format": ["camelCase", "UPPER_CASE", "PascalCase"],
                 "leadingUnderscore": "allow",
                 "trailingUnderscore": "allow"
             },
