@@ -25,17 +25,18 @@ export type FormProps = {
     fieldsToValidate: readonly ValidatedField[];
 };
 
-type RecordOptionTextInputProps = {
-    recordOption: 'command' | 'arguments';
+type RecordOptionInputProps = {
+    type: 'text' | 'number';
+    recordOption: 'command' | 'arguments' | 'timeoutSeconds';
     recordOptions: RecordOptions;
     isInvalid: boolean;
     onChange: (value: string) => void;
 };
 
-const RecordOptionTextInput = (props: RecordOptionTextInputProps) => {
+const RecordOptionInput = (props: RecordOptionInputProps) => {
     return (
         <input
-            type="text"
+            type={props.type}
             className={props.isInvalid ? 'invalid' : ''}
             value={props.recordOptions[props.recordOption]}
             data-testid={`${props.recordOption}-input`}
@@ -65,7 +66,8 @@ export const Form = (props: FormProps) => {
                     component: (
                         <>
                             <div className="file-picker-input">
-                                <RecordOptionTextInput
+                                <RecordOptionInput
+                                    type="text"
                                     recordOption="command"
                                     recordOptions={props.recordOptions}
                                     isInvalid={showMissingCommandValidation}
@@ -94,7 +96,8 @@ export const Form = (props: FormProps) => {
                     description: 'The arguments to pass to the command.',
                     component: (
                         <div>
-                            <RecordOptionTextInput
+                            <RecordOptionInput
+                                type="text"
                                 recordOption="arguments"
                                 recordOptions={props.recordOptions}
                                 isInvalid={false}
@@ -146,6 +149,28 @@ export const Form = (props: FormProps) => {
                                 <div className="error-message">This field is required</div>
                             )}
                         </>
+                    ),
+                },
+                {
+                    id: 'timeout',
+                    title: 'Timeout',
+                    description:
+                        'Specifies the maximum time in seconds the recording can run before it is stopped.',
+                    component: (
+                        <div>
+                            <RecordOptionInput
+                                type="number"
+                                recordOption="timeoutSeconds"
+                                recordOptions={props.recordOptions}
+                                isInvalid={false}
+                                onChange={(value) => {
+                                    props.updateRecordOption({
+                                        type: 'setTimeout',
+                                        timeout: value,
+                                    });
+                                }}
+                            />
+                        </div>
                     ),
                 },
             ]}

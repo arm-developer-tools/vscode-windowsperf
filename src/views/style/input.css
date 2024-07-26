@@ -60,3 +60,15 @@ input:invalid {
     border-color: var(--vscode-inputValidation-errorBorder);
     color: var(--vscode-inputValidation-errorForeground);
 }
+
+input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: none;
+    width: 418px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}

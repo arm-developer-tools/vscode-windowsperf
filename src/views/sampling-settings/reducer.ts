@@ -28,7 +28,8 @@ export type UpdateRecordOptionAction =
     | { type: 'setArguments'; arguments: string }
     | { type: 'addEvent'; event: string }
     | { type: 'removeEvent'; event: string }
-    | { type: 'setCore'; core: number };
+    | { type: 'setCore'; core: number }
+    | { type: 'setTimeout'; timeout: string };
 
 export type Action = { type: 'handleMessage'; message: ToView } | UpdateRecordOptionAction;
 
@@ -53,6 +54,12 @@ export const updateRecordOptionReducer = (
             };
         case 'setCore':
             return { ...recordOptions, core: action.core };
+        case 'setTimeout':
+            return {
+                ...recordOptions,
+                timeoutSeconds:
+                    action.timeout === '' ? undefined : Math.abs(parseInt(action.timeout)),
+            };
     }
 };
 
@@ -100,6 +107,8 @@ const getAffectedField = (action: UpdateRecordOptionAction): keyof RecordOptions
         case 'addEvent':
         case 'removeEvent':
             return 'events';
+        case 'setTimeout':
+            return 'timeoutSeconds';
     }
 };
 
@@ -111,6 +120,7 @@ export const reducer = (state: State, action: Action): State => {
         case 'setArguments':
         case 'addEvent':
         case 'setCore':
+        case 'setTimeout':
         case 'removeEvent':
             if (state.type === 'loaded') {
                 const affectedField = getAffectedField(action);

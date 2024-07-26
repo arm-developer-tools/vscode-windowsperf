@@ -10,6 +10,7 @@ import { initialDataToViewFactory } from './messages.factories';
 import { loadedStateFactory } from './reducer.factories';
 import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { validatedFields } from '../../wperf/record-options';
+import { faker } from '@faker-js/faker';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
@@ -138,5 +139,16 @@ describe('updateRecordOptionReducer', () => {
         });
 
         expect(got.core).toBe(newCore);
+    });
+
+    it('handles a setTimeout action', () => {
+        const newTimeout = faker.number.int();
+
+        const got = updateRecordOptionReducer(recordOptionsFactory(), {
+            type: 'setTimeout',
+            timeout: newTimeout.toString(),
+        });
+
+        expect(got.timeoutSeconds).toBe(newTimeout);
     });
 });
