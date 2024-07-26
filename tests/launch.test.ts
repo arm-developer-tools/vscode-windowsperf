@@ -12,6 +12,5 @@ test.describe('Loading the WindowsPerf extension', () => {
         await vscode.page.keyboard.press(toggleBottomPanelShortcut);
         await vscode.page.getByText('WindowsPerf').waitFor();
         expect(vscode.page.getByText('WindowsPerf')).toBeVisible();
-        expect(2).toBe(1); //TEMP
     });
 });
