@@ -194,7 +194,7 @@
         "format:fix": "prettier --write ."
     },
     "devDependencies": {
-        "@arm-debug/vscode-playwright-test": "^0.2.0",
+        "@arm-debug/vscode-playwright-test": "^0.2.1",
         "@babel/plugin-transform-modules-commonjs": "^7.24.8",
         "@faker-js/faker": "^8.4.1",
         "@testing-library/react": "^16.0.0",
