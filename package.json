@@ -265,7 +265,7 @@
         },
         "testPathIgnorePatterns": [
             "/node_modules/",
-            "<rootdir>/tests/"
+            "<rootDir>/tests/"
         ],
         "testMatch": [
             "**/*.test.+(ts|tsx)"
