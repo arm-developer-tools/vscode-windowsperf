@@ -13,6 +13,7 @@ test.describe('Loading the WindowsPerf extension', () => {
         await vscode.page.getByText('WindowsPerf').waitFor();
         expect(vscode.page.getByText('WindowsPerf')).toBeVisible();
         await vscode.page.screenshot({ path: 'e2e-screenshots/test.png' });
+        expect(2).toBe(1);
     });
 
     test.afterEach(({ vscode }, testInfo) => {
