@@ -11,12 +11,6 @@ test.describe('Loading the WindowsPerf extension', () => {
         await vscode.page.keyboard.press(toggleSidebarShortcut);
         await vscode.page.keyboard.press(toggleBottomPanelShortcut);
         await vscode.page.getByText('WindowsPerf').waitFor();
-        expect(vscode.page.getByText('WindowsPerf')).not.toBeVisible();
-        await vscode.page.screenshot({ path: 'e2e-screenshots/test.png' });
-    });
-
-    test.afterEach(({ vscode }, testInfo) => {
-        console.log(`Status: ${testInfo.status}`);
-        console.log(`Expected Status: ${testInfo.expectedStatus}`);
+        await expect(vscode.page.getByText('WindowsPerf')).toBeVisible({ visible: false });
     });
 });
