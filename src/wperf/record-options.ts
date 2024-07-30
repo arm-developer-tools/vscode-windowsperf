@@ -4,9 +4,15 @@
 
 import { z } from 'zod';
 
+const eventAndFrequencyShape = z.object({
+    event: z.string(),
+    frequency: z.number().optional(),
+});
+
+export type EventAndFrequency = z.infer<typeof eventAndFrequencyShape>;
+
 export const recordOptionsShape = z.object({
-    events: z.array(z.string()),
-    frequency: z.number(),
+    events: z.array(eventAndFrequencyShape),
     core: z.number(),
     command: z.string(),
     arguments: z.string(),
@@ -17,7 +23,6 @@ export type RecordOptions = z.infer<typeof recordOptionsShape>;
 
 export const defaultRecordOptions: RecordOptions = {
     events: [],
-    frequency: 10000,
     core: 0,
     command: '',
     arguments: '',
@@ -42,8 +47,15 @@ export const validateRecordOptions = (
     return { missingFields };
 };
 
+export const buildEventsParameter = (events: EventAndFrequency[]): string =>
+    events
+        .map((event) => {
+            const frequencyString = event.frequency === undefined ? '' : `:${event.frequency}`;
+            return `${event.event}${frequencyString}`;
+        })
+        .join(',');
+
 export const buildRecordArgs = (options: RecordOptions): string => {
-    const eventsArg = options.events.join(',') + ':' + options.frequency.toString();
     const timeoutArgs =
         options.timeoutSeconds === undefined
             ? []
@@ -52,7 +64,7 @@ export const buildRecordArgs = (options: RecordOptions): string => {
     return [
         'record',
         '-e',
-        eventsArg,
+        buildEventsParameter(options.events),
         '-c',
         options.core.toString(),
         ...timeoutArgs,

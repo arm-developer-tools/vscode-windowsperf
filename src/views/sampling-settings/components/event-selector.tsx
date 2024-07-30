@@ -20,7 +20,9 @@ type EventListItemProps = {
 };
 
 const EventListItem = ({ event, recordOptions, updateRecordOption }: EventListItemProps) => {
-    const checked = recordOptions.events.includes(event.Alias_Name);
+    const checked = recordOptions.events.some(
+        ({ event: selectedEvent }) => selectedEvent === event.Alias_Name,
+    );
 
     const onChange = () => {
         updateRecordOption({ type: checked ? 'removeEvent' : 'addEvent', event: event.Alias_Name });

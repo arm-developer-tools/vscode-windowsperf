@@ -8,8 +8,11 @@ import { ToView } from './messages';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
 import { initialDataToViewFactory } from './messages.factories';
 import { loadedStateFactory } from './reducer.factories';
-import { recordOptionsFactory } from '../../wperf/record-options.factories';
-import { validatedFields } from '../../wperf/record-options';
+import {
+    eventAndFrequencyFactory,
+    recordOptionsFactory,
+} from '../../wperf/record-options.factories';
+import { EventAndFrequency, validatedFields } from '../../wperf/record-options';
 import { faker } from '@faker-js/faker';
 
 describe('reducer', () => {
@@ -111,21 +114,32 @@ describe('updateRecordOptionReducer', () => {
     });
 
     it('handles an addEvent action', () => {
-        const initialEvent = 'event1';
+        const initialEventAndFrequency = eventAndFrequencyFactory();
 
-        const got = updateRecordOptionReducer(recordOptionsFactory({ events: [initialEvent] }), {
-            type: 'addEvent',
-            event: 'event2',
-        });
+        const got = updateRecordOptionReducer(
+            recordOptionsFactory({ events: [initialEventAndFrequency] }),
+            {
+                type: 'addEvent',
+                event: 'new_event',
+            },
+        );
 
-        expect(got.events).toEqual(expect.arrayContaining([initialEvent, 'event2']));
+        const want: EventAndFrequency[] = [
+            initialEventAndFrequency,
+            { event: 'new_event', frequency: undefined },
+        ];
+        expect(got.events).toEqual(expect.arrayContaining(want));
     });
 
     it('handles a removeEvent action', () => {
-        const got = updateRecordOptionReducer(recordOptionsFactory({ events: ['event1'] }), {
-            type: 'removeEvent',
-            event: 'event1',
-        });
+        const eventName = 'event_to_remove';
+        const got = updateRecordOptionReducer(
+            recordOptionsFactory({ events: [eventAndFrequencyFactory({ event: eventName })] }),
+            {
+                type: 'removeEvent',
+                event: eventName,
+            },
+        );
 
         expect(got.events).toEqual([]);
     });

@@ -45,12 +45,12 @@ export const updateRecordOptionReducer = (
         case 'addEvent':
             return {
                 ...recordOptions,
-                events: [...recordOptions.events, action.event],
+                events: [...recordOptions.events, { event: action.event }],
             };
         case 'removeEvent':
             return {
                 ...recordOptions,
-                events: recordOptions.events.filter((e) => e !== action.event),
+                events: recordOptions.events.filter(({ event }) => event !== action.event),
             };
         case 'setCore':
             return { ...recordOptions, core: action.core };

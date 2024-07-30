@@ -6,7 +6,10 @@ import 'jest';
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { recordOptionsFactory } from '../../../wperf/record-options.factories';
+import {
+    eventAndFrequencyFactory,
+    recordOptionsFactory,
+} from '../../../wperf/record-options.factories';
 import { EventSelector } from './event-selector';
 import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
 import { UpdateRecordOptionAction } from '../reducer';
@@ -54,7 +57,9 @@ describe('EventSelector', () => {
                     predefinedEventFactory({ Alias_Name: 'event_1' }),
                     predefinedEventFactory({ Alias_Name: 'event_2' }),
                 ]}
-                recordOptions={recordOptionsFactory({ events: ['event_1'] })}
+                recordOptions={recordOptionsFactory({
+                    events: [eventAndFrequencyFactory({ event: 'event_1' })],
+                })}
                 updateRecordOption={jest.fn()}
             />,
         );
@@ -71,7 +76,9 @@ describe('EventSelector', () => {
                     predefinedEventFactory({ Alias_Name: 'event_1' }),
                     predefinedEventFactory({ Alias_Name: 'event_2' }),
                 ]}
-                recordOptions={recordOptionsFactory({ events: ['event_1'] })}
+                recordOptions={recordOptionsFactory({
+                    events: [eventAndFrequencyFactory({ event: 'event_1' })],
+                })}
                 updateRecordOption={updateRecordOption}
             />,
         );
@@ -90,7 +97,9 @@ describe('EventSelector', () => {
                     predefinedEventFactory({ Alias_Name: 'event_1' }),
                     predefinedEventFactory({ Alias_Name: 'event_2' }),
                 ]}
-                recordOptions={recordOptionsFactory({ events: ['event_1'] })}
+                recordOptions={recordOptionsFactory({
+                    events: [eventAndFrequencyFactory({ event: 'event_1' })],
+                })}
                 updateRecordOption={updateRecordOption}
             />,
         );
