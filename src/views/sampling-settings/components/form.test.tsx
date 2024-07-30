@@ -8,7 +8,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Form } from './form';
 import { recordOptionsFactory } from '../../../wperf/record-options.factories';
-import { UpdateRecordOptionAction } from '../reducer';
+import { UpdateRecordOptionAction } from '../state/update-record-option-action';
 
 describe('Form', () => {
     it('calls updateRecordOption when the command input changes', () => {

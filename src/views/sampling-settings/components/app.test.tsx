@@ -7,7 +7,7 @@ import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { App } from './app';
-import { loadedStateFactory } from '../reducer.factories';
+import { loadedStateFactory } from '../state/app.factories';
 
 const containerFactory = (): HTMLElement => document.createElement('div');
 

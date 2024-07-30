@@ -4,8 +4,8 @@
 
 import 'jest';
 import { UpdateRecordOptionDependencies, createUpdateRecordOption } from './update-record-option';
-import { loadedStateFactory } from './reducer.factories';
-import { UpdateRecordOptionAction } from './reducer';
+import { loadedStateFactory } from './state/app.factories';
+import { UpdateRecordOptionAction } from './state/update-record-option-action';
 import { FromView } from './messages';
 
 describe('UpdateRecordOption', () => {

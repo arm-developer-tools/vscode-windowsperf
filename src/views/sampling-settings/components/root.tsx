@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useEffect, useReducer } from 'react';
 import { WebviewApi } from 'vscode-webview';
 import { toViewShape } from '../messages';
-import { initialState, reducer } from '../reducer';
+import { initialState, reducer } from '../state/app';
 import { App } from './app';
 
 export type RootProps = {

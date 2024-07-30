@@ -5,7 +5,7 @@
 import * as React from 'react';
 import { Dispatch, useEffect } from 'react';
 import { FromView } from '../messages';
-import { Action, State } from '../reducer';
+import { Action, State } from '../state/app';
 import { Form } from './form';
 import { LoadingSpinner } from './loading-spinner';
 import { createUpdateRecordOption } from '../update-record-option';

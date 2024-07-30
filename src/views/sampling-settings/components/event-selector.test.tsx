@@ -12,7 +12,7 @@ import {
 } from '../../../wperf/record-options.factories';
 import { EventSelector } from './event-selector';
 import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
-import { UpdateRecordOptionAction } from '../reducer';
+import { UpdateRecordOptionAction } from '../state/update-record-option-action';
 
 describe('EventSelector', () => {
     it('renders each event as a checkbox', () => {

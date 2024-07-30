@@ -4,7 +4,9 @@
 
 import { Dispatch } from 'react';
 import { FromView } from './messages';
-import { LoadedState, UpdateRecordOptionAction, updateRecordOptionReducer } from './reducer';
+import { LoadedState } from './state/app';
+import { updateRecordOptionReducer } from './state/update-record-option-action';
+import { UpdateRecordOptionAction } from './state/update-record-option-action';
 
 export type UpdateRecordOptionDependencies = {
     postMessage: (message: FromView) => void;

@@ -2,9 +2,9 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { predefinedEventFactory } from '../../wperf/parse/list.factories';
-import { recordOptionsFactory } from '../../wperf/record-options.factories';
-import { LoadedState } from './reducer';
+import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
+import { recordOptionsFactory } from '../../../wperf/record-options.factories';
+import { LoadedState } from './app';
 
 export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>): LoadedState => ({
     type: 'loaded',
