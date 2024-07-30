@@ -9,6 +9,9 @@ import { coreShape } from '../../wperf/cores';
 
 export const fromViewShape = z.union([
     z.object({
+        type: z.literal('record'),
+    }),
+    z.object({
         type: z.literal('recordOptions'),
         recordOptions: recordOptionsShape,
     }),

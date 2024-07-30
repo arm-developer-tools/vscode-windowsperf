@@ -43,6 +43,8 @@ export class MessageHandlerImpl implements MessageHandler {
                     return this.handleRecordOptions(fromViewMessage.recordOptions);
                 case 'openCommandFilePicker':
                     return this.handleOpenCommandFilePicker();
+                case 'record':
+                    return this.handleRecordCommand();
             }
         } else {
             logger.error('Received invalid message from webview', parseResult.error, message);
@@ -68,6 +70,11 @@ export class MessageHandlerImpl implements MessageHandler {
             return { type: 'selectedCommand', command };
         }
 
+        return undefined;
+    };
+
+    public readonly handleRecordCommand = async () => {
+        await vscode.commands.executeCommand('windowsperf.record');
         return undefined;
     };
 

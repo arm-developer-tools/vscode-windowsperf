@@ -18,6 +18,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                record={jest.fn()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={updateRecordOption}
                 fieldsToValidate={[]}
@@ -38,6 +39,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                record={jest.fn()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={updateRecordOption}
                 fieldsToValidate={[]}
@@ -59,6 +61,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                record={jest.fn()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={jest.fn()}
                 fieldsToValidate={[]}
@@ -74,6 +77,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                record={jest.fn()}
                 openCommandFilePicker={jest.fn()}
                 updateRecordOption={jest.fn()}
                 fieldsToValidate={[]}
@@ -90,6 +94,7 @@ describe('Form', () => {
                 cores={[]}
                 events={[]}
                 recordOptions={recordOptionsFactory()}
+                record={jest.fn()}
                 openCommandFilePicker={openCommandFilePicker}
                 updateRecordOption={jest.fn()}
                 fieldsToValidate={[]}
@@ -101,6 +106,26 @@ describe('Form', () => {
         expect(openCommandFilePicker).toHaveBeenCalled();
     });
 
+    it('calls record when the record event button is clicked', () => {
+        const record = jest.fn();
+        render(
+            <Form
+                cores={[]}
+                events={[]}
+                recordOptions={recordOptionsFactory()}
+                record={record}
+                openCommandFilePicker={jest.fn()}
+                updateRecordOption={jest.fn()}
+                fieldsToValidate={[]}
+            />,
+        );
+
+        const recordButton = screen.getAllByText('Record');
+        fireEvent.click(recordButton[0]!);
+
+        expect(record).toHaveBeenCalled();
+    });
+
     it('does not render the command input with an invalid class when the command is missing but command is not a field to validate', () => {
         render(
             <Form
@@ -108,6 +133,7 @@ describe('Form', () => {
                 events={[]}
                 recordOptions={recordOptionsFactory({ command: '' })}
                 openCommandFilePicker={jest.fn()}
+                record={jest.fn()}
                 updateRecordOption={jest.fn()}
                 fieldsToValidate={[]}
             />,
@@ -123,6 +149,7 @@ describe('Form', () => {
                 events={[]}
                 recordOptions={recordOptionsFactory({ command: '' })}
                 openCommandFilePicker={jest.fn()}
+                record={jest.fn()}
                 updateRecordOption={jest.fn()}
                 fieldsToValidate={['command']}
             />,

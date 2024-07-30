@@ -3,6 +3,7 @@
  */
 
 import * as React from 'react';
+import { RecordButton } from './record-button';
 
 export type FormSection = {
     id: string;
@@ -14,11 +15,15 @@ export type FormSection = {
 
 export type NavigableFormProps = {
     sections: FormSection[];
+    record: () => void;
 };
 
 const Nav = (props: NavigableFormProps) => {
     return (
         <nav>
+            <div className="record-button">
+                <RecordButton onClick={props.record} />
+            </div>
             <ul>
                 {props.sections.map((section) => (
                     <li key={section.id}>
@@ -32,7 +37,7 @@ const Nav = (props: NavigableFormProps) => {
     );
 };
 
-const Content = (props: NavigableFormProps) => {
+const Content = (props: Pick<NavigableFormProps, 'sections'>) => {
     return (
         <section id="content">
             {props.sections.map((section) => (
@@ -49,7 +54,7 @@ const Content = (props: NavigableFormProps) => {
 export const NavigableForm = (props: NavigableFormProps) => {
     return (
         <>
-            <Nav sections={props.sections} />
+            <Nav sections={props.sections} record={props.record} />
             <Content sections={props.sections} />
         </>
     );

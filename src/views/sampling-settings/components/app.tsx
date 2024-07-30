@@ -44,6 +44,11 @@ export const App = (props: AppProps) => {
             props.postMessage(fromView);
         };
 
+        const handleRecordCommand = () => {
+            const fromView: FromView = { type: 'record' };
+            props.postMessage(fromView);
+        };
+
         return (
             <>
                 <Form
@@ -52,6 +57,7 @@ export const App = (props: AppProps) => {
                     recordOptions={props.state.recordOptions}
                     openCommandFilePicker={openCommandFilePicker}
                     updateRecordOption={updateRecordOption}
+                    record={handleRecordCommand}
                     fieldsToValidate={props.state.fieldsToValidate}
                 />
                 <Footer recordOptions={props.state.recordOptions} />

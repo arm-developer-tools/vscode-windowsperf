@@ -61,6 +61,11 @@ nav {
     padding: 0 0 0 4px;
 }
 
+.record-button {
+    margin-top: 2px;
+    margin-bottom: 8px;
+}
+
 @media (min-width: 672px) {
     main.loaded {
         grid-template-columns: minmax(150px, max-content) minmax(var(--content-max-width), 1fr);
@@ -73,6 +78,10 @@ nav {
 
     #content {
         grid-area: 1 / 2 / 2 / 3;
+    }
+
+    .narrow-screen-only {
+        display: none;
     }
 }
 

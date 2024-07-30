@@ -15,6 +15,7 @@ import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 import { EventSelector } from './event-selector';
 import { UpdateRecordOption } from '../update-record-option';
 import { Select } from '../../common/components/select';
+import { RecordButton } from './record-button';
 
 export type FormProps = {
     cores: Core[];
@@ -22,6 +23,7 @@ export type FormProps = {
     recordOptions: RecordOptions;
     openCommandFilePicker: () => void;
     updateRecordOption: UpdateRecordOption;
+    record: () => void;
     fieldsToValidate: readonly ValidatedField[];
 };
 
@@ -53,127 +55,132 @@ export const Form = (props: FormProps) => {
         props.fieldsToValidate.includes('command') && missingFields.includes('command');
     const showMissingEventsValidation =
         props.fieldsToValidate.includes('events') && missingFields.includes('events');
-
     return (
-        <NavigableForm
-            sections={[
-                {
-                    id: 'command',
-                    title: 'Command',
-                    description:
-                        'The executable to spawn. Absolute path or relative to the workspace root.',
-                    invalid: showMissingCommandValidation,
-                    component: (
-                        <>
-                            <div className="file-picker-input">
+        <>
+            <NavigableForm
+                record={props.record}
+                sections={[
+                    {
+                        id: 'command',
+                        title: 'Command',
+                        description:
+                            'The executable to spawn. Absolute path or relative to the workspace root.',
+                        invalid: showMissingCommandValidation,
+                        component: (
+                            <>
+                                <div className="file-picker-input">
+                                    <RecordOptionInput
+                                        type="text"
+                                        recordOption="command"
+                                        recordOptions={props.recordOptions}
+                                        isInvalid={showMissingCommandValidation}
+                                        onChange={(value) => {
+                                            props.updateRecordOption({
+                                                type: 'setCommand',
+                                                command: value,
+                                            });
+                                        }}
+                                    />
+                                </div>
+                                <div className="file-picker-control">
+                                    <VSCodeButton onClick={props.openCommandFilePicker}>
+                                        Browse
+                                    </VSCodeButton>
+                                </div>
+                                {showMissingCommandValidation && (
+                                    <div className="error-message">This field is required</div>
+                                )}
+                            </>
+                        ),
+                    },
+                    {
+                        id: 'arguments',
+                        title: 'Arguments',
+                        description: 'The arguments to pass to the command.',
+                        component: (
+                            <div>
                                 <RecordOptionInput
                                     type="text"
-                                    recordOption="command"
+                                    recordOption="arguments"
                                     recordOptions={props.recordOptions}
-                                    isInvalid={showMissingCommandValidation}
+                                    isInvalid={false}
                                     onChange={(value) => {
                                         props.updateRecordOption({
-                                            type: 'setCommand',
-                                            command: value,
+                                            type: 'setArguments',
+                                            arguments: value,
                                         });
                                     }}
                                 />
                             </div>
-                            <div className="file-picker-control">
-                                <VSCodeButton onClick={props.openCommandFilePicker}>
-                                    Browse
-                                </VSCodeButton>
+                        ),
+                    },
+                    {
+                        id: 'core',
+                        title: 'CPU Core',
+                        description: 'Specifies the CPU Core to monitor.',
+                        component: (
+                            <div>
+                                <Select
+                                    items={props.cores.map((core) => ({
+                                        id: core.number.toString(),
+                                        label: `Core ${core.number} - ${core.model}`,
+                                    }))}
+                                    selected={props.recordOptions.core.toString() || ''}
+                                    onChange={(value) => {
+                                        props.updateRecordOption({
+                                            type: 'setCore',
+                                            core: parseInt(value),
+                                        });
+                                    }}
+                                />
                             </div>
-                            {showMissingCommandValidation && (
-                                <div className="error-message">This field is required</div>
-                            )}
-                        </>
-                    ),
-                },
-                {
-                    id: 'arguments',
-                    title: 'Arguments',
-                    description: 'The arguments to pass to the command.',
-                    component: (
-                        <div>
-                            <RecordOptionInput
-                                type="text"
-                                recordOption="arguments"
-                                recordOptions={props.recordOptions}
-                                isInvalid={false}
-                                onChange={(value) => {
-                                    props.updateRecordOption({
-                                        type: 'setArguments',
-                                        arguments: value,
-                                    });
-                                }}
-                            />
-                        </div>
-                    ),
-                },
-                {
-                    id: 'core',
-                    title: 'CPU Core',
-                    description: 'Specifies the CPU Core to monitor.',
-                    component: (
-                        <div>
-                            <Select
-                                items={props.cores.map((core) => ({
-                                    id: core.number.toString(),
-                                    label: `Core ${core.number} - ${core.model}`,
-                                }))}
-                                selected={props.recordOptions.core.toString() || ''}
-                                onChange={(value) => {
-                                    props.updateRecordOption({
-                                        type: 'setCore',
-                                        core: parseInt(value),
-                                    });
-                                }}
-                            />
-                        </div>
-                    ),
-                },
-                {
-                    id: 'events',
-                    title: 'Events',
-                    description: 'The hardware events to sample.',
-                    invalid: showMissingEventsValidation,
-                    component: (
-                        <>
-                            <EventSelector
-                                events={props.events}
-                                recordOptions={props.recordOptions}
-                                updateRecordOption={props.updateRecordOption}
-                            />
-                            {showMissingEventsValidation && (
-                                <div className="error-message">This field is required</div>
-                            )}
-                        </>
-                    ),
-                },
-                {
-                    id: 'timeout',
-                    title: 'Timeout',
-                    description:
-                        'Specifies the maximum time in seconds the recording can run before it is stopped.',
-                    component: (
-                        <div>
-                            <RecordOptionInput
-                                type="number"
-                                recordOption="timeoutSeconds"
-                                recordOptions={props.recordOptions}
-                                isInvalid={false}
-                                onChange={(value) => {
-                                    props.updateRecordOption({
-                                        type: 'setTimeout',
-                                        timeout: value,
-                                    });
-                                }}
-                            />
-                        </div>
-                    ),
-                },
-            ]}
-        />
+                        ),
+                    },
+                    {
+                        id: 'events',
+                        title: 'Events',
+                        description: 'The hardware events to sample.',
+                        invalid: showMissingEventsValidation,
+                        component: (
+                            <>
+                                <EventSelector
+                                    events={props.events}
+                                    recordOptions={props.recordOptions}
+                                    updateRecordOption={props.updateRecordOption}
+                                />
+                                {showMissingEventsValidation && (
+                                    <div className="error-message">This field is required</div>
+                                )}
+                            </>
+                        ),
+                    },
+                    {
+                        id: 'timeout',
+                        title: 'Timeout',
+                        description:
+                            'Specifies the maximum time in seconds the recording can run before it is stopped.',
+                        component: (
+                            <div>
+                                <RecordOptionInput
+                                    type="number"
+                                    recordOption="timeoutSeconds"
+                                    recordOptions={props.recordOptions}
+                                    isInvalid={false}
+                                    onChange={(value) => {
+                                        props.updateRecordOption({
+                                            type: 'setTimeout',
+                                            timeout: value,
+                                        });
+                                    }}
+                                />
+                            </div>
+                        ),
+                    },
+                ]}
+            />
+            <div className="record-button narrow-screen-only">
+                <RecordButton onClick={props.record} />
+            </div>
+        </>
     );
 };
