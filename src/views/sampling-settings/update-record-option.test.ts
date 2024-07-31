@@ -7,6 +7,7 @@ import { UpdateRecordOptionDependencies, createUpdateRecordOption } from './upda
 import { loadedStateFactory } from './state/app.factories';
 import { UpdateRecordOptionAction } from './state/update-record-option-action';
 import { FromView } from './messages';
+import { eventAndFrequencyFactory } from '../../wperf/record-options.factories';
 
 describe('UpdateRecordOption', () => {
     it(' dispatches the action to update the state', () => {
@@ -16,7 +17,10 @@ describe('UpdateRecordOption', () => {
             dispatch: jest.fn(),
         };
         const updateRecordOption = createUpdateRecordOption(dependencies);
-        const action: UpdateRecordOptionAction = { type: 'addEvent', event: 'event_1' };
+        const action: UpdateRecordOptionAction = {
+            type: 'addEvent',
+            event: eventAndFrequencyFactory(),
+        };
 
         updateRecordOption(action);
 

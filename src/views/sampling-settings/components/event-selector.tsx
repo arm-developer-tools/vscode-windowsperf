@@ -6,6 +6,7 @@ import * as React from 'react';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions } from '../../../wperf/record-options';
 import { UpdateRecordOption } from '../update-record-option';
+import { UpdateRecordOptionAction } from '../state/update-record-option-action';
 
 export type EventSelectorProps = {
     events: PredefinedEvent[];
@@ -20,12 +21,17 @@ type EventListItemProps = {
 };
 
 const EventListItem = ({ event, recordOptions, updateRecordOption }: EventListItemProps) => {
-    const checked = recordOptions.events.some(
+    const index = recordOptions.events.findIndex(
         ({ event: selectedEvent }) => selectedEvent === event.Alias_Name,
     );
 
+    const checked = index >= 0;
+
     const onChange = () => {
-        updateRecordOption({ type: checked ? 'removeEvent' : 'addEvent', event: event.Alias_Name });
+        const action: UpdateRecordOptionAction = checked
+            ? { type: 'removeEvent', index }
+            : { type: 'addEvent', event: { event: event.Alias_Name, frequency: undefined } };
+        updateRecordOption(action);
     };
 
     return (

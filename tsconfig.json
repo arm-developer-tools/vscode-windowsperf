@@ -10,7 +10,7 @@
         "noUnusedLocals": true,
         "skipLibCheck": true,
         "lib": [
-            "ES2022" /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
+            "ES2023" /* Specify a set of bundled library declaration files that describe the target runtime environment. */,
             "DOM"
         ],
         "jsx": "react",

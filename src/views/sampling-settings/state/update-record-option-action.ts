@@ -2,13 +2,17 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { RecordOptions } from '../../../wperf/record-options';
+import { EventAndFrequency, RecordOptions } from '../../../wperf/record-options';
+
+type EventAction =
+    | { type: 'addEvent'; event: EventAndFrequency }
+    | { type: 'editEvent'; index: number; event: EventAndFrequency }
+    | { type: 'removeEvent'; index: number };
 
 export type UpdateRecordOptionAction =
+    | EventAction
     | { type: 'setCommand'; command: string }
     | { type: 'setArguments'; arguments: string }
-    | { type: 'addEvent'; event: string }
-    | { type: 'removeEvent'; event: string }
     | { type: 'setCore'; core: number }
     | { type: 'setTimeout'; timeout: string };
 
@@ -19,6 +23,7 @@ export const isUpdateRecordOptionAction = (action: {
         'setCommand',
         'setArguments',
         'addEvent',
+        'editEvent',
         'removeEvent',
         'setCore',
         'setTimeout',
@@ -34,10 +39,22 @@ export const getAffectedField = (action: UpdateRecordOptionAction): keyof Record
         case 'setCore':
             return 'core';
         case 'addEvent':
+        case 'editEvent':
         case 'removeEvent':
             return 'events';
         case 'setTimeout':
             return 'timeoutSeconds';
+    }
+};
+
+const eventReducer = (state: EventAndFrequency[], action: EventAction): EventAndFrequency[] => {
+    switch (action.type) {
+        case 'addEvent':
+            return [...state, action.event];
+        case 'removeEvent':
+            return state.toSpliced(action.index, 1);
+        case 'editEvent':
+            return state.toSpliced(action.index, 1, action.event);
     }
 };
 
@@ -46,20 +63,17 @@ export const updateRecordOptionReducer = (
     action: UpdateRecordOptionAction,
 ): RecordOptions => {
     switch (action.type) {
+        case 'addEvent':
+        case 'removeEvent':
+        case 'editEvent':
+            return {
+                ...recordOptions,
+                events: eventReducer(recordOptions.events, action),
+            };
         case 'setCommand':
             return { ...recordOptions, command: action.command };
         case 'setArguments':
             return { ...recordOptions, arguments: action.arguments };
-        case 'addEvent':
-            return {
-                ...recordOptions,
-                events: [...recordOptions.events, { event: action.event }],
-            };
-        case 'removeEvent':
-            return {
-                ...recordOptions,
-                events: recordOptions.events.filter(({ event }) => event !== action.event),
-            };
         case 'setCore':
             return { ...recordOptions, core: action.core };
         case 'setTimeout':

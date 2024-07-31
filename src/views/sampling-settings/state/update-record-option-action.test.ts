@@ -17,10 +17,11 @@ import {
 
 describe('isUpdateRecordOptionAction', () => {
     it.each([
-        ['addEvent', { type: 'addEvent', event: 'newEvent' }],
+        ['addEvent', { type: 'addEvent', event: eventAndFrequencyFactory() }],
         ['setCommand', { type: 'setCommand', command: 'newCommand' }],
         ['setArguments', { type: 'setArguments', arguments: 'newArguments' }],
-        ['removeEvent', { type: 'removeEvent', event: 'toRemoveEvent' }],
+        ['removeEvent', { type: 'removeEvent', index: 1 }],
+        ['editEvent', { type: 'editEvent', index: 1, event: eventAndFrequencyFactory() }],
         ['setCore', { type: 'setCore', core: 5 }],
         ['setTimeout', { type: 'setTimeout', timeout: '10000000' }],
     ] as const)('returns true for %s actions', (_, action: UpdateRecordOptionAction) => {
@@ -35,10 +36,11 @@ describe('isUpdateRecordOptionAction', () => {
 
 describe('getAffectedField', () => {
     it.each([
-        ['addEvent', 'events', { type: 'addEvent', event: 'newEvent' }],
+        ['addEvent', 'events', { type: 'addEvent', event: eventAndFrequencyFactory() }],
         ['setCommand', 'command', { type: 'setCommand', command: 'newCommand' }],
         ['setArguments', 'arguments', { type: 'setArguments', arguments: 'newArguments' }],
-        ['removeEvent', 'events', { type: 'removeEvent', event: 'toRemoveEvent' }],
+        ['removeEvent', 'events', { type: 'removeEvent', index: 1 }],
+        ['editEvent', 'events', { type: 'editEvent', index: 1, event: eventAndFrequencyFactory() }],
         ['setCore', 'core', { type: 'setCore', core: 5 }],
         ['setTimeout', 'timeoutSeconds', { type: 'setTimeout', timeout: '10000000' }],
     ] as const)(
@@ -74,33 +76,51 @@ describe('updateRecordOptionReducer', () => {
 
     it('handles an addEvent action', () => {
         const initialEventAndFrequency = eventAndFrequencyFactory();
+        const newEvent = eventAndFrequencyFactory();
 
         const got = updateRecordOptionReducer(
             recordOptionsFactory({ events: [initialEventAndFrequency] }),
             {
                 type: 'addEvent',
-                event: 'new_event',
+                event: newEvent,
             },
         );
 
-        const want: EventAndFrequency[] = [
-            initialEventAndFrequency,
-            { event: 'new_event', frequency: undefined },
-        ];
+        const want: EventAndFrequency[] = [initialEventAndFrequency, newEvent];
+        expect(got.events).toEqual(expect.arrayContaining(want));
+    });
+
+    it('handles an editEvent action', () => {
+        const anotherEventAndFrequency = eventAndFrequencyFactory();
+        const initialEventAndFrequency = eventAndFrequencyFactory();
+        const newEvent = eventAndFrequencyFactory();
+
+        const got = updateRecordOptionReducer(
+            recordOptionsFactory({ events: [anotherEventAndFrequency, initialEventAndFrequency] }),
+            {
+                type: 'editEvent',
+                index: 1,
+                event: newEvent,
+            },
+        );
+
+        const want: EventAndFrequency[] = [anotherEventAndFrequency, newEvent];
         expect(got.events).toEqual(expect.arrayContaining(want));
     });
 
     it('handles a removeEvent action', () => {
-        const eventName = 'event_to_remove';
+        const remainingEventAndFrequency = eventAndFrequencyFactory();
         const got = updateRecordOptionReducer(
-            recordOptionsFactory({ events: [eventAndFrequencyFactory({ event: eventName })] }),
+            recordOptionsFactory({
+                events: [remainingEventAndFrequency, eventAndFrequencyFactory()],
+            }),
             {
                 type: 'removeEvent',
-                event: eventName,
+                index: 1,
             },
         );
 
-        expect(got.events).toEqual([]);
+        expect(got.events).toEqual([remainingEventAndFrequency]);
     });
 
     it('handles a setCore action', () => {

@@ -70,12 +70,10 @@ describe('EventSelector', () => {
 
     it('calls updateRecordOption when a checkbox is checked', () => {
         const updateRecordOption = jest.fn();
+        const eventToAdd = predefinedEventFactory({ Alias_Name: 'event_2' });
         render(
             <EventSelector
-                events={[
-                    predefinedEventFactory({ Alias_Name: 'event_1' }),
-                    predefinedEventFactory({ Alias_Name: 'event_2' }),
-                ]}
+                events={[predefinedEventFactory({ Alias_Name: 'event_1' }), eventToAdd]}
                 recordOptions={recordOptionsFactory({
                     events: [eventAndFrequencyFactory({ event: 'event_1' })],
                 })}
@@ -85,7 +83,10 @@ describe('EventSelector', () => {
 
         fireEvent.click(screen.getByText('event_2'));
 
-        const want: UpdateRecordOptionAction = { type: 'addEvent', event: 'event_2' };
+        const want: UpdateRecordOptionAction = {
+            type: 'addEvent',
+            event: { event: eventToAdd.Alias_Name, frequency: undefined },
+        };
         expect(updateRecordOption).toHaveBeenCalledWith(want);
     });
 
@@ -106,7 +107,7 @@ describe('EventSelector', () => {
 
         fireEvent.click(screen.getByText('event_1'));
 
-        const want: UpdateRecordOptionAction = { type: 'removeEvent', event: 'event_1' };
+        const want: UpdateRecordOptionAction = { type: 'removeEvent', index: 0 };
         expect(updateRecordOption).toHaveBeenCalledWith(want);
     });
 });
