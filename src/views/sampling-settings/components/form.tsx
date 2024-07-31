@@ -12,10 +12,10 @@ import {
 } from '../../../wperf/record-options';
 import { NavigableForm } from './navigable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
-import { EventSelector } from './event-selector';
 import { UpdateRecordOption } from '../update-record-option';
 import { Select } from '../../common/components/select';
 import { RecordButton } from './record-button';
+import { EventSelector } from './events/selector';
 
 export type FormProps = {
     cores: Core[];
@@ -139,13 +139,14 @@ export const Form = (props: FormProps) => {
                     {
                         id: 'events',
                         title: 'Events',
-                        description: 'The hardware events to sample.',
+                        description:
+                            'Specifies the hardware events to sample and how often each of them is measured by WindowsPerf',
                         invalid: showMissingEventsValidation,
                         component: (
                             <>
                                 <EventSelector
-                                    events={props.events}
-                                    recordOptions={props.recordOptions}
+                                    predefinedEvents={props.events}
+                                    selectedEvents={props.recordOptions.events}
                                     updateRecordOption={props.updateRecordOption}
                                 />
                                 {showMissingEventsValidation && (

@@ -1,0 +1,73 @@
+/**
+ * Copyright (C) 2024 Arm Limited
+ */
+
+ul.event-selector {
+    list-style: none;
+    padding: 0;
+    margin: calc(2 * var(--form-margin-base)) 0 0 0;
+    max-height: 360px;
+    overflow-y: scroll;
+    width: 418px;
+}
+
+ul.event-selector li {
+    margin-bottom: 4px;
+}
+
+.event-table .row {
+    display: flex;
+}
+
+.event-table .row:nth-child(odd):not(.header):hover,
+.event-table .row:nth-child(even).header:hover {
+    background-color: var(--vscode-list-hoverBackground);
+    color: var(--vscode-list-hoverForeground);
+}
+
+.event-table .row > * {
+    line-height: 24px;
+    padding-left: 4px;
+    text-overflow: ellipsis;
+}
+
+.event-table .row.header {
+    font-weight: 700;
+}
+
+.event-table .row:nth-child(odd) {
+    background-color: hsla(0, 0%, 51%, 0.04);
+}
+
+.event-table .row > :first-child {
+    width: 50%;
+}
+
+.event-table .row > :nth-child(2) {
+    width: 40%;
+}
+
+.event-table .row-actions {
+    display: none;
+    flex: auto;
+    justify-content: flex-end;
+}
+
+.event-table .row:hover .row-actions {
+    display: flex;
+}
+
+.event-table .row-action {
+    border-radius: 4px;
+    cursor: pointer;
+    width: 20px;
+    text-align: center;
+}
+
+.event-table .row-action:hover {
+    background-color: var(--vscode-toolbar-hoverBackground);
+}
+
+.event-table .row-action .codicon {
+    vertical-align: text-top;
+}

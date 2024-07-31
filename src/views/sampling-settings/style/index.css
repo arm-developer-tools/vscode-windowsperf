@@ -4,6 +4,7 @@
 
 @import url('./input.css');
 @import url('./nav.css');
+@import url('./event-selector.css');
 @import '~@vscode/codicons/dist/codicon.css';
 
 :root {
@@ -98,19 +99,6 @@ h1 {
 .description,
 .file-picker-input {
     margin: 0 0 var(--form-margin-base) 0;
-}
-
-ul.event-selector {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    max-height: 360px;
-    overflow-y: scroll;
-    width: 418px;
-}
-
-ul.event-selector li {
-    margin-bottom: 4px;
 }
 
 label.checkbox {
