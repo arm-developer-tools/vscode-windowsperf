@@ -6,7 +6,11 @@ import 'jest';
 import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { PredefinedEvent } from '../../wperf/parse/list';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
-import { MessageHandlerImpl, asPathRelativeToFirstWorkspace } from './message-handler';
+import {
+    MessageHandlerImpl,
+    asPathRelativeToFirstWorkspace,
+    determineErrorType,
+} from './message-handler';
 import { FromView, ToView } from './messages';
 import { recordOptionsFromViewFactory } from './messages.factories';
 import { faker } from '@faker-js/faker';
@@ -59,7 +63,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             type: 'initialData',
             recordOptions,
             cores: expect.any(Object),
-            events: { type: 'error', error: {} },
+            events: { type: 'error', error: { type: 'unknown', message: 'Failed to load events' } },
             validate: validateOnCreate,
         };
         expect(got).toEqual(want);
@@ -176,5 +180,16 @@ describe('asPathRelativeToFirstWorkspace', () => {
         ]);
 
         expect(got).toBe(fileName);
+    });
+});
+
+describe('determineErrorType', () => {
+    it('returns noWperfDriver when there is an issue with the wperf-driver', () => {
+        const error = new Error('not recognised as an internal or external command');
+        expect(determineErrorType(error)).toBe('noWperf');
+    });
+    it('returns noWperf when the WindowsPerf executable cannot be found', () => {
+        const error = new Error('No active device interfaces found.');
+        expect(determineErrorType(error)).toBe('noWperfDriver');
     });
 });

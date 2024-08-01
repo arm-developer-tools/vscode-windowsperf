@@ -5,7 +5,7 @@
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions, ValidatedField, validatedFields } from '../../../wperf/record-options';
-import { ToView } from '../messages';
+import { ErrorDetail, ToView } from '../messages';
 import {
     getAffectedField,
     isUpdateRecordOptionAction,
@@ -21,11 +21,7 @@ export type LoadedState = {
     fieldsToValidate: readonly ValidatedField[];
 };
 
-export type State =
-    | { type: 'loading' }
-    // TODO: Define error type
-    | { type: 'error'; error: {} }
-    | LoadedState;
+export type State = { type: 'loading' } | { type: 'error'; error: ErrorDetail } | LoadedState;
 
 export const initialState: State = { type: 'loading' };
 

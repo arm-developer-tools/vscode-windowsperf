@@ -25,6 +25,15 @@ export const fromViewShape = z.union([
 
 export type FromView = z.infer<typeof fromViewShape>;
 
+const errorTypeShape = z.enum(['noWperf', 'noWperfDriver', 'unknown']);
+
+const errorDetailShape = z.object({
+    type: errorTypeShape,
+    message: z.string().optional(),
+});
+
+export type ErrorDetail = z.infer<typeof errorDetailShape>;
+
 const eventsLoadResultShape = z.union([
     z.object({
         type: z.literal('success'),
@@ -32,8 +41,7 @@ const eventsLoadResultShape = z.union([
     }),
     z.object({
         type: z.literal('error'),
-        // TODO: Define error type
-        error: z.object({}),
+        error: errorDetailShape,
     }),
 ]);
 

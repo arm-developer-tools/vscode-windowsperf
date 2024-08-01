@@ -9,7 +9,7 @@ import { RecordOptionsStore } from '../../record-options-store';
 import { Core, getCpuInfo } from '../../wperf/cores';
 import { RecordOptions } from '../../wperf/record-options';
 import { runList } from '../../wperf/run';
-import { EventsLoadResult, ToView, fromViewShape } from './messages';
+import { ErrorDetail, EventsLoadResult, ToView, fromViewShape } from './messages';
 import * as path from 'path';
 
 export type MessageHandler = {
@@ -104,10 +104,34 @@ export class MessageHandlerImpl implements MessageHandler {
             const events = await this.getPredefinedEvents();
             return { type: 'success', events };
         } catch (error) {
-            return { type: 'error', error: {} };
+            return {
+                type: 'error',
+                error: {
+                    type: determineErrorType(error),
+                    message: (error as Error).message || 'Unknown error',
+                },
+            };
         }
     };
 }
+
+export const determineErrorType = (error: unknown): ErrorDetail['type'] => {
+    if (error instanceof Error) {
+        if (
+            error.message.includes('not recognised as an internal or external command') ||
+            error.message.includes('No such file or directory')
+        ) {
+            return 'noWperf';
+        }
+        if (error.message.includes('No active device interfaces found.')) {
+            return 'noWperfDriver';
+        } else {
+            return 'unknown';
+        }
+    } else {
+        return 'unknown';
+    }
+};
 
 const promptUserForCommand = async (defaultUri: Uri | undefined): Promise<string | undefined> => {
     const maybeUris = await vscode.window.showOpenDialog({

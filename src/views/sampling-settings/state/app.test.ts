@@ -12,7 +12,9 @@ import { validatedFields } from '../../../wperf/record-options';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
-        const message: ToView = initialDataToViewFactory({ events: { type: 'error', error: {} } });
+        const message: ToView = initialDataToViewFactory({
+            events: { type: 'error', error: { type: 'noWperfDriver' } },
+        });
 
         const got = reducer(initialState, {
             type: 'handleMessage',
@@ -21,7 +23,7 @@ describe('reducer', () => {
 
         const want: State = {
             type: 'error',
-            error: {},
+            error: { type: 'noWperfDriver' },
         };
         expect(got).toEqual(want);
     });

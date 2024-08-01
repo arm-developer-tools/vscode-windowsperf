@@ -33,7 +33,7 @@ describe('App', () => {
         render(<App {...baseProps} state={{ type: 'loading' }} />);
         expect(container.className).toBe('loading');
 
-        render(<App {...baseProps} state={{ type: 'error', error: {} }} />);
+        render(<App {...baseProps} state={{ type: 'error', error: { type: 'noWperf' } }} />);
         expect(container.className).toBe('error');
 
         render(<App {...baseProps} state={loadedStateFactory()} />);
@@ -53,17 +53,17 @@ describe('App', () => {
         expect(container.querySelector('.loading-spinner')).toBeInTheDocument();
     });
 
-    it('renders the error message when the state type is error', () => {
-        render(
+    it('renders the error view when the state type is error', () => {
+        const { container } = render(
             <App
                 postMessage={jest.fn()}
                 container={containerFactory()}
-                state={{ type: 'error', error: {} }}
+                state={{ type: 'error', error: { type: 'unknown' } }}
                 dispatch={jest.fn()}
             />,
         );
 
-        expect(screen.queryByText('Error')).toBeInTheDocument();
+        expect(container.querySelector('.error-view')).toBeInTheDocument();
     });
 
     it('renders the form when the state type is not loading', () => {

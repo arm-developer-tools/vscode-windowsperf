@@ -10,6 +10,7 @@ import { Form } from './form';
 import { LoadingSpinner } from './loading-spinner';
 import { createUpdateRecordOption } from '../update-record-option';
 import { Footer } from './footer';
+import { ErrorView } from './error-view';
 
 export type AppProps = {
     postMessage: (message: FromView) => void;
@@ -31,7 +32,7 @@ export const App = (props: AppProps) => {
     if (props.state.type === 'loading') {
         return <LoadingSpinner />;
     } else if (props.state.type === 'error') {
-        return <div>Error</div>;
+        return <ErrorView error={props.state.error} />;
     } else {
         const updateRecordOption = createUpdateRecordOption({
             postMessage: (message) => props.postMessage(message),
