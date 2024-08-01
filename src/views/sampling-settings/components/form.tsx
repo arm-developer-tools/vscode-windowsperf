@@ -37,15 +37,18 @@ type RecordOptionInputProps = {
 
 const RecordOptionInput = (props: RecordOptionInputProps) => {
     return (
-        <input
-            type={props.type}
-            className={props.isInvalid ? 'invalid' : ''}
-            value={props.recordOptions[props.recordOption]}
-            data-testid={`${props.recordOption}-input`}
-            onChange={(event) => {
-                props.onChange(event.target.value);
-            }}
-        />
+        <div className="input-wrapper">
+            <input
+                type={props.type}
+                className={props.isInvalid ? 'invalid' : ''}
+                value={props.recordOptions[props.recordOption]}
+                data-testid={`${props.recordOption}-input`}
+                onChange={(event) => {
+                    props.onChange(event.target.value);
+                }}
+            />
+            {props.isInvalid ? <i className="codicon codicon-error input-icon"></i> : undefined}
+        </div>
     );
 };
 
@@ -61,31 +64,33 @@ export const Form = (props: FormProps) => {
                 record={props.record}
                 sections={[
                     {
-                        id: 'command',
-                        title: 'Command',
+                        id: 'executable-path',
+                        title: 'Executable Path',
                         description:
-                            'The executable to spawn. Absolute path or relative to the workspace root.',
+                            "Specifies the executable to run, using either its absolute path or a path relative to the project's root directory.",
                         invalid: showMissingCommandValidation,
                         component: (
                             <>
-                                <div className="file-picker-input">
-                                    <RecordOptionInput
-                                        type="text"
-                                        recordOption="command"
-                                        recordOptions={props.recordOptions}
-                                        isInvalid={showMissingCommandValidation}
-                                        onChange={(value) => {
-                                            props.updateRecordOption({
-                                                type: 'setCommand',
-                                                command: value,
-                                            });
-                                        }}
-                                    />
-                                </div>
-                                <div className="file-picker-control">
-                                    <VSCodeButton onClick={props.openCommandFilePicker}>
-                                        Browse
-                                    </VSCodeButton>
+                                <div className="file-picker">
+                                    <div className="file-picker-input">
+                                        <RecordOptionInput
+                                            type="text"
+                                            recordOption="command"
+                                            recordOptions={props.recordOptions}
+                                            isInvalid={showMissingCommandValidation}
+                                            onChange={(value) => {
+                                                props.updateRecordOption({
+                                                    type: 'setCommand',
+                                                    command: value,
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="file-picker-control">
+                                        <VSCodeButton onClick={props.openCommandFilePicker}>
+                                            Browse
+                                        </VSCodeButton>
+                                    </div>
                                 </div>
                                 {showMissingCommandValidation && (
                                     <div className="error-message">This field is required</div>

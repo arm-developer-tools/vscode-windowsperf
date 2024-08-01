@@ -96,6 +96,12 @@ h1 {
     margin: 0 0 var(--form-margin-base) 0;
 }
 
+.file-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .description,
 .file-picker-input {
     margin: 0 0 var(--form-margin-base) 0;
@@ -143,4 +149,9 @@ footer .footer-display {
 
 a.invalid {
     color: var(--vscode-errorForeground);
+}
+
+.super-impose {
+    vertical-align: super;
+    font-size: medium;
 }
