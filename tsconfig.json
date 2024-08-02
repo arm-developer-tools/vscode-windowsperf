@@ -26,6 +26,7 @@
         "src",
         "__mocks__" /* Make eslint happy */,
         "test-workspace" /* Make eslint happy */,
-        "playwright.config.ts" /* Make eslint happy */
+        "playwright.config.ts" /* Make eslint happy */,
+        "jest-setup-file.ts" /* Make eslint happy */
     ]
 }

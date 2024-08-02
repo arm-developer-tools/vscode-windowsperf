@@ -8,6 +8,7 @@ import { WebviewApi } from 'vscode-webview';
 import { toViewShape } from '../messages';
 import { initialState, reducer } from '../state/app';
 import { App } from './app';
+import { PrimeReactProvider } from 'primereact/api';
 
 export type RootProps = {
     api: WebviewApi<unknown>;
@@ -40,11 +41,13 @@ export const Root = ({ api, container }: RootProps) => {
     }, []);
 
     return (
-        <App
-            postMessage={api.postMessage.bind(api)}
-            container={container}
-            state={state}
-            dispatch={dispatch}
-        />
+        <PrimeReactProvider>
+            <App
+                postMessage={api.postMessage.bind(api)}
+                container={container}
+                state={state}
+                dispatch={dispatch}
+            />
+        </PrimeReactProvider>
     );
 };

@@ -1,0 +1,106 @@
+/**
+ * Copyright (C) 2024 Arm Limited
+ */
+
+.dropdown {
+    border-radius: 2px;
+    background-color: var(--vscode-settings-dropdownBackground);
+    color: var(--vscode-settings-dropdownForeground);
+    border: 1px solid var(--vscode-settings-dropdownBorder);
+    cursor: pointer;
+    height: 26px;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    position: relative;
+    display: inline-flex;
+}
+
+.dropdown.invalid {
+    border-color: var(--vscode-inputValidation-errorBorder);
+    color: var(--vscode-inputValidation-errorForeground);
+}
+
+.dropdown.has-placeholder .dropdown-input {
+    color: var(--vscode-input-placeholderForeground);
+}
+
+.dropdown[data-p-focus='true'] {
+    outline-color: var(--vscode-focusBorder);
+    outline-offset: -1px;
+    outline-style: solid;
+    outline-width: 1px;
+}
+
+.dropdown-trigger {
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-input {
+    flex: auto;
+}
+
+.dropdown-panel {
+    box-sizing: border-box;
+    border: 1px solid var(--vscode-input-border);
+    background-color: var(
+        --vscode-dropdown-listBackground,
+        var(--vscode-settings-dropdownBackground)
+    );
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    padding: 1px;
+    overflow: hidden;
+}
+
+.dropdown-wrapper {
+    overflow-y: auto;
+}
+
+.dropdown-list {
+    border-radius: 1px;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.dropdown-item,
+.dropdown-item-group {
+    line-height: 22px;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0 0 4px 0;
+    border: 0 none;
+    padding: 0;
+    max-width: 450px;
+}
+
+.dropdown-item {
+    padding-left: 16px;
+    cursor: pointer;
+}
+
+.dropdown-item-group {
+    font-weight: 700;
+}
+
+.dropdown-item[data-p-focused='true'] {
+    color: var(--vscode-inputOption-activeForeground);
+    background: var(--vscode-inputOption-activeBackground);
+}
+
+.dropdown-filter-container {
+    position: relative;
+}
+
+input[type='text'].dropdown-filter-input {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dropdown-filter-icon {
+    right: 0.75rem;
+    position: absolute;
+    top: 50%;
+    margin-top: -0.5rem;
+}
