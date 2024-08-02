@@ -7,6 +7,23 @@ import { RecordButton } from './record-button';
 
 export type FormSection = {
     id: string;
+    title: string;
+    component: GroupSection | ItemSection;
+    invalid?: boolean;
+};
+
+type GroupSection = {
+    type: 'group';
+    contents: FormContent[];
+};
+
+type ItemSection = {
+    type: 'item';
+    content: FormContent;
+};
+
+type FormContent = {
+    id: string;
     description: string;
     title: string;
     component: React.ReactNode;
@@ -40,16 +57,31 @@ const Nav = (props: NavigableFormProps) => {
     );
 };
 
-const Content = (props: Pick<NavigableFormProps, 'sections'>) => {
+const FormBody = (props: Pick<NavigableFormProps, 'sections'>) => {
+    const content = props.sections.map((section) => {
+        if (section.component.type === 'group') {
+            return (
+                <>
+                    <h2 id={section.id}>{section.title}</h2>
+                    {section.component.contents.map((content) => {
+                        return <Content content={content} type={section.component.type} />;
+                    })}
+                </>
+            );
+        } else {
+            return <Content content={section.component.content} type={section.component.type} />;
+        }
+    });
+    return <section className="content">{content}</section>;
+};
+
+const Content = (props: { content: FormContent; type: 'group' | 'item' }) => {
+    const { content, type } = props;
     return (
-        <section id="content">
-            {props.sections.map((section) => (
-                <section className="setting" id={section.id} key={section.id}>
-                    <h1>{section.title}</h1>
-                    <div className="description">{section.description}</div>
-                    {section.component}
-                </section>
-            ))}
+        <section className="setting" id={content.id} key={content.id}>
+            {type === 'group' ? <h1>{content.title}</h1> : <h2>{content.title}</h2>}
+            <div className="description">{content.description}</div>
+            {content.component}
         </section>
     );
 };
@@ -58,7 +90,21 @@ export const NavigableForm = (props: NavigableFormProps) => {
     return (
         <>
             <Nav sections={props.sections} record={props.record} />
-            <Content sections={props.sections} />
+            <FormBody sections={props.sections} />
         </>
     );
+};
+
+export const createGroupSection = (contents: FormContent[]): GroupSection => {
+    return {
+        type: 'group',
+        contents,
+    };
+};
+
+export const createSection = (content: FormContent): ItemSection => {
+    return {
+        type: 'item',
+        content,
+    };
 };

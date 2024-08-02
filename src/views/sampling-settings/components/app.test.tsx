@@ -76,6 +76,6 @@ describe('App', () => {
             />,
         );
 
-        expect(screen.queryByText('Events', { selector: 'h1' })).toBeInTheDocument();
+        expect(screen.queryByText('Events', { selector: 'h2' })).toBeInTheDocument();
     });
 });
