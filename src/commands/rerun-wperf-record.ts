@@ -9,11 +9,13 @@ import { SampleSource, isSourceRecordRun } from '../views/sampling-results/sampl
 import { ObservableCollection } from '../observable-collection';
 import { prependSampleAndMakeSelected, record } from '../record';
 import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
+import { Store } from '../store';
 
 export class RerunWperfRecord {
     constructor(
         private readonly sources: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
+        private readonly recentEventsStore: Store<string[]>,
         private readonly runRecord: typeof record = record,
         private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
     ) {}
@@ -23,7 +25,7 @@ export class RerunWperfRecord {
 
         const recordOptions = this.extractRecordOptions(sampleSource);
 
-        const newSampleSource = await this.runRecord(recordOptions);
+        const newSampleSource = await this.runRecord(recordOptions, this.recentEventsStore);
         if (newSampleSource) {
             prependSampleAndMakeSelected(newSampleSource, this.sources, this.selectedFile);
         }

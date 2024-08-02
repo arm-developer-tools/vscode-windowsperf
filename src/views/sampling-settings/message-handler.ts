@@ -5,12 +5,12 @@
 import { Uri, WorkspaceFolder } from 'vscode';
 import * as vscode from 'vscode';
 import { logger } from '../../logging/logger';
-import { RecordOptionsStore } from '../../record-options-store';
 import { Core, getCpuInfo } from '../../wperf/cores';
 import { RecordOptions } from '../../wperf/record-options';
 import { runList } from '../../wperf/run';
 import { ErrorDetail, EventsLoadResult, ToView, fromViewShape } from './messages';
 import * as path from 'path';
+import { Store } from '../../store';
 
 export type MessageHandler = {
     handleMessage: (message: unknown) => Promise<ToView | undefined>;
@@ -20,8 +20,9 @@ export class MessageHandlerImpl implements MessageHandler {
     private readonly eventsPromise: Promise<EventsLoadResult>;
 
     constructor(
-        private readonly recordOptionsStore: RecordOptionsStore,
+        private readonly recordOptionsStore: Store<RecordOptions>,
         private readonly validateOnCreate: boolean,
+        private readonly recentEventsStore: Store<string[]>,
         private readonly getPredefinedEvents = runList,
         private readonly promptForCommand = promptUserForCommand,
     ) {
@@ -54,7 +55,7 @@ export class MessageHandlerImpl implements MessageHandler {
     };
 
     private readonly handleOpenCommandFilePicker = async (): Promise<ToView | undefined> => {
-        const currentCommand = this.recordOptionsStore.recordOptions.command;
+        const currentCommand = this.recordOptionsStore.value.command;
         const defaultUri = path.isAbsolute(currentCommand)
             ? Uri.file(path.dirname(currentCommand))
             : undefined;
@@ -62,8 +63,8 @@ export class MessageHandlerImpl implements MessageHandler {
         const command = await this.promptForCommand(defaultUri);
 
         if (command) {
-            this.recordOptionsStore.recordOptions = {
-                ...this.recordOptionsStore.recordOptions,
+            this.recordOptionsStore.value = {
+                ...this.recordOptionsStore.value,
                 command,
             };
 
@@ -81,7 +82,8 @@ export class MessageHandlerImpl implements MessageHandler {
     public readonly handleReady = async (): Promise<ToView> => {
         return {
             type: 'initialData',
-            recordOptions: this.recordOptionsStore.recordOptions,
+            recordOptions: this.recordOptionsStore.value,
+            recentEvents: this.recentEventsStore.value,
             cores: this.listCores(),
             events: await this.eventsPromise,
             validate: this.validateOnCreate,
@@ -91,7 +93,7 @@ export class MessageHandlerImpl implements MessageHandler {
     public readonly handleRecordOptions = async (
         recordOptions: RecordOptions,
     ): Promise<undefined> => {
-        this.recordOptionsStore.recordOptions = recordOptions;
+        this.recordOptionsStore.value = recordOptions;
         return undefined;
     };
 

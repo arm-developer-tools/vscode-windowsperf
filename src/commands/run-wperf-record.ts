@@ -8,15 +8,16 @@ import { SampleSource } from '../views/sampling-results/sample-source';
 import { ObservableSelection } from '../observable-selection';
 import { prependSampleAndMakeSelected, record } from '../record';
 import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
-import { RecordOptionsStore } from '../record-options-store';
-import { validateRecordOptions } from '../wperf/record-options';
+import { RecordOptions, validateRecordOptions } from '../wperf/record-options';
 import { SamplingSettingsWebviewPanel } from '../views/sampling-settings/panel';
+import { Store } from '../store';
 
 export class RunWperfRecord {
     constructor(
         private readonly sources: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
-        private readonly recordOptionsStore: RecordOptionsStore,
+        private readonly recordOptionsStore: Store<RecordOptions>,
+        private readonly recentEventsStore: Store<string[]>,
         private readonly samplingSettingsWebviewPanel: SamplingSettingsWebviewPanel,
         private readonly runRecord: typeof record = record,
         private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
@@ -25,13 +26,16 @@ export class RunWperfRecord {
     execute = async () => {
         logger.info('Executing windowsperf.runWperfRecord');
 
-        const validationResult = validateRecordOptions(this.recordOptionsStore.recordOptions);
+        const validationResult = validateRecordOptions(this.recordOptionsStore.value);
 
         if (validationResult.missingFields.length > 0) {
             logger.debug('SamplingSettings invalid, not running wperf record');
             this.samplingSettingsWebviewPanel.show(true);
         } else {
-            const newSampleSource = await this.runRecord(this.recordOptionsStore.recordOptions);
+            const newSampleSource = await this.runRecord(
+                this.recordOptionsStore.value,
+                this.recentEventsStore,
+            );
             if (newSampleSource) {
                 prependSampleAndMakeSelected(newSampleSource, this.sources, this.selectedFile);
             }

@@ -24,10 +24,12 @@ const getPredefinedEventsFactory = (
 describe('SamplingSettingsMessageHandlerImpl', () => {
     it('handles a ready message by sending the initial data when the event load succeeds', async () => {
         const recordOptions = recordOptionsFactory();
+        const recentEvents = ['recent_event'];
         const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
         const messageHandler = new MessageHandlerImpl(
-            { recordOptions },
+            { value: recordOptions },
             false,
+            { value: recentEvents },
             getPredefinedEventsFactory(events),
         );
 
@@ -38,6 +40,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const want: ToView = {
             type: 'initialData',
             recordOptions,
+            recentEvents,
             cores: expect.any(Object),
             events: { type: 'success', events },
             validate: false,
@@ -51,8 +54,9 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const failingGetPredefinedEvents = jest.fn();
         failingGetPredefinedEvents.mockRejectedValue(new Error('Failed to load events'));
         const messageHandler = new MessageHandlerImpl(
-            { recordOptions },
+            { value: recordOptions },
             true,
+            { value: [] },
             failingGetPredefinedEvents,
         );
         const message: FromView = { type: 'ready' };
@@ -62,6 +66,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const want: ToView = {
             type: 'initialData',
             recordOptions,
+            recentEvents: [],
             cores: expect.any(Object),
             events: { type: 'error', error: { type: 'unknown', message: 'Failed to load events' } },
             validate: validateOnCreate,
@@ -70,10 +75,11 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
     });
 
     it('updates the current record options and does not reply in response to a recordOptions message', async () => {
-        const recordOptionsStore = { recordOptions: recordOptionsFactory() };
+        const recordOptionsStore = { value: recordOptionsFactory() };
         const messageHandler = new MessageHandlerImpl(
             recordOptionsStore,
             false,
+            { value: [] },
             getPredefinedEventsFactory(),
         );
         const message: FromView = recordOptionsFromViewFactory();
@@ -81,7 +87,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const got = await messageHandler.handleMessage(message);
 
         expect(got).toBeUndefined();
-        expect(recordOptionsStore.recordOptions).toEqual(message.recordOptions);
+        expect(recordOptionsStore.value).toEqual(message.recordOptions);
     });
 
     describe('handling openCommandFilePicker', () => {
@@ -89,10 +95,11 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             const newCommand = '/path/to/new-command';
             const promptForCommand = jest.fn();
             promptForCommand.mockResolvedValue(newCommand);
-            const recordOptionsStore = { recordOptions: recordOptionsFactory() };
+            const recordOptionsStore = { value: recordOptionsFactory() };
             const messageHandler = new MessageHandlerImpl(
                 recordOptionsStore,
                 false,
+                { value: [] },
                 jest.fn(),
                 promptForCommand,
             );
@@ -100,7 +107,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
 
             await messageHandler.handleMessage(message);
 
-            expect(recordOptionsStore.recordOptions.command).toBe(newCommand);
+            expect(recordOptionsStore.value.command).toBe(newCommand);
         });
 
         it('notifies the caller when the user picks a file', async () => {
@@ -108,8 +115,9 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             const promptForCommand = jest.fn();
             promptForCommand.mockResolvedValue(newCommand);
             const messageHandler = new MessageHandlerImpl(
-                { recordOptions: recordOptionsFactory() },
+                { value: recordOptionsFactory() },
                 false,
+                { value: [] },
                 jest.fn(),
                 promptForCommand,
             );
@@ -125,10 +133,12 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             const promptForCommand = jest.fn();
             promptForCommand.mockResolvedValue(undefined);
             const initialRecordOptions = recordOptionsFactory();
-            const recordOptionsStore = { recordOptions: initialRecordOptions };
+            const recordOptionsStore = { value: initialRecordOptions };
             const messageHandler = new MessageHandlerImpl(
                 recordOptionsStore,
                 false,
+                { value: [] },
+
                 jest.fn(),
                 promptForCommand,
             );
@@ -136,7 +146,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
 
             await messageHandler.handleMessage(message);
 
-            expect(recordOptionsStore.recordOptions.command).toBe(initialRecordOptions.command);
+            expect(recordOptionsStore.value.command).toBe(initialRecordOptions.command);
         });
     });
 });

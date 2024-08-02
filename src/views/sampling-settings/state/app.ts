@@ -2,6 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
+import { updateRecentEvents } from '../../../recent-events';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions, ValidatedField, validatedFields } from '../../../wperf/record-options';
@@ -17,6 +18,7 @@ export type LoadedState = {
     type: 'loaded';
     cores: Core[];
     events: PredefinedEvent[];
+    recentEvents: string[];
     recordOptions: RecordOptions;
     fieldsToValidate: readonly ValidatedField[];
 };
@@ -25,7 +27,9 @@ export type State = { type: 'loading' } | { type: 'error'; error: ErrorDetail } 
 
 export const initialState: State = { type: 'loading' };
 
-export type Action = { type: 'handleMessage'; message: ToView } | UpdateRecordOptionAction;
+export type UpdateRecentEventsAction = { type: 'updateRecentEvents' };
+export type HandleMessageAction = { type: 'handleMessage'; message: ToView };
+export type Action = HandleMessageAction | UpdateRecentEventsAction | UpdateRecordOptionAction;
 
 const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): State => {
     switch (message.events.type) {
@@ -38,6 +42,7 @@ const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): 
             return {
                 type: 'loaded',
                 cores: message.cores,
+                recentEvents: message.recentEvents,
                 events: message.events.events,
                 recordOptions: message.recordOptions,
                 fieldsToValidate: message.validate ? validatedFields : [],
@@ -60,20 +65,36 @@ const toViewMessageReducer = (state: State, message: ToView): State => {
     }
 };
 
-export const reducer = (state: State, action: Action): State => {
+const loadedStateReducer = (
+    state: LoadedState,
+    action: UpdateRecentEventsAction | UpdateRecordOptionAction,
+): LoadedState => {
     if (isUpdateRecordOptionAction(action)) {
-        if (state.type === 'loaded') {
-            const affectedField = getAffectedField(action);
+        const affectedField = getAffectedField(action);
 
-            return {
-                ...state,
-                recordOptions: updateRecordOptionReducer(state.recordOptions, action),
-                fieldsToValidate: state.fieldsToValidate.filter((field) => field !== affectedField),
-            };
+        return {
+            ...state,
+            recordOptions: updateRecordOptionReducer(state.recordOptions, action),
+            fieldsToValidate: state.fieldsToValidate.filter((field) => field !== affectedField),
+        };
+    } else if (action.type === 'updateRecentEvents') {
+        return {
+            ...state,
+            recentEvents: updateRecentEvents(state.recentEvents, state.recordOptions),
+        };
+    } else {
+        return action;
+    }
+};
+
+export const reducer = (state: State, action: Action): State => {
+    if (action.type === 'handleMessage') {
+        return toViewMessageReducer(state, action.message);
+    } else {
+        if (state.type === 'loaded') {
+            return loadedStateReducer(state, action);
         } else {
             return state;
         }
-    } else {
-        return toViewMessageReducer(state, action.message);
     }
 };

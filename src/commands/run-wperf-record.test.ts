@@ -19,7 +19,8 @@ describe('RunWperfRecord', () => {
         const command = new RunWperfRecord(
             new ObservableCollection(),
             new ObservableSelection<SampleSource>(),
-            { recordOptions: invalidRecordOptions },
+            { value: invalidRecordOptions },
+            { value: [] },
             samplingSettingsWebviewPanel,
             record,
             jest.fn(),
@@ -34,10 +35,12 @@ describe('RunWperfRecord', () => {
     it('runs wperf record with the record options configured if they are valid', async () => {
         const recordOptions = recordOptionsFactory();
         const record = jest.fn().mockResolvedValue(undefined);
+        const recentEventsStore = { value: [] };
         const command = new RunWperfRecord(
             new ObservableCollection(),
             new ObservableSelection<SampleSource>(),
-            { recordOptions },
+            { value: recordOptions },
+            recentEventsStore,
             { show: jest.fn() },
             record,
             jest.fn(),
@@ -45,7 +48,7 @@ describe('RunWperfRecord', () => {
 
         await command.execute();
 
-        expect(record).toHaveBeenCalledWith(recordOptions);
+        expect(record).toHaveBeenCalledWith(recordOptions, recentEventsStore);
     });
 
     it('does not add a RecordRun if the recording fails', async () => {
@@ -54,7 +57,8 @@ describe('RunWperfRecord', () => {
         const command = new RunWperfRecord(
             collection,
             new ObservableSelection<SampleSource>(),
-            { recordOptions: recordOptionsFactory() },
+            { value: recordOptionsFactory() },
+            { value: [] },
             { show: jest.fn() },
             failingRecord,
             jest.fn(),
@@ -76,7 +80,8 @@ describe('RunWperfRecord', () => {
         const command = new RunWperfRecord(
             collection,
             new ObservableSelection<SampleSource>(),
-            { recordOptions },
+            { value: recordOptions },
+            { value: [] },
             { show: jest.fn() },
             record,
             jest.fn(),
@@ -101,7 +106,8 @@ describe('RunWperfRecord', () => {
         const command = new RunWperfRecord(
             collection,
             selection,
-            { recordOptions },
+            { value: recordOptions },
+            { value: [] },
             { show: jest.fn() },
             record,
             jest.fn(),

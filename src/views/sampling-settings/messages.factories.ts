@@ -2,6 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
+import { faker } from '@faker-js/faker';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
 import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { FromView, ToView } from './messages';
@@ -20,6 +21,7 @@ export const initialDataToViewFactory = (
     cores: options?.cores ?? [],
     events: options?.events ?? { type: 'success', events: [predefinedEventFactory()] },
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
+    recentEvents: options?.recentEvents ?? [faker.word.noun()],
     validate: options?.validate ?? false,
 });
 

@@ -13,11 +13,15 @@ import { logErrorAndNotify } from './logging/error-logging';
 import { ObservableSelection } from './observable-selection';
 import { ObservableCollection } from './observable-collection';
 import { RecordOptions } from './wperf/record-options';
+import { Store } from './store';
+import { updateRecentEvents } from './recent-events';
 
 export const record = async (
     recordOptions: RecordOptions,
+    recentEventsStore: Store<string[]>,
     runWperfRecord: typeof runWperfRecordWithProgress = runWperfRecordWithProgress,
 ): Promise<SampleSource | undefined> => {
+    recentEventsStore.value = updateRecentEvents(recentEventsStore.value, recordOptions);
     const sample = await runWperfRecord(recordOptions);
 
     if (!sample) {

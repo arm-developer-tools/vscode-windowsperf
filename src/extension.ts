@@ -20,12 +20,27 @@ import { RerunWperfRecord } from './commands/rerun-wperf-record';
 import { ClearAllSampleResults } from './commands/clear-all-sample-results';
 import { ShowSamplingSettings } from './commands/show-sampling-settings';
 import { SamplingSettingsWebviewImpl } from './views/sampling-settings/main';
-import { MementoRecordOptionsStore } from './record-options-store';
 import { MessageHandlerImpl } from './views/sampling-settings/message-handler';
 import { SamplingSettingsWebviewPanelImpl } from './views/sampling-settings/panel';
+import { MementoStore } from './store';
+import { defaultRecordOptions, recordOptionsShape } from './wperf/record-options';
+import { recentEventsShape } from './recent-events';
 
 export async function activate(context: vscode.ExtensionContext) {
-    const recordOptionsStore = new MementoRecordOptionsStore(context.workspaceState);
+    const recentEventsStore = new MementoStore(
+        context.globalState,
+        'recent-events',
+        [],
+        recentEventsShape,
+    );
+
+    const recordOptionsStore = new MementoStore(
+        context.workspaceState,
+        'record-options',
+        defaultRecordOptions,
+        recordOptionsShape,
+    );
+
     const sampleSources = new ObservableCollection<SampleSource>();
     const selectedSample = new ObservableSelection<SampleSource>();
     const editorHighlighter = new EditorHighlighter(selectedSample);
@@ -36,7 +51,7 @@ export async function activate(context: vscode.ExtensionContext) {
             new SamplingSettingsWebviewImpl(
                 distRoot,
                 webview,
-                new MessageHandlerImpl(recordOptionsStore, validateOnCreate),
+                new MessageHandlerImpl(recordOptionsStore, validateOnCreate, recentEventsStore),
             ),
     );
 
@@ -59,10 +74,15 @@ export async function activate(context: vscode.ExtensionContext) {
             sampleSources,
             selectedSample,
             recordOptionsStore,
+            recentEventsStore,
             samplingSettingsWebviewPanel,
         ).execute,
         'windowsperf.test': new RunWperfTest().execute,
-        'windowsperf.rerunRecord': new RerunWperfRecord(sampleSources, selectedSample).execute,
+        'windowsperf.rerunRecord': new RerunWperfRecord(
+            sampleSources,
+            selectedSample,
+            recentEventsStore,
+        ).execute,
         'windowsperf.showSamplingSettings': new ShowSamplingSettings(samplingSettingsWebviewPanel)
             .execute,
         'windowsperf.clearAllSampleResults': new ClearAllSampleResults(

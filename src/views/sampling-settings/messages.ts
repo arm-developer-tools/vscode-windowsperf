@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { recordOptionsShape } from '../../wperf/record-options';
 import { predefinedEventShape } from '../../wperf/parse/list';
 import { coreShape } from '../../wperf/cores';
+import { recentEventsShape } from '../../recent-events';
 
 export const fromViewShape = z.union([
     z.object({
@@ -51,6 +52,7 @@ export const toViewShape = z.union([
     z.object({
         type: z.literal('initialData'),
         recordOptions: recordOptionsShape,
+        recentEvents: recentEventsShape,
         cores: z.array(coreShape),
         events: eventsLoadResultShape,
         validate: z.boolean(),

@@ -4,12 +4,13 @@
 
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
+import { updateRecentEvents } from './recent-events';
 import { prependSampleAndMakeSelected, record } from './record';
 import { recordRunFactory } from './views/sampling-results/record-run.factories';
 import { SampleSource } from './views/sampling-results/sample-source';
 import { sampleSourceFactory } from './views/sampling-results/sample-source.factories';
 import { sampleFactory } from './wperf/parse/record.factories';
-import { recordOptionsFactory } from './wperf/record-options.factories';
+import { eventAndFrequencyFactory, recordOptionsFactory } from './wperf/record-options.factories';
 
 describe('record', () => {
     it('returns a RecordRun sample source', async () => {
@@ -17,7 +18,7 @@ describe('record', () => {
         const sample = sampleFactory();
         const runWperfRecord = jest.fn().mockResolvedValue(sample);
 
-        const got = await record(recordOptions, runWperfRecord);
+        const got = await record(recordOptions, { value: [] }, runWperfRecord);
 
         const want = SampleSource.fromRecordRun(
             recordRunFactory({ recordOptions, parsedContent: sample }),
@@ -29,9 +30,21 @@ describe('record', () => {
         const recordOptions = recordOptionsFactory();
         const runWperfRecord = jest.fn().mockResolvedValue(undefined);
 
-        const got = await record(recordOptions, runWperfRecord);
+        const got = await record(recordOptions, { value: [] }, runWperfRecord);
 
         expect(got).toBeUndefined();
+    });
+
+    it('updates the recent events store', async () => {
+        const recordOptions = recordOptionsFactory({
+            events: [eventAndFrequencyFactory({ event: 'event1' })],
+        });
+        const runWperfRecord = jest.fn().mockResolvedValue(sampleSourceFactory());
+        const recentEventsStore = { value: [] };
+
+        await record(recordOptions, recentEventsStore, runWperfRecord);
+
+        expect(recentEventsStore.value).toEqual(updateRecentEvents([], recordOptions));
     });
 });
 

@@ -8,9 +8,7 @@ import * as vscode from 'vscode';
 import { EventEmitter, Uri } from 'vscode';
 import { faker } from '@faker-js/faker';
 import { FromView, ToView } from './messages';
-import { recordOptionsFactory } from '../../wperf/record-options.factories';
-import { predefinedEventFactory } from '../../wperf/parse/list.factories';
-import { PredefinedEvent } from '../../wperf/parse/list';
+import { initialDataToViewFactory } from './messages.factories';
 
 const webviewFactory = (
     receiveMessageEmitter = new EventEmitter<unknown>(),
@@ -40,16 +38,8 @@ describe('SamplingSettingsWebview', () => {
 
     it('handles a message from the webview using the message handler', async () => {
         const receiveMessageEmitter = new EventEmitter<FromView>();
-        const recordOptions = recordOptionsFactory();
-        const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
         const webview = webviewFactory(receiveMessageEmitter);
-        const want: ToView = {
-            type: 'initialData',
-            recordOptions,
-            cores: expect.any(Object),
-            events: { type: 'success', events },
-            validate: false,
-        };
+        const want: ToView = initialDataToViewFactory();
         new SamplingSettingsWebviewImpl(Uri.file(faker.system.directoryPath()), webview, {
             handleMessage: () => Promise.resolve(want),
         });

@@ -48,6 +48,7 @@ export const App = (props: AppProps) => {
         const handleRecordCommand = () => {
             const fromView: FromView = { type: 'record' };
             props.postMessage(fromView);
+            props.dispatch({ type: 'updateRecentEvents' });
         };
 
         return (

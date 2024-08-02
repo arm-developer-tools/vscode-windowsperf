@@ -18,6 +18,7 @@ describe('RerunWperfRecord', () => {
         const command = new RerunWperfRecord(
             collection,
             new ObservableSelection<SampleSource>(),
+            { value: [] },
             record,
             jest.fn(),
         );
@@ -41,6 +42,7 @@ describe('RerunWperfRecord', () => {
         const command = new RerunWperfRecord(
             collection,
             new ObservableSelection<SampleSource>(),
+            { value: [] },
             failingRecord,
             jest.fn(),
         );

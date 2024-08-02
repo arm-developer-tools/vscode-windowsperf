@@ -9,6 +9,11 @@ import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
 import { initialDataToViewFactory } from '../messages.factories';
 import { loadedStateFactory } from './app.factories';
 import { validatedFields } from '../../../wperf/record-options';
+import {
+    eventAndFrequencyFactory,
+    recordOptionsFactory,
+} from '../../../wperf/record-options.factories';
+import { updateRecentEvents } from '../../../recent-events';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
@@ -43,6 +48,7 @@ describe('reducer', () => {
         const want: State = {
             type: 'loaded',
             cores: message.cores,
+            recentEvents: message.recentEvents,
             recordOptions: message.recordOptions,
             events,
             fieldsToValidate: validatedFields,
@@ -84,5 +90,18 @@ describe('reducer', () => {
         expect(got.type).toBe('loaded');
         expect((got as LoadedState).recordOptions.command).toBe(command);
         expect((got as LoadedState).fieldsToValidate).toEqual(['events']);
+    });
+
+    it('handles an updateRecentEvents action by adding the events in the current record options to the recent events', () => {
+        const recentEvents = ['recent event'];
+        const recordOptions = recordOptionsFactory({ events: [eventAndFrequencyFactory()] });
+        const state = loadedStateFactory({ recentEvents, recordOptions });
+
+        const got = reducer(state, { type: 'updateRecentEvents' });
+
+        expect(got.type).toBe('loaded');
+        expect((got as LoadedState).recentEvents).toEqual(
+            updateRecentEvents(recentEvents, recordOptions),
+        );
     });
 });
