@@ -4,6 +4,7 @@
 
 import * as React from 'react';
 import { RecordButton } from './record-button';
+import { Fragment } from 'react';
 
 export type FormSection = {
     id: string;
@@ -61,25 +62,25 @@ const FormBody = (props: Pick<NavigableFormProps, 'sections'>) => {
     const content = props.sections.map((section) => {
         if (section.component.type === 'group') {
             return (
-                <>
-                    <h2 id={section.id}>{section.title}</h2>
+                <Fragment key={section.id}>
+                    <h1 id={section.id}>{section.title}</h1>
                     {section.component.contents.map((content) => {
-                        return <Content content={content} type={section.component.type} />;
+                        return <Content content={content} type="child" key={content.id} />;
                     })}
-                </>
+                </Fragment>
             );
         } else {
-            return <Content content={section.component.content} type={section.component.type} />;
+            return <Content key={section.id} content={section.component.content} type="parent" />;
         }
     });
     return <section className="content">{content}</section>;
 };
 
-const Content = (props: { content: FormContent; type: 'group' | 'item' }) => {
+const Content = (props: { content: FormContent; type: 'parent' | 'child' }) => {
     const { content, type } = props;
     return (
         <section className="setting" id={content.id} key={content.id}>
-            {type === 'group' ? <h1>{content.title}</h1> : <h2>{content.title}</h2>}
+            {type === 'parent' ? <h1>{content.title}</h1> : <h2>{content.title}</h2>}
             <div className="description">{content.description}</div>
             {content.component}
         </section>

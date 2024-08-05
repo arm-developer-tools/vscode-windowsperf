@@ -56,6 +56,16 @@ nav {
     display: none;
 }
 
+h1 {
+    margin: 0 0 calc(2 * var(--form-margin-base)) 0;
+    font-size: 20px;
+}
+
+h2 {
+    margin: 0 0 var(--form-margin-base) 0;
+    font-size: 14px;
+}
+
 .content {
     grid-area: 1 / 1 / 2 / 3;
     overflow-y: auto;
@@ -90,19 +100,14 @@ section.setting:not(:last-child) {
     margin-bottom: calc(4 * var(--form-margin-base));
 }
 
-.description {
-    font-size: 11px;
-}
-
 .file-picker {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
 }
 
-.description,
-.file-picker-input {
-    margin: 0 0 var(--form-margin-base) 0;
+.description {
+    margin: 0 0 calc(2 * var(--form-margin-base)) 0;
 }
 
 .codicon-warning:before {

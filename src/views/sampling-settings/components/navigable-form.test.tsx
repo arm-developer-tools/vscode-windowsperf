@@ -29,7 +29,7 @@ describe('NavigableForm', () => {
                         title: 'The group section',
                         component: createGroupSection([
                             {
-                                id: 'two',
+                                id: 'three',
                                 description: 'The second section',
                                 title: 'Section Two',
                                 component: <p>2</p>,
@@ -41,11 +41,11 @@ describe('NavigableForm', () => {
         );
 
         expect(screen.queryByText('1')).toBeInTheDocument();
-        expect(screen.queryByText('Section One', { selector: 'h2' })).toBeInTheDocument();
+        expect(screen.queryByText('Section One', { selector: 'h1' })).toBeInTheDocument();
         expect(screen.queryByText('The first section')).toBeInTheDocument();
-        expect(screen.queryByText('The group section', { selector: 'h2' })).toBeInTheDocument();
+        expect(screen.queryByText('The group section', { selector: 'h1' })).toBeInTheDocument();
         expect(screen.queryByText('2')).toBeInTheDocument();
-        expect(screen.queryByText('Section Two', { selector: 'h1' })).toBeInTheDocument();
+        expect(screen.queryByText('Section Two', { selector: 'h2' })).toBeInTheDocument();
         expect(screen.queryByText('The second section')).toBeInTheDocument();
     });
 
@@ -69,7 +69,7 @@ describe('NavigableForm', () => {
                         title: 'The group section',
                         component: createGroupSection([
                             {
-                                id: 'two',
+                                id: 'three',
                                 description: 'The second section',
                                 title: 'Section Two',
                                 component: <p>2</p>,

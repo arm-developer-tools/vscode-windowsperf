@@ -50,13 +50,13 @@ describe('Form', () => {
     it('renders the event selection', () => {
         render(<Form {...formPropsFactory()} />);
 
-        expect(screen.queryByText('Events', { selector: 'h2' })).toBeInTheDocument();
+        expect(screen.queryByText('Events', { selector: 'h1' })).toBeInTheDocument();
     });
 
     it('renders the CPU Core selection', () => {
         render(<Form {...formPropsFactory()} />);
 
-        expect(screen.queryByText('CPU Core', { selector: 'h2' })).toBeInTheDocument();
+        expect(screen.queryByText('CPU Core', { selector: 'h1' })).toBeInTheDocument();
     });
 
     it('calls openCommandFilePicker when the browse button is clicked', () => {
