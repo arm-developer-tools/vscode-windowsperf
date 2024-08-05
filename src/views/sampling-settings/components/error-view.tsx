@@ -3,11 +3,12 @@
  */
 
 import * as React from 'react';
-import { VSCodeLink } from '@vscode/webview-ui-toolkit/react';
+import { VSCodeButton, VSCodeLink } from '@vscode/webview-ui-toolkit/react';
 import { ErrorDetail } from '../messages';
 
 export type ErrorViewProps = {
     error: ErrorDetail;
+    openWperfOutput: () => void;
 };
 
 export const ErrorView = (props: ErrorViewProps) => {
@@ -30,6 +31,15 @@ export const ErrorView = (props: ErrorViewProps) => {
             <p className="helper-text">
                 <VSCodeLink href={docslink}>Get help with installing WindowsPerf</VSCodeLink>
             </p>
+            <div className="error-view-button-strip">
+                <VSCodeButton
+                    id="show-wperf-output-button"
+                    title="Open Log"
+                    onClick={props.openWperfOutput}
+                >
+                    Open Log
+                </VSCodeButton>
+            </div>
         </div>
     );
 };

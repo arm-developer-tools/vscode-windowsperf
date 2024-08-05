@@ -46,6 +46,8 @@ export class MessageHandlerImpl implements MessageHandler {
                     return this.handleOpenCommandFilePicker();
                 case 'record':
                     return this.handleRecordCommand();
+                case 'showOutputChannel':
+                    return this.showOutputChannel();
             }
         } else {
             logger.error('Received invalid message from webview', parseResult.error, message);
@@ -72,6 +74,10 @@ export class MessageHandlerImpl implements MessageHandler {
         }
 
         return undefined;
+    };
+
+    public readonly showOutputChannel = async (): Promise<undefined> => {
+        logger.show();
     };
 
     public readonly handleRecordCommand = async () => {

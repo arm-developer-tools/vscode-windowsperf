@@ -29,10 +29,14 @@ export const App = (props: AppProps) => {
         props.container.className = props.state.type;
     }, [props.container, props.state.type]);
 
+    const openWperfOutput = () => {
+        const fromView: FromView = { type: 'showOutputChannel' };
+        props.postMessage(fromView);
+    };
     if (props.state.type === 'loading') {
         return <LoadingSpinner />;
     } else if (props.state.type === 'error') {
-        return <ErrorView error={props.state.error} />;
+        return <ErrorView error={props.state.error} openWperfOutput={openWperfOutput} />;
     } else {
         const updateRecordOption = createUpdateRecordOption({
             postMessage: (message) => props.postMessage(message),
