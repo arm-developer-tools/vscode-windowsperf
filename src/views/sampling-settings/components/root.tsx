@@ -41,7 +41,7 @@ export const Root = ({ api, container }: RootProps) => {
     }, []);
 
     return (
-        <PrimeReactProvider>
+        <PrimeReactProvider value={{ unstyled: true }}>
             <App
                 postMessage={api.postMessage.bind(api)}
                 container={container}
