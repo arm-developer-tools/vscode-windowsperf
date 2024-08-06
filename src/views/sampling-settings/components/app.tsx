@@ -77,6 +77,9 @@ export const App = (props: AppProps) => {
                     updateRecordOption={updateRecordOption}
                     record={handleRecordCommand}
                     fieldsToValidate={props.state.fieldsToValidate}
+                    recentEvents={props.state.recentEvents}
+                    dispatch={props.dispatch}
+                    eventsEditorState={props.state.eventsEditor}
                 />
                 <Footer recordOptions={props.state.recordOptions} />
             </>

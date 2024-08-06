@@ -8,6 +8,13 @@ import { PredefinedEvent } from '../../../wperf/parse/list';
 import { RecordOptions, ValidatedField, validatedFields } from '../../../wperf/record-options';
 import { ErrorDetail, ToView } from '../messages';
 import {
+    EventsEditorAction,
+    eventsEditorReducer,
+    EventsEditorState,
+    initialEventsEditorState,
+    isEventEditorAction,
+} from './events-editor';
+import {
     getAffectedField,
     isUpdateRecordOptionAction,
     UpdateRecordOptionAction,
@@ -21,6 +28,7 @@ export type LoadedState = {
     recentEvents: string[];
     recordOptions: RecordOptions;
     fieldsToValidate: readonly ValidatedField[];
+    eventsEditor: EventsEditorState;
 };
 
 export type State = { type: 'loading' } | { type: 'error'; error: ErrorDetail } | LoadedState;
@@ -35,7 +43,8 @@ export type Action =
     | HandleMessageAction
     | UpdateRecentEventsAction
     | UpdateRecordOptionAction
-    | RetryAction;
+    | RetryAction
+    | EventsEditorAction;
 
 const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): State => {
     switch (message.events.type) {
@@ -52,6 +61,7 @@ const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): 
                 events: message.events.events,
                 recordOptions: message.recordOptions,
                 fieldsToValidate: message.validate ? validatedFields : [],
+                eventsEditor: initialEventsEditorState,
             };
     }
 };
@@ -73,7 +83,7 @@ const toViewMessageReducer = (state: State, message: ToView): State => {
 
 const loadedStateReducer = (
     state: LoadedState,
-    action: UpdateRecentEventsAction | UpdateRecordOptionAction,
+    action: UpdateRecentEventsAction | UpdateRecordOptionAction | EventsEditorAction,
 ): LoadedState => {
     if (isUpdateRecordOptionAction(action)) {
         const affectedField = getAffectedField(action);
@@ -82,6 +92,12 @@ const loadedStateReducer = (
             ...state,
             recordOptions: updateRecordOptionReducer(state.recordOptions, action),
             fieldsToValidate: state.fieldsToValidate.filter((field) => field !== affectedField),
+            eventsEditor: initialEventsEditorState,
+        };
+    } else if (isEventEditorAction(action)) {
+        return {
+            ...state,
+            eventsEditor: eventsEditorReducer(state.eventsEditor, action),
         };
     } else if (action.type === 'updateRecentEvents') {
         return {

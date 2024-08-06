@@ -3,8 +3,6 @@
  */
 
 import * as React from 'react';
-import { Core } from '../../../wperf/cores';
-import { PredefinedEvent } from '../../../wperf/parse/list';
 import {
     RecordOptions,
     ValidatedField,
@@ -12,10 +10,14 @@ import {
 } from '../../../wperf/record-options';
 import { createGroupSection, createSection, NavigableForm } from './navigable-form';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
+import { EventSelector } from './events/selector';
 import { UpdateRecordOption } from '../update-record-option';
 import { Select } from '../../common/components/select';
+import { Dispatch } from 'react';
+import { EventsEditorAction, EventsEditorState } from '../state/events-editor';
 import { RecordButton } from './record-button';
-import { EventSelector } from './events/selector';
+import { Core } from '../../../wperf/cores';
+import { PredefinedEvent } from '../../../wperf/parse/list';
 
 export type FormProps = {
     cores: Core[];
@@ -25,6 +27,9 @@ export type FormProps = {
     updateRecordOption: UpdateRecordOption;
     record: () => void;
     fieldsToValidate: readonly ValidatedField[];
+    dispatch: Dispatch<EventsEditorAction>;
+    recentEvents: string[];
+    eventsEditorState: EventsEditorState;
 };
 
 type RecordOptionInputProps = {
@@ -52,7 +57,7 @@ const RecordOptionInput = (props: RecordOptionInputProps) => {
     );
 };
 
-export const Form = (props: FormProps) => {
+export const Form = ({ dispatch, ...props }: FormProps) => {
     const { missingFields } = validateRecordOptions(props.recordOptions);
     const showMissingCommandValidation =
         props.fieldsToValidate.includes('command') && missingFields.includes('command');
@@ -142,6 +147,9 @@ export const Form = (props: FormProps) => {
                                 <>
                                     <EventSelector
                                         predefinedEvents={props.events}
+                                        editorState={props.eventsEditorState}
+                                        dispatch={dispatch}
+                                        recentEvents={props.recentEvents}
                                         selectedEvents={props.recordOptions.events}
                                         updateRecordOption={props.updateRecordOption}
                                     />

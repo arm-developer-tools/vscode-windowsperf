@@ -79,6 +79,7 @@ export const Dropdown = function <
                 wrapper: { className: 'dropdown-wrapper' },
                 list: { className: 'dropdown-list' },
                 item: { className: 'dropdown-item' },
+                itemLabel: { className: 'dropdown-item-label' },
                 filterContainer: { className: 'dropdown-filter-container' },
                 filterIcon: { className: 'dropdown-filter-icon' },
                 filterInput: { className: 'dropdown-filter-input' },

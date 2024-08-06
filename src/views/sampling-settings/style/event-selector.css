@@ -2,19 +2,6 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-ul.event-selector {
-    list-style: none;
-    padding: 0;
-    margin: calc(2 * var(--form-margin-base)) 0 0 0;
-    max-height: 360px;
-    overflow-y: scroll;
-    width: 418px;
-}
-
-ul.event-selector li {
-    margin-bottom: 4px;
-}
-
 .event-table .row {
     display: flex;
 }
@@ -70,4 +57,38 @@ ul.event-selector li {
 
 .event-table .row-action .codicon {
     vertical-align: text-top;
+}
+
+.event-edit-row {
+    margin-top: 4px;
+    display: flex;
+}
+
+.event-edit-row > :not(:first-child) {
+    margin-left: 4px;
+}
+
+.event-edit-row > .dropdown {
+    width: 50%;
+}
+
+.event-edit-row > input {
+    flex: auto;
+    flex-basis: min-content;
+}
+
+.event-dropdown-panel .dropdown-item-label {
+    display: block;
+}
+
+.event-dropdown-item-detail,
+.event-dropdown-item-header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    white-space: nowrap;
+}
+
+.event-dropdown-item-detail {
+    opacity: 0.7;
 }

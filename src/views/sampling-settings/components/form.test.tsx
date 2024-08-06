@@ -10,14 +10,19 @@ import { Form, FormProps } from './form';
 import { recordOptionsFactory } from '../../../wperf/record-options.factories';
 import { UpdateRecordOptionAction } from '../state/update-record-option-action';
 import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
+import { faker } from '@faker-js/faker';
+import { eventsEditorStateFactory } from '../state/events-editor.factories';
 import { ValidatedField } from '../../../wperf/record-options';
 
 const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
     cores: options?.cores ?? [],
     events: options?.events ?? [predefinedEventFactory()],
+    recentEvents: options?.recentEvents ?? [faker.word.noun()],
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
     fieldsToValidate: options?.fieldsToValidate ?? [],
+    eventsEditorState: options?.eventsEditorState ?? eventsEditorStateFactory(),
     record: options?.record ?? jest.fn(),
+    dispatch: options?.dispatch ?? jest.fn(),
     openCommandFilePicker: options?.openCommandFilePicker ?? jest.fn(),
     updateRecordOption: options?.updateRecordOption ?? jest.fn(),
 });

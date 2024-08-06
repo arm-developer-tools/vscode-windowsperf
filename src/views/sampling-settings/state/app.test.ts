@@ -14,6 +14,8 @@ import {
     recordOptionsFactory,
 } from '../../../wperf/record-options.factories';
 import { updateRecentEvents } from '../../../recent-events';
+import { EventsEditorAction, eventsEditorReducer, initialEventsEditorState } from './events-editor';
+import { eventsEditorStateFactory } from './events-editor.factories';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
@@ -52,6 +54,7 @@ describe('reducer', () => {
             recordOptions: message.recordOptions,
             events,
             fieldsToValidate: validatedFields,
+            eventsEditor: initialEventsEditorState,
         };
         expect(got).toEqual(want);
     });
@@ -98,17 +101,26 @@ describe('reducer', () => {
         expect(got).toEqual(want);
     });
 
-    it('handles an updateRecordOption action, resetting validation for that field', () => {
+    it('handles an updateRecordOption action, resetting validation for that field and clearing the editor state', () => {
         const command = 'some command';
 
-        const got = reducer(loadedStateFactory({ fieldsToValidate: ['command', 'events'] }), {
-            type: 'setCommand',
-            command,
-        });
+        const got = reducer(
+            loadedStateFactory({
+                fieldsToValidate: ['command', 'events'],
+                eventsEditor: eventsEditorStateFactory({
+                    event: eventAndFrequencyFactory({ event: 'some_event' }),
+                }),
+            }),
+            {
+                type: 'setCommand',
+                command,
+            },
+        );
 
         expect(got.type).toBe('loaded');
         expect((got as LoadedState).recordOptions.command).toBe(command);
         expect((got as LoadedState).fieldsToValidate).toEqual(['events']);
+        expect((got as LoadedState).eventsEditor).toEqual(initialEventsEditorState);
     });
 
     it('handles an updateRecentEvents action by adding the events in the current record options to the recent events', () => {
@@ -121,6 +133,19 @@ describe('reducer', () => {
         expect(got.type).toBe('loaded');
         expect((got as LoadedState).recentEvents).toEqual(
             updateRecentEvents(recentEvents, recordOptions),
+        );
+    });
+
+    it('handles an events editor action', () => {
+        const eventsEditor = initialEventsEditorState;
+        const action: EventsEditorAction = { type: 'setFrequency', frequency: 1000 };
+        const state = loadedStateFactory({ eventsEditor });
+
+        const got = reducer(state, action);
+
+        expect(got.type).toBe('loaded');
+        expect((got as LoadedState).eventsEditor).toEqual(
+            eventsEditorReducer(eventsEditor, action),
         );
     });
 });
