@@ -97,7 +97,11 @@ const loadedStateReducer = (
     } else if (isEventEditorAction(action)) {
         return {
             ...state,
-            eventsEditor: eventsEditorReducer(state.eventsEditor, action),
+            eventsEditor: eventsEditorReducer(
+                state.recordOptions.events,
+                state.eventsEditor,
+                action,
+            ),
         };
     } else if (action.type === 'updateRecentEvents') {
         return {

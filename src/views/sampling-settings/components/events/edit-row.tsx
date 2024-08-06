@@ -120,7 +120,10 @@ export const EventEditRow = (props: EventEditRowProps) => {
 
     const onAdd = () => {
         if (editorState.event.event) {
-            const action: UpdateRecordOptionAction = { type: 'addEvent', event: editorState.event };
+            const action: UpdateRecordOptionAction =
+                editorState.type === 'adding'
+                    ? { type: 'addEvent', event: editorState.event }
+                    : { type: 'editEvent', index: editorState.index, event: editorState.event };
             props.updateRecordOption(action);
         }
     };
@@ -157,9 +160,11 @@ export const EventEditRow = (props: EventEditRowProps) => {
                     onChange={onFrequencyChange}
                     placeholder="Frequency"
                 />
-                <VSCodeButton onClick={onAdd}>Add</VSCodeButton>
+                <VSCodeButton onClick={onAdd}>
+                    {editorState.type === 'adding' ? 'Add' : 'Save'}
+                </VSCodeButton>
                 <VSCodeButton onClick={onCancel} appearance="secondary">
-                    Clear
+                    {editorState.type === 'adding' ? 'Clear' : 'Cancel'}
                 </VSCodeButton>
             </div>
         </>

@@ -15,7 +15,7 @@ import {
 } from '../../../wperf/record-options.factories';
 import { updateRecentEvents } from '../../../recent-events';
 import { EventsEditorAction, eventsEditorReducer, initialEventsEditorState } from './events-editor';
-import { eventsEditorStateFactory } from './events-editor.factories';
+import { eventsEditorEditingStateFactory } from './events-editor.factories';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
@@ -107,7 +107,7 @@ describe('reducer', () => {
         const got = reducer(
             loadedStateFactory({
                 fieldsToValidate: ['command', 'events'],
-                eventsEditor: eventsEditorStateFactory({
+                eventsEditor: eventsEditorEditingStateFactory({
                     event: eventAndFrequencyFactory({ event: 'some_event' }),
                 }),
             }),
@@ -145,7 +145,7 @@ describe('reducer', () => {
 
         expect(got.type).toBe('loaded');
         expect((got as LoadedState).eventsEditor).toEqual(
-            eventsEditorReducer(eventsEditor, action),
+            eventsEditorReducer(state.recordOptions.events, eventsEditor, action),
         );
     });
 });

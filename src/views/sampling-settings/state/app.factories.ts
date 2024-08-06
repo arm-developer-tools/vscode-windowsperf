@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
 import { recordOptionsFactory } from '../../../wperf/record-options.factories';
 import { LoadedState } from './app';
-import { eventsEditorStateFactory } from './events-editor.factories';
+import { eventsEditorAddingStateFactory } from './events-editor.factories';
 
 export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>): LoadedState => ({
     type: 'loaded',
@@ -15,5 +15,5 @@ export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>)
     recentEvents: options?.recentEvents ?? [faker.word.noun()],
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
     fieldsToValidate: options?.fieldsToValidate ?? [],
-    eventsEditor: options?.eventsEditor ?? eventsEditorStateFactory(),
+    eventsEditor: options?.eventsEditor ?? eventsEditorAddingStateFactory(),
 });

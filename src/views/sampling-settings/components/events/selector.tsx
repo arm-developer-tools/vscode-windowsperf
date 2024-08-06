@@ -24,6 +24,10 @@ export const EventSelector = (props: EventSelectorProps) => {
     return (
         <>
             <EventTable
+                editingEventIndex={
+                    props.editorState.type === 'editing' ? props.editorState.index : undefined
+                }
+                dispatch={props.dispatch}
                 updateRecordOption={props.updateRecordOption}
                 predefinedEvents={props.predefinedEvents}
                 selectedEvents={props.selectedEvents}
