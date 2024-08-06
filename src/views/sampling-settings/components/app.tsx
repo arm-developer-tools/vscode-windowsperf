@@ -33,10 +33,22 @@ export const App = (props: AppProps) => {
         const fromView: FromView = { type: 'showOutputChannel' };
         props.postMessage(fromView);
     };
+
+    const refreshView = () => {
+        props.dispatch({ type: 'retry' });
+        const message: FromView = { type: 'retry' };
+        props.postMessage(message);
+    };
     if (props.state.type === 'loading') {
         return <LoadingSpinner />;
     } else if (props.state.type === 'error') {
-        return <ErrorView error={props.state.error} openWperfOutput={openWperfOutput} />;
+        return (
+            <ErrorView
+                error={props.state.error}
+                openWperfOutput={openWperfOutput}
+                refreshView={refreshView}
+            />
+        );
     } else {
         const updateRecordOption = createUpdateRecordOption({
             postMessage: (message) => props.postMessage(message),

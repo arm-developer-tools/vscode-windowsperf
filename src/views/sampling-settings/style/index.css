@@ -124,6 +124,12 @@ section.setting:not(:last-child) {
     height: 100%;
 }
 
+.error-view-button-strip {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
 #error-message {
     text-align: center;
 }

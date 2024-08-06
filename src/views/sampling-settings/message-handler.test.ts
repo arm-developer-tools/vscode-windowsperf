@@ -74,6 +74,32 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         expect(got).toEqual(want);
     });
 
+    it('successfully reloads events and sends the initial data message when events load succeeds', async () => {
+        const recordOptions = recordOptionsFactory();
+        const recentEvents = ['recent_event'];
+        const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
+        const messageHandler = new MessageHandlerImpl(
+            { value: recordOptions },
+            false,
+            { value: recentEvents },
+            getPredefinedEventsFactory(events),
+        );
+
+        const message: FromView = { type: 'retry' };
+
+        const got = await messageHandler.handleMessage(message);
+
+        const want: ToView = {
+            type: 'initialData',
+            recordOptions,
+            recentEvents,
+            cores: expect.any(Object),
+            events: { type: 'success', events },
+            validate: false,
+        };
+        expect(got).toEqual(want);
+    });
+
     it('updates the current record options and does not reply in response to a recordOptions message', async () => {
         const recordOptionsStore = { value: recordOptionsFactory() };
         const messageHandler = new MessageHandlerImpl(

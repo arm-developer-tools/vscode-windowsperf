@@ -9,6 +9,7 @@ import { ErrorDetail } from '../messages';
 export type ErrorViewProps = {
     error: ErrorDetail;
     openWperfOutput: () => void;
+    refreshView: () => void;
 };
 
 export const ErrorView = (props: ErrorViewProps) => {
@@ -32,6 +33,9 @@ export const ErrorView = (props: ErrorViewProps) => {
                 <VSCodeLink href={docslink}>Get help with installing WindowsPerf</VSCodeLink>
             </p>
             <div className="error-view-button-strip">
+                <VSCodeButton id="retry-button" title="retry" onClick={props.refreshView}>
+                    Retry
+                </VSCodeButton>
                 <VSCodeButton
                     id="show-wperf-output-button"
                     title="Open Log"

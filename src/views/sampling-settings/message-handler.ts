@@ -48,6 +48,8 @@ export class MessageHandlerImpl implements MessageHandler {
                     return this.handleRecordCommand();
                 case 'showOutputChannel':
                     return this.showOutputChannel();
+                case 'retry':
+                    return this.handleRetry();
             }
         } else {
             logger.error('Received invalid message from webview', parseResult.error, message);
@@ -85,15 +87,26 @@ export class MessageHandlerImpl implements MessageHandler {
         return undefined;
     };
 
-    public readonly handleReady = async (): Promise<ToView> => {
+    private async createInitialDataMessage(
+        eventsPromise: Promise<EventsLoadResult>,
+    ): Promise<ToView> {
         return {
             type: 'initialData',
             recordOptions: this.recordOptionsStore.value,
             recentEvents: this.recentEventsStore.value,
             cores: this.listCores(),
-            events: await this.eventsPromise,
+            events: await eventsPromise,
             validate: this.validateOnCreate,
         };
+    }
+
+    public readonly handleReady = async () => {
+        return this.createInitialDataMessage(this.eventsPromise);
+    };
+
+    public readonly handleRetry = async () => {
+        const newEventsPromise = this.loadEvents();
+        return this.createInitialDataMessage(newEventsPromise);
     };
 
     public readonly handleRecordOptions = async (

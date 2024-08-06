@@ -25,6 +25,9 @@ export const fromViewShape = z.union([
     z.object({
         type: z.literal('showOutputChannel'),
     }),
+    z.object({
+        type: z.literal('retry'),
+    }),
 ]);
 
 export type FromView = z.infer<typeof fromViewShape>;

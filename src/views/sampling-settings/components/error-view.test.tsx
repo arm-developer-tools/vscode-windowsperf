@@ -11,7 +11,11 @@ import { ErrorView } from './error-view';
 describe('error view', () => {
     it('Renders the wperf-driver error view', () => {
         const { container } = render(
-            <ErrorView error={{ type: 'noWperfDriver' }} openWperfOutput={jest.fn()} />,
+            <ErrorView
+                error={{ type: 'noWperfDriver' }}
+                openWperfOutput={jest.fn()}
+                refreshView={jest.fn()}
+            />,
         );
 
         const expectedErrorMessage =
@@ -20,7 +24,11 @@ describe('error view', () => {
     });
     it('Renders the wperf path error view', () => {
         const { container } = render(
-            <ErrorView error={{ type: 'noWperf' }} openWperfOutput={jest.fn()} />,
+            <ErrorView
+                error={{ type: 'noWperf' }}
+                openWperfOutput={jest.fn()}
+                refreshView={jest.fn()}
+            />,
         );
 
         const expectedErrorMessage =
@@ -30,8 +38,13 @@ describe('error view', () => {
     });
     it('calls openWperfOutput once when the open log button is clicked', () => {
         const openWperfOutput = jest.fn();
+        const refreshView = jest.fn();
         const { container } = render(
-            <ErrorView error={{ type: 'noWperf' }} openWperfOutput={openWperfOutput} />,
+            <ErrorView
+                error={{ type: 'noWperf' }}
+                openWperfOutput={openWperfOutput}
+                refreshView={refreshView}
+            />,
         );
 
         const showOutputButton = container.querySelector('#show-wperf-output-button');
@@ -39,5 +52,22 @@ describe('error view', () => {
         fireEvent.click(showOutputButton!);
 
         expect(openWperfOutput).toHaveBeenCalledTimes(1);
+    });
+    it('calls refreshView once when the retry button is clicked', () => {
+        const openWperfOutput = jest.fn();
+        const refreshView = jest.fn();
+        const { container } = render(
+            <ErrorView
+                error={{ type: 'noWperfDriver' }}
+                openWperfOutput={openWperfOutput}
+                refreshView={refreshView}
+            />,
+        );
+
+        const retryButton = container.querySelector('#retry-button');
+
+        fireEvent.click(retryButton!);
+
+        expect(refreshView).toHaveBeenCalledTimes(1);
     });
 });

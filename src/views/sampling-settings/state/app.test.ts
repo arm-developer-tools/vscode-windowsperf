@@ -3,7 +3,7 @@
  */
 
 import 'jest';
-import { LoadedState, State, initialState, reducer } from './app';
+import { Action, LoadedState, State, initialState, reducer } from './app';
 import { ToView } from '../messages';
 import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
 import { initialDataToViewFactory } from '../messages.factories';
@@ -53,6 +53,25 @@ describe('reducer', () => {
             events,
             fieldsToValidate: validatedFields,
         };
+        expect(got).toEqual(want);
+    });
+
+    it('handles a retry action and sets the state to loading', () => {
+        const stateBeforeRetry: State = {
+            type: 'error',
+            error: { type: 'noWperf' },
+        };
+
+        const action: Action = {
+            type: 'retry',
+        };
+
+        const got = reducer(stateBeforeRetry, action);
+
+        const want: State = {
+            type: 'loading',
+        };
+
         expect(got).toEqual(want);
     });
 

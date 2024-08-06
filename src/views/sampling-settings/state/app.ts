@@ -27,9 +27,15 @@ export type State = { type: 'loading' } | { type: 'error'; error: ErrorDetail } 
 
 export const initialState: State = { type: 'loading' };
 
+export type RetryAction = { type: 'retry' };
+
 export type UpdateRecentEventsAction = { type: 'updateRecentEvents' };
 export type HandleMessageAction = { type: 'handleMessage'; message: ToView };
-export type Action = HandleMessageAction | UpdateRecentEventsAction | UpdateRecordOptionAction;
+export type Action =
+    | HandleMessageAction
+    | UpdateRecentEventsAction
+    | UpdateRecordOptionAction
+    | RetryAction;
 
 const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): State => {
     switch (message.events.type) {
@@ -90,6 +96,8 @@ const loadedStateReducer = (
 export const reducer = (state: State, action: Action): State => {
     if (action.type === 'handleMessage') {
         return toViewMessageReducer(state, action.message);
+    } else if (action.type === 'retry') {
+        return { type: 'loading' };
     } else {
         if (state.type === 'loaded') {
             return loadedStateReducer(state, action);
