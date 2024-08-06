@@ -10,13 +10,8 @@ import { PredefinedEvent } from '../../../../wperf/parse/list';
 type RowActionProps = { onClick: () => void; icon: string; label: string };
 
 const RowAction = (props: RowActionProps) => (
-    <div className="row-action" title={props.label}>
-        <span
-            role="button"
-            aria-label={props.label}
-            className={`codicon codicon-${props.icon}`}
-            onClick={props.onClick}
-        />
+    <div role="button" className="row-action" title={props.label} onClick={props.onClick}>
+        <span aria-label={props.label} className={`codicon codicon-${props.icon}`} />
     </div>
 );
 
@@ -41,8 +36,11 @@ const EventRow = ({ event, index, predefinedEvents, updateRecordOption }: EventR
     };
 
     return (
-        <div className="row" role="listitem" title={description}>
-            <div>{event.event}</div>
+        <div className="row" role="listitem">
+            <div title={description}>
+                <div className="event-name">{event.event}</div>
+                <div className="event-description">{description}</div>
+            </div>
             <div>{event.frequency}</div>
             <div className="row-actions">
                 <RowAction icon="pencil" onClick={onEdit} label="Edit" />

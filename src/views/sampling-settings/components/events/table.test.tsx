@@ -51,7 +51,7 @@ describe('EventTable', () => {
         expect(allListItems[1]).toHaveTextContent('Second Event');
     });
 
-    it('shows the description of the event in a tooltip', () => {
+    it('shows the description of the event in the table', () => {
         const eventName = 'test_event';
         const description = 'Test description';
         const selectedEvents = [eventAndFrequencyFactory({ event: eventName })];
@@ -61,7 +61,7 @@ describe('EventTable', () => {
 
         render(<EventTable {...eventTablePropsFactory({ predefinedEvents, selectedEvents })} />);
 
-        expect(screen.getByRole('listitem')).toHaveAttribute('title', description);
+        expect(screen.getByText(description)).toBeInTheDocument();
     });
 
     it('starts editing when the edit button is clicked', () => {

@@ -4,26 +4,38 @@
 
 .event-table .row {
     display: flex;
+    margin-bottom: 4px;
 }
 
 .event-table .row:nth-child(odd):not(.header):hover,
-.event-table .row:nth-child(even).header:hover {
+.event-table .row:nth-child(even):not(.header):hover {
     background-color: var(--vscode-list-hoverBackground);
     color: var(--vscode-list-hoverForeground);
 }
 
 .event-table .row > * {
-    line-height: 24px;
-    padding-left: 4px;
+    padding: 2px 0 2px 4px;
     text-overflow: ellipsis;
 }
 
 .event-table .row.header {
     font-weight: 700;
+    font-size: 14px;
 }
 
 .event-table .row:nth-child(odd) {
     background-color: hsla(0, 0%, 51%, 0.04);
+}
+
+.event-table .event-name,
+.event-table .event-description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.event-table .event-description {
+    opacity: 0.7;
 }
 
 .event-table .row > :first-child {
@@ -32,23 +44,25 @@
 
 .event-table .row > :nth-child(2) {
     width: 40%;
+    display: flex;
+    align-items: center;
 }
 
 .event-table .row-actions {
-    display: none;
+    display: flex;
+    align-items: center;
     flex: auto;
     justify-content: flex-end;
-}
-
-.event-table .row:hover .row-actions {
-    display: flex;
 }
 
 .event-table .row-action {
     border-radius: 4px;
     cursor: pointer;
     width: 20px;
-    text-align: center;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
 }
 
 .event-table .row-action:hover {
