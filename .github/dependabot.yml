@@ -22,4 +22,4 @@ updates:
       interval: "weekly"
     ignore:
       - dependency-name: "@types/vscode"
-
+      - dependency-name: "@types/node"
