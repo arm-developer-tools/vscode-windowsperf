@@ -4,10 +4,11 @@
 
 import * as React from 'react';
 import { RecordOptions, buildRecordArgs } from '../../../wperf/record-options';
-import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
+import { RecordButton } from './record-button';
 
 export type FooterProps = {
     recordOptions: RecordOptions;
+    record: () => void;
 };
 
 export const Footer = (props: FooterProps) => {
@@ -19,10 +20,15 @@ export const Footer = (props: FooterProps) => {
 
     return (
         <footer>
-            <h1>Command Line Preview</h1>
-            <div className="footer-display">{commandLine}</div>
-            <div className="footer-controls">
-                <VSCodeButton onClick={copyCommandLine}>Copy</VSCodeButton>
+            <div className="command-line-preview-title">Command Line Preview</div>
+            <div className="cmd-preview-group">
+                <div className="footer-display">{commandLine}</div>
+                <div className="copy-button" title="Copy" onClick={copyCommandLine}>
+                    <span className="codicon codicon-copy"></span>
+                </div>
+                <div className="record-button">
+                    <RecordButton onClick={props.record} />
+                </div>
             </div>
         </footer>
     );

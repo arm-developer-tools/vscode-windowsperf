@@ -15,7 +15,6 @@ import { UpdateRecordOption } from '../update-record-option';
 import { Select } from '../../common/components/select';
 import { Dispatch } from 'react';
 import { EventsEditorAction, EventsEditorState } from '../state/events-editor';
-import { RecordButton } from './record-button';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
 
@@ -25,7 +24,6 @@ export type FormProps = {
     recordOptions: RecordOptions;
     openCommandFilePicker: () => void;
     updateRecordOption: UpdateRecordOption;
-    record: () => void;
     fieldsToValidate: readonly ValidatedField[];
     dispatch: Dispatch<EventsEditorAction>;
     recentEvents: string[];
@@ -66,7 +64,6 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
     return (
         <>
             <NavigableForm
-                record={props.record}
                 sections={[
                     {
                         id: 'command-specification',
@@ -213,9 +210,6 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                     },
                 ]}
             />
-            <div className="record-button narrow-screen-only">
-                <RecordButton onClick={props.record} />
-            </div>
         </>
     );
 };

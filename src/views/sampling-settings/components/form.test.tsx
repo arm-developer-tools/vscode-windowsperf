@@ -21,7 +21,6 @@ const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
     fieldsToValidate: options?.fieldsToValidate ?? [],
     eventsEditorState: options?.eventsEditorState ?? eventsEditorAddingStateFactory(),
-    record: options?.record ?? jest.fn(),
     dispatch: options?.dispatch ?? jest.fn(),
     openCommandFilePicker: options?.openCommandFilePicker ?? jest.fn(),
     updateRecordOption: options?.updateRecordOption ?? jest.fn(),
@@ -71,16 +70,6 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Browse'));
 
         expect(props.openCommandFilePicker).toHaveBeenCalled();
-    });
-
-    it('calls record when the record event button is clicked', () => {
-        const props = formPropsFactory();
-        render(<Form {...props} />);
-
-        const recordButton = screen.getAllByText('Record');
-        fireEvent.click(recordButton[0]!);
-
-        expect(props.record).toHaveBeenCalled();
     });
 
     it('does not render the command input with an invalid class when the command is missing but command is not a field to validate', () => {

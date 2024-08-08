@@ -12,7 +12,6 @@ describe('NavigableForm', () => {
     it('renders each component of the given sections', () => {
         render(
             <NavigableForm
-                record={jest.fn}
                 sections={[
                     {
                         id: 'one',
@@ -52,7 +51,6 @@ describe('NavigableForm', () => {
     it('renders a nav entry for each of the given sections', () => {
         render(
             <NavigableForm
-                record={jest.fn}
                 sections={[
                     {
                         id: 'one',

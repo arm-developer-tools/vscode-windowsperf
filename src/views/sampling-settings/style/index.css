@@ -44,11 +44,9 @@ main.loading {
 footer {
     grid-area: 2 / 1 / 3 / 3;
     border-top: 1px solid var(--vscode-settings-headerBorder);
-    padding-top: 14px;
-    display: grid;
-    grid-gap: 8px;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: auto auto;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
 }
 
 nav {
@@ -73,8 +71,36 @@ h2 {
 }
 
 .record-button {
-    margin-top: 2px;
-    margin-bottom: 8px;
+    display: flex;
+    padding-left: 10px;
+}
+
+.command-line-preview-title {
+    margin: 4px 0px;
+}
+
+.cmd-preview-group {
+    display: inline-flex;
+    align-items: center;
+}
+
+.copy-button {
+    border-radius: 4px;
+    cursor: pointer;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-left: -20px;
+}
+
+.copy-button:hover {
+    background-color: var(--vscode-toolbar-hoverBackground);
+    height: max-content;
+}
+
+.copy-button:active {
+    background-color: transparent;
 }
 
 @media (min-width: 672px) {
@@ -143,12 +169,15 @@ footer h1 {
 }
 
 footer .footer-display {
-    background-color: var(--vscode-settings-textInputBackground);
     border-radius: 2px;
     color: var(--vscode-settings-textInputForeground);
     border: 1px solid var(--vscode-settings-textInputBorder, transparent);
-    padding: 4px 6px;
+    padding-left: 6px;
+    padding-right: 26px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     word-break: break-all;
+    width: 100%;
 }
 
 .error-message {
