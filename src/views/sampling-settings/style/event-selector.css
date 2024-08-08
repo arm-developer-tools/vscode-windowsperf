@@ -91,6 +91,17 @@
     flex-basis: min-content;
 }
 
+.event-edit-row-validation-message {
+    margin-top: 4px;
+    height: 16px;
+    text-overflow: ellipsis;
+    color: var(--vscode-editorError-foreground);
+}
+
+.event-edit-row-validation-message .codicon {
+    vertical-align: bottom;
+}
+
 .event-dropdown-panel .dropdown-item-label {
     display: block;
 }

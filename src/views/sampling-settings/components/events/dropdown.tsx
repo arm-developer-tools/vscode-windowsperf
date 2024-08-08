@@ -66,6 +66,7 @@ export const createDropdownOptions = (data: EventData): OptionGroup<PredefinedEv
 export type EventDropdownProps = {
     dispatch: Dispatch<Extract<EventsEditorAction, { type: 'setEventName' }>>;
     eventData: EventData;
+    showInvalidEvent: boolean;
 };
 
 export const EventDropdown = (props: EventDropdownProps) => {
@@ -78,6 +79,7 @@ export const EventDropdown = (props: EventDropdownProps) => {
     return (
         <Dropdown
             value={props.eventData.dropdownValue}
+            invalid={props.showInvalidEvent}
             onChange={onEventChange}
             panelClassName="event-dropdown-panel"
             options={optionGroups}

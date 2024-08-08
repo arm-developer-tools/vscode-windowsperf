@@ -12,6 +12,18 @@ import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 import { UpdateRecordOptionAction } from '../../state/update-record-option-action';
 import { EventDropdown } from './dropdown';
 
+const ValidationMessage = (props: { showMissingEventValidation: boolean }) => {
+    return (
+        <div className={`event-edit-row-validation-message`}>
+            {props.showMissingEventValidation ? (
+                <>
+                    <span className={`codicon codicon-error`} /> Please select an event
+                </>
+            ) : undefined}
+        </div>
+    );
+};
+
 export type EventEditRowProps = {
     dispatch: Dispatch<EventsEditorAction>;
     editorState: EventsEditorState;
@@ -31,6 +43,8 @@ export const EventEditRow = (props: EventEditRowProps) => {
                     ? { type: 'addEvent', event: editorState.event }
                     : { type: 'editEvent', index: editorState.index, event: editorState.event };
             props.updateRecordOption(action);
+        } else {
+            props.dispatch({ type: 'validateMissingFields' });
         }
     };
 
@@ -47,10 +61,14 @@ export const EventEditRow = (props: EventEditRowProps) => {
         });
     };
 
+    const showMissingEventValidation =
+        editorState.validateMissingFields && !editorState.event.event;
+
     return (
         <>
             <div className="event-edit-row">
                 <EventDropdown
+                    showInvalidEvent={showMissingEventValidation}
                     dispatch={props.dispatch}
                     eventData={{
                         dropdownValue: editorState.event.event,
@@ -73,6 +91,7 @@ export const EventEditRow = (props: EventEditRowProps) => {
                     {editorState.type === 'adding' ? 'Clear' : 'Cancel'}
                 </VSCodeButton>
             </div>
+            <ValidationMessage showMissingEventValidation={showMissingEventValidation} />
         </>
     );
 };
