@@ -294,7 +294,7 @@
         ]
     },
     "dependencies": {
-        "@arm-debug/ctrlc-windows": "1.0.0",
+        "@arm-debug/ctrlc-windows": "1.0.1",
         "@vscode/codicons": "^0.0.36",
         "@vscode/webview-ui-toolkit": "^1.4.0",
         "os-browserify": "^0.3.0",
