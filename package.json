@@ -285,7 +285,9 @@
             "!**/*.d.ts",
             "!**/*.factories.ts",
             "!src/extension.ts",
-            "!**/test-workspace/**"
+            "!**/test-workspace/**",
+            "!tests/**",
+            "!playwright.config.ts"
         ],
         "coverageDirectory": "./coverage",
         "coverageReporters": [
