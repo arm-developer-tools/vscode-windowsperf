@@ -89,6 +89,7 @@ export const EventDropdown = (props: EventDropdownProps) => {
             filter
             filterInputAutoFocus
             filterBy="Alias_Name,Description"
+            filterPlaceholder="Enter keywords to search for events"
             scrollHeight="400px"
             itemTemplate={(option: PredefinedEvent) => (
                 <>
