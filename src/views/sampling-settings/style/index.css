@@ -130,6 +130,12 @@ section.setting:not(:last-child) {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    align-items: center;
+}
+
+.file-picker-control {
+    display: flex;
+    height: 25px;
 }
 
 .description {

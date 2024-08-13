@@ -8,7 +8,7 @@
     color: var(--vscode-settings-dropdownForeground);
     border: 1px solid var(--vscode-settings-dropdownBorder);
     cursor: pointer;
-    height: 26px;
+    height: 27px;
     padding: 4px 6px;
     box-sizing: border-box;
     position: relative;
