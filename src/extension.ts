@@ -3,6 +3,7 @@
  */
 
 import * as vscode from 'vscode';
+import { activateTelemetry, Analytics } from '@arm-debug/vscode-telemetry';
 
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
@@ -27,91 +28,101 @@ import { defaultRecordOptions, recordOptionsShape } from './wperf/record-options
 import { recentEventsShape } from './recent-events';
 import { canEnableWindowsOnArmFeatures } from './context';
 
-export async function activate(context: vscode.ExtensionContext) {
-    const recentEventsStore = new MementoStore(
-        context.globalState,
-        'recent-events',
-        [],
-        recentEventsShape,
-    );
+export const activate = activateTelemetry(
+    async (context: vscode.ExtensionContext, analytics: Analytics) => {
+        const recentEventsStore = new MementoStore(
+            context.globalState,
+            'recent-events',
+            [],
+            recentEventsShape,
+        );
 
-    const recordOptionsStore = new MementoStore(
-        context.workspaceState,
-        'record-options',
-        defaultRecordOptions,
-        recordOptionsShape,
-    );
+        const recordOptionsStore = new MementoStore(
+            context.workspaceState,
+            'record-options',
+            defaultRecordOptions,
+            recordOptionsShape,
+        );
 
-    const sampleSources = new ObservableCollection<SampleSource>();
-    const selectedSample = new ObservableSelection<SampleSource>();
-    const editorHighlighter = new EditorHighlighter(selectedSample);
+        const sampleSources = new ObservableCollection<SampleSource>();
+        const selectedSample = new ObservableSelection<SampleSource>();
+        const editorHighlighter = new EditorHighlighter(selectedSample);
 
-    const samplingSettingsWebviewPanel = new SamplingSettingsWebviewPanelImpl(
-        context,
-        (distRoot, webview, validateOnCreate) =>
-            new SamplingSettingsWebviewImpl(
-                distRoot,
-                webview,
-                new MessageHandlerImpl(recordOptionsStore, validateOnCreate, recentEventsStore),
+        const samplingSettingsWebviewPanel = new SamplingSettingsWebviewPanelImpl(
+            context,
+            (distRoot, webview, validateOnCreate) =>
+                new SamplingSettingsWebviewImpl(
+                    distRoot,
+                    webview,
+                    new MessageHandlerImpl(recordOptionsStore, validateOnCreate, recentEventsStore),
+                ),
+        );
+
+        vscode.window.registerTreeDataProvider(
+            'samplingResults',
+            new TreeDataProvider(sampleSources, selectedSample),
+        );
+
+        vscode.commands.executeCommand(
+            'setContext',
+            'windowsperf.hasWindowsOnArmFeatures',
+            canEnableWindowsOnArmFeatures(
+                process.platform,
+                process.arch,
+                vscode.workspace.getConfiguration('windowsPerf').get('wperfPath'),
             ),
-    );
+        );
 
-    vscode.window.registerTreeDataProvider(
-        'samplingResults',
-        new TreeDataProvider(sampleSources, selectedSample),
-    );
+        const commands: Record<string, (...args: any) => any> = {
+            'windowsperf.openResultFile': new OpenResultFile(
+                sampleSources,
+                selectedSample,
+                analytics,
+            ).execute,
+            'windowsperf.closeResultFile': new CloseResultFile(sampleSources, selectedSample)
+                .execute,
+            'windowsperf.selectActiveResultFile': new SelectActiveResultFile(
+                sampleSources,
+                selectedSample,
+            ).execute,
+            'windowsperf.clearActiveResultFileSelection': new ClearActiveResultFileSelection(
+                selectedSample,
+            ).execute,
+            'windowsperf.record': new RunWperfRecord(
+                sampleSources,
+                selectedSample,
+                recordOptionsStore,
+                recentEventsStore,
+                samplingSettingsWebviewPanel,
+                analytics,
+            ).execute,
+            'windowsperf.test': new RunWperfTest().execute,
+            'windowsperf.rerunRecord': new RerunWperfRecord(
+                sampleSources,
+                selectedSample,
+                recentEventsStore,
+                analytics,
+            ).execute,
+            'windowsperf.showSamplingSettings': new ShowSamplingSettings(
+                samplingSettingsWebviewPanel,
+            ).execute,
+            'windowsperf.clearAllSampleResults': new ClearAllSampleResults(
+                sampleSources,
+                selectedSample,
+            ).execute,
+        };
 
-    vscode.commands.executeCommand(
-        'setContext',
-        'windowsperf.hasWindowsOnArmFeatures',
-        canEnableWindowsOnArmFeatures(
-            process.platform,
-            process.arch,
-            vscode.workspace.getConfiguration('windowsPerf').get('wperfPath'),
-        ),
-    );
+        Object.entries(commands).forEach(([name, command]) => {
+            context.subscriptions.push(vscode.commands.registerCommand(name, command));
+        });
 
-    const commands: Record<string, (...args: any) => any> = {
-        'windowsperf.openResultFile': new OpenResultFile(sampleSources, selectedSample).execute,
-        'windowsperf.closeResultFile': new CloseResultFile(sampleSources, selectedSample).execute,
-        'windowsperf.selectActiveResultFile': new SelectActiveResultFile(
-            sampleSources,
-            selectedSample,
-        ).execute,
-        'windowsperf.clearActiveResultFileSelection': new ClearActiveResultFileSelection(
-            selectedSample,
-        ).execute,
-        'windowsperf.record': new RunWperfRecord(
-            sampleSources,
-            selectedSample,
-            recordOptionsStore,
-            recentEventsStore,
-            samplingSettingsWebviewPanel,
-        ).execute,
-        'windowsperf.test': new RunWperfTest().execute,
-        'windowsperf.rerunRecord': new RerunWperfRecord(
-            sampleSources,
-            selectedSample,
-            recentEventsStore,
-        ).execute,
-        'windowsperf.showSamplingSettings': new ShowSamplingSettings(samplingSettingsWebviewPanel)
-            .execute,
-        'windowsperf.clearAllSampleResults': new ClearAllSampleResults(
-            sampleSources,
-            selectedSample,
-        ).execute,
-    };
-
-    Object.entries(commands).forEach(([name, command]) => {
-        context.subscriptions.push(vscode.commands.registerCommand(name, command));
-    });
-
-    const disposables: vscode.Disposable[] = [editorHighlighter];
-    for (const toDispose of disposables) {
-        context.subscriptions.push(toDispose);
-    }
-    vscode.commands.executeCommand('setContext', 'windowsperf.initialised', true);
-}
+        const disposables: vscode.Disposable[] = [editorHighlighter];
+        for (const toDispose of disposables) {
+            context.subscriptions.push(toDispose);
+        }
+        vscode.commands.executeCommand('setContext', 'windowsperf.initialised', true);
+    },
+);
 
 // This method is called when your extension is deactivated
 export function deactivate() {

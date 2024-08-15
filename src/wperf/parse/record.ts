@@ -89,3 +89,13 @@ const embedSourceCodeOverhead = (annotation: AnnotationJson): Annotation => {
         })),
     };
 };
+
+export const getEventsWithUnknownSymbol = (sample: Sample): string[] => {
+    const eventsWithUnknownSymbol: string[] = [];
+    for (const event of sample) {
+        if (event.samples.length === 1 && event.samples.at(0)?.symbol === 'unknown') {
+            eventsWithUnknownSymbol.push(event.type);
+        }
+    }
+    return eventsWithUnknownSymbol;
+};

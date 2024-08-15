@@ -2,6 +2,10 @@
  * Copyright (c) 2024 Arm Limited
  */
 
+import {
+    MockAnalytics,
+    analyticsFactory,
+} from '@arm-debug/vscode-telemetry/lib/analytics.factories';
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
 import { updateRecentEvents } from './recent-events';
@@ -16,9 +20,9 @@ describe('record', () => {
     it('returns a RecordRun sample source', async () => {
         const recordOptions = recordOptionsFactory();
         const sample = sampleFactory();
-        const runWperfRecord = jest.fn().mockResolvedValue(sample);
+        const runWperfRecord = jest.fn().mockResolvedValue({ status: 'success', sample });
 
-        const got = await record(recordOptions, { value: [] }, runWperfRecord);
+        const got = await record(recordOptions, { value: [] }, analyticsFactory(), runWperfRecord);
 
         const want = SampleSource.fromRecordRun(
             recordRunFactory({ recordOptions, parsedContent: sample }),
@@ -28,9 +32,12 @@ describe('record', () => {
 
     it('returns undefined if the recording fails', async () => {
         const recordOptions = recordOptionsFactory();
-        const runWperfRecord = jest.fn().mockResolvedValue(undefined);
+        const runWperfRecord = jest.fn().mockResolvedValue({
+            status: 'error',
+            message: "418 I'm a teapot",
+        });
 
-        const got = await record(recordOptions, { value: [] }, runWperfRecord);
+        const got = await record(recordOptions, { value: [] }, analyticsFactory(), runWperfRecord);
 
         expect(got).toBeUndefined();
     });
@@ -39,12 +46,38 @@ describe('record', () => {
         const recordOptions = recordOptionsFactory({
             events: [eventAndFrequencyFactory({ event: 'event1' })],
         });
-        const runWperfRecord = jest.fn().mockResolvedValue(sampleSourceFactory());
+        const runWperfRecord = jest
+            .fn()
+            .mockResolvedValue({ status: 'success', sample: sampleFactory() });
         const recentEventsStore = { value: [] };
 
-        await record(recordOptions, recentEventsStore, runWperfRecord);
+        await record(recordOptions, recentEventsStore, analyticsFactory(), runWperfRecord);
 
         expect(recentEventsStore.value).toEqual(updateRecentEvents([], recordOptions));
+    });
+
+    it('sends a telemetry event if the recording succeeds', async () => {
+        const analytics: MockAnalytics = analyticsFactory();
+        const recordOptions = recordOptionsFactory();
+        const runWperfRecord = jest
+            .fn()
+            .mockResolvedValue({ status: 'success', sample: sampleFactory() });
+
+        await record(recordOptions, { value: [] }, analytics, runWperfRecord);
+
+        expect(analytics.sendEvent).toHaveBeenCalled();
+    });
+
+    it('sends a telemetry event if the recording fails', async () => {
+        const analytics: MockAnalytics = analyticsFactory();
+        const recordOptions = recordOptionsFactory();
+        const runWperfRecord = jest
+            .fn()
+            .mockResolvedValue({ status: 'error', message: "418 I'm a teapot" });
+
+        await record(recordOptions, { value: [] }, analytics, runWperfRecord);
+
+        expect(analytics.sendEvent).toHaveBeenCalled();
     });
 });
 

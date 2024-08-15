@@ -15,6 +15,7 @@ import { faker } from '@faker-js/faker';
 import { Uri } from 'vscode';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
+import { analyticsFactory } from '@arm-debug/vscode-telemetry/lib/analytics.factories';
 
 describe('OpenResultFile', () => {
     describe('execute', () => {
@@ -25,6 +26,7 @@ describe('OpenResultFile', () => {
             const command = new OpenResultFile(
                 files,
                 new ObservableSelection(),
+                analyticsFactory(),
                 openFileOrPrompt,
                 jest.fn(),
             );
@@ -42,6 +44,7 @@ describe('OpenResultFile', () => {
             const command = new OpenResultFile(
                 files,
                 new ObservableSelection(),
+                analyticsFactory(),
                 openFileOrPrompt,
                 jest.fn(),
             );
@@ -56,7 +59,13 @@ describe('OpenResultFile', () => {
             const openFileOrPrompt = jest.fn(async () => file);
             const files = new ObservableCollection<SampleSource>();
             const selectedFile = new ObservableSelection<SampleSource>();
-            const command = new OpenResultFile(files, selectedFile, openFileOrPrompt, jest.fn());
+            const command = new OpenResultFile(
+                files,
+                selectedFile,
+                analyticsFactory(),
+                openFileOrPrompt,
+                jest.fn(),
+            );
 
             await command.execute(file.uri);
 
@@ -72,6 +81,7 @@ describe('OpenResultFile', () => {
             const command = new OpenResultFile(
                 new ObservableCollection<SampleSource>(),
                 new ObservableSelection(),
+                analyticsFactory(),
                 openFileOrPrompt,
                 focusOnSamplingResults,
             );

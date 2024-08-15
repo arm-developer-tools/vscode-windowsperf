@@ -27,6 +27,12 @@ To use the WindowsPerf Sampling Results Explorer:
 
 ![WindowsPerf code disassembly view](/docs/disassembly-view.png)
 
+## Telemetry
+
+This extension collects usage telemetry and sends it to Arm to help improve our products. An example of such data includes when a recording is started, containing what the arguments are, events listening for, and erroneous results, but not containing any file names or locations.
+
+This extension respects the Visual Studio Code telemetry settings described in the [Visual Studio Code](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting) documentation. Modify telemetry options in the settings menu.
+
 ## Additional information
 
 -   Arm Community [blog post on performance analysis methodology](https://community.arm.com/arm-community-blogs/b/infrastructure-solutions-blog/posts/arm-neoverse-n1-performance-analysis-methodology), including links to a complete list of Performance Monitoring Unit (PMU) events

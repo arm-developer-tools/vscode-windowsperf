@@ -10,12 +10,14 @@ import { ObservableCollection } from '../observable-collection';
 import { prependSampleAndMakeSelected, record } from '../record';
 import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
 import { Store } from '../store';
+import { Analytics } from '@arm-debug/vscode-telemetry';
 
 export class RerunWperfRecord {
     constructor(
         private readonly sources: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly recentEventsStore: Store<string[]>,
+        private readonly analytics: Analytics,
         private readonly runRecord: typeof record = record,
         private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
     ) {}
@@ -25,7 +27,11 @@ export class RerunWperfRecord {
 
         const recordOptions = this.extractRecordOptions(sampleSource);
 
-        const newSampleSource = await this.runRecord(recordOptions, this.recentEventsStore);
+        const newSampleSource = await this.runRecord(
+            recordOptions,
+            this.recentEventsStore,
+            this.analytics,
+        );
         if (newSampleSource) {
             prependSampleAndMakeSelected(newSampleSource, this.sources, this.selectedFile);
         }

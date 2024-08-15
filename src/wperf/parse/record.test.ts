@@ -3,10 +3,16 @@
  */
 
 import 'jest';
-import { RecordJsonOutput, parseRecordJson, parseSample } from './record';
+import {
+    RecordJsonOutput,
+    getEventsWithUnknownSymbol,
+    parseRecordJson,
+    parseSample,
+} from './record';
 import { loadFixtureFile } from '../fixtures';
 import { ValidationError } from './validation-error';
 import { percentage } from '../../math';
+import { eventFactory, eventSampleFactory } from './record.factories';
 
 describe('parseRecordJSON', () => {
     it('parses minimal schema compliant json', () => {
@@ -114,5 +120,30 @@ describe('parseSample', () => {
             },
         ];
         expect(wantAnnote).toEqual(got);
+    });
+});
+
+describe('getEventsWithUnknownSymbol', () => {
+    const unknownEventSample = eventSampleFactory({ symbol: 'unknown' });
+
+    it('includes events which only have an unknown symbol', () => {
+        const sample = [
+            eventFactory({ type: 'add' }),
+            eventFactory({ type: 'mult' }),
+            eventFactory({ type: 'shift', samples: [unknownEventSample] }),
+        ];
+
+        expect(getEventsWithUnknownSymbol(sample)).toEqual(['shift']);
+    });
+
+    it('does not include events with both an unknown symbol and a known symbol', () => {
+        const knownEventSample = eventSampleFactory({ symbol: 'lib.dll' });
+        const sample = [
+            eventFactory({ type: 'div' }),
+            eventFactory({ type: 'interupt' }),
+            eventFactory({ type: 'load', samples: [unknownEventSample, knownEventSample] }),
+        ];
+
+        expect(getEventsWithUnknownSymbol(sample)).toEqual([]);
     });
 });

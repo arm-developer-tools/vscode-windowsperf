@@ -10,6 +10,10 @@ import { RunWperfRecord } from './run-wperf-record';
 import { sampleFactory } from '../wperf/parse/record.factories';
 import { sampleSourceRunFactory } from '../views/sampling-results/sample-source.factories';
 import { recordRunFactory } from '../views/sampling-results/record-run.factories';
+import {
+    MockAnalytics,
+    analyticsFactory,
+} from '@arm-debug/vscode-telemetry/lib/analytics.factories';
 
 describe('RunWperfRecord', () => {
     it('opens the Sampling Settings view if the configured record options are invalid', async () => {
@@ -22,6 +26,7 @@ describe('RunWperfRecord', () => {
             { value: invalidRecordOptions },
             { value: [] },
             samplingSettingsWebviewPanel,
+            analyticsFactory(),
             record,
             jest.fn(),
         );
@@ -33,6 +38,7 @@ describe('RunWperfRecord', () => {
     });
 
     it('runs wperf record with the record options configured if they are valid', async () => {
+        const analytics: MockAnalytics = analyticsFactory();
         const recordOptions = recordOptionsFactory();
         const record = jest.fn().mockResolvedValue(undefined);
         const recentEventsStore = { value: [] };
@@ -42,13 +48,14 @@ describe('RunWperfRecord', () => {
             { value: recordOptions },
             recentEventsStore,
             { show: jest.fn() },
+            analytics,
             record,
             jest.fn(),
         );
 
         await command.execute();
 
-        expect(record).toHaveBeenCalledWith(recordOptions, recentEventsStore);
+        expect(record).toHaveBeenCalledWith(recordOptions, recentEventsStore, analytics);
     });
 
     it('does not add a RecordRun if the recording fails', async () => {
@@ -60,6 +67,7 @@ describe('RunWperfRecord', () => {
             { value: recordOptionsFactory() },
             { value: [] },
             { show: jest.fn() },
+            analyticsFactory(),
             failingRecord,
             jest.fn(),
         );
@@ -83,6 +91,7 @@ describe('RunWperfRecord', () => {
             { value: recordOptions },
             { value: [] },
             { show: jest.fn() },
+            analyticsFactory(),
             record,
             jest.fn(),
         );
@@ -109,6 +118,7 @@ describe('RunWperfRecord', () => {
             { value: recordOptions },
             { value: [] },
             { show: jest.fn() },
+            analyticsFactory(),
             record,
             jest.fn(),
         );

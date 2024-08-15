@@ -12,17 +12,21 @@ import { logger } from '../logging/logger';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
 import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
+import { Analytics } from '@arm-debug/vscode-telemetry';
 
 export class OpenResultFile {
     constructor(
         private readonly files: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
+        private readonly analytics: Analytics,
         private readonly openFileOrPrompt: typeof openFileAtUriOrPrompt = openFileAtUriOrPrompt,
         private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
     ) {}
 
     readonly execute = async (inputUri: Uri | undefined) => {
         logger.info('Executing windowsperf.openResultFile');
+        this.analytics.sendEvent('openingResultFile');
+
         const file = await this.openFileOrPrompt(inputUri);
         if (file) {
             logger.info('Opened result file', file.uri.toString());

@@ -2,6 +2,7 @@
  * Copyright (c) 2024 Arm Limited
  */
 
+import { analyticsFactory } from '@arm-debug/vscode-telemetry/lib/analytics.factories';
 import { ObservableCollection } from '../observable-collection';
 import { ObservableSelection } from '../observable-selection';
 import { SampleSource } from '../views/sampling-results/sample-source';
@@ -19,6 +20,7 @@ describe('RerunWperfRecord', () => {
             collection,
             new ObservableSelection<SampleSource>(),
             { value: [] },
+            analyticsFactory(),
             record,
             jest.fn(),
         );
@@ -43,6 +45,7 @@ describe('RerunWperfRecord', () => {
             collection,
             new ObservableSelection<SampleSource>(),
             { value: [] },
+            analyticsFactory(),
             failingRecord,
             jest.fn(),
         );
