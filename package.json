@@ -25,7 +25,8 @@
                 "command": "windowsperf.record",
                 "title": "Record",
                 "icon": "$(record)",
-                "category": "WindowsPerf"
+                "category": "WindowsPerf",
+                "enablement": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
             },
             {
                 "command": "windowsperf.test",
@@ -60,7 +61,8 @@
                 "command": "windowsperf.showSamplingSettings",
                 "title": "Show Sampling Settings",
                 "icon": "$(settings)",
-                "category": "WindowsPerf"
+                "category": "WindowsPerf",
+                "enablement": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
             },
             {
                 "command": "windowsperf.clearAllSampleResults",
@@ -73,7 +75,7 @@
             "view/title": [
                 {
                     "command": "windowsperf.record",
-                    "when": "view == samplingResults",
+                    "when": "view == samplingResults && windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures",
                     "group": "navigation@1"
                 },
                 {
@@ -83,7 +85,7 @@
                 },
                 {
                     "command": "windowsperf.showSamplingSettings",
-                    "when": "view == samplingResults",
+                    "when": "view == samplingResults && windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures",
                     "group": "navigation@3"
                 },
                 {
@@ -130,6 +132,14 @@
                 {
                     "command": "windowsperf.rerunRecord",
                     "when": "false"
+                },
+                {
+                    "command": "windowsperf.record",
+                    "when": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
+                },
+                {
+                    "command": "windowsperf.showSamplingSettings",
+                    "when": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
                 }
             ],
             "explorer/context": [
@@ -160,7 +170,23 @@
         "viewsWelcome": [
             {
                 "view": "samplingResults",
-                "contents": "Record events from WindowsPerf to use the Sampling Results Explorer.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".\n[$(new-file) Open File](command:windowsperf.openResultFile)\nTo learn more about how to use WindowsPerf [read our docs](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf)."
+                "contents": "Record events from WindowsPerf to use the Sampling Results Explorer.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".",
+                "when": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
+            },
+            {
+                "view": "samplingResults",
+                "contents": "[$(new-file) Open Sample Results JSON File](command:windowsperf.openResultFile)",
+                "when": "windowsperf.initialised"
+            },
+            {
+                "view": "samplingResults",
+                "contents": "[Record a sample](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#sampling-model) in JSON format on an Arm-based Windows device.",
+                "when": "windowsperf.initialised && !windowsperf.hasWindowsOnArmFeatures"
+            },
+            {
+                "view": "samplingResults",
+                "contents": "Read our [Online Documentation](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf).",
+                "when": "windowsperf.initialised"
             }
         ],
         "configuration": [

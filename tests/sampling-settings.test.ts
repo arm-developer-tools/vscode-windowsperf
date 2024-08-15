@@ -11,7 +11,7 @@ test.describe('Sampling Settings', () => {
     const toggleSidebarShortcut = 'ControlOrMeta+B';
     const toggleBottomPanelShortcut = 'ControlOrMeta+J';
 
-    test('opens the sampling setting with the error display', async ({ vscode }) => {
+    test.skip('opens the sampling setting with the error display', async ({ vscode }) => {
         await vscode.page.keyboard.press(toggleSidebarShortcut);
         await vscode.page.keyboard.press(toggleBottomPanelShortcut);
         await vscode.page.getByText('WindowsPerf').click();

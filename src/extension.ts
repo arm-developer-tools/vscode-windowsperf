@@ -25,6 +25,7 @@ import { SamplingSettingsWebviewPanelImpl } from './views/sampling-settings/pane
 import { MementoStore } from './store';
 import { defaultRecordOptions, recordOptionsShape } from './wperf/record-options';
 import { recentEventsShape } from './recent-events';
+import { canEnableWindowsOnArmFeatures } from './context';
 
 export async function activate(context: vscode.ExtensionContext) {
     const recentEventsStore = new MementoStore(
@@ -58,6 +59,16 @@ export async function activate(context: vscode.ExtensionContext) {
     vscode.window.registerTreeDataProvider(
         'samplingResults',
         new TreeDataProvider(sampleSources, selectedSample),
+    );
+
+    vscode.commands.executeCommand(
+        'setContext',
+        'windowsperf.hasWindowsOnArmFeatures',
+        canEnableWindowsOnArmFeatures(
+            process.platform,
+            process.arch,
+            vscode.workspace.getConfiguration('windowsPerf').get('wperfPath'),
+        ),
     );
 
     const commands: Record<string, (...args: any) => any> = {
@@ -99,6 +110,7 @@ export async function activate(context: vscode.ExtensionContext) {
     for (const toDispose of disposables) {
         context.subscriptions.push(toDispose);
     }
+    vscode.commands.executeCommand('setContext', 'windowsperf.initialised', true);
 }
 
 // This method is called when your extension is deactivated
