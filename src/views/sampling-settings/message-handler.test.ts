@@ -228,4 +228,8 @@ describe('determineErrorType', () => {
         const error = new Error('No active device interfaces found.');
         expect(determineErrorType(error)).toBe('noWperfDriver');
     });
+    it('returns versionMismatch when there is version incompatibility between wperf and the wperf-driver', () => {
+        const error = new Error('DeviceIoControl');
+        expect(determineErrorType(error)).toBe('versionMismatch');
+    });
 });

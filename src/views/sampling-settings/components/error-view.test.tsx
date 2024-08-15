@@ -6,7 +6,7 @@ import 'jest';
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ErrorView } from './error-view';
+import { ErrorView, versionMismatchErrorMessage } from './error-view';
 
 describe('error view', () => {
     it('Renders the wperf-driver error view', () => {
@@ -35,6 +35,19 @@ describe('error view', () => {
             'WindowsPerf executable not found while running "wperf list". Is it on the PATH or configured in the extension settings?';
 
         expect(container.querySelector('#error-message')?.textContent).toBe(expectedErrorMessage);
+    });
+    it('Renders the version incompatibility error view', () => {
+        const { container } = render(
+            <ErrorView
+                error={{ type: 'versionMismatch' }}
+                openWperfOutput={jest.fn()}
+                refreshView={jest.fn()}
+            />,
+        );
+
+        expect(container.querySelector('#error-message')!.textContent).toBe(
+            versionMismatchErrorMessage,
+        );
     });
     it('calls openWperfOutput once when the open log button is clicked', () => {
         const openWperfOutput = jest.fn();

@@ -12,6 +12,9 @@ export type ErrorViewProps = {
     refreshView: () => void;
 };
 
+export const versionMismatchErrorMessage =
+    'An error has occured while trying to run "wperf list". The versions of wperf and wperf-driver do not match. To ensure compatibility, both wperf and wperf-driver must be the same version. Please update either wperf or wperf-driver so that both versions are identical.';
+
 export const ErrorView = (props: ErrorViewProps) => {
     let errorMessage = props.error.message;
     const docslink =
@@ -24,6 +27,9 @@ export const ErrorView = (props: ErrorViewProps) => {
     if (props.error.type === 'noWperf') {
         errorMessage =
             'WindowsPerf executable not found while running "wperf list". Is it on the PATH or configured in the extension settings?';
+    }
+    if (props.error.type === 'versionMismatch') {
+        errorMessage = versionMismatchErrorMessage;
     }
     return (
         <div className="error-view">

@@ -146,6 +146,9 @@ export const determineErrorType = (error: unknown): ErrorDetail['type'] => {
         }
         if (error.message.includes('No active device interfaces found.')) {
             return 'noWperfDriver';
+        }
+        if (error.message.includes('DeviceIoControl')) {
+            return 'versionMismatch';
         } else {
             return 'unknown';
         }

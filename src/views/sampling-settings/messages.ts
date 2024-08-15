@@ -32,7 +32,7 @@ export const fromViewShape = z.union([
 
 export type FromView = z.infer<typeof fromViewShape>;
 
-const errorTypeShape = z.enum(['noWperf', 'noWperfDriver', 'unknown']);
+const errorTypeShape = z.enum(['noWperf', 'noWperfDriver', 'versionMismatch', 'unknown']);
 
 const errorDetailShape = z.object({
     type: errorTypeShape,
