@@ -6,6 +6,13 @@ WindowsPerf is a Visual Studio Code extension that integrates the [WindowsPerf](
 
 You can use the WindowsPerf extension to optimize for performance on Windows on Arm. WindowsPerf uses a top-down performance analysis methodology that enables you to start with more general performance counters and then drill down into the microarchitecture to find lines in the code that correspond to events, run hotspot analysis, and view code disassembly.
 
+The [**Sampling Settings** tab](#record-events-using-the-sampling-settings-tab) enables you to configure a run of `wperf` to perform hot spot analysis of an executable. Alternatively, you can [record events in a JSON file](#record-events-in-a-json-file).
+
+You can then analyze the data from the run in the WindowsPerf [tree view](#use-the-windowsperf-tree-view).
+
+> **NOTE**  
+> If you are using a non-Windows on Arm machine, you can analyze results recorded in a JSON file, but you cannot record a run or use the Sampling Settings interface.
+
 ## Before you begin
 
 Before you start using the WindowsPerf extension, you must install the WindowsPerf command-line tool and the kernel driver. Follow the instructions in the [WindowsPerf Install Guide](https://learn.arm.com/install-guides/wperf/).
@@ -16,16 +23,38 @@ The WindowsPerf extension is available as a `.vsix` file. To install it in Visua
 
 ## Usage
 
-To use the WindowsPerf Sampling Results Explorer:
+In Visual Studio Code, click ![VS Code toggle panel icon](docs/toggle-panel.png) or select **View: Toggle WindowsPerf** in the Command Palette to open the **WindowsPerf** tab.
+
+There are 2 ways to use the WindowsPerf Sampling Results Explorer.
+
+### Record events using the Sampling Settings tab
+
+1. In the **WindowsPerf** tab, click **Record**. The **Sampling Settings** tab opens.
+2. In the **Executable Path** field, specify the path to the executable file that you want to sample. You can either browse to the location where your code has been built, or enter the location directly.
+3. Enter optional arguments to pass to the command (for example, `-c 10**10**10`).
+4. Select an event to sample. You can select an event from the drop-down list or search for a specific event.
+5. Optionally specify the frequency at which the event should be sampled. For example, if you sample the `st_spec` hardware event at a frequency of `1000` and there are 256 hits, that represents 256,000 hits of that event in your code.
+6. Select a **CPU Core** to monitor from the drop-down list.
+7. Optionally specify a **Timeout**.
+
+The WindowsPerf extension updates the **Command Line Preview** as you specify your sampling settings. Click **Record** to run the command. Windows Perf runs the command for the length of time that you specified in the **Timeout** field, or until you click **Cancel**. The reulsts display in the tree view.
+
+### Record events in a JSON file
 
 1. Run `wperf record --annotate --disassemble --json` from the command line to capture events in a JSON file.
-2. In Visual Studio Code, click ![VS Code toggle panel icon](docs/toggle-panel.png) or select **View: Toggle WindowsPerf** in the Command Palette to open the **WindowsPerf** tab.
-3. In the **WindowsPerf** tab, click **Open File**. Navigate to the location of your JSON file, select the file, and then click **Open**. The WindowsPerf tree view opens.
-4. For each file in your code, the tree view shows the line where the issue is and the number of times that a particular counter was hit. Every event has an entry in the tree view. Click the arrows next to an entry to drill down into individual functions.
-5. Click a line in the tree view to open that file. Lines of code with event hits are colour-coded to enable you to perform hotspot analysis.
-6. Move your mouse over a highlighted line to see the disassembly view. The disassembly view shows you the number of hits for the specific event, the instructions for the function, and the performance metrics for each instruction.
+2. In the **WindowsPerf** tab, click **Open File**. Navigate to the location of your JSON file, select the file, and then click **Open**. The WindowsPerf tree view opens.
+
+### Use the WindowsPerf tree view
+
+1. For each file in your code, the tree view shows the line where the issue is and the number of times that a particular counter was hit. Every event has an entry in the tree view. Click the arrows next to an entry to drill down into individual functions.
+2. Click a line in the tree view to open that file. Lines of code with event hits are colour-coded to enable you to perform hotspot analysis.
+3. Move your mouse over a highlighted line to see the disassembly view. The disassembly view shows you the number of hits for the specific event, the instructions for the function, and the performance metrics for each instruction.
 
 ![WindowsPerf code disassembly view](/docs/disassembly-view.png)
+
+4. To rerun the recording with the same settings and add any new event hits to the results, click [Rerun Record]{.ui} ![Rerun Record button](/docs/rerun-record.png) next to an entry in the tree view.
+
+If you want to change any of your settings, and the **Sampling Settings** page is not visible, click [Show Sampling Settings]{.ui} ![Show Sampling Settings](/docs/show-ss.png).
 
 ## Telemetry
 
