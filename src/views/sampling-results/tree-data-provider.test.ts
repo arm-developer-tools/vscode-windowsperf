@@ -28,6 +28,7 @@ import {
     eventSampleFactory,
     sourceCodeFactory,
 } from '../../wperf/parse/record.factories';
+import { basename } from 'path';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -299,17 +300,6 @@ describe('buildEventSampleNode', () => {
 });
 
 describe('buildSourceNode', () => {
-    it('sets node label to filename and line number', () => {
-        const sourceCode = sourceCodeFactory({
-            filename: 'some-file.c',
-            line_number: 99,
-        });
-
-        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
-
-        expect(got.label).toEqual('some-file.c:99');
-    });
-
     it('decorates node with hits and overhead', () => {
         const sourceCode = sourceCodeFactory({ hits: 5, overhead: 22.22576 });
 
@@ -343,5 +333,16 @@ describe('buildSourceNode', () => {
             buildDecoration(event, annotation, sourceCode).hoverMessage,
         );
         expect(got).toEqual(want);
+    });
+
+    it('sets truncated filename and line number', () => {
+        const sourceCode = sourceCodeFactory({
+            line_number: 99,
+        });
+
+        const got = buildSourceCodeNode(eventFactory(), annotationFactory(), sourceCode);
+
+        const want = `${basename(sourceCode.filename)}:99`;
+        expect(got.label).toEqual(want);
     });
 });

@@ -4,6 +4,8 @@
 
 import * as vscode from 'vscode';
 
+import { basename } from 'path';
+
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { formatFraction } from '../../math';
@@ -137,18 +139,24 @@ export const buildSourceCodeNode = (
     event: Event,
     annotation: Annotation,
     sourceCode: SourceCode,
-): Node => ({
-    collapsibleState: vscode.TreeItemCollapsibleState.None,
-    description: `${formatFraction(sourceCode.overhead)}% (hits: ${sourceCode.hits})`,
-    label: `${sourceCode.filename}:${sourceCode.line_number}`,
-    tooltip: new vscode.MarkdownString(buildDecoration(event, annotation, sourceCode).hoverMessage),
-    command: {
-        command: 'vscode.open',
-        title: 'Open File',
-        arguments: [
-            Uri.file(`${sourceCode.filename}`).with({
-                fragment: sourceCode.line_number.toString(),
-            }),
-        ],
-    },
-});
+): Node => {
+    const fileNameFromPath = basename(sourceCode.filename);
+
+    return {
+        label: `${fileNameFromPath}:${sourceCode.line_number}`,
+        collapsibleState: vscode.TreeItemCollapsibleState.None,
+        description: `${formatFraction(sourceCode.overhead)}% (hits: ${sourceCode.hits})`,
+        tooltip: new vscode.MarkdownString(
+            buildDecoration(event, annotation, sourceCode).hoverMessage,
+        ),
+        command: {
+            command: 'vscode.open',
+            title: 'Open File',
+            arguments: [
+                Uri.file(`${sourceCode.filename}`).with({
+                    fragment: sourceCode.line_number.toString(),
+                }),
+            ],
+        },
+    };
+};
