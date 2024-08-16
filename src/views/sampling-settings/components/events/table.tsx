@@ -8,6 +8,7 @@ import { EventAndFrequency } from '../../../../wperf/record-options';
 import { EventsEditorAction } from '../../state/events-editor';
 import { UpdateRecordOption } from '../../update-record-option';
 import { PredefinedEvent } from '../../../../wperf/parse/list';
+import { FormattedNumber } from '../../../common/components/formatted-number';
 
 type RowActionProps = { onClick: () => void; icon: string; label: string };
 
@@ -47,10 +48,10 @@ const EventRow = ({
     return (
         <div className="row" role="listitem">
             <div title={description}>
-                <div className="event-name">{event.event}</div>
-                <div className="event-description">{description}</div>
+                <p className="event-name">{event.event}</p>
+                <p className="event-description">{description}</p>
             </div>
-            <div>{event.frequency}</div>
+            {event.frequency !== undefined && <FormattedNumber value={event.frequency} />}
             <div className="row-actions">
                 <RowAction icon="pencil" onClick={onEdit} label="Edit" />
                 <RowAction icon="remove-close" onClick={onRemove} label="Remove" />
