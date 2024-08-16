@@ -36,7 +36,7 @@
         "check-file/filename-naming-convention": [
             "error",
             {
-                "src/*.{js,ts}": "KEBAB_CASE"
+                "src/**/*.{js,ts,tsx}": "KEBAB_CASE"
             },
             { "ignoreMiddleExtensions": true }
         ],
