@@ -2,7 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import * as React from 'react';
+import React from 'react';
 
 type FormattedNumberProps = {
     value: number;
@@ -11,5 +11,5 @@ type FormattedNumberProps = {
 export const FormattedNumber = ({ value }: FormattedNumberProps) => {
     const formatted = new Intl.NumberFormat().format(value);
 
-    return <p>{formatted}</p>;
+    return <span>{formatted}</span>;
 };

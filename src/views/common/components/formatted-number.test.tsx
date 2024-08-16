@@ -12,8 +12,7 @@ describe('Formatted Number', () => {
     it('formats value correctly using Intl number format', () => {
         const numberToFormat = 1000000;
         const { container } = render(<FormattedNumber value={numberToFormat} />);
-        const text = container.getElementsByTagName('p').item(0);
 
-        expect(text).toHaveTextContent(new Intl.NumberFormat().format(numberToFormat));
+        expect(container.textContent).toBe(new Intl.NumberFormat().format(numberToFormat));
     });
 });
