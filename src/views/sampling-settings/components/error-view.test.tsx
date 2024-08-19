@@ -6,7 +6,7 @@ import 'jest';
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { ErrorView, versionMismatchErrorMessage } from './error-view';
+import { ErrorView, errorMessages } from './error-view';
 
 describe('error view', () => {
     it('Renders the wperf-driver error view', () => {
@@ -18,8 +18,7 @@ describe('error view', () => {
             />,
         );
 
-        const expectedErrorMessage =
-            'An error has occurred communicating with the wperf-driver while trying to run "wperf list".';
+        const expectedErrorMessage = errorMessages['noWperfDriver'];
         expect(container.querySelector('#error-message')?.textContent).toBe(expectedErrorMessage);
     });
     it('Renders the wperf path error view', () => {
@@ -31,8 +30,7 @@ describe('error view', () => {
             />,
         );
 
-        const expectedErrorMessage =
-            'WindowsPerf executable not found while running "wperf list". Is it on the PATH or configured in the extension settings?';
+        const expectedErrorMessage = errorMessages['noWperf'];
 
         expect(container.querySelector('#error-message')?.textContent).toBe(expectedErrorMessage);
     });
@@ -45,9 +43,9 @@ describe('error view', () => {
             />,
         );
 
-        expect(container.querySelector('#error-message')!.textContent).toBe(
-            versionMismatchErrorMessage,
-        );
+        const expectedErrorMessage = errorMessages['versionMismatch'];
+
+        expect(container.querySelector('#error-message')!.textContent).toBe(expectedErrorMessage);
     });
     it('calls openWperfOutput once when the open log button is clicked', () => {
         const openWperfOutput = jest.fn();
