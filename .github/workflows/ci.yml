@@ -7,7 +7,18 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch: 
+  workflow_dispatch:
+    inputs:
+      release-type:
+        type: choice
+        description: A new version is published with the corresponding version bump if not set to None.
+        options:
+          - 'None'
+          - 'Pre-release'
+          - 'Patch'
+          - 'Minor'
+          - 'Major'
+        default: 'None'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -16,7 +27,7 @@ concurrency:
 jobs:
   build-and-verify:
     name: Build and verify
-    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@v2.2.1
+    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@v3.0.0
     secrets:
       EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
       EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
@@ -28,4 +39,19 @@ jobs:
       enable-code-climate: true
       enable-ksc-next-preview: false
       test-on-self-hosted-ubuntu-only: false
-      excluded-platforms: '["linux-x64","linux-arm64","win32-x64","darwin-x64","darwin-arm64"]'
+      release-type: ${{ inputs.release-type }}
+  release-and-publish:
+    name: Release and publish
+    needs: build-and-verify
+    uses: arm-debug/vscode-workflows/.github/workflows/release-and-publish.yml@v3.0.0
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.release-type != 'None' && github.ref == 'refs/heads/main' }}
+    with:
+      api-types-registry-url: 'https://registry.npmjs.org'
+      release-type: ${{inputs.release-type}}
+    secrets:
+      OPEN_VSX_TOKEN: ${{secrets.OPEN_VSX_TOKEN}}
+      VS_MARKETPLACE_TOKEN: ${{secrets.VS_MARKETPLACE_TOKEN}}
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
+      EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
+      ARM_SOFTWARE_TOKEN: ${{secrets.ARM_SOFTWARE_TOKEN}}
