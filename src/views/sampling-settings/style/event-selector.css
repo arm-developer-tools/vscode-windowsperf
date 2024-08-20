@@ -5,6 +5,7 @@
 .event-table .row {
     display: flex;
     margin-bottom: 4px;
+    line-height: 22px;
 }
 
 .event-table .row:nth-child(odd):not(.header):hover,
@@ -116,4 +117,8 @@
 
 .event-dropdown-item-detail {
     opacity: 0.7;
+}
+
+.no-margin {
+    margin: 0px;
 }

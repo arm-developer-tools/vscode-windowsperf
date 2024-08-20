@@ -48,8 +48,8 @@ const EventRow = ({
     return (
         <div className="row" role="listitem">
             <div title={description}>
-                <p className="event-name">{event.event}</p>
-                <p className="event-description">{description}</p>
+                <p className="event-name no-margin">{event.event}</p>
+                <p className="event-description no-margin">{description}</p>
             </div>
             {event.frequency !== undefined && <FormattedNumber value={event.frequency} />}
             <div className="row-actions">
