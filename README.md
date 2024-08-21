@@ -30,11 +30,11 @@ There are 2 ways to use the WindowsPerf Sampling Results Explorer.
 ### Record events using the Sampling Settings tab
 
 1. In the **WindowsPerf** tab, click **Record**. The **Sampling Settings** tab opens.
-2. In the **Executable Path** field, specify the path to the executable file that you want to sample. You can either browse to the location where your code has been built, or enter the location directly.
+2. In the **Executable path** field, specify the path to the executable file that you want to sample. You can either browse to the location where your code has been built, or enter the location directly.
 3. Enter optional arguments to pass to the command (for example, `-c 10**10**10`).
 4. Select an event to sample. You can select an event from the drop-down list or search for a specific event.
 5. Optionally specify the frequency at which the event should be sampled. For example, if you sample the `st_spec` hardware event at a frequency of `1000` and there are 256 hits, that represents 256,000 hits of that event in your code.
-6. Select a **CPU Core** to monitor from the drop-down list.
+6. Select a **CPU core** to monitor from the drop-down list.
 7. Optionally specify a **Timeout**.
 
 The WindowsPerf extension updates the **Command Line Preview** as you specify your sampling settings. Click **Record** to run the command. Windows Perf runs the command for the length of time that you specified in the **Timeout** field, or until you click **Cancel**. The reulsts display in the tree view.
@@ -58,9 +58,9 @@ If you want to change any of your settings, and the **Sampling Settings** page i
 
 ## Telemetry
 
-This extension collects usage telemetry and sends it to Arm to help improve our products. An example of such data includes when a recording is started, containing what the arguments are, events listening for, and erroneous results, but not containing any file names or locations.
+The WindowsPerf extension collects usage telemetry and sends it to Arm to help improve our products. Such data can include the time when a recording starts, the events that you want to monitor, or any incorrect results. Arm does not collect file names or locations, or any arguments when running a recording.
 
-This extension respects the Visual Studio Code telemetry settings described in the [Visual Studio Code](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting) documentation. Modify telemetry options in the settings menu.
+This extension respects the Visual Studio Code telemetry settings described in the Visual Studio Code [telemetry documentation](https://code.visualstudio.com/docs/getstarted/telemetry). To change your telemetry settings, follow the instructions in [Disable telemetry reporting](https://code.visualstudio.com/docs/getstarted/telemetry#_disable-telemetry-reporting).
 
 ## Additional information
 
