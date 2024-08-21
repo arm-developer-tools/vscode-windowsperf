@@ -35,7 +35,7 @@
             },
             {
                 "command": "windowsperf.rerunRecord",
-                "title": "Rerun Record",
+                "title": "Rerun Recording",
                 "icon": "$(refresh)",
                 "category": "WindowsPerf"
             },
@@ -170,22 +170,22 @@
         "viewsWelcome": [
             {
                 "view": "samplingResults",
-                "contents": "Record events from WindowsPerf to use the Sampling Results Explorer.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".",
+                "contents": "To use the Sampling Results Explorer, record some events from WindowsPerf.\n[$(record) Record](command:windowsperf.record)\nAlternatively, open a JSON file created with \"wperf record\".",
                 "when": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
             },
             {
                 "view": "samplingResults",
-                "contents": "[$(new-file) Open Sample Results JSON File](command:windowsperf.openResultFile)",
+                "contents": "[$(new-file) Open Sampling Results JSON File](command:windowsperf.openResultFile)",
                 "when": "windowsperf.initialised"
             },
             {
                 "view": "samplingResults",
-                "contents": "[Record a sample](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#sampling-model) in JSON format on an Arm-based Windows device.",
+                "contents": "[Record sampling information](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#sampling-model) in JSON format on an Arm-based Windows device.",
                 "when": "windowsperf.initialised && !windowsperf.hasWindowsOnArmFeatures"
             },
             {
                 "view": "samplingResults",
-                "contents": "Read our [Online Documentation](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf).",
+                "contents": "Read our [documentation](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf#wperf).",
                 "when": "windowsperf.initialised"
             }
         ],

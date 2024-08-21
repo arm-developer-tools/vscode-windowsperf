@@ -72,9 +72,9 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                         component: createGroupSection([
                             {
                                 id: 'executable-path',
-                                title: 'Executable Path',
+                                title: 'Executable path',
                                 description:
-                                    "Specifies the executable to run, using its absolute path or a path relative to the project's root directory",
+                                    'The executable to run. Specify an absolute path or one relative to the root directory of the project.',
                                 invalid: showMissingCommandValidation,
                                 component: (
                                     <>
@@ -138,7 +138,7 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                             id: 'events',
                             title: 'Events',
                             description:
-                                'Specifies the hardware events to sample and how often each of them is measured by WindowsPerf',
+                                'Hardware events to sample and how often WindowsPerf samples each event',
                             invalid: showMissingEventsValidation,
                             component: (
                                 <>
@@ -159,11 +159,11 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                     },
                     {
                         id: 'core',
-                        title: 'CPU Core',
+                        title: 'CPU core',
                         component: createSection({
                             id: 'core',
-                            title: 'CPU Core',
-                            description: 'Specifies the CPU Core to monitor',
+                            title: 'CPU core',
+                            description: 'The CPU core to monitor',
                             component: (
                                 <div>
                                     <Select
@@ -189,7 +189,8 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                         component: createSection({
                             id: 'timeout',
                             title: 'Timeout',
-                            description: 'Specifies the time the recording can run before it stops',
+                            description:
+                                'The maximum number of seconds that the recording runs for',
                             component: (
                                 <div>
                                     <RecordOptionInput

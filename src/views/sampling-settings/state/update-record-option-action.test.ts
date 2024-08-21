@@ -52,7 +52,7 @@ describe('getAffectedField', () => {
 });
 
 describe('updateRecordOptionReducer', () => {
-    it('handles an setCommand action', () => {
+    it('handles a setCommand action', () => {
         const newCommand = 'newCommand';
 
         const got = updateRecordOptionReducer(recordOptionsFactory(), {
@@ -63,7 +63,7 @@ describe('updateRecordOptionReducer', () => {
         expect(got.command).toBe(newCommand);
     });
 
-    it('handles an setArguments action', () => {
+    it('handles a setArguments action', () => {
         const newArguments = '--new-arguments';
 
         const got = updateRecordOptionReducer(recordOptionsFactory(), {

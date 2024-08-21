@@ -18,11 +18,11 @@ type ErrorMessageMap = {
 
 export const errorMessages: ErrorMessageMap = {
     noWperfDriver:
-        'An error has occurred communicating with the wperf-driver while trying to run "wperf list".',
+        'There was an error communicating with the wperf-driver while trying to run "wperf list". Check that you have installed the wperf-driver correctly.',
     noWperf:
         'WindowsPerf executable not found while running "wperf list". Is it on the PATH or configured in the extension settings?',
     versionMismatch:
-        'An error has occured while trying to run "wperf list". The versions of wperf and wperf-driver do not match. To ensure compatibility, both wperf and wperf-driver must be the same version. Please update either wperf or wperf-driver so that both versions are identical.',
+        'There was an error running “wperf list” because the versions of wperf and wperf-driver do not match. Make sure that both are the same version by updating either one.',
 };
 export const ErrorView = (props: ErrorViewProps) => {
     const docslink = 'https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/blob/main/INSTALL.md';

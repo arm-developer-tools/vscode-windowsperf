@@ -60,7 +60,7 @@ describe('Form', () => {
     it('renders the CPU Core selection', () => {
         render(<Form {...formPropsFactory()} />);
 
-        expect(screen.queryByText('CPU Core', { selector: 'h1' })).toBeInTheDocument();
+        expect(screen.queryByText('CPU core', { selector: 'h1' })).toBeInTheDocument();
     });
 
     it('calls openCommandFilePicker when the browse button is clicked', () => {
