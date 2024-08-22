@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import * as os from 'os';
 
 const outputRootDir = __dirname;
 const dirs = {
@@ -14,11 +15,10 @@ function readTemplate(fileName: string): string {
 }
 
 function renderTemplate(template: string) {
-    return template
-        // normalize windows paths (YOLO!)
-        .replace(/\\\\/g, path.sep)
-        // root file paths in test workspace
-        .replace(/\${WORKSPACE}/g, dirs.workspace);
+    // normalize windows paths for other systems (YOLO!)
+    const templateWithFixedPaths = os.platform() === 'win32' ? template : template.replace(/\\\\/g, path.sep);
+    // root file paths in test workspace
+    return templateWithFixedPaths.replace(/\${WORKSPACE}/g, dirs.workspace.replace(/\\/g, '\\\\'));
 }
 
 function writeRenderedTemplate(rendered: string, fileName: string) {

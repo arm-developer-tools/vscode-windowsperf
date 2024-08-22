@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const recordOutputPath = path.join(__dirname, 'wperf-output/rendered/cpython-sample-output.json');
+const recordOutputPath = path.join(__dirname, 'wperf-output/rendered/cpython-multi-sample-output.json');
 const listOutputPath = path.join(__dirname, '../src/wperf/fixtures/wperf-3.5.0.list.json');
 const testOutputPath = path.join(__dirname, 'wperf-output/templates/wperf-3.5.0-test-output.txt');
 
