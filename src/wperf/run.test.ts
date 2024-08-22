@@ -3,7 +3,7 @@
  */
 
 import 'jest';
-import { buildListCommand, buildRecordCommand, buildTestCommand } from './run';
+import { buildListCommand, buildRecordCommand, buildTestAsTextCommand } from './run';
 import { buildRecordArgs } from './record-options';
 import { faker } from '@faker-js/faker';
 import { recordOptionsFactory } from './record-options.factories';
@@ -34,7 +34,7 @@ describe('buildTestCommand', () => {
     it('escapes the executable and returns the correct arguments', () => {
         const executablePath = faker.system.filePath();
 
-        const got = buildTestCommand(executablePath);
+        const got = buildTestAsTextCommand(executablePath);
 
         expect(got).toEqual(`"${executablePath}" test`);
     });

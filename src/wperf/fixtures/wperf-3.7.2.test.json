@@ -1,0 +1,196 @@
+{
+    "Test_Results": [
+        {
+            "Test_Name": "request.ioctl_events [EVT_CORE]",
+            "Result": "False"
+        },
+        {
+            "Test_Name": "request.ioctl_events [EVT_DSU]",
+            "Result": "False"
+        },
+        {
+            "Test_Name": "request.ioctl_events [EVT_DMC_CLK/EVT_DMC_CLKDIV2]",
+            "Result": "False"
+        },
+        {
+            "Test_Name": "pmu_device.vendor_name",
+            "Result": "Arm Limited"
+        },
+        {
+            "Test_Name": "pmu_device.product_name",
+            "Result": "armv8-a"
+        },
+        {
+            "Test_Name": "pmu_device.product_name(extended)",
+            "Result": ""
+        },
+        {
+            "Test_Name": "pmu_device.product []",
+            "Result": "armv8-a,armv9-a,neoverse-n1,neoverse-n2,neoverse-n2-r0p0,neoverse-n2-r0p1,neoverse-n2-r0p3,neoverse-v1,neoverse-v2"
+        },
+        {
+            "Test_Name": "pmu_device.m_product_alias",
+            "Result": "(neoverse-n2-r0p0:neoverse-n2),(neoverse-n2-r0p1:neoverse-n2)"
+        },
+        {
+            "Test_Name": "pmu_device.events_query(events) [EVT_CORE]",
+            "Result": "463"
+        },
+        {
+            "Test_Name": "pmu_device.events_query(events) [EVT_DSU]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "pmu_device.events_query(events) [EVT_DMC_CLK]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "pmu_device.events_query(events) [EVT_DMC_CLKDIV2]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "pmu_device.sampling.INTERVAL_DEFAULT",
+            "Result": "0x4000000"
+        },
+        {
+            "Test_Name": "pmu_device.version_name",
+            "Result": "FEAT_PMUv3p1"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [arch_id]",
+            "Result": "0x000f"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [core_num]",
+            "Result": "0x0008"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [fpc_num]",
+            "Result": "0x0001"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [gpc_num]",
+            "Result": "0x0004"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [total_gpc_num]",
+            "Result": "0x0005"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [part_id]",
+            "Result": "0x0d4c"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [pmu_ver]",
+            "Result": "0x0004"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [rev_id]",
+            "Result": "0x0000"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [variant_id]",
+            "Result": "0x0000"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [vendor_id]",
+            "Result": "0x0041"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [midr_value]",
+            "Result": "0x000000000000410fd4c0"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [id_aa64dfr0_value]",
+            "Result": "0x00000000000010305408"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [counter_idx_map]",
+            "Result": "0,1,2,3,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31"
+        },
+        {
+            "Test_Name": "PMU_CTL_QUERY_HW_CFG [device_id_str]",
+            "Result": "core.stat=core;core.sample=core;dsu.stat=dsu;dmc.stat=dmc_clk,dmc_clkdiv2"
+        },
+        {
+            "Test_Name": "gpc_nums[EVT_CORE]",
+            "Result": "5"
+        },
+        {
+            "Test_Name": "gpc_nums[EVT_DSU]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "gpc_nums[EVT_DMC_CLK]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "gpc_nums[EVT_DMC_CLKDIV2]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "fpc_nums[EVT_CORE]",
+            "Result": "1"
+        },
+        {
+            "Test_Name": "fpc_nums[EVT_DSU]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "fpc_nums[EVT_DMC_CLK]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "fpc_nums[EVT_DMC_CLKDIV2]",
+            "Result": "0"
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_CORE].index",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_CORE].note",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_DSU].index",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_DSU].note",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_DMC_CLK].index",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_DMC_CLK].note",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_DMC_CLKDIV2].index",
+            "Result": ""
+        },
+        {
+            "Test_Name": "ioctl_events[EVT_DMC_CLKDIV2].note",
+            "Result": ""
+        },
+        {
+            "Test_Name": "config.count.period",
+            "Result": "100"
+        },
+        {
+            "Test_Name": "config.count.period_max",
+            "Result": "100"
+        },
+        {
+            "Test_Name": "config.count.period_min",
+            "Result": "10"
+        },
+        {
+            "Test_Name": "spe_device.version_name",
+            "Result": "not implemented"
+        }
+    ]
+}

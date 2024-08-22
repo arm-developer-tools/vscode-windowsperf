@@ -9,6 +9,7 @@ import { Sample, parseRecordJson } from './parse/record';
 import { PredefinedEvent, parseListJson } from './parse/list';
 import { RecordOptions } from './record-options';
 import { buildRecordArgs } from './record-options';
+import { parseTestJson, TestResults } from './parse/test';
 
 const shellEscape = (input: string): string => `"${input}"`;
 
@@ -20,7 +21,10 @@ export const buildRecordCommand = (executablePath: string, options: RecordOption
 export const buildListCommand = (executablePath: string) =>
     `${shellEscape(executablePath)} list -v --json`;
 
-export const buildTestCommand = (executablePath: string) => `${shellEscape(executablePath)} test`;
+export const buildTestAsTextCommand = (executablePath: string) =>
+    `${shellEscape(executablePath)} test`;
+const buildTestCommand = (executablePath: string) =>
+    `${buildTestAsTextCommand(executablePath)} --json`;
 
 const getExecutable = (): string =>
     vscode.workspace.getConfiguration('windowsPerf').get('wperfPath') || 'wperf';
@@ -49,6 +53,13 @@ export const runList = async (
     return parseListJson(resultJson);
 };
 
-export const runTest = async (cancellationToken?: CancellationToken): Promise<string> => {
-    return await run(buildTestCommand(getExecutable()), cancellationToken);
+export const runTestAsText = async (cancellationToken?: CancellationToken): Promise<string> => {
+    return await run(buildTestAsTextCommand(getExecutable()), cancellationToken);
+};
+
+export const runTestAndParse = async (
+    cancellationToken?: CancellationToken,
+): Promise<TestResults> => {
+    const resultJson = await run(buildTestCommand(getExecutable()), cancellationToken);
+    return parseTestJson(resultJson);
 };

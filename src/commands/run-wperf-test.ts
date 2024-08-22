@@ -3,7 +3,7 @@
  */
 
 import * as vscode from 'vscode';
-import { runTest } from '../wperf/run';
+import { runTestAsText } from '../wperf/run';
 import { ProgressLocation } from 'vscode';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { logger } from '../logging/logger';
@@ -34,7 +34,7 @@ export const runWperfTestWithProgress = async (): Promise<string | undefined> =>
                 location: ProgressLocation.Notification,
                 cancellable: true,
             },
-            (_progress, cancellationToken) => runTest(cancellationToken),
+            (_progress, cancellationToken) => runTestAsText(cancellationToken),
         );
     } catch (e) {
         const error = e as Error;
