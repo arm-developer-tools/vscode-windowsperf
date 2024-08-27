@@ -15,7 +15,6 @@ import { sampleFileFactory } from './sample-file.factories';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { MarkdownString, Uri } from 'vscode';
-import { buildDecoration } from './source-code-decoration';
 import { recordRunFactory } from './record-run.factories';
 import {
     sampleSourceFactory,
@@ -29,6 +28,7 @@ import {
     sourceCodeFactory,
 } from '../../wperf/parse/record.factories';
 import { basename } from 'path';
+import { renderTreeHoverMessage } from './source-code-decoration';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -329,9 +329,7 @@ describe('buildSourceNode', () => {
 
         const got = buildSourceCodeNode(event, annotation, sourceCode).tooltip;
 
-        const want = new MarkdownString(
-            buildDecoration(event, annotation, sourceCode).hoverMessage,
-        );
+        const want = new MarkdownString(renderTreeHoverMessage(event, annotation, sourceCode));
         expect(got).toEqual(want);
     });
 

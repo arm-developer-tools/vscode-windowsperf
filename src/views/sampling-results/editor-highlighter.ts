@@ -7,6 +7,7 @@ import { ObservableSelection } from '../../observable-selection';
 import { isSamePath } from '../../path';
 import { Decoration, buildDecoration } from './source-code-decoration';
 import { SampleSource } from './sample-source';
+import { groupHitsByFiles, groupHitsOnSameFileLine, Sample } from '../../wperf/parse/record';
 
 export type TextEditorDecorator = {
     decorate: (decorations: Decoration[]) => void;
@@ -23,7 +24,9 @@ export class EditorHighlighter {
         this.eventHandler = selectedFile.onDidChange(() => {
             const currentlySelected = selectedFile.selected;
             if (currentlySelected !== null) {
-                const decorations = calculateDecorations(currentlySelected);
+                const decorations = calculateDecorations(
+                    currentlySelected.context.result.parsedContent,
+                );
                 this.decorator.decorate(decorations);
             } else {
                 this.decorator.decorate([]);
@@ -77,7 +80,7 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
             this.activeDecorations.push(decorationType);
             editor.setDecorations(decorationType, [
                 {
-                    range: editor.document.lineAt(decoration.line_number - 1).range,
+                    range: editor.document.lineAt(decoration.lineNumber - 1).range,
                     hoverMessage: new vscode.MarkdownString(decoration.hoverMessage),
                 },
             ]);
@@ -90,14 +93,15 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
     }
 }
 
-export const calculateDecorations = (sample: SampleSource): Decoration[] => {
+export const calculateDecorations = (sample: Sample) => {
+    const groupedByFileMap = groupHitsByFiles(sample);
     const decorations: Decoration[] = [];
-    for (const event of sample.context.result.parsedContent) {
-        for (const annotation of event.annotate) {
-            for (const sourceCode of annotation.source_code) {
-                decorations.push(buildDecoration(event, annotation, sourceCode));
-            }
-        }
-    }
+    groupedByFileMap.forEach((file, fileName) => {
+        const groupedByLineMap = groupHitsOnSameFileLine(file);
+
+        groupedByLineMap.forEach((line) => {
+            decorations.push(buildDecoration({ filename: fileName, ...line }));
+        });
+    });
     return decorations;
 };

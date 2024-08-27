@@ -9,7 +9,7 @@ import { basename } from 'path';
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
 import { formatFraction } from '../../math';
-import { buildDecoration } from './source-code-decoration';
+import { renderTreeHoverMessage } from './source-code-decoration';
 import { Uri } from 'vscode';
 import { logger } from '../../logging/logger';
 import { SampleSource, Source, isSourceRecordRun, isSourceSampleFile } from './sample-source';
@@ -146,9 +146,7 @@ export const buildSourceCodeNode = (
         label: `${fileNameFromPath}:${sourceCode.line_number}`,
         collapsibleState: vscode.TreeItemCollapsibleState.None,
         description: `${formatFraction(sourceCode.overhead)}% (hits: ${sourceCode.hits})`,
-        tooltip: new vscode.MarkdownString(
-            buildDecoration(event, annotation, sourceCode).hoverMessage,
-        ),
+        tooltip: new vscode.MarkdownString(renderTreeHoverMessage(event, annotation, sourceCode)),
         command: {
             command: 'vscode.open',
             title: 'Open File',

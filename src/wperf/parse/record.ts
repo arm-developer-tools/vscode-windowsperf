@@ -56,6 +56,11 @@ export type Annotation = AnnotationJson & { source_code: SourceCode[] };
 export type EventSample = z.infer<typeof eventSampleShape>;
 export type Event = z.infer<typeof eventShape> & { annotate: Annotation[] };
 export type Sample = Event[];
+export interface SampleHitDetails {
+    eventType: string;
+    functionName: string;
+    sourceCode: SourceCode;
+}
 
 export const parseSample = (toParse: RecordJsonOutput): Sample =>
     toParse.sampling.events.map((event) => ({
@@ -98,4 +103,57 @@ export const getEventsWithUnknownSymbol = (sample: Sample): string[] => {
         }
     }
     return eventsWithUnknownSymbol;
+};
+
+export const groupHitsByFiles = (sample: Sample): Map<string, SampleHitDetails[]> => {
+    const groupedByFileMap = new Map<string, SampleHitDetails[]>();
+    for (const event of sample) {
+        for (const annotation of event.annotate) {
+            for (const sourceCode of annotation.source_code) {
+                const nameKey = sourceCode.filename;
+                const found = groupedByFileMap.get(nameKey);
+                const newContent: SampleHitDetails = {
+                    eventType: event.type,
+                    functionName: annotation.function_name,
+                    sourceCode,
+                };
+                groupedByFileMap.set(nameKey, found ? [...found, newContent] : [newContent]);
+            }
+        }
+    }
+
+    return groupedByFileMap;
+};
+
+interface GroupedByLine {
+    lineNumber: number;
+    content: SampleHitDetails[];
+    lineHits: number;
+    totalFileHits: number;
+}
+
+export const groupHitsOnSameFileLine = (
+    fileContent: SampleHitDetails[],
+): Map<number, GroupedByLine> => {
+    const totalFileHits = fileContent.reduce(
+        (totalHits, content) => totalHits + content.sourceCode.hits,
+        0,
+    );
+
+    const groupedByLineMap = new Map<number, GroupedByLine>();
+    for (const content of fileContent) {
+        const key = content.sourceCode.line_number;
+        const found = groupedByLineMap.get(key);
+        const lineHits = found
+            ? (found.lineHits += content.sourceCode.hits)
+            : content.sourceCode.hits;
+        groupedByLineMap.set(key, {
+            lineNumber: key,
+            content: found ? [...found.content, content] : [content],
+            lineHits,
+            totalFileHits,
+        });
+    }
+
+    return groupedByLineMap;
 };

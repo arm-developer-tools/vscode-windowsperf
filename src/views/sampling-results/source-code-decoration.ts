@@ -3,38 +3,118 @@
  */
 import * as vscode from 'vscode';
 
-import { formatFraction } from '../../math';
+import { formatFraction, percentage } from '../../math';
 import { textEditorColour } from './colours';
-import { SourceCode, Annotation, Event, DisassemblyInstruction } from '../../wperf/parse/record';
+import {
+    SourceCode,
+    Annotation,
+    Event,
+    DisassemblyInstruction,
+    SampleHitDetails,
+} from '../../wperf/parse/record';
+import { basename } from 'path';
 
-export type Decoration = SourceCode & {
+export type Decoration = {
+    filename: string;
+    lineNumber: number;
     backgroundColor: string;
     hoverMessage: string;
     after: vscode.ThemableDecorationAttachmentRenderOptions;
 };
 
-export const buildDecoration = (
-    event: Event,
-    annotation: Annotation,
-    sourceCode: SourceCode,
-): Decoration => ({
-    ...sourceCode,
-    backgroundColor: textEditorColour(sourceCode.overhead),
-    hoverMessage: renderHoverMessage(event, annotation, sourceCode),
-    after: textEditorInlineComments(sourceCode.hits, sourceCode.overhead),
-});
+export interface BuildDecorationParams {
+    filename: string;
+    lineNumber: number;
+    content: SampleHitDetails[];
+    lineHits: number;
+    totalFileHits: number;
+}
 
-const renderHoverMessage = (
+export const buildDecoration = ({
+    filename,
+    lineNumber,
+    content,
+    lineHits,
+    totalFileHits,
+}: BuildDecorationParams): Decoration => {
+    const fileNameFromPath = basename(filename);
+    const totalLineOverhead = percentage(lineHits, totalFileHits);
+    let hoverMessage = '';
+    for (const c of content) {
+        hoverMessage += renderFileHoverMessage({
+            fileNameFromPath,
+            eventType: c.eventType,
+            functionName: c.functionName,
+            sourceCode: c.sourceCode,
+            totalFileHits,
+        });
+    }
+
+    return {
+        filename,
+        lineNumber,
+        backgroundColor: textEditorColour(totalLineOverhead),
+        hoverMessage: `
+### Sampling Results 
+${content.length > 1 ? renderTotalSection(fileNameFromPath, lineHits, totalLineOverhead) : ''}
+${hoverMessage} 
+`,
+        after: textEditorInlineComments(lineHits, totalLineOverhead),
+    };
+};
+
+export const renderTotalSection = (
+    fileNameFromPath: string,
+    hits: number,
+    overhead: number,
+): string => {
+    return `
+* Hits: **${hits}**
+* Overhead: **${formatFraction(overhead)}%** - _${fileNameFromPath}_
+---
+`;
+};
+
+interface RenderFileHoverMessageParams {
+    fileNameFromPath: string;
+    eventType: string;
+    functionName: string;
+    sourceCode: SourceCode;
+    totalFileHits: number;
+}
+
+export const renderFileHoverMessage = ({
+    fileNameFromPath,
+    eventType,
+    functionName,
+    sourceCode,
+    totalFileHits,
+}: RenderFileHoverMessageParams): string => {
+    const eventOverhead = percentage(sourceCode.hits, totalFileHits);
+    return `
+### ${eventType}
+* Function: **${functionName}**
+* Hits: **${sourceCode.hits}**
+* Overhead: 
+    * **${formatFraction(eventOverhead)}%** - _${fileNameFromPath}_
+    * **${formatFraction(sourceCode.overhead)}%** - _${eventType} -> ${functionName}_
+${renderDisassemblySection(sourceCode)}
+---
+`;
+};
+
+export const renderTreeHoverMessage = (
     event: Event,
     annotation: Annotation,
     sourceCode: SourceCode,
 ): string => {
+    const fileNameFromPath = basename(sourceCode.filename);
     return `
-### WindowsPerf
-* Event: ${event.type}
-* Function: ${annotation.function_name}
-* Hits: ${sourceCode.hits}
-* Overhead: ${formatFraction(sourceCode.overhead)}%
+### ${fileNameFromPath}:${sourceCode.line_number}
+* Event: **${event.type}**
+* Function: **${annotation.function_name}**
+* Hits: **${sourceCode.hits}**
+* Overhead: **${formatFraction(sourceCode.overhead)}%**
 ${renderDisassemblySection(sourceCode)}
 `;
 };
