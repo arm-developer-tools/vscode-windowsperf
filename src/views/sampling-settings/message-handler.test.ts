@@ -16,21 +16,26 @@ import { recordOptionsFromViewFactory } from './messages.factories';
 import { faker } from '@faker-js/faker';
 import { Uri } from 'vscode';
 import path from 'path';
+import { testResultsFactory } from '../../wperf/parse/test.factories';
 
 const getPredefinedEventsFactory = (
     result = [predefinedEventFactory(), predefinedEventFactory()],
 ) => jest.fn(async () => result);
 
+const getTestResultsFactory = (result = testResultsFactory()) => jest.fn(async () => result);
+
 describe('SamplingSettingsMessageHandlerImpl', () => {
-    it('handles a ready message by sending the initial data when the event load succeeds', async () => {
+    it('handles a ready message by sending the initial data when the event and test results load succeeds', async () => {
         const recordOptions = recordOptionsFactory();
         const recentEvents = ['recent_event'];
         const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
+        const testResults = testResultsFactory();
         const messageHandler = new MessageHandlerImpl(
             { value: recordOptions },
             false,
             { value: recentEvents },
             getPredefinedEventsFactory(events),
+            getTestResultsFactory(testResults),
         );
 
         const message: FromView = { type: 'ready' };
@@ -42,7 +47,8 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             recentEvents,
             cores: expect.any(Object),
-            events: { type: 'success', events },
+            eventsLoadResult: { type: 'success', events },
+            testResultsLoadResult: { type: 'success', testResults },
             validate: false,
         };
         expect(got).toEqual(want);
@@ -53,11 +59,13 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
         const recordOptions = recordOptionsFactory();
         const failingGetPredefinedEvents = jest.fn();
         failingGetPredefinedEvents.mockRejectedValue(new Error('Failed to load events'));
+        const testResults = testResultsFactory();
         const messageHandler = new MessageHandlerImpl(
             { value: recordOptions },
             true,
             { value: [] },
             failingGetPredefinedEvents,
+            getTestResultsFactory(testResults),
         );
         const message: FromView = { type: 'ready' };
 
@@ -68,21 +76,59 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             recentEvents: [],
             cores: expect.any(Object),
-            events: { type: 'error', error: { type: 'unknown', message: 'Failed to load events' } },
+            eventsLoadResult: {
+                type: 'error',
+                error: { type: 'unknown', message: 'Failed to load events' },
+            },
+            testResultsLoadResult: { type: 'success', testResults },
             validate: validateOnCreate,
         };
         expect(got).toEqual(want);
     });
 
-    it('successfully reloads events and sends the initial data message when events load succeeds', async () => {
+    it('handles a ready message by sending the initial data when the test results load fails', async () => {
+        const validateOnCreate = true;
+        const recordOptions = recordOptionsFactory();
+        const failingGetTestResults = jest.fn();
+        failingGetTestResults.mockRejectedValue(new Error('Failed to run wperf test'));
+        const events = [predefinedEventFactory()];
+        const messageHandler = new MessageHandlerImpl(
+            { value: recordOptions },
+            validateOnCreate,
+            { value: [] },
+            getPredefinedEventsFactory(events),
+            failingGetTestResults,
+        );
+        const message: FromView = { type: 'ready' };
+
+        const got = await messageHandler.handleMessage(message);
+
+        const want: ToView = {
+            type: 'initialData',
+            recordOptions,
+            recentEvents: [],
+            cores: expect.any(Object),
+            eventsLoadResult: { type: 'success', events },
+            testResultsLoadResult: {
+                type: 'error',
+                error: { type: 'unknown', message: 'Failed to run wperf test' },
+            },
+            validate: validateOnCreate,
+        };
+        expect(got).toEqual(want);
+    });
+
+    it('successfully reloads wperf data and sends the initial data message on retry', async () => {
         const recordOptions = recordOptionsFactory();
         const recentEvents = ['recent_event'];
         const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
+        const testResults = testResultsFactory();
         const messageHandler = new MessageHandlerImpl(
             { value: recordOptions },
             false,
             { value: recentEvents },
             getPredefinedEventsFactory(events),
+            getTestResultsFactory(testResults),
         );
 
         const message: FromView = { type: 'retry' };
@@ -94,7 +140,8 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             recentEvents,
             cores: expect.any(Object),
-            events: { type: 'success', events },
+            eventsLoadResult: { type: 'success', events },
+            testResultsLoadResult: { type: 'success', testResults },
             validate: false,
         };
         expect(got).toEqual(want);
@@ -107,6 +154,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             false,
             { value: [] },
             getPredefinedEventsFactory(),
+            getTestResultsFactory(),
         );
         const message: FromView = recordOptionsFromViewFactory();
 
@@ -126,7 +174,8 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
                 recordOptionsStore,
                 false,
                 { value: [] },
-                jest.fn(),
+                getPredefinedEventsFactory(),
+                getTestResultsFactory(),
                 promptForCommand,
             );
             const message: FromView = { type: 'openCommandFilePicker' };
@@ -144,7 +193,8 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
                 { value: recordOptionsFactory() },
                 false,
                 { value: [] },
-                jest.fn(),
+                getPredefinedEventsFactory(),
+                getTestResultsFactory(),
                 promptForCommand,
             );
             const message: FromView = { type: 'openCommandFilePicker' };
@@ -164,8 +214,8 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
                 recordOptionsStore,
                 false,
                 { value: [] },
-
-                jest.fn(),
+                getPredefinedEventsFactory(),
+                getTestResultsFactory(),
                 promptForCommand,
             );
             const message: FromView = { type: 'openCommandFilePicker' };

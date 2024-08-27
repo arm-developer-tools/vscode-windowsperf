@@ -16,11 +16,12 @@ import {
 import { updateRecentEvents } from '../../../recent-events';
 import { EventsEditorAction, eventsEditorReducer, initialEventsEditorState } from './events-editor';
 import { eventsEditorEditingStateFactory } from './events-editor.factories';
+import { testResultsFactory } from '../../../wperf/parse/test.factories';
 
 describe('reducer', () => {
     it('handles an error initial data message', () => {
         const message: ToView = initialDataToViewFactory({
-            events: { type: 'error', error: { type: 'noWperfDriver' } },
+            eventsLoadResult: { type: 'error', error: { type: 'noWperfDriver' } },
         });
 
         const got = reducer(initialState, {
@@ -36,9 +37,11 @@ describe('reducer', () => {
     });
 
     it('handles a success initial data message', () => {
+        const testResults = testResultsFactory();
         const events = [predefinedEventFactory(), predefinedEventFactory()];
         const message: ToView = initialDataToViewFactory({
-            events: { type: 'success', events },
+            eventsLoadResult: { type: 'success', events },
+            testResultsLoadResult: { type: 'success', testResults },
             validate: true,
         });
 
@@ -52,6 +55,7 @@ describe('reducer', () => {
             cores: message.cores,
             recentEvents: message.recentEvents,
             recordOptions: message.recordOptions,
+            testResults,
             events,
             fieldsToValidate: validatedFields,
             eventsEditor: initialEventsEditorState,

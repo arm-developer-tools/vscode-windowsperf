@@ -5,6 +5,7 @@
 import { updateRecentEvents } from '../../../recent-events';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
+import { TestResults } from '../../../wperf/parse/test';
 import { RecordOptions, ValidatedField, validatedFields } from '../../../wperf/record-options';
 import { ErrorDetail, ToView } from '../messages';
 import {
@@ -25,6 +26,7 @@ export type LoadedState = {
     type: 'loaded';
     cores: Core[];
     events: PredefinedEvent[];
+    testResults: TestResults;
     recentEvents: string[];
     recordOptions: RecordOptions;
     fieldsToValidate: readonly ValidatedField[];
@@ -47,22 +49,21 @@ export type Action =
     | EventsEditorAction;
 
 const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): State => {
-    switch (message.events.type) {
-        case 'error':
-            return {
-                type: 'error',
-                error: message.events.error,
-            };
-        case 'success':
-            return {
-                type: 'loaded',
-                cores: message.cores,
-                recentEvents: message.recentEvents,
-                events: message.events.events,
-                recordOptions: message.recordOptions,
-                fieldsToValidate: message.validate ? validatedFields : [],
-                eventsEditor: initialEventsEditorState,
-            };
+    if (message.eventsLoadResult.type === 'error') {
+        return { type: 'error', error: message.eventsLoadResult.error };
+    } else if (message.testResultsLoadResult.type === 'error') {
+        return { type: 'error', error: message.testResultsLoadResult.error };
+    } else {
+        return {
+            type: 'loaded',
+            cores: message.cores,
+            recentEvents: message.recentEvents,
+            events: message.eventsLoadResult.events,
+            testResults: message.testResultsLoadResult.testResults,
+            recordOptions: message.recordOptions,
+            fieldsToValidate: message.validate ? validatedFields : [],
+            eventsEditor: initialEventsEditorState,
+        };
     }
 };
 

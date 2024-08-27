@@ -7,6 +7,7 @@ import { recordOptionsShape } from '../../wperf/record-options';
 import { predefinedEventShape } from '../../wperf/parse/list';
 import { coreShape } from '../../wperf/cores';
 import { recentEventsShape } from '../../recent-events';
+import { testResultsShape } from '../../wperf/parse/test';
 
 export const fromViewShape = z.union([
     z.object({
@@ -41,18 +42,32 @@ const errorDetailShape = z.object({
 
 export type ErrorDetail = z.infer<typeof errorDetailShape>;
 
+const errorResultShape = z.object({
+    type: z.literal('error'),
+    error: errorDetailShape,
+});
+
+export type ErrorResult = z.infer<typeof errorResultShape>;
+
 const eventsLoadResultShape = z.union([
     z.object({
         type: z.literal('success'),
         events: z.array(predefinedEventShape),
     }),
-    z.object({
-        type: z.literal('error'),
-        error: errorDetailShape,
-    }),
+    errorResultShape,
 ]);
 
 export type EventsLoadResult = z.infer<typeof eventsLoadResultShape>;
+
+const testResultsLoadResultShape = z.union([
+    z.object({
+        type: z.literal('success'),
+        testResults: testResultsShape,
+    }),
+    errorResultShape,
+]);
+
+export type TestResultsLoadResult = z.infer<typeof testResultsLoadResultShape>;
 
 export const toViewShape = z.union([
     z.object({
@@ -60,7 +75,8 @@ export const toViewShape = z.union([
         recordOptions: recordOptionsShape,
         recentEvents: recentEventsShape,
         cores: z.array(coreShape),
-        events: eventsLoadResultShape,
+        eventsLoadResult: eventsLoadResultShape,
+        testResultsLoadResult: testResultsLoadResultShape,
         validate: z.boolean(),
     }),
     z.object({

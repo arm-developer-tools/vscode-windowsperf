@@ -6,6 +6,7 @@ import { faker } from '@faker-js/faker';
 import { predefinedEventFactory } from '../../wperf/parse/list.factories';
 import { recordOptionsFactory } from '../../wperf/record-options.factories';
 import { FromView, ToView } from './messages';
+import { testResultsFactory } from '../../wperf/parse/test.factories';
 
 export const recordOptionsFromViewFactory = (
     options?: Partial<Extract<FromView, { type: 'recordOptions' }>>,
@@ -19,7 +20,14 @@ export const initialDataToViewFactory = (
 ): Extract<ToView, { type: 'initialData' }> => ({
     type: 'initialData',
     cores: options?.cores ?? [],
-    events: options?.events ?? { type: 'success', events: [predefinedEventFactory()] },
+    eventsLoadResult: options?.eventsLoadResult ?? {
+        type: 'success',
+        events: [predefinedEventFactory()],
+    },
+    testResultsLoadResult: options?.testResultsLoadResult ?? {
+        type: 'success',
+        testResults: testResultsFactory(),
+    },
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
     recentEvents: options?.recentEvents ?? [faker.word.noun()],
     validate: options?.validate ?? false,

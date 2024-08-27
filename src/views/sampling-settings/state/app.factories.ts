@@ -7,6 +7,7 @@ import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
 import { recordOptionsFactory } from '../../../wperf/record-options.factories';
 import { LoadedState } from './app';
 import { eventsEditorAddingStateFactory } from './events-editor.factories';
+import { testResultsFactory } from '../../../wperf/parse/test.factories';
 
 export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>): LoadedState => ({
     type: 'loaded',
@@ -16,4 +17,5 @@ export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>)
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
     fieldsToValidate: options?.fieldsToValidate ?? [],
     eventsEditor: options?.eventsEditor ?? eventsEditorAddingStateFactory(),
+    testResults: options?.testResults ?? testResultsFactory(),
 });

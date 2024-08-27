@@ -7,8 +7,15 @@ import * as vscode from 'vscode';
 import { logger } from '../../logging/logger';
 import { Core, getCpuInfo } from '../../wperf/cores';
 import { RecordOptions } from '../../wperf/record-options';
-import { runList } from '../../wperf/run';
-import { ErrorDetail, EventsLoadResult, ToView, fromViewShape } from './messages';
+import { runList, runTestAndParse } from '../../wperf/run';
+import {
+    ErrorDetail,
+    ErrorResult,
+    EventsLoadResult,
+    TestResultsLoadResult,
+    ToView,
+    fromViewShape,
+} from './messages';
 import * as path from 'path';
 import { Store } from '../../store';
 
@@ -18,16 +25,19 @@ export type MessageHandler = {
 
 export class MessageHandlerImpl implements MessageHandler {
     private readonly eventsPromise: Promise<EventsLoadResult>;
+    private readonly testResultsPromise: Promise<TestResultsLoadResult>;
 
     constructor(
         private readonly recordOptionsStore: Store<RecordOptions>,
         private readonly validateOnCreate: boolean,
         private readonly recentEventsStore: Store<string[]>,
         private readonly getPredefinedEvents = runList,
+        private readonly getTestResults = runTestAndParse,
         private readonly promptForCommand = promptUserForCommand,
     ) {
         // Start loading while the webview content loads, to improve start up time
         this.eventsPromise = this.loadEvents();
+        this.testResultsPromise = this.loadTestResults();
     }
 
     public readonly handleMessage = async (message: unknown): Promise<ToView | undefined> => {
@@ -89,24 +99,27 @@ export class MessageHandlerImpl implements MessageHandler {
 
     private async createInitialDataMessage(
         eventsPromise: Promise<EventsLoadResult>,
+        testResultsPromise: Promise<TestResultsLoadResult>,
     ): Promise<ToView> {
         return {
             type: 'initialData',
             recordOptions: this.recordOptionsStore.value,
             recentEvents: this.recentEventsStore.value,
             cores: this.listCores(),
-            events: await eventsPromise,
+            eventsLoadResult: await eventsPromise,
+            testResultsLoadResult: await testResultsPromise,
             validate: this.validateOnCreate,
         };
     }
 
     public readonly handleReady = async () => {
-        return this.createInitialDataMessage(this.eventsPromise);
+        return this.createInitialDataMessage(this.eventsPromise, this.testResultsPromise);
     };
 
     public readonly handleRetry = async () => {
         const newEventsPromise = this.loadEvents();
-        return this.createInitialDataMessage(newEventsPromise);
+        const newTestResultsPromise = this.loadTestResults();
+        return this.createInitialDataMessage(newEventsPromise, newTestResultsPromise);
     };
 
     public readonly handleRecordOptions = async (
@@ -125,14 +138,27 @@ export class MessageHandlerImpl implements MessageHandler {
             const events = await this.getPredefinedEvents();
             return { type: 'success', events };
         } catch (error) {
-            return {
-                type: 'error',
-                error: {
-                    type: determineErrorType(error),
-                    message: (error as Error).message || 'Unknown error',
-                },
-            };
+            return this.buildErrorResult(error);
         }
+    };
+
+    private readonly loadTestResults = async (): Promise<TestResultsLoadResult> => {
+        try {
+            const testResults = await this.getTestResults();
+            return { type: 'success', testResults };
+        } catch (error) {
+            return this.buildErrorResult(error);
+        }
+    };
+
+    private readonly buildErrorResult = (error: unknown): ErrorResult => {
+        return {
+            type: 'error',
+            error: {
+                type: determineErrorType(error),
+                message: (error as Error).message || 'Unknown error',
+            },
+        };
     };
 }
 
