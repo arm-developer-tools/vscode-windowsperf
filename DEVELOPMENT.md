@@ -7,7 +7,7 @@
 -   In order to install dependencies, you must have npm configured to access the Arm-Debug registry for packages that are scoped with @arm-debug. Add the following to your global .npmrc file:
     ```
     @arm-debug:registry=https://npm.pkg.github.com
-    //npm.pkg.github.com/:\_authToken=ghp_mytoken
+    //npm.pkg.github.com/:_authToken=ghp_mytoken
     ```
     Replace `ghp_mytoken` with a GitHub token with the packages:read scope and SSO enabled for the Arm-Debug organisation.
 
