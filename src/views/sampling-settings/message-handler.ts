@@ -11,8 +11,7 @@ import { runList, runTestAndParse } from '../../wperf/run';
 import {
     ErrorDetail,
     ErrorResult,
-    EventsLoadResult,
-    TestResultsLoadResult,
+    EventsAndTestLoadResult,
     ToView,
     fromViewShape,
 } from './messages';
@@ -24,8 +23,7 @@ export type MessageHandler = {
 };
 
 export class MessageHandlerImpl implements MessageHandler {
-    private readonly eventsPromise: Promise<EventsLoadResult>;
-    private readonly testResultsPromise: Promise<TestResultsLoadResult>;
+    private readonly eventsAndTestLoadResultPromise: Promise<EventsAndTestLoadResult>;
 
     constructor(
         private readonly recordOptionsStore: Store<RecordOptions>,
@@ -36,8 +34,7 @@ export class MessageHandlerImpl implements MessageHandler {
         private readonly promptForCommand = promptUserForCommand,
     ) {
         // Start loading while the webview content loads, to improve start up time
-        this.eventsPromise = this.loadEvents();
-        this.testResultsPromise = this.loadTestResults();
+        this.eventsAndTestLoadResultPromise = this.loadEventsAndTestResults();
     }
 
     public readonly handleMessage = async (message: unknown): Promise<ToView | undefined> => {
@@ -98,28 +95,25 @@ export class MessageHandlerImpl implements MessageHandler {
     };
 
     private async createInitialDataMessage(
-        eventsPromise: Promise<EventsLoadResult>,
-        testResultsPromise: Promise<TestResultsLoadResult>,
+        eventsAndTestLoadResult: Promise<EventsAndTestLoadResult>,
     ): Promise<ToView> {
         return {
             type: 'initialData',
             recordOptions: this.recordOptionsStore.value,
             recentEvents: this.recentEventsStore.value,
             cores: this.listCores(),
-            eventsLoadResult: await eventsPromise,
-            testResultsLoadResult: await testResultsPromise,
+            eventsAndTestLoadResult: await eventsAndTestLoadResult,
             validate: this.validateOnCreate,
         };
     }
 
     public readonly handleReady = async () => {
-        return this.createInitialDataMessage(this.eventsPromise, this.testResultsPromise);
+        return this.createInitialDataMessage(this.eventsAndTestLoadResultPromise);
     };
 
     public readonly handleRetry = async () => {
-        const newEventsPromise = this.loadEvents();
-        const newTestResultsPromise = this.loadTestResults();
-        return this.createInitialDataMessage(newEventsPromise, newTestResultsPromise);
+        const eventsAndTestResultPromise = this.loadEventsAndTestResults();
+        return this.createInitialDataMessage(eventsAndTestResultPromise);
     };
 
     public readonly handleRecordOptions = async (
@@ -133,19 +127,11 @@ export class MessageHandlerImpl implements MessageHandler {
         return getCpuInfo();
     };
 
-    private readonly loadEvents = async (): Promise<EventsLoadResult> => {
+    private readonly loadEventsAndTestResults = async (): Promise<EventsAndTestLoadResult> => {
         try {
             const events = await this.getPredefinedEvents();
-            return { type: 'success', events };
-        } catch (error) {
-            return this.buildErrorResult(error);
-        }
-    };
-
-    private readonly loadTestResults = async (): Promise<TestResultsLoadResult> => {
-        try {
             const testResults = await this.getTestResults();
-            return { type: 'success', testResults };
+            return { type: 'success', events, testResults };
         } catch (error) {
             return this.buildErrorResult(error);
         }

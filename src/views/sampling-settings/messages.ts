@@ -49,25 +49,16 @@ const errorResultShape = z.object({
 
 export type ErrorResult = z.infer<typeof errorResultShape>;
 
-const eventsLoadResultShape = z.union([
+const eventsAndTestLoadResultShape = z.union([
     z.object({
         type: z.literal('success'),
+        testResults: testResultsShape,
         events: z.array(predefinedEventShape),
     }),
     errorResultShape,
 ]);
 
-export type EventsLoadResult = z.infer<typeof eventsLoadResultShape>;
-
-const testResultsLoadResultShape = z.union([
-    z.object({
-        type: z.literal('success'),
-        testResults: testResultsShape,
-    }),
-    errorResultShape,
-]);
-
-export type TestResultsLoadResult = z.infer<typeof testResultsLoadResultShape>;
+export type EventsAndTestLoadResult = z.infer<typeof eventsAndTestLoadResultShape>;
 
 export const toViewShape = z.union([
     z.object({
@@ -75,8 +66,7 @@ export const toViewShape = z.union([
         recordOptions: recordOptionsShape,
         recentEvents: recentEventsShape,
         cores: z.array(coreShape),
-        eventsLoadResult: eventsLoadResultShape,
-        testResultsLoadResult: testResultsLoadResultShape,
+        eventsAndTestLoadResult: eventsAndTestLoadResultShape,
         validate: z.boolean(),
     }),
     z.object({

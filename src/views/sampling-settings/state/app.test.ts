@@ -21,7 +21,7 @@ import { testResultsFactory } from '../../../wperf/parse/test.factories';
 describe('reducer', () => {
     it('handles an error initial data message', () => {
         const message: ToView = initialDataToViewFactory({
-            eventsLoadResult: { type: 'error', error: { type: 'noWperfDriver' } },
+            eventsAndTestLoadResult: { type: 'error', error: { type: 'noWperfDriver' } },
         });
 
         const got = reducer(initialState, {
@@ -40,8 +40,7 @@ describe('reducer', () => {
         const testResults = testResultsFactory();
         const events = [predefinedEventFactory(), predefinedEventFactory()];
         const message: ToView = initialDataToViewFactory({
-            eventsLoadResult: { type: 'success', events },
-            testResultsLoadResult: { type: 'success', testResults },
+            eventsAndTestLoadResult: { type: 'success', testResults, events },
             validate: true,
         });
 

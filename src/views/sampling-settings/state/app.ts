@@ -49,17 +49,15 @@ export type Action =
     | EventsEditorAction;
 
 const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): State => {
-    if (message.eventsLoadResult.type === 'error') {
-        return { type: 'error', error: message.eventsLoadResult.error };
-    } else if (message.testResultsLoadResult.type === 'error') {
-        return { type: 'error', error: message.testResultsLoadResult.error };
+    if (message.eventsAndTestLoadResult.type === 'error') {
+        return { type: 'error', error: message.eventsAndTestLoadResult.error };
     } else {
         return {
             type: 'loaded',
             cores: message.cores,
             recentEvents: message.recentEvents,
-            events: message.eventsLoadResult.events,
-            testResults: message.testResultsLoadResult.testResults,
+            events: message.eventsAndTestLoadResult.events,
+            testResults: message.eventsAndTestLoadResult.testResults,
             recordOptions: message.recordOptions,
             fieldsToValidate: message.validate ? validatedFields : [],
             eventsEditor: initialEventsEditorState,

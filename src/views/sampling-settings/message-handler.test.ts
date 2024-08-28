@@ -47,14 +47,13 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             recentEvents,
             cores: expect.any(Object),
-            eventsLoadResult: { type: 'success', events },
-            testResultsLoadResult: { type: 'success', testResults },
+            eventsAndTestLoadResult: { type: 'success', testResults, events },
             validate: false,
         };
         expect(got).toEqual(want);
     });
 
-    it('handles a ready message by sending the initial data when the event load fails', async () => {
+    it('handles a ready message by sending the initial data when the initial load fails', async () => {
         const validateOnCreate = true;
         const recordOptions = recordOptionsFactory();
         const failingGetPredefinedEvents = jest.fn();
@@ -76,42 +75,9 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             recentEvents: [],
             cores: expect.any(Object),
-            eventsLoadResult: {
+            eventsAndTestLoadResult: {
                 type: 'error',
                 error: { type: 'unknown', message: 'Failed to load events' },
-            },
-            testResultsLoadResult: { type: 'success', testResults },
-            validate: validateOnCreate,
-        };
-        expect(got).toEqual(want);
-    });
-
-    it('handles a ready message by sending the initial data when the test results load fails', async () => {
-        const validateOnCreate = true;
-        const recordOptions = recordOptionsFactory();
-        const failingGetTestResults = jest.fn();
-        failingGetTestResults.mockRejectedValue(new Error('Failed to run wperf test'));
-        const events = [predefinedEventFactory()];
-        const messageHandler = new MessageHandlerImpl(
-            { value: recordOptions },
-            validateOnCreate,
-            { value: [] },
-            getPredefinedEventsFactory(events),
-            failingGetTestResults,
-        );
-        const message: FromView = { type: 'ready' };
-
-        const got = await messageHandler.handleMessage(message);
-
-        const want: ToView = {
-            type: 'initialData',
-            recordOptions,
-            recentEvents: [],
-            cores: expect.any(Object),
-            eventsLoadResult: { type: 'success', events },
-            testResultsLoadResult: {
-                type: 'error',
-                error: { type: 'unknown', message: 'Failed to run wperf test' },
             },
             validate: validateOnCreate,
         };
@@ -140,8 +106,7 @@ describe('SamplingSettingsMessageHandlerImpl', () => {
             recordOptions,
             recentEvents,
             cores: expect.any(Object),
-            eventsLoadResult: { type: 'success', events },
-            testResultsLoadResult: { type: 'success', testResults },
+            eventsAndTestLoadResult: { type: 'success', events, testResults },
             validate: false,
         };
         expect(got).toEqual(want);

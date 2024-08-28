@@ -20,12 +20,9 @@ export const initialDataToViewFactory = (
 ): Extract<ToView, { type: 'initialData' }> => ({
     type: 'initialData',
     cores: options?.cores ?? [],
-    eventsLoadResult: options?.eventsLoadResult ?? {
+    eventsAndTestLoadResult: options?.eventsAndTestLoadResult ?? {
         type: 'success',
         events: [predefinedEventFactory()],
-    },
-    testResultsLoadResult: options?.testResultsLoadResult ?? {
-        type: 'success',
         testResults: testResultsFactory(),
     },
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
