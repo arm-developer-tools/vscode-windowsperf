@@ -12,7 +12,7 @@ export type FooterProps = {
 };
 
 export const Footer = (props: FooterProps) => {
-    const commandLine = `wperf ${buildRecordArgs(props.recordOptions)}`;
+    const commandLine = `wperf ${buildRecordArgs(props.recordOptions, false)}`;
 
     const copyCommandLine = () => {
         navigator.clipboard.writeText(commandLine);

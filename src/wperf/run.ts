@@ -13,8 +13,12 @@ import { parseTestJson, TestResults } from './parse/test';
 
 const shellEscape = (input: string): string => `"${input}"`;
 
-export const buildRecordCommand = (executablePath: string, options: RecordOptions): string => {
-    const args = buildRecordArgs(options);
+export const buildRecordCommand = (
+    executablePath: string,
+    options: RecordOptions,
+    forceLock: boolean,
+): string => {
+    const args = buildRecordArgs(options, forceLock);
     return `${shellEscape(executablePath)} ${args}`;
 };
 
@@ -39,9 +43,10 @@ const run = async (command: string, cancellationToken?: CancellationToken): Prom
 
 export const runRecord = async (
     options: RecordOptions,
+    forceLock: boolean,
     cancellationToken?: CancellationToken,
 ): Promise<Sample> => {
-    const args = buildRecordCommand(getExecutable(), options);
+    const args = buildRecordCommand(getExecutable(), options, forceLock);
     const resultJson = await run(args, cancellationToken);
     return parseRecordJson(resultJson);
 };

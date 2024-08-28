@@ -9,7 +9,11 @@ import {
 import { ObservableCollection } from './observable-collection';
 import { ObservableSelection } from './observable-selection';
 import { updateRecentEvents } from './recent-events';
-import { prependSampleAndMakeSelected, record } from './record';
+import {
+    prependSampleAndMakeSelected,
+    record,
+    runWperfRecordWithDriverLockHandling,
+} from './record';
 import { recordRunFactory } from './views/sampling-results/record-run.factories';
 import { SampleSource } from './views/sampling-results/sample-source';
 import { sampleSourceFactory } from './views/sampling-results/sample-source.factories';
@@ -99,5 +103,47 @@ describe('prependSampleAndMakeSelected', () => {
 
         prependSampleAndMakeSelected(sample, source, selection);
         expect(selection.selected).toEqual(sample);
+    });
+});
+
+describe('runWperfRecordWithDriverLockHandling', () => {
+    it("does not re-run the record or prompt the user if the Wperf driver isn't locked", async () => {
+        const recordOptions = recordOptionsFactory();
+        const recordResult = { status: 'success', sample: sampleFactory() };
+        const runWperfRecord = jest.fn().mockResolvedValue(recordResult);
+        const offerUnlockMessage = jest.fn();
+
+        const got = await runWperfRecordWithDriverLockHandling(
+            recordOptions,
+            runWperfRecord,
+            offerUnlockMessage,
+        );
+        expect(offerUnlockMessage).not.toHaveBeenCalled();
+
+        const want = { ...recordResult, forceLock: false };
+        expect(got).toEqual(want);
+    });
+
+    it('re-runs the recording if the Wperf driver is locked and the user accepts the notification', async () => {
+        const recordOptions = recordOptionsFactory();
+        const recordResultDriverUnlocked = { status: 'success', sample: sampleFactory() };
+        const recordResultDriverLocked = {
+            status: 'error',
+            message: "418 I'm a teapot",
+            driverLocked: true,
+        };
+        const runWperfRecord = jest.fn().mockImplementation((_recordOptions, forceLock) => {
+            return forceLock ? recordResultDriverUnlocked : recordResultDriverLocked;
+        });
+        const offerUnlockMessage = jest.fn().mockResolvedValue('Yes');
+
+        const got = await runWperfRecordWithDriverLockHandling(
+            recordOptions,
+            runWperfRecord,
+            offerUnlockMessage,
+        );
+
+        const want = { ...recordResultDriverUnlocked, forceLock: true };
+        expect(got).toEqual(want);
     });
 });

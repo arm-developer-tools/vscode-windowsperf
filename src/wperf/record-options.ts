@@ -55,7 +55,12 @@ export const buildEventsParameter = (events: EventAndFrequency[]): string =>
         })
         .join(',');
 
-export const buildRecordArgs = (options: RecordOptions): string => {
+export const buildRecordArgs = (
+    options: RecordOptions,
+    forceLock: boolean,
+    // `forceLock` is not included in the RecordOptions type as storing this in local
+    // storage causes issues with this value persisting between record runs.
+): string => {
     const timeoutArgs =
         options.timeoutSeconds === undefined
             ? []
@@ -68,6 +73,7 @@ export const buildRecordArgs = (options: RecordOptions): string => {
         '-c',
         options.core.toString(),
         ...timeoutArgs,
+        ...(forceLock ? ['--force-lock'] : []),
         '--json',
         '--disassemble',
         '--',

@@ -17,7 +17,7 @@ describe('Footer', () => {
         render(<Footer recordOptions={recordOptions} record={jest.fn()} />);
 
         expect(
-            screen.queryByText(buildRecordArgs(recordOptions), { exact: false }),
+            screen.queryByText(buildRecordArgs(recordOptions, false), { exact: false }),
         ).toBeInTheDocument();
     });
     it('calls record when the record event button is clicked', () => {

@@ -92,7 +92,7 @@ describe('buildRecordArgs', () => {
     it('concatenates events and the frequency', () => {
         const events = [eventAndFrequencyFactory(), eventAndFrequencyFactory()];
 
-        const got = buildRecordArgs(recordOptionsFactory({ events }));
+        const got = buildRecordArgs(recordOptionsFactory({ events }), false);
 
         expect(got).toContain(buildEventsParameter(events));
     });
@@ -102,6 +102,7 @@ describe('buildRecordArgs', () => {
             recordOptionsFactory({
                 timeoutSeconds: 10,
             }),
+            false,
         );
 
         expect(got).toContain('--timeout 10');
@@ -112,6 +113,7 @@ describe('buildRecordArgs', () => {
             recordOptionsFactory({
                 timeoutSeconds: undefined,
             }),
+            false,
         );
 
         expect(got).not.toContain('--timeout');
@@ -122,6 +124,7 @@ describe('buildRecordArgs', () => {
             recordOptionsFactory({
                 core: 1,
             }),
+            false,
         );
 
         expect(got).toContain('-c 1');
@@ -132,6 +135,7 @@ describe('buildRecordArgs', () => {
             recordOptionsFactory({
                 command: 'test command',
             }),
+            false,
         );
 
         expect(got).toContain('test command');
@@ -142,8 +146,21 @@ describe('buildRecordArgs', () => {
             recordOptionsFactory({
                 arguments: '--some-flag',
             }),
+            false,
         );
 
         expect(got).toContain('--some-flag');
+    });
+
+    it('includes the force-lock argument', () => {
+        const got = buildRecordArgs(recordOptionsFactory(), true);
+
+        expect(got).toContain('--force-lock');
+    });
+
+    it('does not include the force-lock argument if it is false', () => {
+        const got = buildRecordArgs(recordOptionsFactory(), false);
+
+        expect(got).not.toContain('--force-lock');
     });
 });

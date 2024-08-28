@@ -12,10 +12,11 @@ describe('buildRecordCommand', () => {
     it('escapes the executable and returns the correct arguments', () => {
         const executablePath = faker.system.filePath();
         const options = recordOptionsFactory();
+        const forceLock = true;
 
-        const got = buildRecordCommand(executablePath, options);
+        const got = buildRecordCommand(executablePath, options, forceLock);
 
-        const want = `"${executablePath}" ${buildRecordArgs(options)}`;
+        const want = `"${executablePath}" ${buildRecordArgs(options, forceLock)}`;
         expect(got).toEqual(want);
     });
 });
