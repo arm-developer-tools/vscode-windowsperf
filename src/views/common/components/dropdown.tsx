@@ -26,7 +26,7 @@ type UnsupportedOptions =
     | 'optionGroupLabel';
 
 export type OptionGroup<O> = {
-    label: string;
+    label?: string;
     options: O[];
 };
 

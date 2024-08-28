@@ -5,6 +5,7 @@
 @import url('./input.css');
 @import url('./nav.css');
 @import url('./event-selector.css');
+@import url('./form.css');
 @import '~@vscode/codicons/dist/codicon.css';
 
 :root {
