@@ -22,10 +22,13 @@ export const Footer = (props: FooterProps) => {
         <footer>
             <div className="command-line-preview-title">Command Line Preview</div>
             <div className="cmd-preview-group">
-                <div className="footer-display">{commandLine}</div>
-                <div className="copy-button" title="Copy" onClick={copyCommandLine}>
-                    <span className="codicon codicon-copy"></span>
+                <div className="footer-display">
+                    {commandLine}
+                    <button className="copy-button" title="Copy" onClick={copyCommandLine}>
+                        <span className="codicon codicon-copy"></span>
+                    </button>
                 </div>
+
                 <div className="record-button">
                     <RecordButton onClick={props.record} />
                 </div>
