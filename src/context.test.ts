@@ -2,7 +2,7 @@
  * Copyright (C) 2024 Arm Limited
  */
 
-import { canEnableWindowsOnArmFeatures } from './context';
+import { canEnableWindowsOnArmFeatures, ContextManager } from './context';
 
 describe('context', () => {
     it.each`
@@ -21,4 +21,34 @@ describe('context', () => {
             expect(res).toBe(expected);
         },
     );
+});
+
+describe('ContextManager', () => {
+    it('configures the context', () => {
+        const getConfig = jest.fn();
+        const updateContext = jest.fn();
+
+        new ContextManager(updateContext, getConfig);
+
+        expect(updateContext).toHaveBeenCalledTimes(2);
+        expect(getConfig).toHaveBeenCalledTimes(1);
+        expect(updateContext).toHaveBeenCalledWith(
+            'windowsperf.hasWindowsOnArmFeatures',
+            expect.any(Boolean),
+        );
+        expect(updateContext).toHaveBeenCalledWith('windowsperf.initialised', true);
+    });
+
+    it('handleConfigurationChange to be called by wperfPath', () => {
+        const getConfig = jest.fn();
+        const updateContext = jest.fn();
+        const mockEvent = jest.fn();
+
+        const contextManager = new ContextManager(updateContext, getConfig);
+        contextManager.handleConfigurationChange({
+            affectsConfiguration: mockEvent,
+        });
+
+        expect(mockEvent).toHaveBeenCalledWith('windowsPerf.wperfPath');
+    });
 });

@@ -26,7 +26,7 @@ import { SamplingSettingsWebviewPanelImpl } from './views/sampling-settings/pane
 import { MementoStore } from './store';
 import { defaultRecordOptions, recordOptionsShape } from './wperf/record-options';
 import { recentEventsShape } from './recent-events';
-import { canEnableWindowsOnArmFeatures } from './context';
+import { ContextManager } from './context';
 
 export const activate = activateTelemetry(
     async (context: vscode.ExtensionContext, analytics: Analytics) => {
@@ -47,6 +47,10 @@ export const activate = activateTelemetry(
         const sampleSources = new ObservableCollection<SampleSource>();
         const selectedSample = new ObservableSelection<SampleSource>();
         const editorHighlighter = new EditorHighlighter(selectedSample);
+        const contextManager = new ContextManager();
+        const configurationChangeDisposable = vscode.workspace.onDidChangeConfiguration(
+            contextManager.handleConfigurationChange,
+        );
 
         const samplingSettingsWebviewPanel = new SamplingSettingsWebviewPanelImpl(
             context,
@@ -61,16 +65,6 @@ export const activate = activateTelemetry(
         vscode.window.registerTreeDataProvider(
             'samplingResults',
             new TreeDataProvider(sampleSources, selectedSample),
-        );
-
-        vscode.commands.executeCommand(
-            'setContext',
-            'windowsperf.hasWindowsOnArmFeatures',
-            canEnableWindowsOnArmFeatures(
-                process.platform,
-                process.arch,
-                vscode.workspace.getConfiguration('windowsPerf').get('wperfPath'),
-            ),
         );
 
         const commands: Record<string, (...args: any) => any> = {
@@ -116,11 +110,10 @@ export const activate = activateTelemetry(
             context.subscriptions.push(vscode.commands.registerCommand(name, command));
         });
 
-        const disposables: vscode.Disposable[] = [editorHighlighter];
+        const disposables: vscode.Disposable[] = [editorHighlighter, configurationChangeDisposable];
         for (const toDispose of disposables) {
             context.subscriptions.push(toDispose);
         }
-        vscode.commands.executeCommand('setContext', 'windowsperf.initialised', true);
     },
 );
 
