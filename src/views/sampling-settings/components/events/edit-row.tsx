@@ -64,6 +64,17 @@ export const EventEditRow = (props: EventEditRowProps) => {
     const showMissingEventValidation =
         editorState.validateMissingFields && !editorState.event.event;
 
+    let frequencyWarning = undefined;
+    const exceedsMaxFrequencyWarning = 'Exceeds the maximum frequency supported by WindowsPerf';
+
+    const MAX_FREQUENCY_VALUE = 4294967295;
+
+    if (
+        props.editorState.event.frequency !== undefined &&
+        props.editorState.event.frequency > MAX_FREQUENCY_VALUE
+    ) {
+        frequencyWarning = exceedsMaxFrequencyWarning;
+    }
     return (
         <>
             <div className="event-edit-row">
@@ -91,7 +102,15 @@ export const EventEditRow = (props: EventEditRowProps) => {
                     {editorState.type === 'adding' ? 'Clear' : 'Cancel'}
                 </VSCodeButton>
             </div>
-            <ValidationMessage showMissingEventValidation={showMissingEventValidation} />
+            {showMissingEventValidation && (
+                <ValidationMessage showMissingEventValidation={showMissingEventValidation} />
+            )}
+            {frequencyWarning && (
+                <div className="warning-message">
+                    <span className="codicon codicon-warning" />
+                    {frequencyWarning}
+                </div>
+            )}
         </>
     );
 };

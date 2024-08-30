@@ -146,7 +146,7 @@ section.setting:not(:last-child) {
     margin: 0 0 calc(2 * var(--form-margin-base)) 0;
 }
 
-.codicon-warning:before {
+.error-view > .codicon-warning:before {
     color: var(--vscode-editorWarning-foreground);
     font-size: xxx-large;
 }
@@ -168,6 +168,16 @@ section.setting:not(:last-child) {
 
 #error-message {
     text-align: center;
+}
+
+.warning-message {
+    display: flex;
+    color: var(--vscode-editorWarning-foreground);
+    padding-top: 5px;
+}
+
+.warning-message > .codicon-warning:before {
+    padding-right: 4px;
 }
 
 label.checkbox {

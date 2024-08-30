@@ -98,4 +98,15 @@ describe('EventEditRow', () => {
 
         expect(screen.getByText('Please select an event')).toBeInTheDocument();
     });
+
+    it('shows a warning message if the frequency entered is above the max supported frequency', () => {
+        const editorState = eventsEditorAddingStateFactory({
+            event: eventAndFrequencyFactory({ frequency: 4294967296 }),
+        });
+        render(<EventEditRow {...eventEditRowPropsFactory({ editorState })} />);
+
+        expect(
+            screen.getByText('Exceeds the maximum frequency supported by WindowsPerf'),
+        ).toBeInTheDocument();
+    });
 });
