@@ -20,6 +20,7 @@ describe('EventSelector', () => {
                 predefinedEvents={[predefinedEventFactory()]}
                 editorState={eventsEditorEditingStateFactory()}
                 recentEvents={[]}
+                defaultFrequency={0x4000000}
             />,
         );
 

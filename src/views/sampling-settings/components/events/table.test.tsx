@@ -18,6 +18,7 @@ const eventTablePropsFactory = (options?: Partial<EventTableProps>): EventTableP
     editingEventIndex: options?.editingEventIndex,
     predefinedEvents: options?.predefinedEvents ?? [predefinedEventFactory()],
     selectedEvents: options?.selectedEvents ?? [],
+    defaultFrequency: options?.defaultFrequency ?? 0x4000000,
 });
 
 describe('EventTable', () => {

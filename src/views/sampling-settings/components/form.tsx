@@ -30,6 +30,7 @@ export type FormProps = {
     dispatch: Dispatch<EventsEditorAction>;
     recentEvents: string[];
     eventsEditorState: EventsEditorState;
+    defaultFrequency: number;
 };
 
 export const Form = ({ dispatch, ...props }: FormProps) => {
@@ -119,6 +120,7 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                                     dispatch={dispatch}
                                     recentEvents={props.recentEvents}
                                     selectedEvents={props.recordOptions.events}
+                                    defaultFrequency={props.defaultFrequency}
                                     updateRecordOption={props.updateRecordOption}
                                 />
                                 {showMissingEventsValidation && (

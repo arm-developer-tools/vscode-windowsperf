@@ -17,6 +17,7 @@ export type EventSelectorProps = {
     predefinedEvents: PredefinedEvent[];
     selectedEvents: EventAndFrequency[];
     recentEvents: string[];
+    defaultFrequency: number;
     updateRecordOption: UpdateRecordOption;
 };
 
@@ -31,15 +32,9 @@ export const EventSelector = (props: EventSelectorProps) => {
                 updateRecordOption={props.updateRecordOption}
                 predefinedEvents={props.predefinedEvents}
                 selectedEvents={props.selectedEvents}
+                defaultFrequency={props.defaultFrequency}
             />
-            <EventEditRow
-                dispatch={props.dispatch}
-                editorState={props.editorState}
-                predefinedEvents={props.predefinedEvents}
-                selectedEvents={props.selectedEvents}
-                recentEvents={props.recentEvents}
-                updateRecordOption={props.updateRecordOption}
-            />
+            <EventEditRow {...props} />
         </>
     );
 };

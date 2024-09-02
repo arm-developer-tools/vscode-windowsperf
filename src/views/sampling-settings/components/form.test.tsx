@@ -21,6 +21,7 @@ export const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
     recordOptions: options?.recordOptions ?? recordOptionsFactory(),
     fieldsToValidate: options?.fieldsToValidate ?? [],
     eventsEditorState: options?.eventsEditorState ?? eventsEditorAddingStateFactory(),
+    defaultFrequency: options?.defaultFrequency ?? 0x4000000,
     dispatch: options?.dispatch ?? jest.fn(),
     openCommandFilePicker: options?.openCommandFilePicker ?? jest.fn(),
     updateRecordOption: options?.updateRecordOption ?? jest.fn(),

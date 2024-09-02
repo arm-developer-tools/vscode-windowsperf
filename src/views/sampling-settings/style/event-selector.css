@@ -24,6 +24,12 @@
     font-size: 14px;
 }
 
+.event-table .row.header .codicon {
+    margin-left: 4px;
+    margin-right: 4px;
+    cursor: help;
+}
+
 .event-table .row:nth-child(odd) {
     background-color: hsla(0, 0%, 51%, 0.04);
 }

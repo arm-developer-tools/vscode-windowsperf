@@ -3,14 +3,11 @@
  */
 
 import * as React from 'react';
-import { Dispatch } from 'react';
-import { PredefinedEvent } from '../../../../wperf/parse/list';
-import { EventAndFrequency } from '../../../../wperf/record-options';
-import { EventsEditorAction, EventsEditorState } from '../../state/events-editor';
-import { UpdateRecordOption } from '../../update-record-option';
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
 import { UpdateRecordOptionAction } from '../../state/update-record-option-action';
 import { EventDropdown } from './dropdown';
+import { formatNumber } from '../../../../math';
+import { EventSelectorProps } from './selector';
 
 const ValidationMessage = (props: { showMissingEventValidation: boolean }) => {
     return (
@@ -24,14 +21,7 @@ const ValidationMessage = (props: { showMissingEventValidation: boolean }) => {
     );
 };
 
-export type EventEditRowProps = {
-    dispatch: Dispatch<EventsEditorAction>;
-    editorState: EventsEditorState;
-    predefinedEvents: PredefinedEvent[];
-    selectedEvents: EventAndFrequency[];
-    recentEvents: string[];
-    updateRecordOption: UpdateRecordOption;
-};
+export type EventEditRowProps = EventSelectorProps;
 
 export const EventEditRow = (props: EventEditRowProps) => {
     const editorState = props.editorState;
@@ -93,7 +83,7 @@ export const EventEditRow = (props: EventEditRowProps) => {
                     aria-label="Frequency"
                     value={editorState.event.frequency ?? ''}
                     onChange={onFrequencyChange}
-                    placeholder="Frequency"
+                    placeholder={`${formatNumber(props.defaultFrequency)} (default)`}
                 />
                 <VSCodeButton onClick={onAdd}>
                     {editorState.type === 'adding' ? 'Add' : 'Save'}

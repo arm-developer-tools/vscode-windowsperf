@@ -3,13 +3,12 @@
  */
 
 import React from 'react';
+import { formatNumber } from '../../../math';
 
 type FormattedNumberProps = {
     value: number;
 };
 
 export const FormattedNumber = ({ value }: FormattedNumberProps) => {
-    const formatted = new Intl.NumberFormat().format(value);
-
-    return <span>{formatted}</span>;
+    return <span>{formatNumber(value)}</span>;
 };

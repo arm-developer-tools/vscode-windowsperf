@@ -9,3 +9,7 @@ export const percentage = (value: number, total: number): number => {
 export const formatFraction = (toFormat: number, fractionDigits: number = 2): number => {
     return parseFloat(toFormat.toFixed(fractionDigits));
 };
+
+export const formatNumber = (toFormat: number): string => {
+    return new Intl.NumberFormat().format(toFormat);
+};

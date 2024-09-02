@@ -79,6 +79,7 @@ export const App = (props: AppProps) => {
                     recentEvents={props.state.recentEvents}
                     dispatch={props.dispatch}
                     eventsEditorState={props.state.eventsEditor}
+                    defaultFrequency={props.state.testResults.samplingIntervalDefault}
                 />
                 <Footer record={handleRecordCommand} recordOptions={props.state.recordOptions} />
             </>

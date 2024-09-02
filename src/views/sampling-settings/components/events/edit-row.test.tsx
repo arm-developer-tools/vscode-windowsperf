@@ -14,6 +14,7 @@ import {
 } from '../../state/events-editor.factories';
 import { eventAndFrequencyFactory } from '../../../../wperf/record-options.factories';
 import { faker } from '@faker-js/faker';
+import { formatNumber } from '../../../../math';
 
 const eventEditRowPropsFactory = (options?: Partial<EventEditRowProps>): EventEditRowProps => ({
     dispatch: options?.dispatch ?? jest.fn(),
@@ -22,6 +23,7 @@ const eventEditRowPropsFactory = (options?: Partial<EventEditRowProps>): EventEd
     selectedEvents: options?.selectedEvents ?? [],
     updateRecordOption: options?.updateRecordOption ?? jest.fn(),
     recentEvents: options?.recentEvents ?? [faker.word.noun()],
+    defaultFrequency: options?.defaultFrequency ?? 0x4000000,
 });
 
 describe('EventEditRow', () => {
@@ -58,18 +60,31 @@ describe('EventEditRow', () => {
         const editorState = eventsEditorEditingStateFactory({
             event: eventAndFrequencyFactory({ frequency: 42 }),
         });
+        const defaultFrequency = 25000;
 
-        render(<EventEditRow {...eventEditRowPropsFactory({ editorState })} />);
+        render(<EventEditRow {...eventEditRowPropsFactory({ editorState, defaultFrequency })} />);
 
-        expect(screen.getByPlaceholderText('Frequency')).toHaveValue(42);
+        expect(
+            screen.getByPlaceholderText(`${formatNumber(defaultFrequency)} (default)`),
+        ).toHaveValue(42);
     });
 
     it('dispatches a setFrequency action when the frequency input changes', () => {
         const dispatch = jest.fn();
         const editorState = eventsEditorAddingStateFactory();
-        render(<EventEditRow {...eventEditRowPropsFactory({ dispatch, editorState })} />);
+        const defaultFrequency = 25000;
+        render(
+            <EventEditRow
+                {...eventEditRowPropsFactory({ dispatch, editorState, defaultFrequency })}
+            />,
+        );
 
-        fireEvent.change(screen.getByPlaceholderText('Frequency'), { target: { value: '42' } });
+        fireEvent.change(
+            screen.getByPlaceholderText(`${formatNumber(defaultFrequency)} (default)`),
+            {
+                target: { value: '42' },
+            },
+        );
 
         const want: EventsEditorAction = { type: 'setFrequency', frequency: 42 };
         expect(dispatch).toHaveBeenCalledWith(want);
