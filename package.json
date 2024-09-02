@@ -11,6 +11,7 @@
     "categories": [
         "Other"
     ],
+    "license": "BSD-3-Clause",
     "activationEvents": [],
     "main": "dist/extension.js",
     "contributes": {
