@@ -16,6 +16,7 @@ import { Dispatch } from 'react';
 import { EventsEditorAction, EventsEditorState } from '../state/events-editor';
 import { Core } from '../../../wperf/cores';
 import { PredefinedEvent } from '../../../wperf/parse/list';
+import { TimeoutSeconds } from './timeout-input';
 import { RecordOptionInput } from './record-option-input';
 import { CoreDropdown } from './core-dropdown';
 
@@ -151,11 +152,8 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                         title: 'Timeout',
                         description: 'The maximum number of seconds that the recording runs for',
                         component: (
-                            <RecordOptionInput
-                                type="number"
-                                recordOption="timeoutSeconds"
+                            <TimeoutSeconds
                                 recordOptions={props.recordOptions}
-                                isInvalid={false}
                                 onChange={(value) => {
                                     props.updateRecordOption({
                                         type: 'setTimeout',

@@ -14,7 +14,7 @@ import { faker } from '@faker-js/faker';
 import { eventsEditorAddingStateFactory } from '../state/events-editor.factories';
 import { ValidatedField } from '../../../wperf/record-options';
 
-const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
+export const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
     cores: options?.cores ?? [],
     events: options?.events ?? [predefinedEventFactory()],
     recentEvents: options?.recentEvents ?? [faker.word.noun()],
@@ -89,5 +89,18 @@ describe('Form', () => {
         render(<Form {...props} />);
 
         expect(screen.getByTestId('command-input')).toHaveClass('invalid');
+    });
+
+    it('calls updateRecordOption when the timeout input changes', () => {
+        const props = formPropsFactory();
+        render(<Form {...props} />);
+
+        const newTimeout = '7200';
+        fireEvent.change(screen.getByTestId('timeoutSeconds-input'), {
+            target: { value: newTimeout },
+        });
+
+        const want: UpdateRecordOptionAction = { type: 'setTimeout', timeout: newTimeout };
+        expect(props.updateRecordOption).toHaveBeenCalledWith(want);
     });
 });
