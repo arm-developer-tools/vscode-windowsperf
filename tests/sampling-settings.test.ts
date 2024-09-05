@@ -19,7 +19,7 @@ test.describe('Sampling Settings', async () => {
         extensionDevelopmentPath: path.resolve(__dirname, '../../'),
     });
 
-    test('shows the Command Specification header', async ({ vscode }) => {
+    test('fill out the form and show the Record button', async ({ vscode }) => {
         await vscode.page.keyboard.press(openSettingsShortcut);
         await vscode.page.keyboard.type('windowsperf');
         await vscode.page.getByLabel('windowsPerf.wperfPath').fill(MOCK_PERF_PATH);
@@ -27,8 +27,10 @@ test.describe('Sampling Settings', async () => {
         await vscode.page.getByRole('button', { name: 'Show Sampling Settings' }).click();
         const parentFrame = vscode.page.frameLocator('iframe[class="webview ready"]');
         const childFrame = parentFrame.frameLocator('#active-frame');
-        await expect(
-            childFrame.getByRole('heading', { name: 'Command Specification' }),
-        ).toBeVisible();
+        await childFrame.locator('div.file-picker-input').getByRole('textbox').fill('python.exe');
+        await childFrame.locator('span').filter({ hasText: 'Event' }).click();
+        await childFrame.getByText('ase_fp_cvt_spec').click();
+        await childFrame.getByRole('button', { name: 'Add' }).click();
+        await expect(childFrame.getByRole('button', { name: 'Record' })).toBeVisible();
     });
 });
