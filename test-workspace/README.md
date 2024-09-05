@@ -51,11 +51,11 @@ This generally comprises of the following steps:
 
 ## Mock wperf script
 
-The [mock-wperf.js](./mock-wperf.js) script can be used as a substitute for a real wperf install on non-WoA systems. It returns mock data for record and list. Some of this requires the templates to have been generated (see above).
+The [wperf.js](./wperf.js) script can be used as a substitute for a real wperf install on non-WoA systems. It returns mock data for record and list. Some of this requires the templates to have been generated (see above).
 
 To use, set the script as the wperf path in the test-workspace [settings.json](./.vscode/settings.json):
 ```json
 {
-    "windowsPerf.wperfPath": "/path/to/root/test-workspace/mock-wperf.js"
+    "windowsPerf.wperfPath": "/path/to/root/test-workspace/wperf.js"
 }
 ```

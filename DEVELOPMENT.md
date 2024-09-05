@@ -31,7 +31,7 @@ Follow the instructions in the [WindowsPerf Install Guide](https://learn.arm.com
 -   If running wperf.exe errors "because publisher is unknown", right click the wperf.exe and in the properties set it to "open even if you don't trust the publisher".
 -   You may see error message "CoCreateInstance failed for DIA" in case DIA SDK is not installed or registered as a COM service. (wperf's BUILD.md outlines how to register it)
 
-Either add wperf to the PATH, or configure the `windowsPerf.wperfPath` setting. Set this to the absolute path to mock-wperf in the extension development host, or add this to the [settings.json](./test-workspace/.vscode/settings.json):
+Either add wperf to the PATH, or configure the `windowsPerf.wperfPath` setting. Set this to the absolute path to wperf in the extension development host, or add this to the [settings.json](./test-workspace/.vscode/settings.json):
 
 ```json
 {
@@ -41,10 +41,10 @@ Either add wperf to the PATH, or configure the `windowsPerf.wperfPath` setting. 
 
 ### Other Platforms
 
-If you are not running on a Windows-on-Arm machine, you can use the [mock-wperf](./test-workspace/mock-wperf.js) script to simulate a real WindowsPerf installation. Configure the `windowsPerf.wperfPath` setting to the absolute path to mock-wperf in the extension development host, or add this to the [settings.json](./test-workspace/.vscode/settings.json):
+If you are not running on a Windows-on-Arm machine, you can use the [wperf](./test-workspace/wperf.js) script to simulate a real WindowsPerf installation. Configure the `windowsPerf.wperfPath` setting to the absolute path to wperf.js in the extension development host, or add this to the [settings.json](./test-workspace/.vscode/settings.json):
 
 ```json
 {
-    "windowsPerf.wperfPath": "/path/to/repo/root/test-workspace/mock-wperf.js"
+    "windowsPerf.wperfPath": "/path/to/repo/root/test-workspace/wperf.js"
 }
 ```

@@ -9,7 +9,7 @@ const TEST_WORKSPACE = path.join(__dirname, '../', 'test-workspace');
 
 const MOCK_PERF_PATH = path.join(
     TEST_WORKSPACE,
-    process.platform === 'win32' ? 'wperf.bat' : 'mock-wperf.js',
+    process.platform === 'win32' ? 'wperf.bat' : 'wperf.js',
 );
 
 test.describe('Sampling Settings', async () => {

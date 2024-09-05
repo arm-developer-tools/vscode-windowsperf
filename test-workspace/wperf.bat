@@ -1,2 +1,2 @@
 @echo off
-node %~dp0\mock-wperf.js %1 %2
+node %~dp0\wperf.js %1 %2
