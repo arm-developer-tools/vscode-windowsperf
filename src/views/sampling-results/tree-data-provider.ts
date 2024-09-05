@@ -58,14 +58,21 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 }
 
 export const buildSampleSourceRootNode = (source: SampleSource, isSelected: boolean): Node => {
+    const eventTypeWhenNoHits = 'unknown event';
+    const nodeChildren = source.context.result.parsedContent
+        .filter((e) => e.type !== eventTypeWhenNoHits && e.samples.length > 0)
+        .map(buildEventNode);
+
     return {
         id: source.id,
-        children: source.context.result.parsedContent.map(buildEventNode),
+        children: nodeChildren,
         label: source.context.result.displayName,
         description: getDescription(source.context),
         resourceUri: getResourceUri(source.context),
         contextValue: getContextValue(source.context.result.treeContextName, isSelected),
-        collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+        collapsibleState: nodeChildren.length
+            ? vscode.TreeItemCollapsibleState.Collapsed
+            : vscode.TreeItemCollapsibleState.None,
         iconPath: buildRootNodeIcon(isSelected),
     };
 };

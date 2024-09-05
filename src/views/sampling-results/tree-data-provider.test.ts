@@ -29,6 +29,10 @@ import {
 } from '../../wperf/parse/record.factories';
 import { basename } from 'path';
 import { renderTreeHoverMessage } from './source-code-decoration';
+import {
+    eventAndFrequencyFactory,
+    recordOptionsFactory,
+} from '../../wperf/record-options.factories';
 
 describe('TreeDataProvider', () => {
     describe('getChildren', () => {
@@ -111,23 +115,23 @@ describe('buildSampleSourceRootNode', () => {
         expect(got.id).toEqual(sampleSource.id);
     });
 
-    it('calculates children nodes', () => {
-        const first = eventFactory();
-        const second = eventFactory();
-        const sampleFile = sampleFileFactory({
-            parsedContent: [first, second],
-        });
-        const sampleSourceFile = sampleSourceFileFactory({
-            result: sampleFile,
-        });
-
-        const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
-
-        const want = [buildEventNode(first), buildEventNode(second)];
-        expect(got.children).toEqual(want);
-    });
-
     describe('given sample sourced from a file', () => {
+        it('calculates children nodes', () => {
+            const first = eventFactory();
+            const second = eventFactory();
+            const sampleFile = sampleFileFactory({
+                parsedContent: [first, second],
+            });
+            const sampleSourceFile = sampleSourceFileFactory({
+                result: sampleFile,
+            });
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
+
+            const want = [buildEventNode(first), buildEventNode(second)];
+            expect(got.children).toEqual(want);
+        });
+
         it('sets label to display name', () => {
             const sampleSourceFile = sampleSourceFileFactory();
 
@@ -157,6 +161,52 @@ describe('buildSampleSourceRootNode', () => {
     });
 
     describe('given sample sourced from a record run', () => {
+        it('returns empty children property when there are only unknown events types whilst recording', () => {
+            const event = eventFactory({
+                type: 'unknown event',
+                samples: [],
+                annotate: [],
+            });
+            const sampleFile = recordRunFactory({
+                parsedContent: [event],
+                recordOptions: recordOptionsFactory({
+                    events: [eventAndFrequencyFactory()],
+                }),
+            });
+            const sampleSourceFile = sampleSourceRunFactory({
+                result: sampleFile,
+            });
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
+
+            expect(got.children).toEqual([]);
+        });
+
+        it('returns only the children that have known event types when recording', () => {
+            const eventUnknown = eventFactory({
+                type: 'unknown event',
+                samples: [],
+                annotate: [],
+            });
+            const eventKnownSample = eventSampleFactory();
+            const eventKnown = eventFactory({
+                samples: [eventKnownSample],
+            });
+            const sampleFile = recordRunFactory({
+                parsedContent: [eventUnknown, eventKnown],
+                recordOptions: recordOptionsFactory({
+                    events: [eventAndFrequencyFactory()],
+                }),
+            });
+            const sampleSourceFile = sampleSourceRunFactory({
+                result: sampleFile,
+            });
+
+            const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
+            const want = [buildEventNode(eventKnown)];
+            expect(got.children).toEqual(want);
+        });
+
         it('sets label to display name', () => {
             const sampleSourceFile = sampleSourceRunFactory();
 
@@ -245,7 +295,7 @@ describe('buildEventNode', () => {
             buildEventSampleNode(event, sampleWithMatchingAnnotation, matchingAnnotation),
             buildEventSampleNode(event, otherSample, undefined),
         ];
-        expect(got.children).toEqual(want);
+        expect(got!.children).toEqual(want);
     });
 
     it('sets node label to event type', () => {
@@ -253,7 +303,7 @@ describe('buildEventNode', () => {
 
         const got = buildEventNode(event);
 
-        expect(got.label).toEqual('a-type');
+        expect(got!.label).toEqual('a-type');
     });
 });
 
