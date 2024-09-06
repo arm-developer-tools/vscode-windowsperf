@@ -11,6 +11,7 @@ export const eventFactory = (options?: Partial<Event>): Event => ({
     type: options?.type ?? faker.word.noun(),
     samples: options?.samples ?? faker.helpers.multiple(eventSampleFactory),
     annotate: options?.annotate ?? faker.helpers.multiple(annotationFactory),
+    count: options?.count ?? faker.number.int(),
 });
 
 export const eventSampleFactory = (options?: Partial<EventSample>) => ({

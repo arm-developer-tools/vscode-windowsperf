@@ -8,7 +8,7 @@ import { basename } from 'path';
 
 import { ObservableCollection } from '../../observable-collection';
 import { ObservableSelection } from '../../observable-selection';
-import { formatFraction } from '../../math';
+import { formatFraction, percentage } from '../../math';
 import { renderTreeHoverMessage } from './source-code-decoration';
 import { Uri } from 'vscode';
 import { logger } from '../../logging/logger';
@@ -59,18 +59,22 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
 export const buildSampleSourceRootNode = (source: SampleSource, isSelected: boolean): Node => {
     const eventTypeWhenNoHits = 'unknown event';
-    const nodeChildren = source.context.result.parsedContent
-        .filter((e) => e.type !== eventTypeWhenNoHits && e.samples.length > 0)
-        .map(buildEventNode);
+    const eventsWithHits = source.context.result.parsedContent.filter(
+        (e) => e.type !== eventTypeWhenNoHits && e.samples.length > 0,
+    );
+    const totalSampleHits = eventsWithHits.reduce(
+        (totalHits, source) => totalHits + source.count,
+        0,
+    );
 
     return {
         id: source.id,
-        children: nodeChildren,
+        children: eventsWithHits.map((c) => buildEventNode(c, totalSampleHits)),
         label: source.context.result.displayName,
-        description: getDescription(source.context),
+        description: getDescription(source.context, totalSampleHits),
         resourceUri: getResourceUri(source.context),
         contextValue: getContextValue(source.context.result.treeContextName, isSelected),
-        collapsibleState: nodeChildren.length
+        collapsibleState: eventsWithHits.length
             ? vscode.TreeItemCollapsibleState.Collapsed
             : vscode.TreeItemCollapsibleState.None,
         iconPath: buildRootNodeIcon(isSelected),
@@ -88,11 +92,11 @@ const getContextValue = (name: string, selected: boolean): string => {
     return `${name}${isSelected}`;
 };
 
-const getDescription = (source: Source): string | undefined => {
+const getDescription = (source: Source, totalHits: number): string | undefined => {
     if (isSourceRecordRun(source)) {
-        return source.result.date;
+        return `${source.result.date} (hits: ${totalHits})`;
     }
-    return undefined;
+    return `(hits: ${totalHits})`;
 };
 
 const getResourceUri = (source: Source): Uri | undefined => {
@@ -102,7 +106,12 @@ const getResourceUri = (source: Source): Uri | undefined => {
     return undefined;
 };
 
-export const buildEventNode = (event: Event): Node => {
+export const buildEventNode = (event: Event, totalSampleHits: number): Node => {
+    const totalEventSampleHits = event.samples.reduce(
+        (totalHits, source) => totalHits + source.count,
+        0,
+    );
+
     const lookup = buildAnnotationLookup(event.annotate);
     return {
         children: event.samples.map((sample) =>
@@ -110,6 +119,7 @@ export const buildEventNode = (event: Event): Node => {
         ),
         collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
         label: event.type,
+        description: `${formatFraction(percentage(totalEventSampleHits, totalSampleHits))}% (hits: ${totalEventSampleHits})`,
     };
 };
 
@@ -131,6 +141,7 @@ export const buildEventSampleNode = (
         annotation?.source_code.map((sourceCode: SourceCode) =>
             buildSourceCodeNode(event, annotation, sourceCode),
         ) || [];
+
     return {
         children,
         collapsibleState:

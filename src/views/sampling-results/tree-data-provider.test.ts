@@ -115,6 +115,25 @@ describe('buildSampleSourceRootNode', () => {
         expect(got.id).toEqual(sampleSource.id);
     });
 
+    it('calculates children nodes', () => {
+        const first = eventFactory();
+        const second = eventFactory();
+        const sampleFile = sampleFileFactory({
+            parsedContent: [first, second],
+        });
+        const sampleSourceFile = sampleSourceFileFactory({
+            result: sampleFile,
+        });
+
+        const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
+
+        const want = [
+            buildEventNode(first, first.count + second.count),
+            buildEventNode(second, first.count + second.count),
+        ];
+        expect(got.children).toEqual(want);
+    });
+
     describe('given sample sourced from a file', () => {
         it('calculates children nodes', () => {
             const first = eventFactory();
@@ -128,7 +147,10 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-            const want = [buildEventNode(first), buildEventNode(second)];
+            const want = [
+                buildEventNode(first, first.count + second.count),
+                buildEventNode(second, first.count + second.count),
+            ];
             expect(got.children).toEqual(want);
         });
 
@@ -203,7 +225,7 @@ describe('buildSampleSourceRootNode', () => {
             });
 
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
-            const want = [buildEventNode(eventKnown)];
+            const want = [buildEventNode(eventKnown, eventKnown.count)];
             expect(got.children).toEqual(want);
         });
 
@@ -221,7 +243,9 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-            expect(got.description).toEqual(record.date);
+            expect(got.description).toEqual(
+                `${record.date} (hits: ${sampleSourceFile.context.result.parsedContent.reduce((a, b) => a + b.count, 0)})`,
+            );
         });
 
         it('sets the context value', () => {
@@ -289,7 +313,7 @@ describe('buildEventNode', () => {
             annotate: [matchingAnnotation, annotationFactory()],
         });
 
-        const got = buildEventNode(event);
+        const got = buildEventNode(event, 100);
 
         const want = [
             buildEventSampleNode(event, sampleWithMatchingAnnotation, matchingAnnotation),
@@ -301,7 +325,7 @@ describe('buildEventNode', () => {
     it('sets node label to event type', () => {
         const event = eventFactory({ type: 'a-type' });
 
-        const got = buildEventNode(event);
+        const got = buildEventNode(event, 100);
 
         expect(got!.label).toEqual('a-type');
     });

@@ -4,7 +4,6 @@
 
 import 'jest';
 import {
-    RecordJsonOutput,
     getEventsWithUnknownSymbol,
     groupHitsByFiles,
     groupHitsOnSameFileLine,
@@ -82,31 +81,29 @@ describe('record', () => {
 
     describe('parseSample', () => {
         it('decorates source code with overhead percentages', () => {
+            const sourceCode1 = sourceCodeFactory({ filename: 'file-1.c', hits: 53 });
+            const sourceCode2 = sourceCodeFactory({ filename: 'file-2.c', hits: 31 });
+            const sourceCode3 = sourceCodeFactory({ filename: 'file-a.c', hits: 3 });
+            const sourceCode4 = sourceCodeFactory({ filename: 'file-b.c', hits: 5 });
+            const sourceCode5 = sourceCodeFactory({ filename: 'file-c.c', hits: 2 });
             const toParse = {
                 sampling: {
                     events: [
-                        {
+                        eventFactory({
                             annotate: [
                                 {
                                     function_name: 'add',
-                                    source_code: [
-                                        { filename: 'file-1.c', hits: 53 },
-                                        { filename: 'file-2.c', hits: 31 },
-                                    ],
+                                    source_code: [sourceCode1, sourceCode2],
                                 },
                                 {
                                     function_name: 'multiply',
-                                    source_code: [
-                                        { filename: 'file-a.c', hits: 3 },
-                                        { filename: 'file-b.c', hits: 5 },
-                                        { filename: 'file-c.c', hits: 2 },
-                                    ],
+                                    source_code: [sourceCode3, sourceCode4, sourceCode5],
                                 },
                             ],
-                        },
+                        }),
                     ],
                 },
-            } as RecordJsonOutput;
+            };
 
             const got = parseSample(toParse)[0]!.annotate;
 
@@ -114,16 +111,16 @@ describe('record', () => {
                 {
                     function_name: 'add',
                     source_code: [
-                        { filename: 'file-1.c', hits: 53, overhead: percentage(53, 53 + 31) },
-                        { filename: 'file-2.c', hits: 31, overhead: percentage(31, 53 + 31) },
+                        { ...sourceCode1, overhead: percentage(53, 53 + 31) },
+                        { ...sourceCode2, overhead: percentage(31, 53 + 31) },
                     ],
                 },
                 {
                     function_name: 'multiply',
                     source_code: [
-                        { filename: 'file-a.c', hits: 3, overhead: percentage(3, 3 + 5 + 2) },
-                        { filename: 'file-b.c', hits: 5, overhead: percentage(5, 3 + 5 + 2) },
-                        { filename: 'file-c.c', hits: 2, overhead: percentage(2, 3 + 5 + 2) },
+                        { ...sourceCode3, overhead: percentage(3, 3 + 5 + 2) },
+                        { ...sourceCode4, overhead: percentage(5, 3 + 5 + 2) },
+                        { ...sourceCode5, overhead: percentage(2, 3 + 5 + 2) },
                     ],
                 },
             ];

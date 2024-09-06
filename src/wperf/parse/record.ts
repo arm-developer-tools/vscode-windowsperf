@@ -54,7 +54,7 @@ export type DisassembledLine = z.infer<typeof disassembledLineShape>;
 export type SourceCode = z.infer<typeof sourceCodeShape> & { overhead: number };
 export type Annotation = AnnotationJson & { source_code: SourceCode[] };
 export type EventSample = z.infer<typeof eventSampleShape>;
-export type Event = z.infer<typeof eventShape> & { annotate: Annotation[] };
+export type Event = z.infer<typeof eventShape> & { annotate: Annotation[]; count: number };
 export type Sample = Event[];
 export interface SampleHitDetails {
     eventType: string;
@@ -65,6 +65,7 @@ export interface SampleHitDetails {
 export const parseSample = (toParse: RecordJsonOutput): Sample =>
     toParse.sampling.events.map((event) => ({
         ...event,
+        count: event.samples.reduce((totalHits, sample) => totalHits + sample.count, 0),
         annotate: event.annotate.map(embedSourceCodeOverhead),
     }));
 
