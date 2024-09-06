@@ -17,16 +17,19 @@ export const recordOptionsShape = z.object({
     command: z.string(),
     arguments: z.string(),
     timeoutSeconds: z.number().optional(),
+    disassembleEnabled: z.boolean(),
 });
 
 export type RecordOptions = z.infer<typeof recordOptionsShape>;
 
-export const defaultRecordOptions: RecordOptions = {
-    events: [],
-    core: 0,
-    command: '',
-    arguments: '',
-    timeoutSeconds: undefined,
+export const getDefaultRecordOptions = (hasLlvmObjDumpPath: boolean): RecordOptions => {
+    return {
+        events: [],
+        core: 0,
+        command: '',
+        arguments: '',
+        disassembleEnabled: hasLlvmObjDumpPath,
+    };
 };
 
 export const validatedFields = ['events', 'command'] as const;
@@ -75,7 +78,7 @@ export const buildRecordArgs = (
         ...timeoutArgs,
         ...(forceLock ? ['--force-lock'] : []),
         '--json',
-        '--disassemble',
+        options.disassembleEnabled ? '--disassemble' : '--annotate',
         '--',
         options.command,
         options.arguments,

@@ -31,6 +31,7 @@ export type LoadedState = {
     recordOptions: RecordOptions;
     fieldsToValidate: readonly ValidatedField[];
     eventsEditor: EventsEditorState;
+    hasLlvmObjDumpPath: boolean;
 };
 
 export type State = { type: 'loading' } | { type: 'error'; error: ErrorDetail } | LoadedState;
@@ -61,6 +62,7 @@ const initialDataToState = (message: Extract<ToView, { type: 'initialData' }>): 
             recordOptions: message.recordOptions,
             fieldsToValidate: message.validate ? validatedFields : [],
             eventsEditor: initialEventsEditorState,
+            hasLlvmObjDumpPath: message.hasLlvmObjDumpPath,
         };
     }
 };

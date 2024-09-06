@@ -19,6 +19,7 @@ import { PredefinedEvent } from '../../../wperf/parse/list';
 import { TimeoutSeconds } from './timeout-input';
 import { RecordOptionInput } from './record-option-input';
 import { CoreDropdown } from './core-dropdown';
+import { Checkbox } from '../../common/components/checkbox';
 
 export type FormProps = {
     cores: Core[];
@@ -30,6 +31,7 @@ export type FormProps = {
     dispatch: Dispatch<EventsEditorAction>;
     recentEvents: string[];
     eventsEditorState: EventsEditorState;
+    hasLlvmObjdump: boolean;
     defaultFrequency: number;
 };
 
@@ -162,6 +164,44 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                                         timeout: value,
                                     });
                                 }}
+                            />
+                        ),
+                    }),
+                },
+                {
+                    id: 'enable-disassemble',
+                    title: 'Disassemble',
+                    component: createSection({
+                        id: 'enable-disassemble',
+                        title: 'Disassemble',
+                        description: (
+                            <>
+                                <span>Enable disassembly view in your output.</span>
+                                {!props.hasLlvmObjdump && (
+                                    <div className="warning-message">
+                                        <span className="codicon codicon-warning" />
+                                        <span>
+                                            Requires llvm-objdump to be installed and on your PATH,
+                                            read more in our{' '}
+                                            <a href="https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/tree/main/wperf?ref_type=heads#using-the-disassemble-option">
+                                                documentation
+                                            </a>
+                                            .
+                                        </span>
+                                    </div>
+                                )}
+                            </>
+                        ),
+                        component: (
+                            <Checkbox
+                                label="Enable"
+                                isChecked={props.recordOptions.disassembleEnabled}
+                                onChangeCallback={(e) =>
+                                    props.updateRecordOption({
+                                        type: 'setDisassembleEnabled',
+                                        enabled: e.target.checked,
+                                    })
+                                }
                             />
                         ),
                     }),

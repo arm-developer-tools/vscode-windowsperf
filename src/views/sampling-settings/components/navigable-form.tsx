@@ -24,7 +24,7 @@ type ItemSection = {
 
 type FormContent = {
     id: string;
-    description: string;
+    description: React.ReactNode;
     title: string;
     component: React.ReactNode;
     invalid?: boolean;

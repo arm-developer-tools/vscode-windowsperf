@@ -15,16 +15,18 @@ import { eventsEditorAddingStateFactory } from '../state/events-editor.factories
 import { ValidatedField } from '../../../wperf/record-options';
 
 export const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
-    cores: options?.cores ?? [],
-    events: options?.events ?? [predefinedEventFactory()],
-    recentEvents: options?.recentEvents ?? [faker.word.noun()],
-    recordOptions: options?.recordOptions ?? recordOptionsFactory(),
-    fieldsToValidate: options?.fieldsToValidate ?? [],
-    eventsEditorState: options?.eventsEditorState ?? eventsEditorAddingStateFactory(),
-    defaultFrequency: options?.defaultFrequency ?? 0x4000000,
-    dispatch: options?.dispatch ?? jest.fn(),
-    openCommandFilePicker: options?.openCommandFilePicker ?? jest.fn(),
-    updateRecordOption: options?.updateRecordOption ?? jest.fn(),
+    cores: [],
+    events: [predefinedEventFactory()],
+    recentEvents: [faker.word.noun()],
+    recordOptions: recordOptionsFactory(),
+    fieldsToValidate: [],
+    eventsEditorState: eventsEditorAddingStateFactory(),
+    dispatch: jest.fn(),
+    openCommandFilePicker: jest.fn(),
+    updateRecordOption: jest.fn(),
+    defaultFrequency: 0x4000000,
+    hasLlvmObjdump: false,
+    ...options,
 });
 
 describe('Form', () => {
@@ -90,6 +92,30 @@ describe('Form', () => {
         render(<Form {...props} />);
 
         expect(screen.getByTestId('command-input')).toHaveClass('invalid');
+    });
+
+    it('renders the disassemble view', () => {
+        render(<Form {...formPropsFactory()} />);
+
+        expect(screen.queryByText('Disassemble', { selector: 'h1' })).toBeInTheDocument();
+    });
+
+    it('renders the disassemble warning message if llvm-objdump is not on the path', () => {
+        const props = formPropsFactory({ hasLlvmObjdump: false });
+        render(<Form {...props} />);
+
+        expect(
+            screen.queryByText('requires llvm-objdump to be installed', { exact: false }),
+        ).toBeInTheDocument();
+    });
+
+    it('does not render the disassemble warning message if llvm-objdump is on the path', () => {
+        const props = formPropsFactory({ hasLlvmObjdump: true });
+        render(<Form {...props} />);
+
+        expect(
+            screen.queryByText('requires llvm-objdump to be installed', { exact: false }),
+        ).not.toBeInTheDocument();
     });
 
     it('calls updateRecordOption when the timeout input changes', () => {

@@ -68,6 +68,7 @@ export const toViewShape = z.union([
         cores: z.array(coreShape),
         eventsAndTestLoadResult: eventsAndTestLoadResultShape,
         validate: z.boolean(),
+        hasLlvmObjDumpPath: z.boolean(),
     }),
     z.object({
         type: z.literal('selectedCommand'),

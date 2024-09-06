@@ -55,6 +55,14 @@ input[type='checkbox']:checked::before {
     visibility: visible;
 }
 
+input[type='checkbox']:disabled {
+    cursor: default;
+}
+
+input[type='checkbox']:disabled + label {
+    color: var(--vscode-disabledForeground);
+}
+
 input.invalid,
 input:invalid {
     border-color: var(--vscode-inputValidation-errorBorder);

@@ -4,8 +4,8 @@
 import * as vscode from 'vscode';
 
 export const canEnableWindowsOnArmFeatures = (
-    platform: string,
-    arch: string,
+    platform: NodeJS.Platform,
+    arch: NodeJS.Architecture,
     wperfPath?: string,
 ) => {
     const isWindowsOnArm = platform === 'win32' && (arch === 'arm' || arch === 'arm64');

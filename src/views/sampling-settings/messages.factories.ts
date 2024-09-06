@@ -12,27 +12,31 @@ export const recordOptionsFromViewFactory = (
     options?: Partial<Extract<FromView, { type: 'recordOptions' }>>,
 ): Extract<FromView, { type: 'recordOptions' }> => ({
     type: 'recordOptions',
-    recordOptions: options?.recordOptions ?? recordOptionsFactory(),
+    recordOptions: recordOptionsFactory(),
+    ...options,
 });
 
 export const initialDataToViewFactory = (
     options?: Partial<Extract<ToView, { type: 'initialData' }>>,
 ): Extract<ToView, { type: 'initialData' }> => ({
     type: 'initialData',
-    cores: options?.cores ?? [],
-    eventsAndTestLoadResult: options?.eventsAndTestLoadResult ?? {
+    cores: [],
+    eventsAndTestLoadResult: {
         type: 'success',
         events: [predefinedEventFactory()],
         testResults: testResultsFactory(),
     },
-    recordOptions: options?.recordOptions ?? recordOptionsFactory(),
-    recentEvents: options?.recentEvents ?? [faker.word.noun()],
-    validate: options?.validate ?? false,
+    recordOptions: recordOptionsFactory(),
+    recentEvents: [faker.word.noun()],
+    validate: false,
+    hasLlvmObjDumpPath: false,
+    ...options,
 });
 
 export const selectedCommandToViewFactory = (
     options?: Partial<Extract<ToView, { type: 'selectedCommand' }>>,
 ): Extract<ToView, { type: 'selectedCommand' }> => ({
     type: 'selectedCommand',
-    command: options?.command ?? '',
+    command: '',
+    ...options,
 });

@@ -24,9 +24,10 @@ import { SamplingSettingsWebviewImpl } from './views/sampling-settings/main';
 import { MessageHandlerImpl } from './views/sampling-settings/message-handler';
 import { SamplingSettingsWebviewPanelImpl } from './views/sampling-settings/panel';
 import { MementoStore } from './store';
-import { defaultRecordOptions, recordOptionsShape } from './wperf/record-options';
+import { getDefaultRecordOptions, recordOptionsShape } from './wperf/record-options';
 import { recentEventsShape } from './recent-events';
 import { ContextManager } from './context';
+import { checkLlvmObjDumpOnPath } from './path';
 
 export const activate = activateTelemetry(
     async (context: vscode.ExtensionContext, analytics: Analytics) => {
@@ -37,10 +38,14 @@ export const activate = activateTelemetry(
             recentEventsShape,
         );
 
+        const hasLlvmObjDumpPath = await checkLlvmObjDumpOnPath(
+            process.platform,
+            process.env?.['PATH'],
+        );
         const recordOptionsStore = new MementoStore(
             context.workspaceState,
             'record-options',
-            defaultRecordOptions,
+            getDefaultRecordOptions(hasLlvmObjDumpPath),
             recordOptionsShape,
         );
 

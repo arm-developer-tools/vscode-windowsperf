@@ -58,6 +58,7 @@ describe('reducer', () => {
             events,
             fieldsToValidate: validatedFields,
             eventsEditor: initialEventsEditorState,
+            hasLlvmObjDumpPath: false,
         };
         expect(got).toEqual(want);
     });

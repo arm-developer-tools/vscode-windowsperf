@@ -11,11 +11,13 @@ import { testResultsFactory } from '../../../wperf/parse/test.factories';
 
 export const loadedStateFactory = (options?: Partial<Omit<LoadedState, 'type'>>): LoadedState => ({
     type: 'loaded',
-    cores: options?.cores ?? [],
-    events: options?.events ?? [predefinedEventFactory()],
-    recentEvents: options?.recentEvents ?? [faker.word.noun()],
-    recordOptions: options?.recordOptions ?? recordOptionsFactory(),
-    fieldsToValidate: options?.fieldsToValidate ?? [],
-    eventsEditor: options?.eventsEditor ?? eventsEditorAddingStateFactory(),
-    testResults: options?.testResults ?? testResultsFactory(),
+    cores: [],
+    events: [predefinedEventFactory()],
+    recentEvents: [faker.word.noun()],
+    recordOptions: recordOptionsFactory(),
+    fieldsToValidate: [],
+    eventsEditor: eventsEditorAddingStateFactory(),
+    testResults: testResultsFactory(),
+    hasLlvmObjDumpPath: false,
+    ...options,
 });

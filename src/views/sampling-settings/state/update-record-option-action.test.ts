@@ -24,6 +24,7 @@ describe('isUpdateRecordOptionAction', () => {
         ['editEvent', { type: 'editEvent', index: 1, event: eventAndFrequencyFactory() }],
         ['setCore', { type: 'setCore', core: 5 }],
         ['setTimeout', { type: 'setTimeout', timeout: '10000000' }],
+        ['setDisassembleEnabled', { type: 'setDisassembleEnabled', enabled: false }],
     ] as const)('returns true for %s actions', (_, action: UpdateRecordOptionAction) => {
         expect(isUpdateRecordOptionAction(action)).toBe(true);
     });

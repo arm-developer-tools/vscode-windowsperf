@@ -19,7 +19,7 @@ export const RecordOptionInput = (props: RecordOptionInputProps) => {
             <input
                 type={props.type}
                 className={props.isInvalid ? 'invalid' : ''}
-                value={props.recordOptions[props.recordOption]}
+                value={props.recordOptions[props.recordOption] ?? ''}
                 data-testid={`${props.recordOption}-input`}
                 onChange={(event) => {
                     props.onChange(event.target.value);

@@ -17,6 +17,7 @@ import {
 } from './messages';
 import * as path from 'path';
 import { Store } from '../../store';
+import { checkLlvmObjDumpOnPath } from '../../path';
 
 export type MessageHandler = {
     handleMessage: (message: unknown) => Promise<ToView | undefined>;
@@ -104,6 +105,7 @@ export class MessageHandlerImpl implements MessageHandler {
             cores: this.listCores(),
             eventsAndTestLoadResult: await eventsAndTestLoadResult,
             validate: this.validateOnCreate,
+            hasLlvmObjDumpPath: await this.getHasLlvmObjDumpPath(),
         };
     }
 
@@ -125,6 +127,10 @@ export class MessageHandlerImpl implements MessageHandler {
 
     private readonly listCores = (): Core[] => {
         return getCpuInfo();
+    };
+
+    private readonly getHasLlvmObjDumpPath = async (): Promise<boolean> => {
+        return checkLlvmObjDumpOnPath(process.platform, process.env?.['PATH']);
     };
 
     private readonly loadEventsAndTestResults = async (): Promise<EventsAndTestLoadResult> => {

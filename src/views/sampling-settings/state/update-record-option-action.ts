@@ -14,7 +14,8 @@ export type UpdateRecordOptionAction =
     | { type: 'setCommand'; command: string }
     | { type: 'setArguments'; arguments: string }
     | { type: 'setCore'; core: number }
-    | { type: 'setTimeout'; timeout: string };
+    | { type: 'setTimeout'; timeout: string }
+    | { type: 'setDisassembleEnabled'; enabled: boolean };
 
 export const isUpdateRecordOptionAction = (action: {
     type: string;
@@ -27,6 +28,7 @@ export const isUpdateRecordOptionAction = (action: {
         'removeEvent',
         'setCore',
         'setTimeout',
+        'setDisassembleEnabled',
     ].includes(action.type);
 };
 
@@ -44,6 +46,8 @@ export const getAffectedField = (action: UpdateRecordOptionAction): keyof Record
             return 'events';
         case 'setTimeout':
             return 'timeoutSeconds';
+        case 'setDisassembleEnabled':
+            return 'disassembleEnabled';
     }
 };
 
@@ -82,5 +86,7 @@ export const updateRecordOptionReducer = (
                 timeoutSeconds:
                     action.timeout === '' ? undefined : Math.abs(parseInt(action.timeout)),
             };
+        case 'setDisassembleEnabled':
+            return { ...recordOptions, disassembleEnabled: action.enabled };
     }
 };
