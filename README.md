@@ -1,4 +1,4 @@
-# WindowsPerf
+# WindowsPerf Extension for Visual Studio Code
 
 WindowsPerf is a Visual Studio Code extension that integrates the [WindowsPerf](https://gitlab.com/Linaro/WindowsPerf/windowsperf) Windows on Arm performance profiling tool. It provides you with a simple way of viewing the results of a run of the [wperf](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/blob/main/wperf/README.md?ref_type=heads) command line tool.
 
@@ -10,7 +10,7 @@ The [**Sampling Settings** tab](#record-events-using-the-sampling-settings-tab) 
 
 You can then analyze the data from the run in the WindowsPerf [tree view](#use-the-windowsperf-tree-view).
 
-> **NOTE**  
+> **NOTE**
 > If you are using a non-Windows on Arm machine, you can analyze results recorded in a JSON file, but you cannot record a run or use the Sampling Settings interface.
 
 ## Before you begin
@@ -66,3 +66,7 @@ This extension respects the Visual Studio Code telemetry settings described in t
 
 -   Arm Community [blog post on performance analysis methodology](https://community.arm.com/arm-community-blogs/b/infrastructure-solutions-blog/posts/arm-neoverse-n1-performance-analysis-methodology), including links to a complete list of Performance Monitoring Unit (PMU) events
 -   [WindowsPerf command-line tool documentation](https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/blob/main/wperf/README.md?ref_type=heads)
+
+## Trademarks
+
+Perf is an abbreviation of Performance. Windows and Visual Studio are trademarks of the Microsoft group of companies.
