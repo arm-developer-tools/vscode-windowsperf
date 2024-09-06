@@ -19,18 +19,24 @@ test.describe('Sampling Settings', async () => {
         extensionDevelopmentPath: path.resolve(__dirname, '../../'),
     });
 
-    test('fill out the form and show the Record button', async ({ vscode }) => {
+    const filePath = 'somefile.exe';
+
+    test('run a Record and show the treeitem', async ({ vscode }) => {
         await vscode.page.keyboard.press(openSettingsShortcut);
         await vscode.page.keyboard.type('windowsperf');
+        await vscode.page.getByLabel('windowsPerf.wperfPath').waitFor();
         await vscode.page.getByLabel('windowsPerf.wperfPath').fill(MOCK_PERF_PATH);
         await vscode.runCommandFromPalette('View: Toggle WindowsPerf');
         await vscode.page.getByRole('button', { name: 'Show Sampling Settings' }).click();
         const parentFrame = vscode.page.frameLocator('iframe[class="webview ready"]');
         const childFrame = parentFrame.frameLocator('#active-frame');
-        await childFrame.locator('div.file-picker-input').getByRole('textbox').fill('python.exe');
+        await childFrame.locator('div.file-picker-input').waitFor();
+        await childFrame.locator('div.file-picker-input').getByRole('textbox').fill(filePath);
         await childFrame.locator('span').filter({ hasText: 'Event' }).click();
         await childFrame.getByText('ase_fp_cvt_spec').click();
         await childFrame.getByRole('button', { name: 'Add' }).click();
-        await expect(childFrame.getByRole('button', { name: 'Record' })).toBeVisible();
+        await childFrame.getByRole('button', { name: 'Record' }).click();
+        await vscode.page.getByText(filePath, { exact: true }).waitFor();
+        await expect(vscode.page.getByText(filePath, { exact: true })).toBeVisible();
     });
 });
