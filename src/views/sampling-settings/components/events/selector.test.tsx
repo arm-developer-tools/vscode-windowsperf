@@ -9,6 +9,7 @@ import '@testing-library/jest-dom';
 import { EventSelector } from './selector';
 import { predefinedEventFactory } from '../../../../wperf/parse/list.factories';
 import { eventsEditorEditingStateFactory } from '../../state/events-editor.factories';
+import { testResultsFactory } from '../../../../wperf/parse/test.factories';
 
 describe('EventSelector', () => {
     it('renders the event table and edit row', () => {
@@ -20,7 +21,7 @@ describe('EventSelector', () => {
                 predefinedEvents={[predefinedEventFactory()]}
                 editorState={eventsEditorEditingStateFactory()}
                 recentEvents={[]}
-                defaultFrequency={0x4000000}
+                testResults={testResultsFactory()}
             />,
         );
 

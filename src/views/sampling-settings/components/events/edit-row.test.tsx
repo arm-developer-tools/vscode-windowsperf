@@ -15,15 +15,17 @@ import {
 import { eventAndFrequencyFactory } from '../../../../wperf/record-options.factories';
 import { faker } from '@faker-js/faker';
 import { formatNumber } from '../../../../math';
+import { testResultsFactory } from '../../../../wperf/parse/test.factories';
 
 const eventEditRowPropsFactory = (options?: Partial<EventEditRowProps>): EventEditRowProps => ({
-    dispatch: options?.dispatch ?? jest.fn(),
-    editorState: options?.editorState ?? eventsEditorAddingStateFactory(),
-    predefinedEvents: options?.predefinedEvents ?? [],
-    selectedEvents: options?.selectedEvents ?? [],
-    updateRecordOption: options?.updateRecordOption ?? jest.fn(),
-    recentEvents: options?.recentEvents ?? [faker.word.noun()],
-    defaultFrequency: options?.defaultFrequency ?? 0x4000000,
+    dispatch: jest.fn(),
+    editorState: eventsEditorAddingStateFactory(),
+    predefinedEvents: [],
+    selectedEvents: [],
+    updateRecordOption: jest.fn(),
+    recentEvents: [faker.word.noun()],
+    testResults: testResultsFactory(),
+    ...options,
 });
 
 describe('EventEditRow', () => {
@@ -60,27 +62,38 @@ describe('EventEditRow', () => {
         const editorState = eventsEditorEditingStateFactory({
             event: eventAndFrequencyFactory({ frequency: 42 }),
         });
-        const defaultFrequency = 25000;
+        const samplingIntervalDefault = 25000;
 
-        render(<EventEditRow {...eventEditRowPropsFactory({ editorState, defaultFrequency })} />);
+        render(
+            <EventEditRow
+                {...eventEditRowPropsFactory({
+                    editorState,
+                    testResults: testResultsFactory({ samplingIntervalDefault }),
+                })}
+            />,
+        );
 
         expect(
-            screen.getByPlaceholderText(`${formatNumber(defaultFrequency)} (default)`),
+            screen.getByPlaceholderText(`${formatNumber(samplingIntervalDefault)} (default)`),
         ).toHaveValue(42);
     });
 
     it('dispatches a setFrequency action when the frequency input changes', () => {
         const dispatch = jest.fn();
         const editorState = eventsEditorAddingStateFactory();
-        const defaultFrequency = 25000;
+        const samplingIntervalDefault = 25000;
         render(
             <EventEditRow
-                {...eventEditRowPropsFactory({ dispatch, editorState, defaultFrequency })}
+                {...eventEditRowPropsFactory({
+                    dispatch,
+                    editorState,
+                    testResults: testResultsFactory({ samplingIntervalDefault }),
+                })}
             />,
         );
 
         fireEvent.change(
-            screen.getByPlaceholderText(`${formatNumber(defaultFrequency)} (default)`),
+            screen.getByPlaceholderText(`${formatNumber(samplingIntervalDefault)} (default)`),
             {
                 target: { value: '42' },
             },
@@ -90,7 +103,7 @@ describe('EventEditRow', () => {
         expect(dispatch).toHaveBeenCalledWith(want);
     });
 
-    it('dispatches a validateMissingFields action when the Add button is clicked before an event is selected', () => {
+    it('dispatches a validate action when the Add button is clicked before an event is selected', () => {
         const dispatch = jest.fn();
         const editorState = eventsEditorAddingStateFactory({
             event: eventAndFrequencyFactory({ event: '' }),
@@ -99,19 +112,96 @@ describe('EventEditRow', () => {
 
         fireEvent.click(screen.getByText('Add'));
 
-        const want: EventsEditorAction = { type: 'validateMissingFields' };
+        const want: EventsEditorAction = {
+            type: 'validate',
+        };
         expect(dispatch).toHaveBeenCalledWith(want);
     });
 
-    it('shows a validation message if validateMissingFields is true and an event is not selected', () => {
+    it('dispatch a validate action when trying to add an event when the maximum available is already selected', () => {
+        const dispatch = jest.fn();
+        const selectedEvents = [
+            eventAndFrequencyFactory(),
+            eventAndFrequencyFactory(),
+            eventAndFrequencyFactory(),
+        ];
+        const availableGpcCount = 3;
+        render(
+            <EventEditRow
+                {...eventEditRowPropsFactory({
+                    dispatch,
+                    selectedEvents,
+                    testResults: testResultsFactory({ availableGpcCount }),
+                })}
+            />,
+        );
+
+        fireEvent.click(screen.getByText('Add'));
+
+        const want: EventsEditorAction = {
+            type: 'validate',
+        };
+        expect(dispatch).toHaveBeenCalledWith(want);
+    });
+
+    it('does not dispatch a validate action when trying to edit an event when the maximum available is selected', () => {
+        const dispatch = jest.fn();
+        const eventToEdit = eventAndFrequencyFactory();
+        const selectedEvents = [
+            eventToEdit,
+            eventAndFrequencyFactory(),
+            eventAndFrequencyFactory(),
+        ];
+        const availableGpcCount = 3;
+        render(
+            <EventEditRow
+                {...eventEditRowPropsFactory({
+                    editorState: eventsEditorEditingStateFactory({ event: eventToEdit }),
+                    dispatch,
+                    selectedEvents,
+                    testResults: testResultsFactory({ availableGpcCount }),
+                })}
+            />,
+        );
+
+        fireEvent.click(screen.getByText('Save'));
+
+        expect(dispatch).not.toHaveBeenCalled();
+    });
+
+    it('shows a validation message if validate is true and an event is not selected', () => {
         const editorState = eventsEditorAddingStateFactory({
             event: eventAndFrequencyFactory({ event: '' }),
-            validateMissingFields: true,
+            validate: true,
         });
 
         render(<EventEditRow {...eventEditRowPropsFactory({ editorState })} />);
 
         expect(screen.getByText('Please select an event')).toBeInTheDocument();
+    });
+
+    it('shows a validation message if validate is true, the editor state type is Adding and the number of selected events is at maximum available', () => {
+        const editorState = eventsEditorAddingStateFactory({
+            event: eventAndFrequencyFactory(),
+            validate: true,
+        });
+        const eventToEdit = eventAndFrequencyFactory();
+        const selectedEvents = [
+            eventToEdit,
+            eventAndFrequencyFactory(),
+            eventAndFrequencyFactory(),
+        ];
+        const testResults = testResultsFactory({ availableGpcCount: 3 });
+
+        render(
+            <EventEditRow
+                {...eventEditRowPropsFactory({ editorState, selectedEvents, testResults })}
+            />,
+        );
+
+        expect(
+            screen.getByText(`You can only sample ${testResults.availableGpcCount} events at once`),
+        ).toBeInTheDocument();
     });
 
     it('shows a warning message if the frequency entered is above the max supported frequency', () => {

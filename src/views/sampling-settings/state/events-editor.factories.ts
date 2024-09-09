@@ -6,14 +6,12 @@ import { eventAndFrequencyFactory } from '../../../wperf/record-options.factorie
 import { EventsEditorAddingState, EventsEditorEditingState } from './events-editor';
 
 const commonEventsEditorStateFactory = (
-    options?: Partial<Pick<EventsEditorAddingState, 'event' | 'validateMissingFields'>>,
-): Pick<EventsEditorAddingState, 'event' | 'validateMissingFields'> => {
+    options?: Partial<Pick<EventsEditorAddingState, 'event' | 'validate'>>,
+): Pick<EventsEditorAddingState, 'event' | 'validate'> => {
     return {
-        event: options?.event ?? eventAndFrequencyFactory(),
-        validateMissingFields:
-            options && typeof options.validateMissingFields === 'boolean'
-                ? options.validateMissingFields
-                : false,
+        event: eventAndFrequencyFactory(),
+        validate: false,
+        ...options,
     };
 };
 

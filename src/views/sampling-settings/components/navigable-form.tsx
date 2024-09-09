@@ -27,6 +27,7 @@ type FormContent = {
     description: React.ReactNode;
     title: string;
     component: React.ReactNode;
+    tooltip?: string;
     invalid?: boolean;
 };
 
@@ -76,7 +77,16 @@ const Content = (props: { content: FormContent; type: 'parent' | 'child' }) => {
     return (
         <section className="setting" id={content.id} key={content.id}>
             {type === 'parent' ? <h1>{content.title}</h1> : <h2>{content.title}</h2>}
-            <div className="description">{content.description}</div>
+            <div className="description">
+                {content.description}
+                {content.tooltip && (
+                    <span
+                        className="codicon codicon-info"
+                        role="tooltip"
+                        title={content.tooltip}
+                    ></span>
+                )}
+            </div>
             {content.component}
         </section>
     );

@@ -10,6 +10,7 @@ import { Dispatch } from 'react';
 import { EventsEditorAction, EventsEditorState } from '../../state/events-editor';
 import { EventTable } from './table';
 import { EventEditRow } from './edit-row';
+import { TestResults } from '../../../../wperf/parse/test';
 
 export type EventSelectorProps = {
     dispatch: Dispatch<EventsEditorAction>;
@@ -17,7 +18,7 @@ export type EventSelectorProps = {
     predefinedEvents: PredefinedEvent[];
     selectedEvents: EventAndFrequency[];
     recentEvents: string[];
-    defaultFrequency: number;
+    testResults: TestResults;
     updateRecordOption: UpdateRecordOption;
 };
 
@@ -32,7 +33,7 @@ export const EventSelector = (props: EventSelectorProps) => {
                 updateRecordOption={props.updateRecordOption}
                 predefinedEvents={props.predefinedEvents}
                 selectedEvents={props.selectedEvents}
-                defaultFrequency={props.defaultFrequency}
+                defaultFrequency={props.testResults.samplingIntervalDefault}
             />
             <EventEditRow {...props} />
         </>

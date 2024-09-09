@@ -214,3 +214,14 @@ a.invalid {
     vertical-align: super;
     font-size: medium;
 }
+
+.description .codicon {
+    vertical-align: bottom;
+    margin-left: 4px;
+    margin-right: 4px;
+    cursor: help;
+}
+
+.description p {
+    margin-bottom: 10px;
+}

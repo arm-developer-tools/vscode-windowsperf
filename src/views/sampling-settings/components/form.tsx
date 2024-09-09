@@ -19,6 +19,7 @@ import { PredefinedEvent } from '../../../wperf/parse/list';
 import { TimeoutSeconds } from './timeout-input';
 import { RecordOptionInput } from './record-option-input';
 import { CoreDropdown } from './core-dropdown';
+import { TestResults } from '../../../wperf/parse/test';
 import { Checkbox } from '../../common/components/checkbox';
 
 export type FormProps = {
@@ -31,8 +32,8 @@ export type FormProps = {
     dispatch: Dispatch<EventsEditorAction>;
     recentEvents: string[];
     eventsEditorState: EventsEditorState;
+    testResults: TestResults;
     hasLlvmObjdump: boolean;
-    defaultFrequency: number;
 };
 
 export const Form = ({ dispatch, ...props }: FormProps) => {
@@ -111,8 +112,16 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                     component: createSection({
                         id: 'events',
                         title: 'Events',
-                        description:
-                            'Which hardware events to sample and how often to sample each event.',
+                        description: (
+                            <>
+                                <p>
+                                    Which hardware events to sample and how often to sample each
+                                    event.
+                                </p>
+                                Sample up to {props.testResults.availableGpcCount} events at once.
+                            </>
+                        ),
+                        tooltip: `Number of events you can sample at once may change depending on the number of processor counters being used by other processes. Currently, ${props.testResults.availableGpcCount} out of ${props.testResults.totalGpcCount} counters are available.`,
                         invalid: showMissingEventsValidation,
                         component: (
                             <>
@@ -122,7 +131,7 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                                     dispatch={dispatch}
                                     recentEvents={props.recentEvents}
                                     selectedEvents={props.recordOptions.events}
-                                    defaultFrequency={props.defaultFrequency}
+                                    testResults={props.testResults}
                                     updateRecordOption={props.updateRecordOption}
                                 />
                                 {showMissingEventsValidation && (

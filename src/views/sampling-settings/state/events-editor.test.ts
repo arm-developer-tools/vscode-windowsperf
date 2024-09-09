@@ -20,7 +20,7 @@ describe('isEventEditorAction', () => {
         ['startEditing', { type: 'startEditing', index: 0 }],
         ['setEventName', { type: 'setEventName', event: 'event' }],
         ['setFrequency', { type: 'setFrequency', frequency: 10000 }],
-        ['validateMissingFields', { type: 'validateMissingFields' }],
+        ['validate', { type: 'validate' }],
     ] as const)('returns true for %s actions', (_, action: EventsEditorAction) => {
         expect(isEventEditorAction(action)).toBe(true);
     });
@@ -42,7 +42,7 @@ describe('eventsEditorReducer', () => {
         const want: EventsEditorState = {
             type: 'adding',
             event: { event: '', frequency: undefined },
-            validateMissingFields: false,
+            validate: false,
         };
         expect(got).toEqual(want);
     });
@@ -55,7 +55,7 @@ describe('eventsEditorReducer', () => {
             {
                 type: 'adding',
                 event: { event: 'some_event', frequency: undefined },
-                validateMissingFields: true,
+                validate: true,
             },
             { type: 'startEditing', index: 1 },
         );
@@ -64,7 +64,7 @@ describe('eventsEditorReducer', () => {
             type: 'editing',
             index: 1,
             event: eventToEdit,
-            validateMissingFields: false,
+            validate: false,
         };
         expect(got).toEqual(want);
     });
@@ -75,7 +75,7 @@ describe('eventsEditorReducer', () => {
             type: 'editing',
             event: initialEvent,
             index: 0,
-            validateMissingFields: true,
+            validate: true,
         };
 
         const got = eventsEditorReducer([eventAndFrequencyFactory()], initialState, {
@@ -86,7 +86,7 @@ describe('eventsEditorReducer', () => {
         const want: EventsEditorState = {
             ...initialState,
             event: { ...initialEvent, event: 'newEvent' },
-            validateMissingFields: false,
+            validate: false,
         };
         expect(got).toEqual(want);
     });
@@ -97,7 +97,7 @@ describe('eventsEditorReducer', () => {
             type: 'editing',
             event: initialEvent,
             index: 0,
-            validateMissingFields: true,
+            validate: false,
         };
 
         const got = eventsEditorReducer([eventAndFrequencyFactory()], initialState, {
@@ -108,19 +108,21 @@ describe('eventsEditorReducer', () => {
         const want: EventsEditorEditingState = {
             ...initialState,
             event: { ...initialEvent, frequency: 5 },
-            validateMissingFields: false,
+            validate: false,
         };
         expect(got).toEqual(want);
     });
 
-    it('handles a validateMissingFields action by setting the validateMissingFields flag', () => {
+    it('handles a validate action by setting the validate flag', () => {
         const initialState: EventsEditorState = eventsEditorAddingStateFactory({
-            validateMissingFields: false,
+            validate: false,
         });
 
-        const got = eventsEditorReducer([], initialState, { type: 'validateMissingFields' });
+        const got = eventsEditorReducer([], initialState, {
+            type: 'validate',
+        });
 
-        const want: EventsEditorState = { ...initialState, validateMissingFields: true };
+        const want: EventsEditorState = { ...initialState, validate: true };
         expect(got).toEqual(want);
     });
 });

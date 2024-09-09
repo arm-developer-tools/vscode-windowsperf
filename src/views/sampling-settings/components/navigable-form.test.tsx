@@ -19,6 +19,7 @@ describe('NavigableForm', () => {
                         component: createSection({
                             id: 'one',
                             description: 'The first section',
+                            tooltip: 'Info about first section',
                             title: 'Section One',
                             component: <p>1</p>,
                         }),
@@ -42,6 +43,7 @@ describe('NavigableForm', () => {
         expect(screen.queryByText('1')).toBeInTheDocument();
         expect(screen.queryByText('Section One', { selector: 'h1' })).toBeInTheDocument();
         expect(screen.queryByText('The first section')).toBeInTheDocument();
+        expect(screen.queryByRole('tooltip')).toBeInTheDocument();
         expect(screen.queryByText('The group section', { selector: 'h1' })).toBeInTheDocument();
         expect(screen.queryByText('2')).toBeInTheDocument();
         expect(screen.queryByText('Section Two', { selector: 'h2' })).toBeInTheDocument();

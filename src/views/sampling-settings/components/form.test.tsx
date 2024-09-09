@@ -13,6 +13,7 @@ import { predefinedEventFactory } from '../../../wperf/parse/list.factories';
 import { faker } from '@faker-js/faker';
 import { eventsEditorAddingStateFactory } from '../state/events-editor.factories';
 import { ValidatedField } from '../../../wperf/record-options';
+import { testResultsFactory } from '../../../wperf/parse/test.factories';
 
 export const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
     cores: [],
@@ -24,7 +25,7 @@ export const formPropsFactory = (options?: Partial<FormProps>): FormProps => ({
     dispatch: jest.fn(),
     openCommandFilePicker: jest.fn(),
     updateRecordOption: jest.fn(),
-    defaultFrequency: 0x4000000,
+    testResults: testResultsFactory(),
     hasLlvmObjdump: false,
     ...options,
 });
