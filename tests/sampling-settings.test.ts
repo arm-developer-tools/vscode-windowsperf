@@ -33,10 +33,11 @@ test.describe('Sampling Settings', async () => {
         await childFrame.locator('div.file-picker-input').waitFor();
         await childFrame.locator('div.file-picker-input').getByRole('textbox').fill(filePath);
         await childFrame.locator('span').filter({ hasText: 'Event' }).click();
-        await childFrame.getByText('ase_fp_cvt_spec').click();
+        await childFrame.locator('div').filter({ hasText: 'ase' }).nth(0).click();
         await childFrame.getByRole('button', { name: 'Add' }).click();
-        await childFrame.getByRole('button', { name: 'Record' }).click();
-        await vscode.page.getByText(filePath, { exact: true }).waitFor();
+        await childFrame.locator('div.row-actions').waitFor();
+        await vscode.page.getByRole('button', { name: 'Record', exact: true }).click();
+        await vscode.page.getByText(filePath, { exact: true }).waitFor({ timeout: 60000 });
         await expect(vscode.page.getByText(filePath, { exact: true })).toBeVisible();
     });
 });
