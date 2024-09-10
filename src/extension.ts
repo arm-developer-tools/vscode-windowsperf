@@ -38,10 +38,7 @@ export const activate = activateTelemetry(
             recentEventsShape,
         );
 
-        const hasLlvmObjDumpPath = await checkLlvmObjDumpOnPath(
-            process.platform,
-            process.env?.['PATH'],
-        );
+        const hasLlvmObjDumpPath = await checkLlvmObjDumpOnPath();
         const recordOptionsStore = new MementoStore(
             context.workspaceState,
             'record-options',

@@ -17,6 +17,7 @@ import {
 } from './messages';
 import * as path from 'path';
 import { Store } from '../../store';
+import { checkWperfExistsInSettingsOrPath } from '../../path';
 import { checkLlvmObjDumpOnPath } from '../../path';
 
 export type MessageHandler = {
@@ -33,6 +34,7 @@ export class MessageHandlerImpl implements MessageHandler {
         private readonly getPredefinedEvents = runList,
         private readonly getTestResults = runTestAndParse,
         private readonly promptForCommand = promptUserForCommand,
+        private readonly checkWperfExists = checkWperfExistsInSettingsOrPath,
     ) {
         // Start loading while the webview content loads, to improve start up time
         this.eventsAndTestLoadResultPromise = this.loadEventsAndTestResults();
@@ -130,7 +132,7 @@ export class MessageHandlerImpl implements MessageHandler {
     };
 
     private readonly getHasLlvmObjDumpPath = async (): Promise<boolean> => {
-        return checkLlvmObjDumpOnPath(process.platform, process.env?.['PATH']);
+        return checkLlvmObjDumpOnPath();
     };
 
     private readonly loadEventsAndTestResults = async (): Promise<EventsAndTestLoadResult> => {
@@ -143,30 +145,30 @@ export class MessageHandlerImpl implements MessageHandler {
         }
     };
 
-    private readonly buildErrorResult = (error: unknown): ErrorResult => {
+    private readonly buildErrorResult = async (error: unknown): Promise<ErrorResult> => {
         return {
             type: 'error',
             error: {
-                type: determineErrorType(error),
+                type: await determineErrorType(error, this.checkWperfExists),
                 message: (error as Error).message || 'Unknown error',
             },
         };
     };
 }
 
-export const determineErrorType = (error: unknown): ErrorDetail['type'] => {
+export const determineErrorType = async (
+    error: unknown,
+    checkWperfExists: typeof checkWperfExistsInSettingsOrPath = checkWperfExistsInSettingsOrPath,
+): Promise<ErrorDetail['type']> => {
     if (error instanceof Error) {
-        if (
-            error.message.includes('not recognised as an internal or external command') ||
-            error.message.includes('No such file or directory')
-        ) {
-            return 'noWperf';
-        }
         if (error.message.includes('No active device interfaces found.')) {
             return 'noWperfDriver';
         }
         if (error.message.includes('DeviceIoControl')) {
             return 'versionMismatch';
+        }
+        if (!(await checkWperfExists())) {
+            return 'noWperf';
         } else {
             return 'unknown';
         }

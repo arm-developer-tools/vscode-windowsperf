@@ -30,7 +30,7 @@ export const buildTestAsTextCommand = (executablePath: string) =>
 const buildTestCommand = (executablePath: string) =>
     `${buildTestAsTextCommand(executablePath)} --json`;
 
-const getExecutable = (): string =>
+export const getExecutable = (): string =>
     vscode.workspace.getConfiguration('windowsPerf').get('wperfPath') || 'wperf';
 const getCwd = (): string | undefined =>
     vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || undefined;

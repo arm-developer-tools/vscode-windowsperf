@@ -4,6 +4,7 @@
 
 import path from 'path';
 import { access, constants } from 'fs/promises';
+import { getExecutable } from './wperf/run';
 
 export const isSamePath = (p1: string, p2: string): boolean => {
     return path.relative(p1, p2) === '';
@@ -41,12 +42,34 @@ export const checkHasFileAccess = async (path: string) => {
     }
 };
 
-export const checkLlvmObjDumpOnPath = async (
+export const checkFileExistsOnPathOnWindowsOnly = async (
     platform: NodeJS.Platform,
     processEnvPath: string | undefined,
+    fileToCheck: string,
 ): Promise<boolean> => {
     if (platform !== 'win32') {
         return false;
     }
-    return checkFileExistsOnPath(processEnvPath, 'llvm-objdump.EXE');
+    return checkFileExistsOnPath(processEnvPath, fileToCheck);
+};
+
+export const checkLlvmObjDumpOnPath = (): Promise<boolean> => {
+    return checkFileExistsOnPathOnWindowsOnly(
+        process.platform,
+        process.env?.['PATH'],
+        'llvm-objdump.EXE',
+    );
+};
+
+export const checkWperfExistsInSettingsOrPath = async (
+    getWperfPath: typeof getExecutable = getExecutable,
+    checkPath: typeof checkFileExistsOnPathOnWindowsOnly = checkFileExistsOnPathOnWindowsOnly,
+): Promise<boolean> => {
+    const executableName = 'wperf.exe';
+    const wperfPath = getWperfPath();
+    if (wperfPath === 'wperf') {
+        return await checkPath(process.platform, process.env?.['PATH'], executableName);
+    } else {
+        return wperfPath.includes(executableName);
+    }
 };

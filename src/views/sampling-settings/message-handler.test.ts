@@ -70,12 +70,15 @@ describe('message-handler', () => {
             const failingGetPredefinedEvents = jest.fn();
             failingGetPredefinedEvents.mockRejectedValue(new Error('Failed to load events'));
             const testResults = testResultsFactory();
+            const checkWperfExists = jest.fn().mockResolvedValue(true);
             const messageHandler = new MessageHandlerImpl(
                 { value: recordOptions },
                 true,
                 { value: [] },
                 failingGetPredefinedEvents,
                 getTestResultsFactory(testResults),
+                jest.fn(),
+                checkWperfExists,
             );
             const message: FromView = { type: 'ready' };
 
@@ -248,17 +251,28 @@ describe('message-handler', () => {
     });
 
     describe('determineErrorType', () => {
-        it('returns noWperfDriver when there is an issue with the wperf-driver', () => {
-            const error = new Error('not recognised as an internal or external command');
-            expect(determineErrorType(error)).toBe('noWperf');
+        it("returns noWperf when wperf can't be found", async () => {
+            const error = new Error();
+            const checkWperfExists = jest.fn().mockResolvedValue(false);
+
+            expect(await determineErrorType(error, checkWperfExists)).toBe('noWperf');
         });
-        it('returns noWperf when the WindowsPerf executable cannot be found', () => {
+
+        it('returns noWperfDriver when there is an issue with the wperf-driver', async () => {
             const error = new Error('No active device interfaces found.');
-            expect(determineErrorType(error)).toBe('noWperfDriver');
+            expect(await determineErrorType(error)).toBe('noWperfDriver');
         });
-        it('returns versionMismatch when there is version incompatibility between wperf and the wperf-driver', () => {
+
+        it('returns versionMismatch when there is version incompatibility between wperf and the wperf-driver', async () => {
             const error = new Error('DeviceIoControl');
-            expect(determineErrorType(error)).toBe('versionMismatch');
+            expect(await determineErrorType(error)).toBe('versionMismatch');
+        });
+
+        it("returns unknown when the wperf can be found and the error message isn't recognised", async () => {
+            const error = new Error("I'm a teapot");
+            const checkWperfExists = jest.fn().mockReturnValue(true);
+
+            expect(await determineErrorType(error, checkWperfExists)).toBe('unknown');
         });
     });
 });

@@ -4,7 +4,13 @@
 
 import path from 'path';
 
-import { checkHasFileAccess, checkFileExistsOnPath, isSamePath } from './path';
+import {
+    checkHasFileAccess,
+    checkFileExistsOnPath,
+    isSamePath,
+    checkWperfExistsInSettingsOrPath,
+    checkFileExistsOnPathOnWindowsOnly,
+} from './path';
 import { Uri } from 'vscode';
 
 describe('isSamePath', () => {
@@ -68,5 +74,33 @@ describe('checkFileExistsOnPath', () => {
         const got = await checkFileExistsOnPath(__dirname, 'mock-wrong-filename.ts');
 
         expect(got).toBe(false);
+    });
+});
+
+describe('checkFileExistsOnPathOnWindowsOnly', () => {
+    it("returns false if the platform isn't windows", async () => {
+        const platform = 'linux';
+        expect(
+            await checkFileExistsOnPathOnWindowsOnly(
+                platform,
+                __dirname,
+                path.basename(__filename),
+            ),
+        ).toBe(false);
+    });
+});
+
+describe('checkWperfExistsInSettingsOrPath', () => {
+    it('returns true when there is no wperfPath setting and "wperf" is on the PATH', async () => {
+        const getExecutable = jest.fn().mockReturnValue('wperf');
+        const checkPath = jest.fn().mockResolvedValue(true);
+
+        expect(await checkWperfExistsInSettingsOrPath(getExecutable, checkPath)).toBe(true);
+    });
+
+    it('returns true when the wperfPath setting includes "wperf.exe"', async () => {
+        const getExecutable = jest.fn().mockReturnValue('C:\\the\\file\\path\\to\\wperf.exe');
+
+        expect(await checkWperfExistsInSettingsOrPath(getExecutable)).toBe(true);
     });
 });
