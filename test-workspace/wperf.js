@@ -3,10 +3,13 @@
 
 const fs = require('fs');
 const path = require('path');
+const { renderTemplates } = require('./wperf-output/render-templates');
 
-const recordOutputPath = fs.existsSync(path.join(__dirname, 'wperf-output', 'rendered')) ?
-    path.join(__dirname, 'wperf-output', 'rendered', 'cpython-multi-sample-output.json') :
-    path.join(__dirname, 'wperf-output', 'templates', 'cpython-multi-sample-output.json');
+if (!fs.existsSync(path.join(__dirname, 'wperf-output', 'rendered'))) {
+    renderTemplates();
+}
+
+const recordOutputPath = path.join(__dirname, 'wperf-output', 'rendered', 'cpython-multi-sample-output.json')
 const listOutputPath = path.join(__dirname, '../', 'src', 'wperf' ,'fixtures', 'wperf-3.5.0.list.json');
 const testOutputTextPath = path.join(__dirname, 'wperf-output', 'templates', 'wperf-3.5.0-test-output.txt');
 const testOutputJsonPath = path.join(__dirname, 'wperf-output', 'templates', 'wperf-3.7.2.test.json');
