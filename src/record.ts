@@ -44,7 +44,7 @@ export const record = async (
         return;
     }
 
-    logger.debug(`Recording complete, recorded ${sample.length} events`);
+    logger.debug(`Recording complete, recorded ${sample.events.length} events`);
 
     return SampleSource.fromRecordRun(new RecordRun(recordOptions, sample));
 };

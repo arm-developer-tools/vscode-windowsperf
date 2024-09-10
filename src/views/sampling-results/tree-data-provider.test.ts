@@ -118,8 +118,9 @@ describe('buildSampleSourceRootNode', () => {
     it('calculates children nodes', () => {
         const first = eventFactory();
         const second = eventFactory();
+        const sampleTotal = first.count + second.count;
         const sampleFile = sampleFileFactory({
-            parsedContent: [first, second],
+            parsedContent: { events: [first, second], totalCount: sampleTotal },
         });
         const sampleSourceFile = sampleSourceFileFactory({
             result: sampleFile,
@@ -127,10 +128,7 @@ describe('buildSampleSourceRootNode', () => {
 
         const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-        const want = [
-            buildEventNode(first, first.count + second.count),
-            buildEventNode(second, first.count + second.count),
-        ];
+        const want = [buildEventNode(first, sampleTotal), buildEventNode(second, sampleTotal)];
         expect(got.children).toEqual(want);
     });
 
@@ -138,8 +136,9 @@ describe('buildSampleSourceRootNode', () => {
         it('calculates children nodes', () => {
             const first = eventFactory();
             const second = eventFactory();
+            const sampleTotal = first.count + second.count;
             const sampleFile = sampleFileFactory({
-                parsedContent: [first, second],
+                parsedContent: { events: [first, second], totalCount: sampleTotal },
             });
             const sampleSourceFile = sampleSourceFileFactory({
                 result: sampleFile,
@@ -147,10 +146,7 @@ describe('buildSampleSourceRootNode', () => {
 
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
-            const want = [
-                buildEventNode(first, first.count + second.count),
-                buildEventNode(second, first.count + second.count),
-            ];
+            const want = [buildEventNode(first, sampleTotal), buildEventNode(second, sampleTotal)];
             expect(got.children).toEqual(want);
         });
 
@@ -190,7 +186,7 @@ describe('buildSampleSourceRootNode', () => {
                 annotate: [],
             });
             const sampleFile = recordRunFactory({
-                parsedContent: [event],
+                parsedContent: { events: [event], totalCount: 100 },
                 recordOptions: recordOptionsFactory({
                     events: [eventAndFrequencyFactory()],
                 }),
@@ -209,13 +205,17 @@ describe('buildSampleSourceRootNode', () => {
                 type: 'unknown event',
                 samples: [],
                 annotate: [],
+                count: 0,
             });
             const eventKnownSample = eventSampleFactory();
             const eventKnown = eventFactory({
                 samples: [eventKnownSample],
             });
             const sampleFile = recordRunFactory({
-                parsedContent: [eventUnknown, eventKnown],
+                parsedContent: {
+                    events: [eventUnknown, eventKnown],
+                    totalCount: eventKnown.count + eventUnknown.count,
+                },
                 recordOptions: recordOptionsFactory({
                     events: [eventAndFrequencyFactory()],
                 }),
@@ -244,7 +244,7 @@ describe('buildSampleSourceRootNode', () => {
             const got = buildSampleSourceRootNode(sampleSourceFile, faker.datatype.boolean());
 
             expect(got.description).toEqual(
-                `${record.date} (hits: ${sampleSourceFile.context.result.parsedContent.reduce((a, b) => a + b.count, 0)})`,
+                `${record.date} (hits: ${sampleSourceFile.context.result.parsedContent.totalCount})`,
             );
         });
 

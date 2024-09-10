@@ -27,7 +27,7 @@ export interface BuildDecorationParams {
     lineNumber: number;
     content: SampleHitDetails[];
     lineHits: number;
-    totalFileHits: number;
+    totalSampleHits: number;
 }
 
 export const buildDecoration = ({
@@ -35,10 +35,10 @@ export const buildDecoration = ({
     lineNumber,
     content,
     lineHits,
-    totalFileHits,
+    totalSampleHits,
 }: BuildDecorationParams): Decoration => {
     const fileNameFromPath = basename(filename);
-    const totalLineOverhead = percentage(lineHits, totalFileHits);
+    const totalOverhead = percentage(lineHits, totalSampleHits);
     let hoverMessage = '';
     for (const c of content) {
         hoverMessage += renderFileHoverMessage({
@@ -46,31 +46,26 @@ export const buildDecoration = ({
             eventType: c.eventType,
             functionName: c.functionName,
             sourceCode: c.sourceCode,
-            totalFileHits,
+            totalSampleHits,
         });
     }
 
     return {
         filename,
         lineNumber,
-        backgroundColor: textEditorColour(totalLineOverhead),
+        backgroundColor: textEditorColour(totalOverhead),
         hoverMessage: `
 ### Sampling Results 
-${content.length > 1 ? renderTotalSection(fileNameFromPath, lineHits, totalLineOverhead) : ''}
+${renderTotalSection(lineHits, totalOverhead)}
 ${hoverMessage} 
 `,
-        after: textEditorInlineComments(lineHits, totalLineOverhead),
+        after: textEditorInlineComments(lineHits, totalOverhead),
     };
 };
 
-export const renderTotalSection = (
-    fileNameFromPath: string,
-    hits: number,
-    overhead: number,
-): string => {
+export const renderTotalSection = (hits: number, overhead: number): string => {
     return `
-* Hits: **${hits}**
-* Overhead: **${formatFraction(overhead)}%** - _${fileNameFromPath}_
+* ${formatFraction(overhead)}% (${hits} hits) - _sample_
 ---
 `;
 };
@@ -80,23 +75,22 @@ interface RenderFileHoverMessageParams {
     eventType: string;
     functionName: string;
     sourceCode: SourceCode;
-    totalFileHits: number;
+    totalSampleHits: number;
 }
 
 export const renderFileHoverMessage = ({
-    fileNameFromPath,
     eventType,
     functionName,
     sourceCode,
-    totalFileHits,
+    totalSampleHits,
 }: RenderFileHoverMessageParams): string => {
-    const eventOverhead = percentage(sourceCode.hits, totalFileHits);
+    const eventOverhead = percentage(sourceCode.hits, totalSampleHits);
     return `
 ### ${eventType}
 * Function: **${functionName}**
 * Hits: **${sourceCode.hits}**
 * Overhead: 
-    * **${formatFraction(eventOverhead)}%** - _${fileNameFromPath}_
+    * **${formatFraction(eventOverhead)}%** - _sample_
     * **${formatFraction(sourceCode.overhead)}%** - _${eventType} -> ${functionName}_
 ${renderDisassemblySection(sourceCode)}
 ---

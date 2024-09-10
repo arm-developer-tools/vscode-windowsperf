@@ -24,10 +24,14 @@ describe('buildDecoration', () => {
                 filename: sourceCode.filename,
                 lineNumber: sourceCode.line_number,
                 content: [
-                    { eventType: event.type, functionName: annotation.function_name, sourceCode },
+                    {
+                        eventType: event.type,
+                        functionName: annotation.function_name,
+                        sourceCode,
+                    },
                 ],
                 lineHits: sourceCode.hits,
-                totalFileHits: sourceCode.hits,
+                totalSampleHits: sourceCode.hits,
             }).hoverMessage;
 
             expect(got).toContain(event.type);
@@ -51,7 +55,7 @@ describe('buildDecoration', () => {
                     },
                 ],
                 lineHits: sourceCode.hits,
-                totalFileHits: sourceCode.hits,
+                totalSampleHits: sourceCode.hits,
             }).hoverMessage;
             for (const line of sourceCode.disassembled_line!.disassemble) {
                 expect(got).toContain(line.address);
@@ -78,10 +82,10 @@ describe('buildDecoration', () => {
                     },
                 ],
                 lineHits: sourceCode.hits + sourceCode.hits,
-                totalFileHits: sourceCode.hits + sourceCode.hits,
+                totalSampleHits: sourceCode.hits + sourceCode.hits,
             }).hoverMessage;
 
-            expect(got).toContain(`**${sourceCode.hits + sourceCode.hits}**`);
+            expect(got).toContain(`100% (${sourceCode.hits + sourceCode.hits} hits)`);
         });
     });
 
@@ -100,7 +104,7 @@ describe('buildDecoration', () => {
                     },
                 ],
                 lineHits: sourceCode.hits,
-                totalFileHits: sourceCode.hits,
+                totalSampleHits: sourceCode.hits,
             });
 
             const want = {
@@ -132,7 +136,7 @@ describe('buildDecoration', () => {
                         },
                     ],
                     lineHits: hits,
-                    totalFileHits: total,
+                    totalSampleHits: total,
                 }).backgroundColor;
 
                 expect(got).toBe(want);

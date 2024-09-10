@@ -59,19 +59,17 @@ export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
 
 export const buildSampleSourceRootNode = (source: SampleSource, isSelected: boolean): Node => {
     const eventTypeWhenNoHits = 'unknown event';
-    const eventsWithHits = source.context.result.parsedContent.filter(
+    const eventsWithHits = source.context.result.parsedContent.events.filter(
         (e) => e.type !== eventTypeWhenNoHits && e.samples.length > 0,
-    );
-    const totalSampleHits = eventsWithHits.reduce(
-        (totalHits, source) => totalHits + source.count,
-        0,
     );
 
     return {
         id: source.id,
-        children: eventsWithHits.map((c) => buildEventNode(c, totalSampleHits)),
+        children: eventsWithHits.map((c) =>
+            buildEventNode(c, source.context.result.parsedContent.totalCount),
+        ),
         label: source.context.result.displayName,
-        description: getDescription(source.context, totalSampleHits),
+        description: getDescription(source.context, source.context.result.parsedContent.totalCount),
         resourceUri: getResourceUri(source.context),
         contextValue: getContextValue(source.context.result.treeContextName, isSelected),
         collapsibleState: eventsWithHits.length
@@ -107,11 +105,6 @@ const getResourceUri = (source: Source): Uri | undefined => {
 };
 
 export const buildEventNode = (event: Event, totalSampleHits: number): Node => {
-    const totalEventSampleHits = event.samples.reduce(
-        (totalHits, source) => totalHits + source.count,
-        0,
-    );
-
     const lookup = buildAnnotationLookup(event.annotate);
     return {
         children: event.samples.map((sample) =>
@@ -119,7 +112,7 @@ export const buildEventNode = (event: Event, totalSampleHits: number): Node => {
         ),
         collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
         label: event.type,
-        description: `${formatFraction(percentage(totalEventSampleHits, totalSampleHits))}% (hits: ${totalEventSampleHits})`,
+        description: `${formatFraction(percentage(event.count, totalSampleHits))}% (hits: ${event.count})`,
     };
 };
 

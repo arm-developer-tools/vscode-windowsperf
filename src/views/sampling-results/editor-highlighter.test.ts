@@ -84,7 +84,7 @@ describe('calculateDecorations', () => {
         });
         const event = eventFactory({ annotate: [annotation] });
         const sampleFile = sampleFileFactory({
-            parsedContent: [event],
+            parsedContent: { events: [event], totalCount: 50 },
         });
 
         const got = calculateDecorations(
@@ -103,7 +103,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: 10,
-                totalFileHits: 10,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
             buildDecoration({
                 filename: sourceCodeB.filename,
@@ -116,7 +116,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: 40,
-                totalFileHits: 40,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
         ];
         expect(got).toEqual(want);
@@ -142,7 +142,7 @@ describe('calculateDecorations', () => {
         });
         const event = eventFactory({ annotate: [annotation] });
         const sampleFile = sampleFileFactory({
-            parsedContent: [event],
+            parsedContent: { events: [event], totalCount: 24 },
         });
 
         const got = calculateDecorations(
@@ -166,7 +166,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: 10,
-                totalFileHits: 10,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
             buildDecoration({
                 filename: sourceCodeB.filename,
@@ -184,7 +184,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: 14,
-                totalFileHits: 14,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
         ];
         expect(got).toEqual(want);
@@ -198,7 +198,7 @@ describe('calculateDecorations', () => {
         });
         const event = eventFactory({ annotate: [annotation] });
         const sampleFile = sampleFileFactory({
-            parsedContent: [event],
+            parsedContent: { events: [event], totalCount: 300 },
         });
 
         const got = calculateDecorations(
@@ -222,7 +222,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: sourceCodeA.hits + sourceCodeB.hits,
-                totalFileHits: 300,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
         ];
         expect(got).toEqual(want);
@@ -238,7 +238,9 @@ describe('calculateDecorations', () => {
 
         const event = eventFactory({ annotate: [annotation] });
         const eventB = eventFactory({ annotate: [annotationB] });
-        const sampleFile = sampleFileFactory({ parsedContent: [event, eventB] });
+        const sampleFile = sampleFileFactory({
+            parsedContent: { events: [event, eventB], totalCount: 200 },
+        });
 
         const got = calculateDecorations(
             sampleSourceFileFactory({ result: sampleFile }).context.result.parsedContent,
@@ -261,7 +263,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: sourceCodeA.hits + sourceCodeB.hits,
-                totalFileHits: 200,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
             buildDecoration({
                 filename: sourceCodeC.filename,
@@ -274,7 +276,7 @@ describe('calculateDecorations', () => {
                     },
                 ],
                 lineHits: sourceCodeC.hits,
-                totalFileHits: 200,
+                totalSampleHits: sampleFile.parsedContent.totalCount,
             }),
         ];
         expect(got).toEqual(want);

@@ -55,19 +55,25 @@ export type SourceCode = z.infer<typeof sourceCodeShape> & { overhead: number };
 export type Annotation = AnnotationJson & { source_code: SourceCode[] };
 export type EventSample = z.infer<typeof eventSampleShape>;
 export type Event = z.infer<typeof eventShape> & { annotate: Annotation[]; count: number };
-export type Sample = Event[];
+export type Sample = { events: Event[]; totalCount: number };
 export interface SampleHitDetails {
     eventType: string;
     functionName: string;
     sourceCode: SourceCode;
 }
 
-export const parseSample = (toParse: RecordJsonOutput): Sample =>
-    toParse.sampling.events.map((event) => ({
+export const parseSample = (toParse: RecordJsonOutput): Sample => {
+    const events = toParse.sampling.events.map((event) => ({
         ...event,
         count: event.samples.reduce((totalHits, sample) => totalHits + sample.count, 0),
         annotate: event.annotate.map(embedSourceCodeOverhead),
     }));
+
+    return {
+        events,
+        totalCount: events.reduce((a, c) => a + c.count, 0),
+    };
+};
 
 export const parseRecordJson = (json: string): Sample => {
     const data = JSON.parse(fixWperfOutput(json));
@@ -98,7 +104,7 @@ const embedSourceCodeOverhead = (annotation: AnnotationJson): Annotation => {
 
 export const getEventsWithUnknownSymbol = (sample: Sample): string[] => {
     const eventsWithUnknownSymbol: string[] = [];
-    for (const event of sample) {
+    for (const event of sample.events) {
         if (event.samples.length === 1 && event.samples.at(0)?.symbol === 'unknown') {
             eventsWithUnknownSymbol.push(event.type);
         }
@@ -108,7 +114,7 @@ export const getEventsWithUnknownSymbol = (sample: Sample): string[] => {
 
 export const groupHitsByFiles = (sample: Sample): Map<string, SampleHitDetails[]> => {
     const groupedByFileMap = new Map<string, SampleHitDetails[]>();
-    for (const event of sample) {
+    for (const event of sample.events) {
         for (const annotation of event.annotate) {
             for (const sourceCode of annotation.source_code) {
                 const nameKey = sourceCode.filename;
@@ -130,17 +136,11 @@ interface GroupedByLine {
     lineNumber: number;
     content: SampleHitDetails[];
     lineHits: number;
-    totalFileHits: number;
 }
 
 export const groupHitsOnSameFileLine = (
     fileContent: SampleHitDetails[],
 ): Map<number, GroupedByLine> => {
-    const totalFileHits = fileContent.reduce(
-        (totalHits, content) => totalHits + content.sourceCode.hits,
-        0,
-    );
-
     const groupedByLineMap = new Map<number, GroupedByLine>();
     for (const content of fileContent) {
         const key = content.sourceCode.line_number;
@@ -152,7 +152,6 @@ export const groupHitsOnSameFileLine = (
             lineNumber: key,
             content: found ? [...found.content, content] : [content],
             lineHits,
-            totalFileHits,
         });
     }
 

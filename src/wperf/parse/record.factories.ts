@@ -5,7 +5,10 @@
 import { faker } from '@faker-js/faker';
 import { Sample, Event, EventSample, Annotation, SourceCode, DisassembledLine } from './record';
 
-export const sampleFactory = (): Sample => faker.helpers.multiple(eventFactory);
+export const sampleFactory = (options?: Partial<Sample>): Sample => ({
+    events: options?.events ?? faker.helpers.multiple(eventFactory),
+    totalCount: options?.totalCount ?? faker.number.int(),
+});
 
 export const eventFactory = (options?: Partial<Event>): Event => ({
     type: options?.type ?? faker.word.noun(),

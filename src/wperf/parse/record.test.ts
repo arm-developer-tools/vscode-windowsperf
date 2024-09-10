@@ -37,7 +37,7 @@ describe('record', () => {
 
             const got = parseRecordJson(json);
 
-            expect(got).toEqual([]);
+            expect(got).toEqual({ totalCount: 0, events: [] });
         });
 
         it('parses wperf output json generated with the --disassemble option', async () => {
@@ -45,7 +45,27 @@ describe('record', () => {
 
             const got = parseRecordJson(json);
 
-            expect(got.length).toBeGreaterThan(0);
+            expect(got.events.length).toBeGreaterThan(0);
+        });
+
+        it('returns count value', () => {
+            const event1 = eventFactory();
+            const data = {
+                sampling: {
+                    sample_display_row: 10,
+                    samples_generated: 1337,
+                    samples_dropped: 10,
+                    pe_file: 'some-pe-file',
+                    pdb_file: 'some-pdb-file',
+                    events: [event1],
+                },
+            };
+            const json = JSON.stringify(data);
+
+            const got = parseRecordJson(json);
+            const want = event1.samples.reduce((a, c) => a + c.count, 0);
+
+            expect(got.totalCount).toEqual(want);
         });
 
         it('parses wperf output json generated with the --annotate option but without the --disassemble option', async () => {
@@ -53,7 +73,7 @@ describe('record', () => {
 
             const got = parseRecordJson(json);
 
-            expect(got.length).toBeGreaterThan(0);
+            expect(got.events.length).toBeGreaterThan(0);
         });
 
         it('uses sample parser to pre-calculate additional fields', async () => {
@@ -61,7 +81,7 @@ describe('record', () => {
 
             const got = parseRecordJson(json);
 
-            expect(got[0]!.annotate[0]!.source_code[0]!.overhead).not.toBeUndefined();
+            expect(got.events[0]!.annotate[0]!.source_code[0]!.overhead).not.toBeUndefined();
         });
 
         it('returns an error when json does not follow schema', () => {
@@ -105,7 +125,7 @@ describe('record', () => {
                 },
             };
 
-            const got = parseSample(toParse)[0]!.annotate;
+            const got = parseSample(toParse).events[0]!.annotate;
 
             const wantAnnote = [
                 {
@@ -132,22 +152,28 @@ describe('record', () => {
         const unknownEventSample = eventSampleFactory({ symbol: 'unknown' });
 
         it('includes events which only have an unknown symbol', () => {
-            const sample = [
-                eventFactory({ type: 'add' }),
-                eventFactory({ type: 'mult' }),
-                eventFactory({ type: 'shift', samples: [unknownEventSample] }),
-            ];
+            const sample = {
+                events: [
+                    eventFactory({ type: 'add' }),
+                    eventFactory({ type: 'mult' }),
+                    eventFactory({ type: 'shift', samples: [unknownEventSample] }),
+                ],
+                totalCount: 100,
+            };
 
             expect(getEventsWithUnknownSymbol(sample)).toEqual(['shift']);
         });
 
         it('does not include events with both an unknown symbol and a known symbol', () => {
             const knownEventSample = eventSampleFactory({ symbol: 'lib.dll' });
-            const sample = [
-                eventFactory({ type: 'div' }),
-                eventFactory({ type: 'interupt' }),
-                eventFactory({ type: 'load', samples: [unknownEventSample, knownEventSample] }),
-            ];
+            const sample = {
+                events: [
+                    eventFactory({ type: 'div' }),
+                    eventFactory({ type: 'interupt' }),
+                    eventFactory({ type: 'load', samples: [unknownEventSample, knownEventSample] }),
+                ],
+                totalCount: 100,
+            };
 
             expect(getEventsWithUnknownSymbol(sample)).toEqual([]);
         });
@@ -159,7 +185,7 @@ describe('record', () => {
             const annotation = annotationFactory({ source_code: [sourceCode] });
             const sampleA = eventFactory({ annotate: [annotation] });
             const sampleB = eventFactory({ annotate: [annotation] });
-            const sample = [sampleA, sampleB];
+            const sample = { events: [sampleA, sampleB], totalCount: 100 };
 
             expect(groupHitsByFiles(sample).get('file-1')).toEqual([
                 {
@@ -187,6 +213,7 @@ describe('record', () => {
                         line_number: 1,
                         hits: 100,
                     }),
+                    totalSampleHits: 100,
                 },
                 {
                     eventType: eventFactory().type,
@@ -196,6 +223,7 @@ describe('record', () => {
                         line_number: 1,
                         hits: 100,
                     }),
+                    totalSampleHits: 100,
                 },
             ];
 
@@ -203,7 +231,6 @@ describe('record', () => {
                 lineNumber: 1,
                 content: [content[0], content[1]],
                 lineHits: 200,
-                totalFileHits: 200,
             });
         });
     });

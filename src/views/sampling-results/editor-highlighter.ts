@@ -96,11 +96,13 @@ class VscodeTextEditorDecorator implements TextEditorDecorator {
 export const calculateDecorations = (sample: Sample) => {
     const groupedByFileMap = groupHitsByFiles(sample);
     const decorations: Decoration[] = [];
-    groupedByFileMap.forEach((file, fileName) => {
+    groupedByFileMap.forEach((file, filename) => {
         const groupedByLineMap = groupHitsOnSameFileLine(file);
 
         groupedByLineMap.forEach((line) => {
-            decorations.push(buildDecoration({ filename: fileName, ...line }));
+            decorations.push(
+                buildDecoration({ filename, totalSampleHits: sample.totalCount, ...line }),
+            );
         });
     });
     return decorations;
