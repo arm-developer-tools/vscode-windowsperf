@@ -13,6 +13,7 @@ import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
 import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
 import { Analytics } from '@arm-debug/vscode-telemetry';
+import { Node as TreeDataNode } from '../views/sampling-results/tree-data-provider';
 
 export class OpenResultFile {
     constructor(
@@ -23,10 +24,11 @@ export class OpenResultFile {
         private readonly focusResults = focusSamplingResults,
     ) {}
 
-    readonly execute = async (inputUri: Uri | undefined) => {
+    readonly execute = async (inputUri: TreeDataNode | Uri | undefined) => {
         logger.info('Executing windowsperf.openResultFile');
         this.analytics.sendEvent('openingResultFile');
 
+        inputUri = isUri(inputUri) ? inputUri : undefined;
         const file = await this.openFileOrPrompt(inputUri);
         if (file) {
             logger.info('Opened result file', file.uri.toString());
@@ -66,3 +68,5 @@ export const promptUserToSelectResultFile = async (): Promise<vscode.Uri | undef
     });
     return result?.[0];
 };
+
+const isUri = (uri: unknown): uri is Uri => !!(uri && (uri as Partial<Uri>).fsPath);

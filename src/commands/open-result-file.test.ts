@@ -16,6 +16,7 @@ import { Uri } from 'vscode';
 import { logErrorAndNotify } from '../logging/error-logging';
 import { SampleSource } from '../views/sampling-results/sample-source';
 import { analyticsFactory } from '@arm-debug/vscode-telemetry/lib/analytics.factories';
+import { treeDataNodeFactory } from '../views/sampling-results/tree-data-provider.factories';
 
 describe('OpenResultFile', () => {
     describe('execute', () => {
@@ -89,6 +90,23 @@ describe('OpenResultFile', () => {
             await command.execute(file.uri);
 
             expect(focusOnSamplingResults).toHaveBeenCalled;
+        });
+
+        it('ignores a tree node passed as command argument, treats as undefined Uri', async () => {
+            const file = sampleFileFactory();
+            const treeDataNode = treeDataNodeFactory();
+            const openFileOrPrompt = jest.fn(async () => file);
+            const files = new ObservableCollection<SampleSource>();
+            const command = new OpenResultFile(
+                files,
+                new ObservableSelection(),
+                analyticsFactory(),
+                openFileOrPrompt,
+                jest.fn(),
+            );
+
+            await command.execute(treeDataNode);
+            expect(openFileOrPrompt).toHaveBeenCalledWith(undefined);
         });
     });
 

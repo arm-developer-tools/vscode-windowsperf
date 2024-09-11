@@ -15,7 +15,7 @@ import { logger } from '../../logging/logger';
 import { SampleSource, Source, isSourceRecordRun, isSourceSampleFile } from './sample-source';
 import { SourceCode, Event, Annotation, EventSample } from '../../wperf/parse/record';
 
-type Node = vscode.TreeItem & { children?: Node[] };
+export type Node = vscode.TreeItem & { children?: Node[] };
 
 export class TreeDataProvider implements vscode.TreeDataProvider<Node> {
     private readonly _onDidChangeTreeData = new vscode.EventEmitter<void>();
