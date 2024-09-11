@@ -24,7 +24,7 @@ export const record = async (
     recordOptions: RecordOptions,
     recentEventsStore: Store<string[]>,
     analytics: Analytics,
-    runWperfRecord: typeof runWperfRecordWithDriverLockHandling = runWperfRecordWithDriverLockHandling,
+    runWperfRecord = runWperfRecordWithDriverLockHandling,
 ): Promise<SampleSource | undefined> => {
     recentEventsStore.value = updateRecentEvents(recentEventsStore.value, recordOptions);
     const { status, sample, message, driverLocked, forceLock } =
@@ -51,8 +51,8 @@ export const record = async (
 
 export const runWperfRecordWithDriverLockHandling = async (
     recordOptions: RecordOptions,
-    runWperfRecord: typeof runWperfRecordWithProgress = runWperfRecordWithProgress,
-    unlockMessage: typeof offerUnlockMessage = offerUnlockMessage,
+    runWperfRecord = runWperfRecordWithProgress,
+    unlockMessage = offerUnlockMessage,
 ): Promise<{
     status: string;
     sample?: Sample;

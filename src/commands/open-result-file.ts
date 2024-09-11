@@ -19,8 +19,8 @@ export class OpenResultFile {
         private readonly files: ObservableCollection<SampleSource>,
         private readonly selectedFile: ObservableSelection<SampleSource>,
         private readonly analytics: Analytics,
-        private readonly openFileOrPrompt: typeof openFileAtUriOrPrompt = openFileAtUriOrPrompt,
-        private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
+        private readonly openFileOrPrompt = openFileAtUriOrPrompt,
+        private readonly focusResults = focusSamplingResults,
     ) {}
 
     readonly execute = async (inputUri: Uri | undefined) => {
@@ -40,8 +40,8 @@ export class OpenResultFile {
 
 export const openFileAtUriOrPrompt = async (
     inputUri: Uri | undefined,
-    promptUserToSelectFile: typeof promptUserToSelectResultFile = promptUserToSelectResultFile,
-    loadFile: typeof SampleFile.fromUri = SampleFile.fromUri,
+    promptUserToSelectFile = promptUserToSelectResultFile,
+    loadFile = SampleFile.fromUri,
 ): Promise<SampleFile | undefined> => {
     const uri = inputUri || (await promptUserToSelectFile());
     if (uri) {

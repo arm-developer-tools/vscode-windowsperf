@@ -21,8 +21,8 @@ export class RunWperfRecord {
         private readonly recentEventsStore: Store<string[]>,
         private readonly samplingSettingsWebviewPanel: SamplingSettingsWebviewPanel,
         private readonly analytics: Analytics,
-        private readonly runRecord: typeof record = record,
-        private readonly focusResults: typeof focusSamplingResults = focusSamplingResults,
+        private readonly runRecord = record,
+        private readonly focusResults = focusSamplingResults,
     ) {}
 
     execute = async () => {

@@ -9,10 +9,7 @@ import { Uri } from 'vscode';
 import { Sample } from '../../wperf/parse/record';
 
 export class SampleFile {
-    static async fromUri(
-        uri: Uri,
-        load: typeof loadSampleFile = loadSampleFile,
-    ): Promise<SampleFile> {
+    static async fromUri(uri: Uri, load = loadSampleFile): Promise<SampleFile> {
         const parsedContent = await load(uri.fsPath);
         return new SampleFile(uri, parsedContent);
     }

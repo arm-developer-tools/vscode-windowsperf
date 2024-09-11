@@ -12,9 +12,7 @@ import wrap from 'wrap-ansi';
 export const WRAP_LENGTH = 300;
 
 export class RunWperfTest {
-    constructor(
-        private readonly runWperfTest: typeof runWperfTestWithProgress = runWperfTestWithProgress,
-    ) {}
+    constructor(private readonly runWperfTest = runWperfTestWithProgress) {}
 
     execute = async () => {
         logger.info('Executing windowsperf.runWperfTest');

@@ -158,7 +158,7 @@ export class MessageHandlerImpl implements MessageHandler {
 
 export const determineErrorType = async (
     error: unknown,
-    checkWperfExists: typeof checkWperfExistsInSettingsOrPath = checkWperfExistsInSettingsOrPath,
+    checkWperfExists = checkWperfExistsInSettingsOrPath,
 ): Promise<ErrorDetail['type']> => {
     if (error instanceof Error) {
         if (error.message.includes('No active device interfaces found.')) {

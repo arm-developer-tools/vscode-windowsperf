@@ -62,8 +62,8 @@ export const checkLlvmObjDumpOnPath = (): Promise<boolean> => {
 };
 
 export const checkWperfExistsInSettingsOrPath = async (
-    getWperfPath: typeof getExecutable = getExecutable,
-    checkPath: typeof checkFileExistsOnPathOnWindowsOnly = checkFileExistsOnPathOnWindowsOnly,
+    getWperfPath = getExecutable,
+    checkPath = checkFileExistsOnPathOnWindowsOnly,
 ): Promise<boolean> => {
     const executableName = 'wperf.exe';
     const wperfPath = getWperfPath();
