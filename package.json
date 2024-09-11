@@ -30,11 +30,6 @@
                 "enablement": "windowsperf.initialised && windowsperf.hasWindowsOnArmFeatures"
             },
             {
-                "command": "windowsperf.test",
-                "title": "Check Driver Configuration",
-                "category": "WindowsPerf"
-            },
-            {
                 "command": "windowsperf.rerunRecord",
                 "title": "Rerun Recording",
                 "icon": "$(refresh)",
