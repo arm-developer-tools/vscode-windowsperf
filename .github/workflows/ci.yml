@@ -55,3 +55,12 @@ jobs:
       EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
       EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
       ARM_SOFTWARE_TOKEN: ${{secrets.ARM_SOFTWARE_TOKEN}}
+  check-copyright:
+    name: Check Copyright Headers
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ghcr.io/google/addlicense:v1.1.1
+    steps:
+      - uses: actions/checkout@v2
+      - run: docker pull $IMAGE_NAME
+      - run: docker run -v ${PWD}:/src $IMAGE_NAME -c "Arm Limited" -check src tests *.ts *.js
