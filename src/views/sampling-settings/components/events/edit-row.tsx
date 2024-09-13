@@ -11,10 +11,10 @@ import { EventSelectorProps } from './selector';
 
 const ValidationMessage = (props: { message: string | undefined; show: boolean }) => {
     return (
-        <div className={`event-edit-row-validation-message`}>
+        <div className="event-edit-row-validation-message">
             {props.message && props.show ? (
                 <>
-                    <span className={`codicon codicon-error`} /> {props.message}
+                    <span className="codicon codicon-error" /> {props.message}
                 </>
             ) : undefined}
         </div>

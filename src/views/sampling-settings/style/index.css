@@ -215,7 +215,7 @@ a.invalid {
     font-size: medium;
 }
 
-.description .codicon {
+.information-tooltip {
     vertical-align: bottom;
     margin-left: 4px;
     margin-right: 4px;

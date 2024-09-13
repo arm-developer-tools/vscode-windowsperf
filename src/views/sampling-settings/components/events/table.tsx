@@ -83,7 +83,7 @@ export const EventTable = (props: EventTableProps) => {
                 <div>
                     Frequency
                     <span
-                        className="codicon codicon-info"
+                        className="codicon codicon-info information-tooltip"
                         title={`Number of times an event must occur to be counted as a "hit". \
 Default value is set by the system (${formatNumber(props.defaultFrequency)}).`}
                     ></span>

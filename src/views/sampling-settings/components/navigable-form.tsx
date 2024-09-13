@@ -81,7 +81,7 @@ const Content = (props: { content: FormContent; type: 'parent' | 'child' }) => {
                 {content.description}
                 {content.tooltip && (
                     <span
-                        className="codicon codicon-info"
+                        className="codicon codicon-info information-tooltip"
                         role="tooltip"
                         title={content.tooltip}
                     ></span>
