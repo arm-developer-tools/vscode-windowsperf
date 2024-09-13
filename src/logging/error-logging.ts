@@ -11,10 +11,17 @@ export const logErrorAndNotify = (error: unknown, notificationMessage: string) =
     logger.error(loggableError);
 
     vscode.window
-        .showErrorMessage(`${notificationMessage} See the log for more information.`, 'Open Log')
+        .showErrorMessage(
+            `${notificationMessage} See the log for more information.`,
+            'Open Log',
+            'Run System Check',
+        )
         .then((result) => {
             if (result === 'Open Log') {
                 logger.show(true);
+            }
+            if (result === 'Run System Check') {
+                vscode.commands.executeCommand('windowsperf.systemCheck');
             }
         });
 };

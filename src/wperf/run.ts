@@ -10,6 +10,7 @@ import { PredefinedEvent, parseListJson } from './parse/list';
 import { RecordOptions } from './record-options';
 import { buildRecordArgs } from './record-options';
 import { parseTestJson, TestResults } from './parse/test';
+import { parseVersionJson, Version } from './parse/version';
 
 const shellEscape = (input: string): string => `"${input}"`;
 
@@ -27,6 +28,10 @@ export const buildListCommand = (executablePath: string) =>
 
 export const buildTestAsTextCommand = (executablePath: string) =>
     `${shellEscape(executablePath)} test`;
+
+const buildVersionCommand = (executablePath: string) =>
+    `${shellEscape(executablePath)} --version --json`;
+
 const buildTestCommand = (executablePath: string) =>
     `${buildTestAsTextCommand(executablePath)} --json`;
 
@@ -60,6 +65,13 @@ export const runList = async (
 
 export const runTestAsText = async (cancellationToken?: CancellationToken): Promise<string> => {
     return await run(buildTestAsTextCommand(getExecutable()), cancellationToken);
+};
+
+export const runVersionAndParse = async (
+    cancellationToken?: CancellationToken,
+): Promise<Version[]> => {
+    const resultJson = await run(buildVersionCommand(getExecutable()), cancellationToken);
+    return parseVersionJson(resultJson);
 };
 
 export const runTestAndParse = async (

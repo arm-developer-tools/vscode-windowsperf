@@ -10,6 +10,7 @@ export type ErrorViewProps = {
     error: ErrorDetail;
     openWperfOutput: () => void;
     refreshView: () => void;
+    runSystemCheck: () => void;
 };
 
 type ErrorMessageMap = {
@@ -49,8 +50,17 @@ export const ErrorView = (props: ErrorViewProps) => {
                     id="show-wperf-output-button"
                     title="Open Log"
                     onClick={props.openWperfOutput}
+                    appearance="secondary"
                 >
                     Open Log
+                </VSCodeButton>
+                <VSCodeButton
+                    id="run-system-check-button"
+                    title="Run System Check"
+                    onClick={props.runSystemCheck}
+                    appearance="secondary"
+                >
+                    Run System Check
                 </VSCodeButton>
             </div>
         </div>

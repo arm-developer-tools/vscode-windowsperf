@@ -27,6 +27,9 @@ export const fromViewShape = z.union([
         type: z.literal('showOutputChannel'),
     }),
     z.object({
+        type: z.literal('runSystemCheck'),
+    }),
+    z.object({
         type: z.literal('retry'),
     }),
 ]);

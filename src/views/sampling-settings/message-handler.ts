@@ -19,6 +19,7 @@ import * as path from 'path';
 import { Store } from '../../store';
 import { checkWperfExistsInSettingsOrPath } from '../../path';
 import { checkLlvmObjDumpOnPath } from '../../path';
+import { generateSystemCheck } from '../../system-check/system-check';
 
 export type MessageHandler = {
     handleMessage: (message: unknown) => Promise<ToView | undefined>;
@@ -58,6 +59,8 @@ export class MessageHandlerImpl implements MessageHandler {
                     return this.handleRecordCommand();
                 case 'showOutputChannel':
                     return this.showOutputChannel();
+                case 'runSystemCheck':
+                    return this.handleRunSystemCheckCommand();
                 case 'retry':
                     return this.handleRetry();
             }
@@ -94,6 +97,11 @@ export class MessageHandlerImpl implements MessageHandler {
 
     public readonly handleRecordCommand = async () => {
         await vscode.commands.executeCommand('windowsperf.record');
+        return undefined;
+    };
+
+    public readonly handleRunSystemCheckCommand = async () => {
+        await generateSystemCheck();
         return undefined;
     };
 

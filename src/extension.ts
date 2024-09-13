@@ -27,6 +27,7 @@ import { getDefaultRecordOptions, recordOptionsShape } from './wperf/record-opti
 import { recentEventsShape } from './recent-events';
 import { ContextManager } from './context';
 import { checkLlvmObjDumpOnPath } from './path';
+import { RunSystemCheck } from './commands/run-system-check';
 
 export const activate = activateTelemetry(
     async (context: vscode.ExtensionContext, analytics: Analytics) => {
@@ -74,6 +75,7 @@ export const activate = activateTelemetry(
                 selectedSample,
                 analytics,
             ).execute,
+            'windowsperf.systemCheck': new RunSystemCheck().execute,
             'windowsperf.closeResultFile': new CloseResultFile(sampleSources, selectedSample)
                 .execute,
             'windowsperf.selectActiveResultFile': new SelectActiveResultFile(

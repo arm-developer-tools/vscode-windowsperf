@@ -1,0 +1,16 @@
+{
+    "Version": [
+        {
+            "Component": "wperf",
+            "Version": "3.8.0",
+            "GitVer": "6d15ddfc",
+            "FeatureString": "+etw-app"
+        },
+        {
+            "Component": "wperf-driver",
+            "Version": "3.8.0",
+            "GitVer": "6d15ddfc",
+            "FeatureString": "+etw-drv"
+        }
+    ]
+}

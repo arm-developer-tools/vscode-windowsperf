@@ -17,6 +17,11 @@
     "contributes": {
         "commands": [
             {
+                "command": "windowsperf.systemCheck",
+                "title": "Check Installation",
+                "category": "WindowsPerf"
+            },
+            {
                 "command": "windowsperf.openResultFile",
                 "title": "Open Sampling JSON File",
                 "icon": "$(new-file)",

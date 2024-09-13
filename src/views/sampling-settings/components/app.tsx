@@ -46,6 +46,7 @@ export const App = (props: AppProps) => {
             <ErrorView
                 error={props.state.error}
                 openWperfOutput={openWperfOutput}
+                runSystemCheck={() => props.postMessage({ type: 'runSystemCheck' })}
                 refreshView={refreshView}
             />
         );

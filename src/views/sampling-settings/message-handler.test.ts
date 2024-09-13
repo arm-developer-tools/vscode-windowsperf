@@ -18,6 +18,12 @@ import { Uri } from 'vscode';
 import path from 'path';
 import { testResultsFactory } from '../../wperf/parse/test.factories';
 import { checkLlvmObjDumpOnPath } from '../../path';
+import { generateSystemCheck } from '../../system-check/system-check';
+
+const mockGenerateSystemCheck = generateSystemCheck as jest.Mock;
+jest.mock('../../system-check/system-check', () => ({
+    generateSystemCheck: jest.fn(),
+}));
 
 const mockCheckLlvmObjDumpOnPath = checkLlvmObjDumpOnPath as jest.Mock;
 jest.mock('../../path', () => ({
@@ -143,6 +149,23 @@ describe('message-handler', () => {
 
             expect(got).toBeUndefined();
             expect(recordOptionsStore.value).toEqual(message.recordOptions);
+        });
+
+        it('runs a system check when it is the message type', async () => {
+            const recordOptionsStore = { value: recordOptionsFactory() };
+            const messageHandler = new MessageHandlerImpl(
+                recordOptionsStore,
+                false,
+                { value: [] },
+                getPredefinedEventsFactory(),
+                getTestResultsFactory(),
+                jest.fn(),
+            );
+            const message: FromView = { type: 'runSystemCheck' };
+
+            await messageHandler.handleMessage(message);
+
+            expect(mockGenerateSystemCheck).toHaveBeenCalledTimes(1);
         });
 
         describe('handling openCommandFilePicker', () => {
