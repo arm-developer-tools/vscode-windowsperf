@@ -2,9 +2,9 @@
     "name": "windowsperf",
     "publisher": "Arm",
     "displayName": "Arm WindowsPerf",
-    "description": "VS Code extension for performance analysis using WindowsPerf",
-    "version": "0.0.1",
-    "repository": "https://github.com/Arm-Software/vscode-windowsperf",
+    "description": "Performance analysis for arm64 Windows systems using WindowsPerf",
+    "version": "1.0.0",
+    "repository": "https://github.com/arm-developer-tools/vscode-windowsperf",
     "engines": {
         "node": ">=20.0.0",
         "npm": ">=9.0.0",
@@ -13,7 +13,19 @@
     "categories": [
         "Other"
     ],
-    "license": "Apache-2.0",
+    "tags": [
+        "WindowsPerf",
+        "Arm",
+        "Performance",
+        "Windows"
+    ],
+    "qna": false,
+    "icon": "media/arm.png",
+    "galleryBanner": {
+        "color": "#333E48",
+        "theme": "dark"
+    },
+    "license": "SEE LICENSE IN LICENSE",
     "activationEvents": [],
     "main": "dist/extension.js",
     "contributes": {
