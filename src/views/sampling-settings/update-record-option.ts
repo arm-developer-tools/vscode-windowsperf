@@ -36,8 +36,7 @@ export const createUpdateRecordOption =
             action,
         );
 
-        const fromView: FromView = { type: 'recordOptions', recordOptions: newRecordOptions };
-        dependencies.postMessage(fromView);
+        dependencies.postMessage({ type: 'recordOptions', recordOptions: newRecordOptions });
 
         dependencies.dispatch(action);
     };

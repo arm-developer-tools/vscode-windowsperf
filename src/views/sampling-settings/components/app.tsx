@@ -33,8 +33,7 @@ export type AppProps = {
 
 export const App = (props: AppProps) => {
     useEffect(() => {
-        const message: FromView = { type: 'ready' };
-        props.postMessage(message);
+        props.postMessage({ type: 'ready' });
     }, []);
 
     useEffect(() => {
@@ -42,14 +41,12 @@ export const App = (props: AppProps) => {
     }, [props.container, props.state.type]);
 
     const openWperfOutput = () => {
-        const fromView: FromView = { type: 'showOutputChannel' };
-        props.postMessage(fromView);
+        props.postMessage({ type: 'showOutputChannel' });
     };
 
     const refreshView = () => {
         props.dispatch({ type: 'retry' });
-        const message: FromView = { type: 'retry' };
-        props.postMessage(message);
+        props.postMessage({ type: 'retry' });
     };
     if (props.state.type === 'loading') {
         return <LoadingSpinner />;
@@ -70,13 +67,11 @@ export const App = (props: AppProps) => {
         });
 
         const openCommandFilePicker = () => {
-            const fromView: FromView = { type: 'openCommandFilePicker' };
-            props.postMessage(fromView);
+            props.postMessage({ type: 'openCommandFilePicker' });
         };
 
         const handleRecordCommand = () => {
-            const fromView: FromView = { type: 'record' };
-            props.postMessage(fromView);
+            props.postMessage({ type: 'record' });
             props.dispatch({ type: 'updateRecentEvents' });
         };
 
