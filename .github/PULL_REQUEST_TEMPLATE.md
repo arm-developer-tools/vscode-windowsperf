@@ -1,12 +1,7 @@
-## Fixes
-<!-- List the JIRA issues this PR resolves -->
-
-- [DEENV-](https://jira.arm.com/browse/DEENV-)
+<!-- See CONTRIBUTING.md -->
 
 ## Changes
-<!-- List the changes this PR introduces -->
-
--
+<!-- The changes this PR introduces and the reasons behind them -->
 
 ## Screenshots
 <!-- Any UI changes should be shown with screenshots to ease UX/UI feedback, stick 'em here: -->
@@ -17,7 +12,6 @@
 - [ ] 🤖 This change is covered by unit tests as required.
 - [ ] 💻 This change is covered by end-to-end tests as required.
 - [ ] 🤹 All required manual testing has been performed.
-- [ ] 🛡️ Security impacts and the [threat model](https://confluence.arm.com/display/IoTWeb/OTG+VS+Code+Extensions+Threat+Model) have been considered.
+- [ ] 🛡️ Security impacts have been considered.
 - [ ] 📖 All documentation updates are complete.
 - [ ] 📝 The [changelog](../CHANGELOG.md) has been updated, or this change is not user facing.
-- [ ] 🧠 The [TPIP process](https://confluence.arm.com/display/IoTWeb/Third+Party+IP+Handling) has been followed, or this change does not change third party dependencies
