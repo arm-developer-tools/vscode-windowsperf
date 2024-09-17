@@ -23,12 +23,8 @@ import { EventSelectorProps } from './selector';
 
 const ValidationMessage = (props: { message: string | undefined; show: boolean }) => {
     return (
-        <div className="event-edit-row-validation-message">
-            {props.message && props.show ? (
-                <>
-                    <span className="codicon codicon-error" /> {props.message}
-                </>
-            ) : undefined}
+        <div className="error-message event-edit-row-validation-message">
+            {props.message && props.show ? props.message : undefined}
         </div>
     );
 };
@@ -38,21 +34,31 @@ export type EventEditRowProps = EventSelectorProps;
 export const EventEditRow = (props: EventEditRowProps) => {
     const editorState = props.editorState;
     const isEditorStateAdding = editorState.type === 'adding';
+    const invalidRow = editorState.validate || props.showMissingEventsValidation;
     const { availableGpcCount, samplingIntervalDefault } = props.testResults;
 
-    const validationMessage =
-        isEditorStateAdding && props.selectedEvents.length >= availableGpcCount
-            ? `You can only sample ${availableGpcCount} events at once`
-            : !editorState.event.event
-              ? 'Please select an event'
-              : undefined;
+    const decideValidationMessage = () => {
+        if (props.showMissingEventsValidation) {
+            return 'This field is required';
+        }
+        if (isEditorStateAdding && props.selectedEvents.length >= availableGpcCount) {
+            return `You can only sample ${availableGpcCount} events at once`;
+        }
+        if (!editorState.event.event) {
+            return 'Please select an event';
+        }
+        return undefined;
+    };
+
+    const validationMessage = decideValidationMessage();
 
     const onAdd = () => {
         if (validationMessage) {
             props.dispatch({
                 type: 'validate',
             });
-        } else {
+        }
+        if (editorState.event.event) {
             const action: UpdateRecordOptionAction = isEditorStateAdding
                 ? { type: 'addEvent', event: editorState.event }
                 : { type: 'editEvent', index: editorState.index, event: editorState.event };
@@ -86,10 +92,10 @@ export const EventEditRow = (props: EventEditRowProps) => {
     }
 
     return (
-        <>
-            <div className="event-edit-row">
+        <div className="event-edit-row">
+            <div className="event-edit-row-dropdown-container">
                 <EventDropdown
-                    showInvalidEvent={editorState.validate}
+                    showInvalidEvent={invalidRow}
                     dispatch={props.dispatch}
                     eventData={{
                         dropdownValue: editorState.event.event,
@@ -98,27 +104,34 @@ export const EventEditRow = (props: EventEditRowProps) => {
                         recentEvents: props.recentEvents,
                     }}
                 />
+                <ValidationMessage message={validationMessage} show={invalidRow} />
+            </div>
+            <div className="event-edit-row-number-input">
                 <input
                     type="number"
                     aria-label="Frequency"
                     value={editorState.event.frequency ?? ''}
+                    className={frequencyWarning ? 'warning' : ''}
                     onChange={onFrequencyChange}
                     placeholder={`${formatNumber(samplingIntervalDefault)} (default)`}
                 />
-                <VSCodeButton onClick={onAdd}>
-                    {editorState.type === 'adding' ? 'Add' : 'Save'}
-                </VSCodeButton>
-                <VSCodeButton onClick={onCancel} appearance="secondary">
-                    {editorState.type === 'adding' ? 'Clear' : 'Cancel'}
-                </VSCodeButton>
+                {frequencyWarning && (
+                    <div className="warning-message">
+                        <span className="codicon codicon-warning" />
+                        {frequencyWarning}
+                    </div>
+                )}
             </div>
-            <ValidationMessage message={validationMessage} show={editorState.validate} />
-            {frequencyWarning && (
-                <div className="warning-message">
-                    <span className="codicon codicon-warning" />
-                    {frequencyWarning}
-                </div>
-            )}
-        </>
+            <VSCodeButton onClick={onAdd} className="event-edit-row-button ">
+                {editorState.type === 'adding' ? 'Add' : 'Save'}
+            </VSCodeButton>
+            <VSCodeButton
+                onClick={onCancel}
+                appearance="secondary"
+                className="event-edit-row-button "
+            >
+                {editorState.type === 'adding' ? 'Clear' : 'Cancel'}
+            </VSCodeButton>
+        </div>
     );
 };

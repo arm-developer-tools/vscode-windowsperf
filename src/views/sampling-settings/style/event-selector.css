@@ -58,7 +58,7 @@
 }
 
 .event-table .row > :first-child {
-    width: 50%;
+    width: 45%;
 }
 
 .event-table .row > :nth-child(2) {
@@ -92,29 +92,36 @@
     vertical-align: text-top;
 }
 
+.event-edit-row-button {
+    height: 25px;
+}
+
+.event-edit-row-dropdown-container {
+    width: 45%;
+}
+
+.event-edit-row-number-input {
+    flex: auto;
+    flex-basis: min-content;
+    > input {
+        width: 100%;
+    }
+}
+
 .event-edit-row {
     margin-top: 4px;
     display: flex;
-}
-
-.event-edit-row > :not(:first-child) {
-    margin-left: 4px;
-}
-
-.event-edit-row > .dropdown {
-    width: 50%;
-}
-
-.event-edit-row > input {
-    flex: auto;
-    flex-basis: min-content;
+    align-items: flex-start;
+    > :not(:first-child) {
+        margin-left: 4px;
+    }
 }
 
 .event-edit-row-validation-message {
     margin-top: 4px;
     height: 16px;
     text-overflow: ellipsis;
-    color: var(--vscode-editorError-foreground);
+    color: var(--vscode-errorForeground);
 }
 
 .event-edit-row-validation-message .codicon {

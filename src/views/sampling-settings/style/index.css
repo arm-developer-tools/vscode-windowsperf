@@ -64,6 +64,7 @@ footer {
 
 nav {
     border-right: 1px solid var(--vscode-settings-headerBorder);
+    padding-right: 10px;
     display: none;
 }
 
@@ -144,14 +145,19 @@ section.setting:not(:last-child) {
 
 .file-picker {
     display: flex;
-    gap: 4px;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-direction: column;
 }
 
 .file-picker-control {
     display: flex;
     height: 25px;
+}
+
+.file-picker-input {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 .description {
@@ -236,4 +242,11 @@ a.invalid {
 
 .description p {
     margin-bottom: 10px;
+}
+
+.visible {
+    visibility: visible;
+}
+.hidden {
+    visibility: hidden;
 }

@@ -34,6 +34,7 @@ describe('EventSelector', () => {
                 editorState={eventsEditorEditingStateFactory()}
                 recentEvents={[]}
                 testResults={testResultsFactory()}
+                showMissingEventsValidation={false}
             />,
         );
 

@@ -79,6 +79,7 @@ export type EventDropdownProps = {
     dispatch: Dispatch<Extract<EventsEditorAction, { type: 'setEventName' }>>;
     eventData: EventData;
     showInvalidEvent: boolean;
+    className?: string;
 };
 
 export const EventDropdown = (props: EventDropdownProps) => {
@@ -90,6 +91,7 @@ export const EventDropdown = (props: EventDropdownProps) => {
 
     return (
         <Dropdown
+            className={props.className}
             value={props.eventData.dropdownValue}
             invalid={props.showInvalidEvent}
             onChange={onEventChange}

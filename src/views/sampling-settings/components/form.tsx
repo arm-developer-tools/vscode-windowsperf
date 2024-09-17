@@ -84,15 +84,17 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                                                 });
                                             }}
                                         />
+                                        <div className="file-picker-control">
+                                            <VSCodeButton onClick={props.openCommandFilePicker}>
+                                                Browse
+                                            </VSCodeButton>
+                                        </div>
                                     </div>
-                                    <div className="file-picker-control">
-                                        <VSCodeButton onClick={props.openCommandFilePicker}>
-                                            Browse
-                                        </VSCodeButton>
+                                    <div
+                                        className={`error-message ${showMissingCommandValidation ? 'visible' : 'hidden'}`}
+                                    >
+                                        This field is required
                                     </div>
-                                    {showMissingCommandValidation && (
-                                        <div className="error-message">This field is required</div>
-                                    )}
                                 </div>
                             ),
                         },
@@ -101,18 +103,21 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                             title: 'Arguments',
                             description: 'Arguments to pass to the command.',
                             component: (
-                                <RecordOptionInput
-                                    type="text"
-                                    recordOption="arguments"
-                                    recordOptions={props.recordOptions}
-                                    isInvalid={false}
-                                    onChange={(value) => {
-                                        props.updateRecordOption({
-                                            type: 'setArguments',
-                                            arguments: value,
-                                        });
-                                    }}
-                                />
+                                <>
+                                    <RecordOptionInput
+                                        type="text"
+                                        recordOption="arguments"
+                                        recordOptions={props.recordOptions}
+                                        isInvalid={false}
+                                        onChange={(value) => {
+                                            props.updateRecordOption({
+                                                type: 'setArguments',
+                                                arguments: value,
+                                            });
+                                        }}
+                                    />
+                                    <div className="error-message hidden">.</div>
+                                </>
                             ),
                         },
                     ]),
@@ -136,20 +141,16 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                         tooltip: `Number of events you can sample at once may change depending on the number of processor counters being used by other processes. Currently, ${props.testResults.availableGpcCount} out of ${props.testResults.totalGpcCount} counters are available.`,
                         invalid: showMissingEventsValidation,
                         component: (
-                            <>
-                                <EventSelector
-                                    predefinedEvents={props.events}
-                                    editorState={props.eventsEditorState}
-                                    dispatch={dispatch}
-                                    recentEvents={props.recentEvents}
-                                    selectedEvents={props.recordOptions.events}
-                                    testResults={props.testResults}
-                                    updateRecordOption={props.updateRecordOption}
-                                />
-                                {showMissingEventsValidation && (
-                                    <div className="error-message">This field is required</div>
-                                )}
-                            </>
+                            <EventSelector
+                                predefinedEvents={props.events}
+                                editorState={props.eventsEditorState}
+                                dispatch={dispatch}
+                                recentEvents={props.recentEvents}
+                                selectedEvents={props.recordOptions.events}
+                                testResults={props.testResults}
+                                updateRecordOption={props.updateRecordOption}
+                                showMissingEventsValidation={showMissingEventsValidation}
+                            />
                         ),
                     }),
                 },
@@ -161,11 +162,14 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                         title: 'CPU core',
                         description: 'CPU core to monitor.',
                         component: (
-                            <CoreDropdown
-                                cores={props.cores}
-                                selectedCore={props.recordOptions.core.toString()}
-                                updateRecordOption={props.updateRecordOption}
-                            />
+                            <>
+                                <CoreDropdown
+                                    cores={props.cores}
+                                    selectedCore={props.recordOptions.core.toString()}
+                                    updateRecordOption={props.updateRecordOption}
+                                />
+                                <div className="error-message hidden">.</div>
+                            </>
                         ),
                     }),
                 },
@@ -177,15 +181,18 @@ export const Form = ({ dispatch, ...props }: FormProps) => {
                         title: 'Timeout',
                         description: 'Maximum recording duration in seconds.',
                         component: (
-                            <TimeoutSeconds
-                                recordOptions={props.recordOptions}
-                                onChange={(value) => {
-                                    props.updateRecordOption({
-                                        type: 'setTimeout',
-                                        timeout: value,
-                                    });
-                                }}
-                            />
+                            <>
+                                <TimeoutSeconds
+                                    recordOptions={props.recordOptions}
+                                    onChange={(value) => {
+                                        props.updateRecordOption({
+                                            type: 'setTimeout',
+                                            timeout: value,
+                                        });
+                                    }}
+                                />
+                                <div className="error-message hidden">.</div>
+                            </>
                         ),
                     }),
                 },

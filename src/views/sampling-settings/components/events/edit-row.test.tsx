@@ -37,6 +37,7 @@ const eventEditRowPropsFactory = (options?: Partial<EventEditRowProps>): EventEd
     updateRecordOption: jest.fn(),
     recentEvents: [faker.word.noun()],
     testResults: testResultsFactory(),
+    showMissingEventsValidation: false,
     ...options,
 });
 

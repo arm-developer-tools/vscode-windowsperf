@@ -55,9 +55,11 @@ const Nav = (props: NavigableFormProps) => {
                     <li key={section.id}>
                         <a href={`#${section.id}`} className={section.invalid ? 'invalid' : ''}>
                             {section.title}
-                            {section.invalid ? (
-                                <span className="invalid super-impose">*</span>
-                            ) : undefined}
+                            <span
+                                className={`invalid super-impose ${section.invalid ? 'visible' : 'hidden'}`}
+                            >
+                                *
+                            </span>
                         </a>
                     </li>
                 ))}

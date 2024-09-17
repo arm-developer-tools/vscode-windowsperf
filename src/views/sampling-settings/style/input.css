@@ -20,6 +20,7 @@ input {
     color: var(--vscode-settings-textInputForeground);
     border: 1px solid var(--vscode-settings-textInputBorder, transparent);
     padding: 4px 6px;
+    box-sizing: border-box;
 }
 
 input:focus {
@@ -79,6 +80,11 @@ input.invalid,
 input:invalid {
     border-color: var(--vscode-inputValidation-errorBorder);
     color: var(--vscode-inputValidation-errorForeground);
+}
+
+input.warning {
+    border-color: var(--vscode-inputValidation-warningBorder);
+    color: var(--vscode-inputValidation-warningForeground);
 }
 
 input[type='number'] {

@@ -32,6 +32,7 @@ export type EventSelectorProps = {
     recentEvents: string[];
     testResults: TestResults;
     updateRecordOption: UpdateRecordOption;
+    showMissingEventsValidation: boolean;
 };
 
 export const EventSelector = (props: EventSelectorProps) => {

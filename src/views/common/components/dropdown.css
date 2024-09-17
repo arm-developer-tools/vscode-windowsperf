@@ -20,11 +20,11 @@
     color: var(--vscode-settings-dropdownForeground);
     border: 1px solid var(--vscode-settings-dropdownBorder);
     cursor: pointer;
-    height: 27px;
+    height: 25px;
     padding: 4px 6px;
     box-sizing: border-box;
-    position: relative;
-    display: inline-flex;
+    display: flex;
+    align-items: center;
 }
 
 .dropdown.invalid {
