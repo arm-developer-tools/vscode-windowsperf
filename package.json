@@ -250,7 +250,7 @@
         "@typescript-eslint/eslint-plugin": "^7.18.0",
         "@typescript-eslint/parser": "^7.18.0",
         "@vscode/vsce": "^3.1.0",
-        "concurrently": "^9.0.0",
+        "concurrently": "^9.0.1",
         "css-loader": "^7.0.2",
         "d3": "^7.9.0",
         "eslint": "^8.57.0",
