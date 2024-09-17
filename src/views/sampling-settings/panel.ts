@@ -87,7 +87,7 @@ const createSamplingSettingsWebviewPanel = (uris: {
     const panel = vscode.window.createWebviewPanel(
         'windowsperf.samplingSettings',
         'Sampling Settings',
-        ViewColumn.One,
+        ViewColumn.Active,
         {
             enableScripts: true,
             localResourceRoots: [uris.distRoot],
