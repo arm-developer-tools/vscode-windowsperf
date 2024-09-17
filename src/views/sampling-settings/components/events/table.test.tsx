@@ -67,6 +67,26 @@ describe('EventTable', () => {
         expect(allListItems[1]).toHaveTextContent('Second Event');
     });
 
+    it('shows default text if there is no frequency', () => {
+        const selectedEvents = [
+            eventAndFrequencyFactory({ event: 'Second Event', frequency: undefined }),
+        ];
+
+        render(<EventTable {...eventTablePropsFactory({ selectedEvents })} />);
+
+        expect(screen.queryByText('Using default (67,108,864)')).toBeInTheDocument();
+    });
+
+    it('shows frequency in table', () => {
+        const selectedEvents = [
+            eventAndFrequencyFactory({ event: 'Second Event', frequency: 1123 }),
+        ];
+
+        render(<EventTable {...eventTablePropsFactory({ selectedEvents })} />);
+
+        expect(screen.queryByText('1,123')).toBeInTheDocument();
+    });
+
     it('shows the description of the event in the table', () => {
         const eventName = 'test_event';
         const description = 'Test description';

@@ -37,6 +37,7 @@ type EventRowProps = {
     event: EventAndFrequency;
     index: number;
     predefinedEvents: PredefinedEvent[];
+    defaultFrequency: number;
 };
 
 const EventRow = ({
@@ -45,6 +46,7 @@ const EventRow = ({
     index,
     predefinedEvents,
     updateRecordOption,
+    defaultFrequency,
 }: EventRowProps) => {
     const description = predefinedEvents.find(
         (predefinedEvent) => predefinedEvent.Alias_Name === event.event,
@@ -64,7 +66,13 @@ const EventRow = ({
                 <p className="event-name no-margin">{event.event}</p>
                 <p className="event-description no-margin">{description}</p>
             </div>
-            {event.frequency !== undefined && <FormattedNumber value={event.frequency} />}
+            {event.frequency ? (
+                <FormattedNumber value={event.frequency} />
+            ) : (
+                <span className="event-table-default">
+                    Using default {`(${formatNumber(defaultFrequency)})`}
+                </span>
+            )}
             <div className="row-actions">
                 <RowAction icon="pencil" onClick={onEdit} label="Edit" />
                 <RowAction icon="remove-close" onClick={onRemove} label="Remove" />
@@ -108,7 +116,7 @@ Default value is set by the system (${formatNumber(props.defaultFrequency)}).`}
 
 const getEventRows = (
     visibleSortedEventsAndIndices: { event: EventAndFrequency; index: number }[],
-    { dispatch, predefinedEvents, updateRecordOption }: EventTableProps,
+    { dispatch, predefinedEvents, updateRecordOption, defaultFrequency }: EventTableProps,
 ) => {
     const baseRowProps: Pick<
         EventRowProps,
@@ -116,6 +124,12 @@ const getEventRows = (
     > = { dispatch, predefinedEvents, updateRecordOption };
 
     return visibleSortedEventsAndIndices.map(({ event, index }) => (
-        <EventRow {...baseRowProps} key={event.event} event={event} index={index} />
+        <EventRow
+            {...baseRowProps}
+            key={event.event}
+            event={event}
+            index={index}
+            defaultFrequency={defaultFrequency}
+        />
     ));
 };

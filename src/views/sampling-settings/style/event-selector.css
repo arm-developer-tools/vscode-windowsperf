@@ -53,6 +53,17 @@
     overflow: hidden;
 }
 
+.event-description {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.event-table-default {
+    opacity: 0.7;
+    font-style: italic;
+}
+
 .event-table .event-description {
     opacity: 0.7;
 }
