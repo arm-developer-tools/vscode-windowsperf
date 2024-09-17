@@ -27,7 +27,7 @@ concurrency:
 jobs:
   build-and-verify:
     name: Build and verify
-    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@v3.0.1
+    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@v3.1.0
     secrets:
       EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
       EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
@@ -43,11 +43,12 @@ jobs:
   release-and-publish:
     name: Release and publish
     needs: build-and-verify
-    uses: arm-debug/vscode-workflows/.github/workflows/release-and-publish.yml@v3.0.1
+    uses: arm-debug/vscode-workflows/.github/workflows/release-and-publish.yml@v3.1.0
     if: ${{ github.event_name == 'workflow_dispatch' && inputs.release-type != 'None' && github.ref == 'refs/heads/main' }}
     with:
       api-types-registry-url: 'https://registry.npmjs.org'
       release-type: ${{inputs.release-type}}
+      open-source: true
     secrets:
       OPEN_VSX_TOKEN: ${{secrets.OPEN_VSX_TOKEN}}
       VS_MARKETPLACE_TOKEN: ${{secrets.VS_MARKETPLACE_TOKEN}}

@@ -1,11 +1,11 @@
 on:
-    workflow_dispatch: 
+    workflow_dispatch:
     schedule:
       - cron:  '30 9 * * *'
 
 jobs:
     update-workflows:
-        uses: arm-debug/vscode-workflows/.github/workflows/update-workflows.yml@v3.0.1
+        uses: arm-debug/vscode-workflows/.github/workflows/update-workflows.yml@v3.1.0
         secrets:
             EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
             EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
