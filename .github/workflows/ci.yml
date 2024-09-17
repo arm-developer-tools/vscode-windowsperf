@@ -65,3 +65,23 @@ jobs:
       - uses: actions/checkout@v2
       - run: docker pull $IMAGE_NAME
       - run: docker run -v ${PWD}:/src $IMAGE_NAME -c "Arm Limited" -check src tests *.ts *.js
+  sync-upstream:
+    runs-on: ubuntu-latest
+    needs: release-and-publish
+    steps:
+      - id: get-app-token
+        uses: getsentry/action-github-app-token@d4b5da6c5e37703f8c3b3e43abb5705b46e159cc
+        with:
+          app_id: ${{ secrets.DEVELOPER_TOOLS_APP_ID }}
+          private_key: ${{ secrets.DEVELOPER_TOOLS_PRIVATE_KEY }}
+      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+        with:
+          fetch-depth: 0
+      - name: Push to Upstream
+        run: |
+          git remote add upstream https://x-access-token:$GH_TOKEN@github.com/arm-developer-tools/vscode-windowsperf.git
+          git push upstream main:main
+          git push upstream v$VERSION
+        env:
+          GH_TOKEN: ${{ steps.get-app-token.outputs.token }}
+          VERSION: ${{ needs.release-and-publish.outputs.version }}
