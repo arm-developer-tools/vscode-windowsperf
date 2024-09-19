@@ -2,4 +2,4 @@
 
 ## [Unreleased]
 
--   Initial release
+-   Initial release, featuring sample recording and analysis.
