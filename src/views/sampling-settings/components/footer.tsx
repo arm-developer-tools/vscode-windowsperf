@@ -35,7 +35,7 @@ export const Footer = (props: FooterProps) => {
             <div className="command-line-preview-title">Command Line Preview</div>
             <div className="cmd-preview-group">
                 <div className="footer-display">
-                    {commandLine}
+                    <span className="cmd-preview-text">{commandLine}</span>
                     <button className="copy-button" title="Copy" onClick={copyCommandLine}>
                         <span className="codicon codicon-copy"></span>
                     </button>
