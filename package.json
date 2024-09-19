@@ -3,7 +3,7 @@
     "publisher": "Arm",
     "displayName": "Arm WindowsPerf",
     "description": "Performance analysis for arm64 Windows systems using WindowsPerf",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "repository": "https://github.com/arm-developer-tools/vscode-windowsperf",
     "engines": {
         "node": ">=20.0.0",
