@@ -39,7 +39,7 @@ export const record = async (
     runWperfRecord = runWperfRecordWithDriverLockHandling,
 ): Promise<SampleSource | undefined> => {
     recentEventsStore.value = updateRecentEvents(recentEventsStore.value, recordOptions);
-    const { status, sample, message, driverLocked, forceLock } =
+    const { status, sample, errorMessage, driverLocked, forceLock } =
         await runWperfRecord(recordOptions);
 
     const eventsWithUnknownSymbol = sample ? getEventsWithUnknownSymbol(sample) : [];
@@ -47,7 +47,7 @@ export const record = async (
         ...getRecordTelemetryEventProperties(recordOptions),
         lockForced: String(forceLock),
         status,
-        message,
+        errorMessage,
         driverWasLocked: String(driverLocked),
         'events.unknownSymbol': JSON.stringify(eventsWithUnknownSymbol),
     });
@@ -68,7 +68,7 @@ export const runWperfRecordWithDriverLockHandling = async (
 ): Promise<{
     status: string;
     sample?: Sample;
-    message?: string;
+    errorMessage: string;
     driverLocked?: boolean;
     forceLock: boolean;
 }> => {
@@ -89,7 +89,7 @@ export const runWperfRecordWithDriverLockHandling = async (
 const runWperfRecordWithProgress = async (
     wperfOptions: RecordOptions,
     forceLock: boolean,
-): Promise<{ status: string; sample?: Sample; message?: string; driverLocked?: boolean }> => {
+): Promise<{ status: string; sample?: Sample; errorMessage: string; driverLocked?: boolean }> => {
     try {
         const sample = await vscode.window.withProgress(
             {
@@ -99,19 +99,18 @@ const runWperfRecordWithProgress = async (
             },
             (_progress, cancellationToken) => runRecord(wperfOptions, forceLock, cancellationToken),
         );
-        return { status: 'success', sample };
+        return { status: 'success', errorMessage: '', sample };
     } catch (error: unknown) {
         const { message: cliErrorMessage } = error as ExecException;
         const driverLocked = isWperfDriverLocked(cliErrorMessage);
-
-        let message: string;
+        let errorMessage: string;
         if (driverLocked) {
-            message = driverLockedFailureMessage;
+            errorMessage = driverLockedFailureMessage;
         } else {
-            message = genericFailureMessage;
+            errorMessage = cliErrorMessage;
             logErrorAndNotify(error, genericFailureMessage);
         }
-        return { status: 'error', message, driverLocked };
+        return { status: 'error', errorMessage, driverLocked };
     }
 };
 

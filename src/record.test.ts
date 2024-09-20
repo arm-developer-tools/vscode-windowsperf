@@ -50,7 +50,7 @@ describe('record', () => {
         const recordOptions = recordOptionsFactory();
         const runWperfRecord = jest.fn().mockResolvedValue({
             status: 'error',
-            message: "418 I'm a teapot",
+            errorMessage: "418 I'm a teapot",
         });
 
         const got = await record(recordOptions, { value: [] }, analyticsFactory(), runWperfRecord);
@@ -89,7 +89,7 @@ describe('record', () => {
         const recordOptions = recordOptionsFactory();
         const runWperfRecord = jest
             .fn()
-            .mockResolvedValue({ status: 'error', message: "418 I'm a teapot" });
+            .mockResolvedValue({ status: 'error', errorMessage: "418 I'm a teapot" });
 
         await record(recordOptions, { value: [] }, analytics, runWperfRecord);
 
@@ -141,7 +141,7 @@ describe('runWperfRecordWithDriverLockHandling', () => {
         const recordResultDriverUnlocked = { status: 'success', sample: sampleFactory() };
         const recordResultDriverLocked = {
             status: 'error',
-            message: "418 I'm a teapot",
+            errorMessage: "418 I'm a teapot",
             driverLocked: true,
         };
         const runWperfRecord = jest.fn().mockImplementation((_recordOptions, forceLock) => {
