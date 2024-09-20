@@ -146,6 +146,51 @@ describe('message-handler', () => {
             expect(got).toEqual(want);
         });
 
+        it('update eventsAndTestLoadResultPromise state on retry message and use for future ready checks', async () => {
+            const recordOptions = recordOptionsFactory();
+            const recentEvents = ['recent_event'];
+            const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
+            const eventsAfterRetry: PredefinedEvent[] = [
+                predefinedEventFactory(),
+                predefinedEventFactory(),
+            ];
+            const mockPredefinedEventsFactory = jest.fn();
+            mockPredefinedEventsFactory.mockResolvedValue(events);
+            const testResults = testResultsFactory();
+            const messageHandler = new MessageHandlerImpl(
+                { value: recordOptions },
+                false,
+                { value: recentEvents },
+                mockPredefinedEventsFactory,
+                getTestResultsFactory(testResults),
+            );
+
+            const gotFirstReady = await messageHandler.handleMessage({ type: 'ready' });
+            mockPredefinedEventsFactory.mockResolvedValue(eventsAfterRetry);
+            const gotRetry = await messageHandler.handleMessage({ type: 'retry' });
+            mockPredefinedEventsFactory.mockResolvedValue(events);
+            const gotSecondReady = await messageHandler.handleMessage({ type: 'ready' });
+
+            const wantFirstReady: ToView = {
+                type: 'initialData',
+                recordOptions,
+                recentEvents,
+                cores: expect.any(Object),
+                eventsAndTestLoadResult: { type: 'success', events, testResults },
+                validate: false,
+                hasLlvmObjDumpPath: false,
+            };
+
+            const wantSecondReady: ToView = {
+                ...wantFirstReady,
+                eventsAndTestLoadResult: { type: 'success', events: eventsAfterRetry, testResults },
+            };
+
+            expect(gotFirstReady).toEqual(wantFirstReady);
+            expect(gotRetry).toEqual(wantSecondReady);
+            expect(gotSecondReady).toEqual(wantSecondReady);
+        });
+
         it('updates the current record options and does not reply in response to a recordOptions message', async () => {
             const recordOptionsStore = { value: recordOptionsFactory() };
             const messageHandler = new MessageHandlerImpl(

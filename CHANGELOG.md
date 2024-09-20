@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+-   Add fix for a bug on the Sampling Settings when changing VSCode tabs causes an older resolved error view to re-appear
+
 ## 1.0.0
 
 -   Initial release, featuring sample recording and analysis.

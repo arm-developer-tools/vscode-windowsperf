@@ -38,7 +38,7 @@ export type MessageHandler = {
 };
 
 export class MessageHandlerImpl implements MessageHandler {
-    private readonly eventsAndTestLoadResultPromise: Promise<EventsAndTestLoadResult>;
+    private eventsAndTestLoadResultPromise: Promise<EventsAndTestLoadResult>;
 
     constructor(
         private readonly recordOptionsStore: Store<RecordOptions>,
@@ -137,6 +137,7 @@ export class MessageHandlerImpl implements MessageHandler {
 
     public readonly handleRetry = async () => {
         const eventsAndTestResultPromise = this.loadEventsAndTestResults();
+        this.eventsAndTestLoadResultPromise = eventsAndTestResultPromise;
         return this.createInitialDataMessage(eventsAndTestResultPromise);
     };
 
