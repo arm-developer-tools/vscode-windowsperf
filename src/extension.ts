@@ -128,6 +128,7 @@ export const activate = activateTelemetry(
         for (const toDispose of disposables) {
             context.subscriptions.push(toDispose);
         }
+        analytics.sendEvent('cpuArchitecture', { architecture: process.arch });
     },
 );
 
