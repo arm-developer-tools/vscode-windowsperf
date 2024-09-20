@@ -29,7 +29,7 @@ You can check your installation is set up correctly by using the **WindowsPerf: 
 
 ## Usage
 
-In Visual Studio Code, click ![VS Code toggle panel icon](docs/toggle-panel.png) or select **View: Toggle WindowsPerf** in the Command Palette to open the **WindowsPerf** tab.
+In Visual Studio Code, open the **WindowsPerf** tab in the bottom panel. Click ![VS Code toggle panel icon](docs/toggle-panel.png) if the panel is not visible.
 
 There are 2 ways to use the WindowsPerf Sampling Results Explorer.
 
