@@ -34,11 +34,12 @@ export type EventEditRowProps = EventSelectorProps;
 export const EventEditRow = (props: EventEditRowProps) => {
     const editorState = props.editorState;
     const isEditorStateAdding = editorState.type === 'adding';
-    const invalidRow = editorState.validate || props.showMissingEventsValidation;
+    const missingFieldValidation = props.showMissingEventsValidation;
     const { availableGpcCount, samplingIntervalDefault } = props.testResults;
+    const invalidRow = props.editorState.validate || missingFieldValidation;
 
     const decideValidationMessage = () => {
-        if (props.showMissingEventsValidation) {
+        if (missingFieldValidation) {
             return 'This field is required';
         }
         if (isEditorStateAdding && props.selectedEvents.length >= availableGpcCount) {
@@ -53,12 +54,12 @@ export const EventEditRow = (props: EventEditRowProps) => {
     const validationMessage = decideValidationMessage();
 
     const onAdd = () => {
-        if (validationMessage) {
+        const formBlockingValidation = validationMessage && !missingFieldValidation;
+        if (formBlockingValidation) {
             props.dispatch({
                 type: 'validate',
             });
-        }
-        if (editorState.event.event) {
+        } else if (editorState.event.event) {
             const action: UpdateRecordOptionAction = isEditorStateAdding
                 ? { type: 'addEvent', event: editorState.event }
                 : { type: 'editEvent', index: editorState.index, event: editorState.event };
@@ -122,7 +123,7 @@ export const EventEditRow = (props: EventEditRowProps) => {
                     </div>
                 )}
             </div>
-            <VSCodeButton onClick={onAdd} className="event-edit-row-button ">
+            <VSCodeButton onClick={onAdd} className="event-edit-row-button">
                 {editorState.type === 'adding' ? 'Add' : 'Save'}
             </VSCodeButton>
             <VSCodeButton

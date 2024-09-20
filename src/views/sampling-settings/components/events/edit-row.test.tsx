@@ -28,6 +28,7 @@ import { eventAndFrequencyFactory } from '../../../../wperf/record-options.facto
 import { faker } from '@faker-js/faker';
 import { formatNumber } from '../../../../math';
 import { testResultsFactory } from '../../../../wperf/parse/test.factories';
+import { UpdateRecordOptionAction } from '../../state/update-record-option-action';
 
 const eventEditRowPropsFactory = (options?: Partial<EventEditRowProps>): EventEditRowProps => ({
     dispatch: jest.fn(),
@@ -157,6 +158,62 @@ describe('EventEditRow', () => {
         expect(dispatch).toHaveBeenCalledWith(want);
     });
 
+    it('adds an event when there is a show missing events validation', () => {
+        const mockUpdateRecordOption = jest.fn();
+        const availableGpcCount = 3;
+        const props = eventEditRowPropsFactory({
+            selectedEvents: [],
+            testResults: testResultsFactory({ availableGpcCount }),
+            updateRecordOption: mockUpdateRecordOption,
+            showMissingEventsValidation: true,
+        });
+        render(<EventEditRow {...props} />);
+
+        fireEvent.click(screen.getByText('Add'));
+
+        const want: UpdateRecordOptionAction = {
+            event: {
+                event: props.editorState.event.event,
+                frequency: props.editorState.event.frequency,
+            },
+            type: 'addEvent',
+        };
+        expect(mockUpdateRecordOption).toHaveBeenCalledWith(want);
+    });
+
+    it('shows field required validation message when missing event prop is true', () => {
+        const props = eventEditRowPropsFactory({
+            showMissingEventsValidation: true,
+        });
+        render(<EventEditRow {...props} />);
+
+        fireEvent.click(screen.getByText('Add'));
+
+        expect(screen.getByText('This field is required')).toBeInTheDocument();
+    });
+
+    it('does not add and shows a validation message if an event is not selected', () => {
+        const mockUpdateRecordOption = jest.fn();
+        const editorState = eventsEditorAddingStateFactory({
+            event: eventAndFrequencyFactory({ event: '' }),
+            validate: true,
+        });
+
+        render(
+            <EventEditRow
+                {...eventEditRowPropsFactory({
+                    editorState,
+                    updateRecordOption: mockUpdateRecordOption,
+                })}
+            />,
+        );
+
+        fireEvent.click(screen.getByText('Add'));
+
+        expect(mockUpdateRecordOption).not.toHaveBeenCalled();
+        expect(screen.getByText('Please select an event')).toBeInTheDocument();
+    });
+
     it('does not dispatch a validate action when trying to edit an event when the maximum available is selected', () => {
         const dispatch = jest.fn();
         const eventToEdit = eventAndFrequencyFactory();
@@ -180,17 +237,6 @@ describe('EventEditRow', () => {
         fireEvent.click(screen.getByText('Save'));
 
         expect(dispatch).not.toHaveBeenCalled();
-    });
-
-    it('shows a validation message if validate is true and an event is not selected', () => {
-        const editorState = eventsEditorAddingStateFactory({
-            event: eventAndFrequencyFactory({ event: '' }),
-            validate: true,
-        });
-
-        render(<EventEditRow {...eventEditRowPropsFactory({ editorState })} />);
-
-        expect(screen.getByText('Please select an event')).toBeInTheDocument();
     });
 
     it('shows a validation message if validate is true, the editor state type is Adding and the number of selected events is at maximum available', () => {
