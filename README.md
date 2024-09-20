@@ -23,6 +23,8 @@ To use the features of the WindowsPerf extension that are specific to Windows on
 
 The WindowsPerf extension is available from the Visual Studio Code Extension Marketplace. To install the WindowsPerf extension in Visual Studio Code, follow the instructions in the Visual Studio Code [Extension Marketplace](https://code.visualstudio.com/docs/editor/extension-marketplace) documentation.
 
+Either add `wperf.exe` to the system PATH or configure it in the `windowsPerf.wperfPath` VS Code setting.
+
 You can check your installation is set up correctly by using the **WindowsPerf: Check Installation** command from the Command Palette.
 
 ## Usage
