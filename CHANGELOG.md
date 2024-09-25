@@ -1,6 +1,6 @@
 # Change Log
 
-## [Unreleased]
+## 1.2.0
 
 -   Changed "Run System Check" buttons and "Check Installation" command name to "Check WindowsPerf Installation".
 -   Fix a bug in Sampling Settings that allowed the user to add more events than the maximum limit.
