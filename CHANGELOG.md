@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+-   Changed "Run System Check" buttons and "Check Installation" command name both to "Check WindowsPerf Installation"
 -   Fix a bug in Sampling Settings that allowed the user to add more events than the maximum limit.
 -   Add fix for a bug on the Sampling Settings when changing VSCode tabs causes an older resolved error view to re-appear
 

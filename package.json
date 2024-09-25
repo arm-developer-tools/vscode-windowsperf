@@ -32,7 +32,7 @@
         "commands": [
             {
                 "command": "windowsperf.systemCheck",
-                "title": "Check Installation",
+                "title": "Check WindowsPerf Installation",
                 "category": "WindowsPerf"
             },
             {

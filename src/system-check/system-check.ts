@@ -94,7 +94,7 @@ export const generateSystemCheck = async () => {
     const systemCheckInfo = await getSystemCheckData(process.platform, process.arch);
     if (systemCheckInfo) {
         const { successList, failedList } = systemMessage(systemCheckInfo);
-        const heading = `System Check results:\n`;
+        const heading = `Check WindowsPerf Installation results:\n`;
         const notFoundList = `${failedList.length > 0 ? `${failedList}` : ''}`;
         const okList = `${successList.length > 0 ? `${successList}` : ''}`;
         const learnMoreLink = `Note: Failure of these checks does not impede the ability to open sample files recorded on other systems.\nInstallation and documentation can be found at https://learn.arm.com/install-guides/wperf/`;

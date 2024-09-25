@@ -25,7 +25,7 @@ The WindowsPerf extension is available from the Visual Studio Code Extension Mar
 
 Either add `wperf.exe` to the system PATH or configure it in the `windowsPerf.wperfPath` VS Code setting.
 
-You can check your installation is set up correctly by using the **WindowsPerf: Check Installation** command from the Command Palette.
+You can check your installation is set up correctly by using the **WindowsPerf: Check WindowsPerf Installation** command from the Command Palette.
 
 ## Usage
 
@@ -64,7 +64,7 @@ If you want to change any of your settings, and the **Sampling Settings** page i
 
 ## Troubleshooting
 
-If you encounter any errors while running the WindowsPerf extension, you can click **Run System Check** on the error page to detect any issues with your setup and provide suggestions on how to fix them, with links to further information.
+If you encounter any errors while running the WindowsPerf extension, you can click **Check WindowsPerf Installation** on the error page to detect any issues with your setup and provide suggestions on how to fix them, with links to further information.
 
 ## Telemetry
 

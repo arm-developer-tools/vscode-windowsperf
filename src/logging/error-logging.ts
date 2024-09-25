@@ -26,13 +26,13 @@ export const logErrorAndNotify = (error: unknown, notificationMessage: string) =
         .showErrorMessage(
             `${notificationMessage} See the log for more information.`,
             'Open Log',
-            'Run System Check',
+            'Check WindowsPerf Installation',
         )
         .then((result) => {
             if (result === 'Open Log') {
                 logger.show(true);
             }
-            if (result === 'Run System Check') {
+            if (result === 'Check WindowsPerf Installation') {
                 vscode.commands.executeCommand('windowsperf.systemCheck');
             }
         });

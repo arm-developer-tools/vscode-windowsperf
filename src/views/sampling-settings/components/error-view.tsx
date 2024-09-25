@@ -68,11 +68,11 @@ export const ErrorView = (props: ErrorViewProps) => {
                 </VSCodeButton>
                 <VSCodeButton
                     id="run-system-check-button"
-                    title="Run System Check"
+                    title="Check WindowsPerf Installation"
                     onClick={props.runSystemCheck}
                     appearance="secondary"
                 >
-                    Run System Check
+                    Check WindowsPerf Installation
                 </VSCodeButton>
             </div>
         </div>
