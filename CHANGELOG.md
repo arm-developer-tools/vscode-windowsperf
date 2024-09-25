@@ -1,5 +1,7 @@
 # Change Log
 
+## [Unreleased]
+
 ## 1.2.0
 
 -   Changed "Run System Check" buttons and "Check Installation" command name to "Check WindowsPerf Installation".
