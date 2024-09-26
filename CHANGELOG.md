@@ -1,5 +1,7 @@
 # Change Log
 
+## [Unreleased]
+
 ## 1.2.1
 
 -   Fix unnecessary scrollbar in Sampling Settings view.
