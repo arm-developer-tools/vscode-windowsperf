@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+-   Fix unnecessary scrollbar in Sampling Settings view.
 -   Show progress when checking WindowsPerf installation.
 
 ## 1.2.0
