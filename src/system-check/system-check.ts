@@ -20,6 +20,7 @@ import { SystemCheckValues } from './system-check-values';
 import { logger } from '../logging/logger';
 import wrap from 'wrap-ansi';
 import { exec } from '../node/process';
+import * as vscode from 'vscode';
 
 type Entries<T> = {
     [K in keyof T]: [K, T[K]];
@@ -91,7 +92,15 @@ export const getWperfDriver = async (
 };
 
 export const generateSystemCheck = async () => {
-    const systemCheckInfo = await getSystemCheckData(process.platform, process.arch);
+    const systemCheckInfo = await vscode.window.withProgress(
+        {
+            title: 'Checking WindowsPerf installation',
+            location: vscode.ProgressLocation.Notification,
+            cancellable: false,
+        },
+        () => getSystemCheckData(process.platform, process.arch),
+    );
+
     if (systemCheckInfo) {
         const { successList, failedList } = systemMessage(systemCheckInfo);
         const heading = `Check WindowsPerf Installation results:\n`;
