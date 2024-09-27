@@ -46,7 +46,7 @@ main.loaded {
     display: grid;
     grid-template-rows: minmax(auto, min-content) max-content;
     grid-template-columns: minmax(var(--content-max-width), 1fr);
-    grid-gap: 12px 20px;
+    grid-gap: 12px 12px;
 }
 
 main.loading {
@@ -82,7 +82,7 @@ h2 {
 .content {
     grid-area: 1 / 1 / 2 / 3;
     overflow-y: auto;
-    padding: 0 0 0 4px;
+    padding: 0 0 0 12px;
 }
 
 .record-button {
@@ -146,6 +146,19 @@ h2 {
 
 section.setting:not(:last-child) {
     margin-bottom: calc(4 * var(--form-margin-base));
+}
+
+section.setting {
+    position: relative;
+}
+
+section.setting.invalid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -9px;
+    border-left: var(--vscode-inputValidation-errorBorder) 2px solid;
 }
 
 .file-picker {

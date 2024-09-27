@@ -89,7 +89,11 @@ const FormBody = (props: Pick<NavigableFormProps, 'sections'>) => {
 const Content = (props: { content: FormContent; type: 'parent' | 'child' }) => {
     const { content, type } = props;
     return (
-        <section className="setting" id={content.id} key={content.id}>
+        <section
+            className={`setting ${content.invalid ? 'invalid' : ''}`}
+            id={content.id}
+            key={content.id}
+        >
             {type === 'parent' ? <h1>{content.title}</h1> : <h2>{content.title}</h2>}
             <div className="description">
                 {content.description}

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+-   Improve validation error styling in Sampling Settings.
+
 ## 1.2.1
 
 -   Fix unnecessary scrollbar in Sampling Settings view.
