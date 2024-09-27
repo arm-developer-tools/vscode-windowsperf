@@ -253,7 +253,7 @@
         "concurrently": "^9.0.1",
         "css-loader": "^7.0.2",
         "d3": "^7.9.0",
-        "eslint": "^8.57.0",
+        "eslint": "^8.57.1",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-check-file": "^2.8.0",
         "jest": "^29.7.0",
