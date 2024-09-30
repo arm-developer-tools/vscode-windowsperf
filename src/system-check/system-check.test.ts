@@ -38,6 +38,17 @@ describe('RunSystemCheck', () => {
 
             expect(res).toEqual(mockWperfVersion.Version);
         });
+
+        it('throws error if wperf not a valid component', async () => {
+            const mockRunVersionAndParse = jest.fn();
+            mockRunVersionAndParse.mockResolvedValue([
+                versionFactory({ Component: 'something-else' }),
+            ]);
+
+            expect(() => getWperfVersion(mockRunVersionAndParse)).rejects.toThrow(
+                new Error('No wperf version component found'),
+            );
+        });
     });
 
     describe('hasWperfOnPath', () => {

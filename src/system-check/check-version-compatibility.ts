@@ -35,11 +35,9 @@ export const hasCompatibleVersion = async (
 
     const installedVersion = await checkWperfVersion();
     const compatible = installedVersion === compatibleWperfVersion;
-    if (installedVersion) {
-        logger.info(
-            `Found: ${installedVersion} Required: ${compatibleWperfVersion} Compatible? ${compatible}`,
-        );
-    }
+    logger.info(
+        `Found: ${installedVersion} Required: ${compatibleWperfVersion} Compatible? ${compatible}`,
+    );
     return compatible;
 };
 

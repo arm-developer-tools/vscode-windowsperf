@@ -67,9 +67,14 @@ export const getSystemCheckData = async (
 
 export const getWperfVersion = async (
     runVersionWithParse = runVersionAndParse,
-): Promise<string | undefined> => {
+): Promise<string> => {
     const versionJson = await runVersionWithParse();
-    return versionJson.find((a) => a.Component === 'wperf')?.Version;
+    const wperfComponent = versionJson.find((a) => a.Component === 'wperf');
+    if (!wperfComponent) {
+        throw new Error('No wperf version component found');
+    }
+
+    return wperfComponent.Version;
 };
 
 export const hasWperfOnPath = async (
