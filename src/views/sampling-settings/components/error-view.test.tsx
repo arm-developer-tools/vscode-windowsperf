@@ -24,6 +24,7 @@ const mockProps: ErrorViewProps = {
     error: { type: 'noWperfDriver' },
     openWperfOutput: jest.fn(),
     refreshView: jest.fn(),
+    disableVersionCheck: jest.fn(),
     runSystemCheck: jest.fn(),
 };
 
@@ -88,5 +89,37 @@ describe('error view', () => {
         fireEvent.click(runSystemCheckButton!);
 
         expect(runSystemCheck).toHaveBeenCalledTimes(1);
+    });
+
+    it('calls disableVersionCheck once when the Allow Incompatible Versions button is clicked', () => {
+        const disableVersionCheck = jest.fn();
+        const { container } = renderErrorView({
+            disableVersionCheck,
+            error: {
+                type: 'versionIncompatible',
+            },
+        });
+
+        const disableVersionCheckButton = container.querySelector(
+            '#allow-incompatible-version-check-button',
+        );
+
+        fireEvent.click(disableVersionCheckButton!);
+
+        expect(disableVersionCheck).toHaveBeenCalledTimes(1);
+    });
+
+    it('Allow Incompatible Versions button is hidden when it is not a versionIncompatible error', () => {
+        const disableVersionCheck = jest.fn();
+        const { container } = renderErrorView({
+            disableVersionCheck,
+            error: {
+                type: 'noWperf',
+            },
+        });
+
+        expect(
+            container.querySelector('#allow-incompatible-version-check-button'),
+        ).not.toBeInTheDocument();
     });
 });

@@ -44,6 +44,11 @@ export const App = (props: AppProps) => {
         props.postMessage({ type: 'showOutputChannel' });
     };
 
+    const disableVersionCheck = () => {
+        props.dispatch({ type: 'retry' });
+        props.postMessage({ type: 'disableVersionCheck' });
+    };
+
     const refreshView = () => {
         props.dispatch({ type: 'retry' });
         props.postMessage({ type: 'retry' });
@@ -57,6 +62,7 @@ export const App = (props: AppProps) => {
                 openWperfOutput={openWperfOutput}
                 runSystemCheck={() => props.postMessage({ type: 'runSystemCheck' })}
                 refreshView={refreshView}
+                disableVersionCheck={disableVersionCheck}
             />
         );
     } else {

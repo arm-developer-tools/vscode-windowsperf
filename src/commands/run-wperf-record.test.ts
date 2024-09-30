@@ -40,7 +40,6 @@ describe('RunWperfRecord', () => {
             samplingSettingsWebviewPanel,
             analyticsFactory(),
             record,
-            jest.fn(),
         );
 
         await command.execute();

@@ -23,7 +23,6 @@ import { prependSampleAndMakeSelected, record } from '../record';
 import { focusSamplingResults } from '../views/sampling-results/focus-sampling-results';
 import { Store } from '../store';
 import { Analytics } from '@arm-debug/vscode-telemetry';
-
 export class RerunWperfRecord {
     constructor(
         private readonly sources: ObservableCollection<SampleSource>,

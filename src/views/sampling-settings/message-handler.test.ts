@@ -64,6 +64,9 @@ describe('message-handler', () => {
                 { value: recentEvents },
                 getPredefinedEventsFactory(events),
                 getTestResultsFactory(testResults),
+                jest.fn(),
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
             );
 
             const message: FromView = { type: 'ready' };
@@ -97,6 +100,7 @@ describe('message-handler', () => {
                 getTestResultsFactory(testResults),
                 jest.fn(),
                 checkWperfExists,
+                jest.fn().mockResolvedValue(true),
             );
             const message: FromView = { type: 'ready' };
 
@@ -128,6 +132,9 @@ describe('message-handler', () => {
                 { value: recentEvents },
                 getPredefinedEventsFactory(events),
                 getTestResultsFactory(testResults),
+                jest.fn(),
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
             );
 
             const message: FromView = { type: 'retry' };
@@ -147,6 +154,8 @@ describe('message-handler', () => {
         });
 
         it('update eventsAndTestLoadResultPromise state on retry message and use for future ready checks', async () => {
+            const newCommand = '/path/to/new-command';
+            const promptForCommand = jest.fn().mockResolvedValue(newCommand);
             const recordOptions = recordOptionsFactory();
             const recentEvents = ['recent_event'];
             const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
@@ -163,6 +172,10 @@ describe('message-handler', () => {
                 { value: recentEvents },
                 mockPredefinedEventsFactory,
                 getTestResultsFactory(testResults),
+                promptForCommand,
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
             );
 
             const gotFirstReady = await messageHandler.handleMessage({ type: 'ready' });
@@ -199,6 +212,9 @@ describe('message-handler', () => {
                 { value: [] },
                 getPredefinedEventsFactory(),
                 getTestResultsFactory(),
+                jest.fn(),
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
             );
             const message: FromView = recordOptionsFromViewFactory();
 
@@ -217,6 +233,8 @@ describe('message-handler', () => {
                 getPredefinedEventsFactory(),
                 getTestResultsFactory(),
                 jest.fn(),
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
             );
             const message: FromView = { type: 'runSystemCheck' };
 
@@ -225,11 +243,44 @@ describe('message-handler', () => {
             expect(mockGenerateSystemCheck).toHaveBeenCalledTimes(1);
         });
 
+        it('runs a the disable version check and retries when it is the message type', async () => {
+            const recordOptionsStore = { value: recordOptionsFactory() };
+            const events: PredefinedEvent[] = [predefinedEventFactory(), predefinedEventFactory()];
+            const testResults = testResultsFactory();
+            const mockDisableVersionCompatibility = jest.fn();
+
+            const messageHandler = new MessageHandlerImpl(
+                recordOptionsStore,
+                false,
+                { value: [] },
+                getPredefinedEventsFactory(events),
+                getTestResultsFactory(testResults),
+                jest.fn(),
+                jest.fn().mockResolvedValue(true),
+                jest.fn().mockResolvedValue(true),
+                mockDisableVersionCompatibility,
+            );
+            const message: FromView = { type: 'disableVersionCheck' };
+
+            const got = await messageHandler.handleMessage(message);
+
+            expect(mockDisableVersionCompatibility).toHaveBeenCalledTimes(1);
+            const want: ToView = {
+                type: 'initialData',
+                recordOptions: recordOptionsStore.value,
+                recentEvents: [],
+                cores: expect.any(Object),
+                eventsAndTestLoadResult: { type: 'success', events, testResults },
+                validate: false,
+                hasLlvmObjDumpPath: false,
+            };
+            expect(got).toEqual(want);
+        });
+
         describe('handling openCommandFilePicker', () => {
             it('updates the sampling settings when the user picks a file', async () => {
                 const newCommand = '/path/to/new-command';
-                const promptForCommand = jest.fn();
-                promptForCommand.mockResolvedValue(newCommand);
+                const promptForCommand = jest.fn().mockResolvedValue(newCommand);
                 const recordOptionsStore = { value: recordOptionsFactory() };
                 const messageHandler = new MessageHandlerImpl(
                     recordOptionsStore,
@@ -238,6 +289,8 @@ describe('message-handler', () => {
                     getPredefinedEventsFactory(),
                     getTestResultsFactory(),
                     promptForCommand,
+                    jest.fn().mockResolvedValue(true),
+                    jest.fn().mockResolvedValue(true),
                 );
                 const message: FromView = { type: 'openCommandFilePicker' };
 
@@ -248,8 +301,7 @@ describe('message-handler', () => {
 
             it('notifies the caller when the user picks a file', async () => {
                 const newCommand = '/path/to/new-command';
-                const promptForCommand = jest.fn();
-                promptForCommand.mockResolvedValue(newCommand);
+                const promptForCommand = jest.fn().mockResolvedValue(newCommand);
                 const messageHandler = new MessageHandlerImpl(
                     { value: recordOptionsFactory() },
                     false,
@@ -257,6 +309,8 @@ describe('message-handler', () => {
                     getPredefinedEventsFactory(),
                     getTestResultsFactory(),
                     promptForCommand,
+                    jest.fn().mockResolvedValue(true),
+                    jest.fn().mockResolvedValue(true),
                 );
                 const message: FromView = { type: 'openCommandFilePicker' };
 
@@ -267,8 +321,7 @@ describe('message-handler', () => {
             });
 
             it('does nothing when the user does not pick a file', async () => {
-                const promptForCommand = jest.fn();
-                promptForCommand.mockResolvedValue(undefined);
+                const promptForCommand = jest.fn().mockResolvedValue(undefined);
                 const initialRecordOptions = recordOptionsFactory();
                 const recordOptionsStore = { value: initialRecordOptions };
                 const messageHandler = new MessageHandlerImpl(
@@ -278,6 +331,8 @@ describe('message-handler', () => {
                     getPredefinedEventsFactory(),
                     getTestResultsFactory(),
                     promptForCommand,
+                    jest.fn().mockResolvedValue(true),
+                    jest.fn().mockResolvedValue(true),
                 );
                 const message: FromView = { type: 'openCommandFilePicker' };
 

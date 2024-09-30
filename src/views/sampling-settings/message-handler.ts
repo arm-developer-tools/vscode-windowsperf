@@ -31,13 +31,20 @@ import * as path from 'path';
 import { Store } from '../../store';
 import { checkWperfExistsInSettingsOrPath } from '../../path';
 import { checkLlvmObjDumpOnPath } from '../../path';
+
 import { generateSystemCheck } from '../../system-check/system-check';
+import {
+    disableVersionCompatibilityCheck,
+    hasCompatibleVersion,
+} from '../../system-check/check-version-compatibility';
 
 export type MessageHandler = {
     handleMessage: (message: unknown) => Promise<ToView | undefined>;
 };
 
 export class MessageHandlerImpl implements MessageHandler {
+    public static readonly incompatibleVersionErrorMessage: string =
+        'Incompatible wperf.exe version';
     private eventsAndTestLoadResultPromise: Promise<EventsAndTestLoadResult>;
 
     constructor(
@@ -48,6 +55,8 @@ export class MessageHandlerImpl implements MessageHandler {
         private readonly getTestResults = runTestAndParse,
         private readonly promptForCommand = promptUserForCommand,
         private readonly checkWperfExists = checkWperfExistsInSettingsOrPath,
+        private readonly getHasCompatibleVersion = hasCompatibleVersion,
+        private readonly disableVersionCompatibility = disableVersionCompatibilityCheck,
     ) {
         // Start loading while the webview content loads, to improve start up time
         this.eventsAndTestLoadResultPromise = this.loadEventsAndTestResults();
@@ -75,6 +84,8 @@ export class MessageHandlerImpl implements MessageHandler {
                     return this.handleRunSystemCheckCommand();
                 case 'retry':
                     return this.handleRetry();
+                case 'disableVersionCheck':
+                    return this.handleDisableVersionCheck();
             }
         } else {
             logger.error('Received invalid message from webview', parseResult.error, message);
@@ -148,6 +159,11 @@ export class MessageHandlerImpl implements MessageHandler {
         return undefined;
     };
 
+    public readonly handleDisableVersionCheck = async (): Promise<ToView | undefined> => {
+        await this.disableVersionCompatibility();
+        return this.handleRetry();
+    };
+
     private readonly listCores = (): Core[] => {
         return getCpuInfo();
     };
@@ -158,11 +174,20 @@ export class MessageHandlerImpl implements MessageHandler {
 
     private readonly loadEventsAndTestResults = async (): Promise<EventsAndTestLoadResult> => {
         try {
+            await this.checkWperfVersionCompatibility();
             const events = await this.getPredefinedEvents();
             const testResults = await this.getTestResults();
             return { type: 'success', events, testResults };
         } catch (error) {
             return this.buildErrorResult(error);
+        }
+    };
+
+    private readonly checkWperfVersionCompatibility = async (): Promise<void> => {
+        const compatible = await this.getHasCompatibleVersion();
+
+        if (!compatible) {
+            throw new Error(MessageHandlerImpl.incompatibleVersionErrorMessage);
         }
     };
 
@@ -182,6 +207,9 @@ export const determineErrorType = async (
     checkWperfExists = checkWperfExistsInSettingsOrPath,
 ): Promise<ErrorDetail['type']> => {
     if (error instanceof Error) {
+        if (error.message.includes(MessageHandlerImpl.incompatibleVersionErrorMessage)) {
+            return 'versionIncompatible';
+        }
         if (error.message.includes('No active device interfaces found.')) {
             return 'noWperfDriver';
         }

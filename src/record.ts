@@ -31,13 +31,25 @@ import { Analytics } from '@arm-debug/vscode-telemetry';
 import { getRecordTelemetryEventProperties } from './telemetry';
 import { ExecException } from 'child_process';
 import { isWperfDriverLocked } from './wperf/driver-lock';
+import {
+    displayDisableVersionCheckNotification,
+    hasCompatibleVersion,
+} from './system-check/check-version-compatibility';
 
 export const record = async (
     recordOptions: RecordOptions,
     recentEventsStore: Store<string[]>,
     analytics: Analytics,
+    checkHasComaptibleVersion = hasCompatibleVersion,
+    disableVersionCheckNotification = displayDisableVersionCheckNotification,
     runWperfRecord = runWperfRecordWithDriverLockHandling,
 ): Promise<SampleSource | undefined> => {
+    const isCompatibleVersion = await checkHasComaptibleVersion();
+    if (!isCompatibleVersion) {
+        disableVersionCheckNotification();
+        return;
+    }
+
     recentEventsStore.value = updateRecentEvents(recentEventsStore.value, recordOptions);
     const { status, sample, errorMessage, driverLocked, forceLock } =
         await runWperfRecord(recordOptions);

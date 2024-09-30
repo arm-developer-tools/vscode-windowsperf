@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import { getSystemCheckData, getWperfDriver, getWperfVersion, systemMessage } from './system-check';
+import {
+    getSystemCheckData,
+    getWperfDriver,
+    getWperfVersion,
+    hasWperfOnPath,
+    systemMessage,
+} from './system-check';
 import { versionFactory } from '../wperf/parse/version.factories';
 import { systemCheckValuesFactory } from './system-check.factories';
 
@@ -32,13 +38,26 @@ describe('RunSystemCheck', () => {
 
             expect(res).toEqual(mockWperfVersion.Version);
         });
+    });
 
-        it('returns undefined if call errors', async () => {
+    describe('hasWperfOnPath', () => {
+        it('returns true if command succeeds', async () => {
+            const mockRunVersionAndParse = jest.fn();
+            mockRunVersionAndParse.mockResolvedValue([
+                mockWperfVersion,
+                versionFactory({ Component: 'wperf-driver' }),
+            ]);
+            const res = await hasWperfOnPath(mockRunVersionAndParse);
+
+            expect(res).toEqual(true);
+        });
+
+        it('returns false if call fails', async () => {
             const mockRunVersionAndParse = jest.fn();
             mockRunVersionAndParse.mockRejectedValueOnce(new Error('error'));
-            const res = await getWperfVersion(mockRunVersionAndParse);
+            const res = await hasWperfOnPath(mockRunVersionAndParse);
 
-            expect(res).toEqual(undefined);
+            expect(res).toEqual(false);
         });
     });
 

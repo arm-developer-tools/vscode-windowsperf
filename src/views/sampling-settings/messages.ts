@@ -44,11 +44,20 @@ export const fromViewShape = z.union([
     z.object({
         type: z.literal('retry'),
     }),
+    z.object({
+        type: z.literal('disableVersionCheck'),
+    }),
 ]);
 
 export type FromView = z.infer<typeof fromViewShape>;
 
-const errorTypeShape = z.enum(['noWperf', 'noWperfDriver', 'versionMismatch', 'unknown']);
+const errorTypeShape = z.enum([
+    'noWperf',
+    'noWperfDriver',
+    'versionMismatch',
+    'versionIncompatible',
+    'unknown',
+]);
 
 const errorDetailShape = z.object({
     type: errorTypeShape,

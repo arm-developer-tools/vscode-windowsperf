@@ -33,12 +33,37 @@ import { sampleFactory } from './wperf/parse/record.factories';
 import { eventAndFrequencyFactory, recordOptionsFactory } from './wperf/record-options.factories';
 
 describe('record', () => {
+    it('false compatibility check shows a notification', async () => {
+        const recordOptions = recordOptionsFactory();
+        const runWperfRecord = jest.fn();
+        const versionCompatibilityCheck = jest.fn().mockResolvedValue(false);
+        const disableVersionCheckNotification = jest.fn();
+
+        await record(
+            recordOptions,
+            { value: [] },
+            analyticsFactory(),
+            versionCompatibilityCheck,
+            disableVersionCheckNotification,
+            runWperfRecord,
+        );
+
+        expect(disableVersionCheckNotification).toHaveBeenCalledTimes(1);
+    });
+
     it('returns a RecordRun sample source', async () => {
         const recordOptions = recordOptionsFactory();
         const sample = sampleFactory();
         const runWperfRecord = jest.fn().mockResolvedValue({ status: 'success', sample });
 
-        const got = await record(recordOptions, { value: [] }, analyticsFactory(), runWperfRecord);
+        const got = await record(
+            recordOptions,
+            { value: [] },
+            analyticsFactory(),
+            jest.fn().mockResolvedValue(true),
+            jest.fn(),
+            runWperfRecord,
+        );
 
         const want = SampleSource.fromRecordRun(
             recordRunFactory({ recordOptions, parsedContent: sample }),
@@ -53,7 +78,14 @@ describe('record', () => {
             errorMessage: "418 I'm a teapot",
         });
 
-        const got = await record(recordOptions, { value: [] }, analyticsFactory(), runWperfRecord);
+        const got = await record(
+            recordOptions,
+            { value: [] },
+            analyticsFactory(),
+            jest.fn().mockResolvedValue(true),
+            jest.fn(),
+            runWperfRecord,
+        );
 
         expect(got).toBeUndefined();
     });
@@ -67,7 +99,14 @@ describe('record', () => {
             .mockResolvedValue({ status: 'success', sample: sampleFactory() });
         const recentEventsStore = { value: [] };
 
-        await record(recordOptions, recentEventsStore, analyticsFactory(), runWperfRecord);
+        await record(
+            recordOptions,
+            recentEventsStore,
+            analyticsFactory(),
+            jest.fn().mockResolvedValue(true),
+            jest.fn(),
+            runWperfRecord,
+        );
 
         expect(recentEventsStore.value).toEqual(updateRecentEvents([], recordOptions));
     });
@@ -79,7 +118,14 @@ describe('record', () => {
             .fn()
             .mockResolvedValue({ status: 'success', sample: sampleFactory() });
 
-        await record(recordOptions, { value: [] }, analytics, runWperfRecord);
+        await record(
+            recordOptions,
+            { value: [] },
+            analytics,
+            jest.fn().mockResolvedValue(true),
+            jest.fn(),
+            runWperfRecord,
+        );
 
         expect(analytics.sendEvent).toHaveBeenCalled();
     });
@@ -91,7 +137,14 @@ describe('record', () => {
             .fn()
             .mockResolvedValue({ status: 'error', errorMessage: "418 I'm a teapot" });
 
-        await record(recordOptions, { value: [] }, analytics, runWperfRecord);
+        await record(
+            recordOptions,
+            { value: [] },
+            analytics,
+            jest.fn().mockResolvedValue(true),
+            jest.fn(),
+            runWperfRecord,
+        );
 
         expect(analytics.sendEvent).toHaveBeenCalled();
     });
