@@ -62,7 +62,7 @@ jobs:
     env:
       IMAGE_NAME: ghcr.io/google/addlicense:v1.1.1
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - run: docker pull $IMAGE_NAME
       - run: docker run -v ${PWD}:/src $IMAGE_NAME -c "Arm Limited" -check src tests *.ts *.js
   sync-upstream:
@@ -74,7 +74,7 @@ jobs:
         with:
           app_id: ${{ secrets.DEVELOPER_TOOLS_APP_ID }}
           private_key: ${{ secrets.DEVELOPER_TOOLS_PRIVATE_KEY }}
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
+      - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5
         with:
           fetch-depth: 0
       - name: Push to Upstream
