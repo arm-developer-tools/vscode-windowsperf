@@ -47,7 +47,7 @@ The WindowsPerf extension updates the **Command Line Preview** as you specify yo
 
 ### Record events in a JSON file
 
-1. Run `wperf record --annotate --disassemble --json >> out.json` from the command line to capture events in a JSON file.
+1. Add the flags `--annotate --disassemble --json --output out.json` to your `wperf record ...` command to capture events in a JSON file.
 2. In the **WindowsPerf** tab, click **Open File**. Navigate to the location of your JSON file, select the file, and then click **Open**. The WindowsPerf tree view opens.
 
 ### Use the WindowsPerf tree view
