@@ -15,7 +15,7 @@ You can then analyze the data from the run in the WindowsPerf [tree view](#use-t
 
 ## Before you begin
 
-Before you start using the WindowsPerf extension, you must install the WindowsPerf command-line tool and the kernel driver. Follow the instructions in the [WindowsPerf Install Guide](https://learn.arm.com/install-guides/wperf/). The current supported version is 3.8.0.
+Before you start using the WindowsPerf extension, you must install the WindowsPerf command-line tool and the kernel driver. Follow the instructions in the [WindowsPerf Install Guide](https://learn.arm.com/install-guides/wperf/).
 
 To use the features of the WindowsPerf extension that are specific to Windows on Arm, such as recording a run, you must install the Arm64 build of Visual Studio Code.
 

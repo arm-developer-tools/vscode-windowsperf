@@ -18,40 +18,22 @@ import * as vscode from 'vscode';
 import { logger } from './logger';
 import { getLoggableError } from './printable-error';
 
-export type NotificationButton = {
-    name: string;
-    callback: () => void;
-};
-
-export const openLogButton: NotificationButton = {
-    name: 'Open Log',
-    callback: () => logger.show(true),
-};
-
-export const checkInstallationButton: NotificationButton = {
-    name: 'Check WindowsPerf Installation',
-    callback: () => vscode.commands.executeCommand('windowsperf.systemCheck'),
-};
-
-export const defaultButtons: NotificationButton[] = [openLogButton, checkInstallationButton];
-
-export const logErrorAndNotify = (
-    error: unknown,
-    notificationMessage: string,
-    buttons = defaultButtons,
-) => {
+export const logErrorAndNotify = (error: unknown, notificationMessage: string) => {
     const loggableError = getLoggableError(error);
     logger.error(loggableError);
 
     vscode.window
         .showErrorMessage(
             `${notificationMessage} See the log for more information.`,
-            ...buttons.map((btn) => btn.name),
+            'Open Log',
+            'Check WindowsPerf Installation',
         )
         .then((result) => {
-            const button = buttons.find((btn) => btn.name === result);
-            if (button) {
-                button.callback();
+            if (result === 'Open Log') {
+                logger.show(true);
+            }
+            if (result === 'Check WindowsPerf Installation') {
+                vscode.commands.executeCommand('windowsperf.systemCheck');
             }
         });
 };

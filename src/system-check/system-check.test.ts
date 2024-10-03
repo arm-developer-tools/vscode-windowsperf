@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    getSystemCheckData,
-    getWperfDriver,
-    getWperfVersion,
-    hasWperfOnPath,
-    systemMessage,
-} from './system-check';
+import { getSystemCheckData, getWperfDriver, getWperfVersion, systemMessage } from './system-check';
 import { versionFactory } from '../wperf/parse/version.factories';
 import { systemCheckValuesFactory } from './system-check.factories';
 
@@ -39,36 +33,12 @@ describe('RunSystemCheck', () => {
             expect(res).toEqual(mockWperfVersion.Version);
         });
 
-        it('throws error if wperf not a valid component', async () => {
-            const mockRunVersionAndParse = jest.fn();
-            mockRunVersionAndParse.mockResolvedValue([
-                versionFactory({ Component: 'something-else' }),
-            ]);
-
-            expect(() => getWperfVersion(mockRunVersionAndParse)).rejects.toThrow(
-                new Error('No wperf version component found'),
-            );
-        });
-    });
-
-    describe('hasWperfOnPath', () => {
-        it('returns true if command succeeds', async () => {
-            const mockRunVersionAndParse = jest.fn();
-            mockRunVersionAndParse.mockResolvedValue([
-                mockWperfVersion,
-                versionFactory({ Component: 'wperf-driver' }),
-            ]);
-            const res = await hasWperfOnPath(mockRunVersionAndParse);
-
-            expect(res).toEqual(true);
-        });
-
-        it('returns false if call fails', async () => {
+        it('returns undefined if call errors', async () => {
             const mockRunVersionAndParse = jest.fn();
             mockRunVersionAndParse.mockRejectedValueOnce(new Error('error'));
-            const res = await hasWperfOnPath(mockRunVersionAndParse);
+            const res = await getWperfVersion(mockRunVersionAndParse);
 
-            expect(res).toEqual(false);
+            expect(res).toEqual(undefined);
         });
     });
 

@@ -2,7 +2,6 @@
 
 ## [Unreleased]
 
--   Introduced a check for version compatibility.
 -   Improve validation error styling in Sampling Settings.
 
 ## 1.2.1

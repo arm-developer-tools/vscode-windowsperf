@@ -22,7 +22,6 @@ export type ErrorViewProps = {
     error: ErrorDetail;
     openWperfOutput: () => void;
     refreshView: () => void;
-    disableVersionCheck: () => void;
     runSystemCheck: () => void;
 };
 
@@ -37,10 +36,7 @@ export const errorMessages: ErrorMessageMap = {
         'WindowsPerf executable not found while running WindowsPerf. Is it on the PATH or configured in the extension settings?',
     versionMismatch:
         'There was an error running “wperf” because the versions of wperf and wperf-driver do not match. Make sure that both are the same version by updating either one.',
-    versionIncompatible:
-        'The version of WindowsPerf you are using is not officially supported by this extension. See the log for more details.',
 };
-
 export const ErrorView = (props: ErrorViewProps) => {
     const docslink = 'https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/blob/main/INSTALL.md';
     let errorMessage = 'An unknown error has occurred';
@@ -78,16 +74,6 @@ export const ErrorView = (props: ErrorViewProps) => {
                 >
                     Check WindowsPerf Installation
                 </VSCodeButton>
-                {props.error.type === 'versionIncompatible' && (
-                    <VSCodeButton
-                        id="allow-incompatible-version-check-button"
-                        title="Allow Incompatible Versions"
-                        onClick={props.disableVersionCheck}
-                        appearance="secondary"
-                    >
-                        Allow Incompatible Versions
-                    </VSCodeButton>
-                )}
             </div>
         </div>
     );

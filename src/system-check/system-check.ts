@@ -34,7 +34,7 @@ export const getSystemCheckData = async (
     runVersionWithParse = runVersionAndParse,
 ): Promise<SystemCheckValues> => {
     const hasLlvmObjDumpOnPath = await checkLlvmObjDump();
-    const wperfCommandAvailable = await hasWperfOnPath(runVersionWithParse);
+    const wperfVersion = await getWperfVersion(runVersionWithParse);
     const hasWperfDriver = await getWperfDriver(platform, runDriverCheck);
 
     return {
@@ -48,7 +48,7 @@ export const getSystemCheckData = async (
             name: 'WPerf command available',
             description:
                 'This is required to run the commands used in this extension. Learn more https://gitlab.com/Linaro/WindowsPerf/windowsperf/-/blob/main/INSTALL.md or specify the absolute path to the WindowsPerf executable in the VSCode extension settings.',
-            isFound: wperfCommandAvailable,
+            isFound: !!wperfVersion,
         },
         isWperfDriverInstalled: {
             name: 'WPerf driver installed',
@@ -67,24 +67,12 @@ export const getSystemCheckData = async (
 
 export const getWperfVersion = async (
     runVersionWithParse = runVersionAndParse,
-): Promise<string> => {
-    const versionJson = await runVersionWithParse();
-    const wperfComponent = versionJson.find((a) => a.Component === 'wperf');
-    if (!wperfComponent) {
-        throw new Error('No wperf version component found');
-    }
-
-    return wperfComponent.Version;
-};
-
-export const hasWperfOnPath = async (
-    runVersionWithParse = runVersionAndParse,
-): Promise<boolean> => {
+): Promise<string | undefined> => {
     try {
-        await runVersionWithParse();
-        return true;
+        const versionJson = await runVersionWithParse();
+        return versionJson.find((a) => a.Component === 'wperf')?.Version;
     } catch (error) {
-        return false;
+        return undefined;
     }
 };
 
