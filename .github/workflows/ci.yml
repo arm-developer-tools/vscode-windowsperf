@@ -3,22 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
-    inputs:
-      release-type:
-        type: choice
-        description: A new version is published with the corresponding version bump if not set to None.
-        options:
-          - 'None'
-          - 'Pre-release'
-          - 'Patch'
-          - 'Minor'
-          - 'Major'
-        default: 'None'
+      - test-ci
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -27,61 +12,6 @@ concurrency:
 jobs:
   build-and-verify:
     name: Build and verify
-    uses: arm-debug/vscode-workflows/.github/workflows/build-and-verify.yml@v3.1.1
-    secrets:
-      EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
-      EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
-      GH_PACKAGES_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
-      ARM_ARTIFACTORY_PASSWORD: ${{secrets.ARM_ARTIFACTORY_PASSWORD}}
-      CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-    with:
-      package-manager: 'npm'
-      enable-code-climate: true
-      enable-ksc-next-preview: false
-      test-on-self-hosted-ubuntu-only: false
-      release-type: ${{ inputs.release-type }}
-  release-and-publish:
-    name: Release and publish
-    needs: build-and-verify
-    uses: arm-debug/vscode-workflows/.github/workflows/release-and-publish.yml@v3.1.1
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.release-type != 'None' && github.ref == 'refs/heads/main' }}
-    with:
-      api-types-registry-url: 'https://registry.npmjs.org'
-      release-type: ${{inputs.release-type}}
-      open-source: true
-    secrets:
-      OPEN_VSX_TOKEN: ${{secrets.OPEN_VSX_TOKEN}}
-      VS_MARKETPLACE_TOKEN: ${{secrets.VS_MARKETPLACE_TOKEN}}
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      EXTENSIONS_REPO_ACCESS_PRIVATE_KEY: ${{secrets.EXTENSIONS_REPO_ACCESS_PRIVATE_KEY}}
-      EXTENSIONS_REPO_ACCESS_APP_ID: ${{secrets.EXTENSIONS_REPO_ACCESS_APP_ID}}
-      ARM_SOFTWARE_TOKEN: ${{secrets.ARM_SOFTWARE_TOKEN}}
-  check-copyright:
-    name: Check Copyright Headers
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: ghcr.io/google/addlicense:v1.1.1
+    runs-on: [self-hosted, self-hosted-ubuntu-latest, arm64, aws-debug-prod]
     steps:
-      - uses: actions/checkout@v2
-      - run: docker pull $IMAGE_NAME
-      - run: docker run -v ${PWD}:/src $IMAGE_NAME -c "Arm Limited" -check src tests *.ts *.js
-  sync-upstream:
-    runs-on: ubuntu-latest
-    needs: release-and-publish
-    steps:
-      - id: get-app-token
-        uses: getsentry/action-github-app-token@d4b5da6c5e37703f8c3b3e43abb5705b46e159cc
-        with:
-          app_id: ${{ secrets.DEVELOPER_TOOLS_APP_ID }}
-          private_key: ${{ secrets.DEVELOPER_TOOLS_PRIVATE_KEY }}
-      - uses: actions/checkout@9bb56186c3b09b4f86b1c65136769dd318469633
-        with:
-          fetch-depth: 0
-      - name: Push to Upstream
-        run: |
-          git remote add upstream https://x-access-token:$GH_TOKEN@github.com/arm-developer-tools/vscode-windowsperf.git
-          git push upstream main:main
-          git push upstream v$VERSION
-        env:
-          GH_TOKEN: ${{ steps.get-app-token.outputs.token }}
-          VERSION: ${{ needs.release-and-publish.outputs.version }}
+      - run: echo "Hello, runners!"
