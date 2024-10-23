@@ -12,6 +12,6 @@ concurrency:
 jobs:
   build-and-verify:
     name: Build and verify
-    runs-on: [self-hosted, self-hosted-ubuntu-latest, arm64, aws-debug-prod]
+    runs-on: [aws-debug-prod]
     steps:
       - run: echo "Hello, runners!"
