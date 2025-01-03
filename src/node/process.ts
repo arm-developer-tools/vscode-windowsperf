@@ -17,7 +17,7 @@
 import { ExecException, ProcessEnvOptions, exec as cpExec } from 'child_process';
 import { CancellationToken } from 'vscode';
 import { logger } from '../logging/logger';
-import { ctrlc } from '@arm-debug/ctrlc-windows';
+import { ctrlc } from 'ctrlc-windows';
 
 export type ExecResult = {
     stdout: string;

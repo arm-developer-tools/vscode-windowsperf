@@ -337,10 +337,10 @@
         ]
     },
     "dependencies": {
-        "@arm-debug/ctrlc-windows": "3.0.1",
         "@arm-debug/vscode-telemetry": "^3.0.0",
         "@vscode/codicons": "^0.0.36",
         "@vscode/webview-ui-toolkit": "^1.4.0",
+        "ctrlc-windows": "2.2.0",
         "os-browserify": "^0.3.0",
         "primereact": "^10.8.3",
         "react": "~18.3.1",

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ctrlc } from '@arm-debug/ctrlc-windows';
+import { ctrlc } from 'ctrlc-windows';
 import { logger } from '../logging/logger';
 import { exec } from './process';
 import { CancellationTokenSource } from 'vscode';
